@@ -1,0 +1,10 @@
+# Default ignored files
+.idea/
+.gradle/
+gradle/
+build/
+/target
+/out/
+/test-tools/out/
+/test-workspace/
+/alteration-atc.iml
