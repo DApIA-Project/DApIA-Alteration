@@ -1,0 +1,12 @@
+{
+    "projectName": "Fditscenario",
+    "languages": [{
+        "id": "fditscenario",
+        "grammar": "src/language-server/fditscenario.langium",
+        "fileExtensions": [".fditscenario"],
+        "textMate": {
+            "out": "syntaxes/fditscenario.tmLanguage.json"
+        }
+    }],
+    "out": "src/language-server/generated"
+}

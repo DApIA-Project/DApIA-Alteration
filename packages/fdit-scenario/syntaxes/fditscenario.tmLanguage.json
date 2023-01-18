@@ -1,0 +1,21 @@
+{
+  "name": "fditscenario",
+  "scopeName": "source.fditscenario",
+  "fileTypes": [
+    ".fditscenario"
+  ],
+  "patterns": [
+    {
+      "include": "#comments"
+    },
+    {
+      "name": "keyword.control.fditscenario",
+      "match": "\\b(ALERT|ALT_DURATION|ALTITUDE|CALLSIGN|EAST_WEST_VELOCITY|EMERGENCY|GROUNDSPEED|ICAO|LATITUDE|LONGITUDE|NORTH_SOUTH_VELOCITY|NUMBER|REC_DURATION|REC_NBR_AIRCRAFT|SPI|SQUAWK|TRACK)\\b"
+    }
+  ],
+  "repository": {
+    "comments": {
+      "patterns": []
+    }
+  }
+}
