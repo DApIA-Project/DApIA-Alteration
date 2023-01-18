@@ -2,7 +2,7 @@
 //import { CompositeGeneratorNode, NL, toString } from 'langium';
 
 
-import { ASTDeclaration, ASTFilters, ASTInstruction, ASTList, ASTNumber, ASTParameter, ASTParameters, ASTParameterType, ASTRange, ASTRecordingParameterType, ASTReplayTarget, ASTSaturationParameter, ASTSaturationParameters, ASTSaturationParameterType, ASTScenario, ASTSpeedParameter, ASTSpeedParameters, ASTSpeedParameterType, ASTTarget, ASTTime, ASTTimeScope, ASTValue, ASTWayPoint, ASTWayPoints, isASTAllPlaneFrom, isASTAllPlanes, isASTAlter, isASTAlterSpeed, isASTAt, isASTCreate, isASTCut, isASTDelay, isASTHide, isASTListDeclaration, isASTParamDrift, isASTParamEdit, isASTParamNoise, isASTParamOffset, isASTPlaneFrom, isASTRangeDeclaration, isASTReplay, isASTRotate, isASTSaturate, isASTTrajectory, isASTWindow } from "../language-server/generated/ast";
+import { ASTDeclaration, ASTDelayParameter, ASTFilters, ASTInstruction, ASTList, ASTNumber, ASTParameter, ASTParameters, ASTParameterType, ASTRange, ASTRecordingParameterType, ASTReplayTarget, ASTRotateParameter, ASTSaturationParameter, ASTSaturationParameters, ASTSaturationParameterType, ASTScenario, ASTSpeedParameter, ASTSpeedParameters, ASTSpeedParameterType, ASTTarget, ASTTime, ASTTimeScope, ASTTrigger, ASTValue, ASTWayPoint, ASTWayPoints, isASTAllPlaneFrom, isASTAllPlanes, isASTAlter, isASTAlterSpeed, isASTAt, isASTCreate, isASTCut, isASTDelay, isASTHide, isASTListDeclaration, isASTParamDrift, isASTParamEdit, isASTParamNoise, isASTParamOffset, isASTPlaneFrom, isASTRangeDeclaration, isASTReplay, isASTRotate, isASTSaturate, isASTTrajectory, isASTWindow } from "../language-server/generated/ast";
 
 /*type FditscenarioGenEnv = Map<string,number>;
 
@@ -158,8 +158,9 @@ function evalInstr(instr : ASTInstruction) : (Object | undefined)[]{
             action : ActionType.deletion,
             target : evalTarget(instr.target),
             timescope : evalTimeScope(instr.timeScope),
-            /*trigger : evalTrigger(instr.trigger!),
-            assertions : evalAssertions(instr.assertions!)*/
+            trigger : evalTrigger(instr.trigger!),
+            /*frequency : evalFrequency(instr.frequency),
+            assertions : evalAssertions(instr.assertions)*/
 
         }];
 
@@ -168,9 +169,9 @@ function evalInstr(instr : ASTInstruction) : (Object | undefined)[]{
             ActionType : ActionType.alteration,
             target : evalTarget(instr.target),
             timescope : evalTimeScope(instr.timeScope),
-            /*trigger : evalTrigger(instr.trigger!),*/
+            trigger : evalTrigger(instr.trigger!),
             parameters : evalParameters(instr.parameters),
-            /*assertions : evalAssertions(instr.assertions!)*/
+            /*assertions : evalAssertions(instr.assertions)*/
             
 
         }];
@@ -179,8 +180,7 @@ function evalInstr(instr : ASTInstruction) : (Object | undefined)[]{
             ActionType : ActionType.creation,
             timescope : evalTimeScope(instr.timeScope),
             trajectory : evalTrajectory(instr.trajectory)
-            /*trigger : evalTrigger(instr.trigger!),
-            parameters : evalSpeedParameters(instr.parameters),
+            /*parameters : evalCreationParameters(instr.parameters),
             assertions : evalAssertions(instr.assertions!)*/
 
             
@@ -192,9 +192,8 @@ function evalInstr(instr : ASTInstruction) : (Object | undefined)[]{
             target : evalTarget(instr.target),
             timescope : evalTimeScope(instr.timeScope),
             trajectory : evalTrajectory(instr.trajectory),
-            /*trigger : evalTrigger(instr.trigger!),
-            parameters : evalSaturationParameters(instr.parameters),
-            assertions : evalAssertions(instr.assertions!)*/
+            trigger : evalTrigger(instr.trigger!),
+            //assertions : evalAssertions(instr.assertions!)
             
 
         }];
@@ -204,8 +203,8 @@ function evalInstr(instr : ASTInstruction) : (Object | undefined)[]{
             target : evalTarget(instr.target),
             timescope : evalTimeScope(instr.timeScope),
             parameters : evalSpeedParameters(instr.parameters),
-            /*delay : evalDelayParameter(instr.delay),
-            assertions : evalAssertions(instr.assertions!)*/
+            trigger : evalTrigger(instr.trigger!),
+            //assertions : evalAssertions(instr.assertions!)
             
 
         }];
@@ -215,8 +214,8 @@ function evalInstr(instr : ASTInstruction) : (Object | undefined)[]{
             target : evalTarget(instr.target),
             timescope : evalTimeScope(instr.timeScope),
             parameters : evalSaturationParameters(instr.parameters),
-            /*delay : evalDelayParameter(instr.delay),
-            assertions : evalAssertions(instr.assertions!)*/
+            trigger : evalTrigger(instr.trigger!),
+            //assertions : evalAssertions(instr.assertions)
             
 
         }];
@@ -225,7 +224,7 @@ function evalInstr(instr : ASTInstruction) : (Object | undefined)[]{
             ActionType : ActionType.replay,
             target : evalReplayTarget(instr.target),
             timescope : evalTimeScope(instr.timeScope),
-            /*delay : evalDelayParameter(instr.delay),
+            /*parameters : evalParameters(instr.parameters),
             assertions : evalAssertions(instr.assertions!)*/
             
 
@@ -235,8 +234,8 @@ function evalInstr(instr : ASTInstruction) : (Object | undefined)[]{
             ActionType : ActionType.timestamp,
             target : evalTarget(instr.target),
             timescope : evalTimeScope(instr.timeScope),
-            /*delay : evalDelayParameter(instr.delay),
-            assertions : evalAssertions(instr.assertions!)*/
+            delay : evalDelayParameter(instr.delay),
+            //assertions : evalAssertions(instr.assertions!)
             
 
         }];
@@ -245,8 +244,9 @@ function evalInstr(instr : ASTInstruction) : (Object | undefined)[]{
             ActionType : ActionType.convergence,
             target : evalTarget(instr.target),
             timescope : evalTimeScope(instr.timeScope),
-            /*delay : evalDelayParameter(instr.delay),
-            assertions : evalAssertions(instr.assertions!)*/
+            angle : evalRotateParameter(instr.angle),
+            trigger : evalTrigger(instr.trigger!),
+            //assertions : evalAssertions(instr.assertions!)
             
 
         }];
@@ -255,8 +255,8 @@ function evalInstr(instr : ASTInstruction) : (Object | undefined)[]{
             ActionType : ActionType.reductionDF,
             target : evalTarget(instr.target),
             timescope : evalTimeScope(instr.timeScope),
-            /*delay : evalDelayParameter(instr.delay),
-            assertions : evalAssertions(instr.assertions!)*/
+            trigger : evalTrigger(instr.trigger!),
+            //assertions : evalAssertions(instr.assertions!)
             
 
         }];
@@ -344,16 +344,16 @@ function evalValue(v : ASTValue) : (number|string|ASTNumber|ASTRecordingParamete
 
 }
 
-/*function evalTrigger(trig : ASTTrigger) : (number|string){
+function evalTrigger(trig : ASTTrigger) : (Object|undefined)[]{
         if(trig != undefined){
-          return evalValue(trig.triggername);  
+          return [evalValue(trig.triggername)];  
         }else{
-            return "";
+            return [];
         }
         
   
 }
-
+/*
 function evalAssertions(assers : ASTAssertions) : (Object|undefined)[]{
     if(assers != undefined){
         return evalAssertion(assers.items);
@@ -579,5 +579,21 @@ function evalValues(v : ASTValue[]) : (Object|undefined)[]{
         vals.push(evalValue(v[i]));
     }
     return vals;
+    
+}
+
+function evalDelayParameter(dp : ASTDelayParameter) : (Object|undefined)[]{
+    
+    return [{
+        value : evalTime(dp.value)
+    }];
+    
+}
+
+function evalRotateParameter(rp : ASTRotateParameter) : (Object|undefined)[]{
+    
+    return [{
+        value : evalValue(rp.value)
+    }];
     
 }
