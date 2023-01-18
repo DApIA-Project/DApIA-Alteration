@@ -10,17 +10,26 @@
         "Programming Languages"
     ],
     "contributes": {
-        "languages": [{
-            "id": "fditscenario",
-            "aliases": ["FDITSCENARIO", "fditscenario"],
-            "extensions": [".fditscenario"],
-            "configuration": "./language-configuration.json"
-        }],
-        "grammars": [{
-            "language": "fditscenario",
-            "scopeName": "source.fditscenario",
-            "path": "./syntaxes/fditscenario.tmLanguage.json"
-        }]
+        "languages": [
+            {
+                "id": "fditscenario",
+                "aliases": [
+                    "FDITSCENARIO",
+                    "fditscenario"
+                ],
+                "extensions": [
+                    ".fditscenario"
+                ],
+                "configuration": "./language-configuration.json"
+            }
+        ],
+        "grammars": [
+            {
+                "language": "fditscenario",
+                "scopeName": "source.fditscenario",
+                "path": "./syntaxes/fditscenario.tmLanguage.json"
+            }
+        ]
     },
     "activationEvents": [
         "onLanguage:fditscenario"
@@ -43,8 +52,8 @@
         "langium:watch": "langium generate --watch"
     },
     "dependencies": {
-        "chevrotain": "^10.4.1",
         "chalk": "^4.1.2",
+        "chevrotain": "^10.4.1",
         "commander": "^8.0.0",
         "langium": "~1.0.0",
         "vscode-languageclient": "^8.0.2",
@@ -52,6 +61,7 @@
         "vscode-uri": "^3.0.2"
     },
     "devDependencies": {
+        "@jest/globals": "^29.3.1",
         "@types/node": "^14.17.3",
         "@types/vscode": "^1.56.0",
         "@typescript-eslint/eslint-plugin": "^5.28.0",

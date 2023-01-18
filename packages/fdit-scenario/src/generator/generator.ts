@@ -34,7 +34,7 @@ export function generateCommands(scenario: ASTScenario): (Object|undefined)[] {
 }*/
 
 function generateStatements(scenar: ASTScenario): (Object|undefined)[] {
-    //let env : FditscenarioGenEnv = new Map<string,number>();
+    //let env : DslGenEnv = new Map<string,number>();
     return evalScenario(scenar);
     
 }
@@ -296,27 +296,25 @@ function evalTimeScope(ts : ASTTimeScope) : (Object|undefined)[]{
     
 }
 
-function evalTrajectory(wp : ASTWayPoints) : (Object|undefined)[]{
-    if(wp != undefined){
+function evalTrajectory(wp : ASTWayPoints) : (Object)[]{
+   
         return evalWayPoint(wp.waypoints);
-    }else{
-        return [];
-    }
+    
    
 }
 
-function evalWayPoint(wp : ASTWayPoint[]) : (Object|undefined)[]{
-    let waypoints : (Object|undefined)[]=evalOneWaypoint(wp[0]);
+function evalWayPoint(wp : ASTWayPoint[]) : (Object)[]{
+    let waypoints : (Object)[]=evalOneWaypoint(wp[0]);
     for(let i = 1 ; i<wp.length;i++){
         waypoints.push(evalOneWaypoint(wp[i]));
     }
     return waypoints;
 }
 
-function evalOneWaypoint(wp : ASTWayPoint) : (Object|undefined)[]{
+function evalOneWaypoint(wp : ASTWayPoint) : (Object)[]{
     return [{
         latitude : evalValue(wp.latitude),
-        longitute : evalValue(wp.longitude),
+        longitude : evalValue(wp.longitude),
         altitude : evalValue(wp.altitude),
         time : evalTime(wp.time)
     }];
@@ -452,11 +450,10 @@ function evalParametreType(pm : ASTParameterType) : string | undefined{
         return ParametreType.spi;
     }else if(pm.SQUAWK != undefined){
         return ParametreType.squawk;
-    }else if(pm.TRACK != undefined){
+    }else{
         return ParametreType.track;
     }
 
-    return undefined;
     
 }
 
@@ -491,11 +488,10 @@ function evalOneSpeedParameter(pm : ASTSpeedParameter) : (Object|undefined)[]{
 function evalSpeedParametreType(pm : ASTSpeedParameterType) : string | undefined{
     if(pm.EAST_WEST_VELOCITY != undefined){
         return ParametreSpeedType.east_west_velocity;
-    }else if(pm.NORTH_SOUTH_VELOCITY != undefined){
+    }else {
         return ParametreSpeedType.north_south_velocity;
     }
 
-    return undefined;
     
 }
 
@@ -530,11 +526,10 @@ function evalOneSaturationParameter(pm : ASTSaturationParameter) : (Object|undef
 function evalSaturationParametreType(pm : ASTSaturationParameterType) : string | undefined{
     if(pm.ICAO != undefined){
         return ParametreSaturationType.icao;
-    }else if(pm.AIRCRAFT_NUMBER != undefined){
+    }else{
         return ParametreSaturationType.aircraft_number;
     }
 
-    return undefined;
     
 }
 
