@@ -128,8 +128,9 @@ function evalInstr(instr) {
                 action: ActionType.deletion,
                 target: evalTarget(instr.target),
                 timescope: evalTimeScope(instr.timeScope),
-                /*trigger : evalTrigger(instr.trigger!),
-                assertions : evalAssertions(instr.assertions!)*/
+                trigger: evalTrigger(instr.trigger),
+                /*frequency : evalFrequency(instr.frequency),
+                assertions : evalAssertions(instr.assertions)*/
             }];
     }
     else if ((0, ast_1.isASTAlter)(instr)) {
@@ -137,9 +138,9 @@ function evalInstr(instr) {
                 ActionType: ActionType.alteration,
                 target: evalTarget(instr.target),
                 timescope: evalTimeScope(instr.timeScope),
-                /*trigger : evalTrigger(instr.trigger!),*/
+                trigger: evalTrigger(instr.trigger),
                 parameters: evalParameters(instr.parameters),
-                /*assertions : evalAssertions(instr.assertions!)*/
+                /*assertions : evalAssertions(instr.assertions)*/
             }];
     }
     else if ((0, ast_1.isASTCreate)(instr)) {
@@ -147,8 +148,7 @@ function evalInstr(instr) {
                 ActionType: ActionType.creation,
                 timescope: evalTimeScope(instr.timeScope),
                 trajectory: evalTrajectory(instr.trajectory)
-                /*trigger : evalTrigger(instr.trigger!),
-                parameters : evalSpeedParameters(instr.parameters),
+                /*parameters : evalCreationParameters(instr.parameters),
                 assertions : evalAssertions(instr.assertions!)*/
             }];
     }
@@ -158,9 +158,8 @@ function evalInstr(instr) {
                 target: evalTarget(instr.target),
                 timescope: evalTimeScope(instr.timeScope),
                 trajectory: evalTrajectory(instr.trajectory),
-                /*trigger : evalTrigger(instr.trigger!),
-                parameters : evalSaturationParameters(instr.parameters),
-                assertions : evalAssertions(instr.assertions!)*/
+                trigger: evalTrigger(instr.trigger),
+                //assertions : evalAssertions(instr.assertions!)
             }];
     }
     else if ((0, ast_1.isASTAlterSpeed)(instr)) {
@@ -169,8 +168,8 @@ function evalInstr(instr) {
                 target: evalTarget(instr.target),
                 timescope: evalTimeScope(instr.timeScope),
                 parameters: evalSpeedParameters(instr.parameters),
-                /*delay : evalDelayParameter(instr.delay),
-                assertions : evalAssertions(instr.assertions!)*/
+                trigger: evalTrigger(instr.trigger),
+                //assertions : evalAssertions(instr.assertions!)
             }];
     }
     else if ((0, ast_1.isASTSaturate)(instr)) {
@@ -179,8 +178,8 @@ function evalInstr(instr) {
                 target: evalTarget(instr.target),
                 timescope: evalTimeScope(instr.timeScope),
                 parameters: evalSaturationParameters(instr.parameters),
-                /*delay : evalDelayParameter(instr.delay),
-                assertions : evalAssertions(instr.assertions!)*/
+                trigger: evalTrigger(instr.trigger),
+                //assertions : evalAssertions(instr.assertions)
             }];
     }
     else if ((0, ast_1.isASTReplay)(instr)) {
@@ -188,7 +187,7 @@ function evalInstr(instr) {
                 ActionType: ActionType.replay,
                 target: evalReplayTarget(instr.target),
                 timescope: evalTimeScope(instr.timeScope),
-                /*delay : evalDelayParameter(instr.delay),
+                /*parameters : evalParameters(instr.parameters),
                 assertions : evalAssertions(instr.assertions!)*/
             }];
     }
@@ -197,8 +196,8 @@ function evalInstr(instr) {
                 ActionType: ActionType.timestamp,
                 target: evalTarget(instr.target),
                 timescope: evalTimeScope(instr.timeScope),
-                /*delay : evalDelayParameter(instr.delay),
-                assertions : evalAssertions(instr.assertions!)*/
+                delay: evalDelayParameter(instr.delay),
+                //assertions : evalAssertions(instr.assertions!)
             }];
     }
     else if ((0, ast_1.isASTRotate)(instr)) {
@@ -206,8 +205,9 @@ function evalInstr(instr) {
                 ActionType: ActionType.convergence,
                 target: evalTarget(instr.target),
                 timescope: evalTimeScope(instr.timeScope),
-                /*delay : evalDelayParameter(instr.delay),
-                assertions : evalAssertions(instr.assertions!)*/
+                angle: evalRotateParameter(instr.angle),
+                trigger: evalTrigger(instr.trigger),
+                //assertions : evalAssertions(instr.assertions!)
             }];
     }
     else if ((0, ast_1.isASTCut)(instr)) {
@@ -215,8 +215,8 @@ function evalInstr(instr) {
                 ActionType: ActionType.reductionDF,
                 target: evalTarget(instr.target),
                 timescope: evalTimeScope(instr.timeScope),
-                /*delay : evalDelayParameter(instr.delay),
-                assertions : evalAssertions(instr.assertions!)*/
+                trigger: evalTrigger(instr.trigger),
+                //assertions : evalAssertions(instr.assertions!)
             }];
     }
     return [];
@@ -280,16 +280,15 @@ function evalTime(t) {
 function evalValue(v) {
     return v.content;
 }
-/*function evalTrigger(trig : ASTTrigger) : (number|string){
-        if(trig != undefined){
-          return evalValue(trig.triggername);
-        }else{
-            return "";
-        }
-        
-  
+function evalTrigger(trig) {
+    if (trig != undefined) {
+        return [evalValue(trig.triggername)];
+    }
+    else {
+        return [];
+    }
 }
-
+/*
 function evalAssertions(assers : ASTAssertions) : (Object|undefined)[]{
     if(assers != undefined){
         return evalAssertion(assers.items);
@@ -495,5 +494,15 @@ function evalValues(v) {
         vals.push(evalValue(v[i]));
     }
     return vals;
+}
+function evalDelayParameter(dp) {
+    return [{
+            value: evalTime(dp.value)
+        }];
+}
+function evalRotateParameter(rp) {
+    return [{
+            value: evalValue(rp.value)
+        }];
 }
 //# sourceMappingURL=generator.js.map
