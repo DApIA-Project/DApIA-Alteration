@@ -4,26 +4,12 @@
 
 import { ASTDeclaration, ASTFilters, ASTInstruction, ASTList, ASTNumber, ASTParameter, ASTParameters, ASTParameterType, ASTRange, ASTRecordingParameterType, ASTReplayTarget, ASTSaturationParameter, ASTSaturationParameters, ASTSaturationParameterType, ASTScenario, ASTSpeedParameter, ASTSpeedParameters, ASTSpeedParameterType, ASTTarget, ASTTime, ASTTimeScope, ASTValue, ASTWayPoint, ASTWayPoints, isASTAllPlaneFrom, isASTAllPlanes, isASTAlter, isASTAlterSpeed, isASTAt, isASTCreate, isASTCut, isASTDelay, isASTHide, isASTListDeclaration, isASTParamDrift, isASTParamEdit, isASTParamNoise, isASTParamOffset, isASTPlaneFrom, isASTRangeDeclaration, isASTReplay, isASTRotate, isASTSaturate, isASTTrajectory, isASTWindow } from "../language-server/generated/ast";
 
-/*type DslGenEnv = Map<string,number>;
+/*type FditscenarioGenEnv = Map<string,number>;
 
-function evalExprWithEnv(e : ASTTimeScope, env: DslGenEnv) : number {
+function evalExprWithEnv(e : ASTTimeScope, env: FditscenarioGenEnv) : number {
     return "";
 }*/
-/*export function generateJavaScript(scenario: ASTScenario, filePath: string, destination: string | undefined): string {
-    const data = extractDestinationAndName(filePath, destination);
-    const generatedFilePath = `${path.join(data.destination, data.name)}.js`;
 
-    const fileNode = new CompositeGeneratorNode();
-    fileNode.append('"use strict";', NL, NL);
-    //scenario.declarations.forEach(decl => fileNode.append(`console.log('Hello, ${decl.constant}!');`, NL));
-    scenario.instructions.forEach(instr => fileNode.append(`console.log('Timescope :, ${instr.timeScope}!');`, NL));
-
-    if (!fs.existsSync(data.destination)) {
-        fs.mkdirSync(data.destination, { recursive: true });
-    }
-    fs.writeFileSync(generatedFilePath, toString(fileNode));
-    return generatedFilePath;
-}*/
 
 /*export function generateCommands(scenario: ASTScenario, filePath: string, destination: string | undefined): string {
     const data = extractDestinationAndName(filePath, destination);
@@ -42,13 +28,13 @@ export function generateCommands(scenario: ASTScenario): (Object|undefined)[] {
 }
 
 /*function generateStatements2(instr: ASTInstruction[]): Object[] {
-    //let env : DslGenEnv = new Map<string,number>();
+    //let env : FditscenarioGenEnv = new Map<string,number>();
     return instr.flatMap(i => evalInstr(i)).filter(i => i !== undefined) as Object[];
     
 }*/
 
 function generateStatements(scenar: ASTScenario): (Object|undefined)[] {
-    //let env : DslGenEnv = new Map<string,number>();
+    //let env : FditscenarioGenEnv = new Map<string,number>();
     return evalScenario(scenar);
     
 }

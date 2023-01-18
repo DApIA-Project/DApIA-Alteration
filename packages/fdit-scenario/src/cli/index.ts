@@ -4,7 +4,6 @@ import { ASTScenario } from '../language-server/generated/ast';
 import { AttackScenarioGrammarLanguageMetaData } from '../language-server/generated/module';
 import { createFditscenarioServices } from '../language-server/fditscenario-module';
 import { extractAstNode, extractDocument } from './cli-util';
-//import { generateJavaScript } from './generator';
 import { generateCommands } from '../generator/generator';
 import { NodeFileSystem } from 'langium/node';
 import { extractDestinationAndName } from './cli-util';
@@ -28,16 +27,9 @@ export const generateAction = async (fileName: string, opts: GenerateOptions): P
     }
     fs.writeFileSync(generatedFilePath, JSON.stringify(cmds, undefined, 2));
 
-    console.log(chalk.green(`DSL commands generated successfully: ${generatedFilePath}`));
+    console.log(chalk.green(`FditScenario commands generated successfully: ${generatedFilePath}`));
 };
 
-/*export const generateAction = async (fileName: string, opts: GenerateOptions): Promise<void> => {
-    const services = createDslServices(NodeFileSystem).Dsl;
-    const scenario = await extractAstNode<ASTScenario>(fileName, services);
-    //const generatedFilePath = generateJavaScript(scenario, fileName, opts.destination);
-    const generatedFilePath = generateCommands(scenario, fileName, opts.destination);
-    console.log(chalk.green(`DSL code generated successfully: ${generatedFilePath}`));
-};*/
 
 /**
  * Parse and validate a program written in our language.
@@ -79,7 +71,7 @@ export default function(): void {
         .command('generate')
         .argument('<file>', `source file (possible file extensions: ${fileExtensions})`)
         .option('-d, --destination <dir>', 'destination directory of generating')
-        .description('generates DSL commands in json')
+        .description('generates FditScenario commands in json')
         .action(generateAction);
 
     
