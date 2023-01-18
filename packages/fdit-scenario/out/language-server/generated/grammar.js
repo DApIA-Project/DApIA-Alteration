@@ -4,47 +4,48 @@
  * DO NOT EDIT MANUALLY!
  ******************************************************************************/
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.FditscenarioGrammar = void 0;
+exports.AttackScenarioGrammarGrammar = void 0;
 const langium_1 = require("langium");
-let loadedFditscenarioGrammar;
-const FditscenarioGrammar = () => loadedFditscenarioGrammar !== null && loadedFditscenarioGrammar !== void 0 ? loadedFditscenarioGrammar : (loadedFditscenarioGrammar = (0, langium_1.loadGrammarFromJson)(`{
+let loadedAttackScenarioGrammarGrammar;
+const AttackScenarioGrammarGrammar = () => loadedAttackScenarioGrammarGrammar !== null && loadedAttackScenarioGrammarGrammar !== void 0 ? loadedAttackScenarioGrammarGrammar : (loadedAttackScenarioGrammarGrammar = (0, langium_1.loadGrammarFromJson)(`{
   "$type": "Grammar",
   "isDeclared": true,
-  "name": "Fditscenario",
+  "name": "AttackScenarioGrammar",
   "rules": [
     {
       "$type": "ParserRule",
-      "name": "Model",
+      "name": "ASTScenario",
       "entry": true,
       "definition": {
-        "$type": "Alternatives",
+        "$type": "Group",
         "elements": [
           {
             "$type": "Assignment",
-            "feature": "persons",
+            "feature": "declarations",
             "operator": "+=",
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@1"
+                "$ref": "#/rules@7"
               },
               "arguments": []
-            }
+            },
+            "cardinality": "*"
           },
           {
             "$type": "Assignment",
-            "feature": "greetings",
+            "feature": "instructions",
             "operator": "+=",
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@2"
+                "$ref": "#/rules@10"
               },
               "arguments": []
-            }
+            },
+            "cardinality": "+"
           }
-        ],
-        "cardinality": "*"
+        ]
       },
       "definesHiddenTokens": false,
       "fragment": false,
@@ -54,17 +55,443 @@ const FditscenarioGrammar = () => loadedFditscenarioGrammar !== null && loadedFd
     },
     {
       "$type": "ParserRule",
-      "name": "Person",
+      "name": "ASTList",
+      "definition": {
+        "$type": "Alternatives",
+        "elements": [
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@2"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@3"
+            },
+            "arguments": []
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "ASTStringList",
       "definition": {
         "$type": "Group",
         "elements": [
           {
-            "$type": "Keyword",
-            "value": "person"
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@102"
+            },
+            "arguments": []
           },
           {
             "$type": "Assignment",
-            "feature": "name",
+            "feature": "items",
+            "operator": "+=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@141"
+              },
+              "arguments": []
+            }
+          },
+          {
+            "$type": "Group",
+            "elements": [
+              {
+                "$type": "RuleCall",
+                "rule": {
+                  "$ref": "#/rules@84"
+                },
+                "arguments": []
+              },
+              {
+                "$type": "Assignment",
+                "feature": "items",
+                "operator": "+=",
+                "terminal": {
+                  "$type": "RuleCall",
+                  "rule": {
+                    "$ref": "#/rules@141"
+                  },
+                  "arguments": []
+                }
+              }
+            ],
+            "cardinality": "*"
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@103"
+            },
+            "arguments": []
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "ASTOffsetList",
+      "definition": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@102"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "Assignment",
+            "feature": "items",
+            "operator": "+=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@53"
+              },
+              "arguments": []
+            }
+          },
+          {
+            "$type": "Group",
+            "elements": [
+              {
+                "$type": "RuleCall",
+                "rule": {
+                  "$ref": "#/rules@84"
+                },
+                "arguments": []
+              },
+              {
+                "$type": "Assignment",
+                "feature": "items",
+                "operator": "+=",
+                "terminal": {
+                  "$type": "RuleCall",
+                  "rule": {
+                    "$ref": "#/rules@53"
+                  },
+                  "arguments": []
+                }
+              }
+            ],
+            "cardinality": "*"
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@103"
+            },
+            "arguments": []
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "ASTRange",
+      "definition": {
+        "$type": "Alternatives",
+        "elements": [
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@5"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@6"
+            },
+            "arguments": []
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "ASTIntegerRange",
+      "definition": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@104"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "Assignment",
+            "feature": "start",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@139"
+              },
+              "arguments": []
+            }
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@84"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "Assignment",
+            "feature": "end",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@139"
+              },
+              "arguments": []
+            }
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@105"
+            },
+            "arguments": []
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "ASTDoubleRange",
+      "definition": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@104"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "Assignment",
+            "feature": "start",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@140"
+              },
+              "arguments": []
+            }
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@84"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "Assignment",
+            "feature": "end",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@140"
+              },
+              "arguments": []
+            }
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@105"
+            },
+            "arguments": []
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "ASTDeclaration",
+      "definition": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "Alternatives",
+            "elements": [
+              {
+                "$type": "RuleCall",
+                "rule": {
+                  "$ref": "#/rules@8"
+                },
+                "arguments": []
+              },
+              {
+                "$type": "RuleCall",
+                "rule": {
+                  "$ref": "#/rules@9"
+                },
+                "arguments": []
+              }
+            ]
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@84"
+            },
+            "arguments": []
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "ASTListDeclaration",
+      "definition": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@106"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "Assignment",
+            "feature": "constant",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@137"
+              },
+              "arguments": []
+            }
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@88"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "Assignment",
+            "feature": "list",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@1"
+              },
+              "arguments": []
+            }
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "ASTRangeDeclaration",
+      "definition": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@106"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "Assignment",
+            "feature": "constant",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@137"
+              },
+              "arguments": []
+            }
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@88"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "Assignment",
+            "feature": "range",
             "operator": "=",
             "terminal": {
               "$type": "RuleCall",
@@ -85,36 +512,3067 @@ const FditscenarioGrammar = () => loadedFditscenarioGrammar !== null && loadedFd
     },
     {
       "$type": "ParserRule",
-      "name": "Greeting",
+      "name": "ASTInstruction",
+      "definition": {
+        "$type": "Alternatives",
+        "elements": [
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@11"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@12"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@13"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@14"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@15"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@16"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@17"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@18"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@19"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@20"
+            },
+            "arguments": []
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "ASTHide",
       "definition": {
         "$type": "Group",
         "elements": [
           {
-            "$type": "Keyword",
-            "value": "Hello"
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@113"
+            },
+            "arguments": []
           },
           {
             "$type": "Assignment",
-            "feature": "person",
+            "feature": "target",
             "operator": "=",
             "terminal": {
-              "$type": "CrossReference",
-              "type": {
-                "$ref": "#/rules@1"
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@23"
               },
-              "terminal": {
-                "$type": "RuleCall",
-                "rule": {
-                  "$ref": "#/rules@4"
-                },
-                "arguments": []
-              },
-              "deprecatedSyntax": false
+              "arguments": []
             }
           },
           {
-            "$type": "Keyword",
-            "value": "!"
+            "$type": "Assignment",
+            "feature": "timeScope",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@47"
+              },
+              "arguments": []
+            }
+          },
+          {
+            "$type": "Assignment",
+            "feature": "trigger",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@46"
+              },
+              "arguments": []
+            },
+            "cardinality": "?"
+          },
+          {
+            "$type": "Assignment",
+            "feature": "frequency",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@33"
+              },
+              "arguments": []
+            },
+            "cardinality": "?"
+          },
+          {
+            "$type": "Assignment",
+            "feature": "assertions",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@21"
+              },
+              "arguments": []
+            },
+            "cardinality": "?"
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "ASTCreate",
+      "definition": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@85"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "Assignment",
+            "feature": "timeScope",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@47"
+              },
+              "arguments": []
+            }
+          },
+          {
+            "$type": "Assignment",
+            "feature": "trajectory",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@29"
+              },
+              "arguments": []
+            }
+          },
+          {
+            "$type": "Assignment",
+            "feature": "parameters",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@44"
+              },
+              "arguments": []
+            },
+            "cardinality": "?"
+          },
+          {
+            "$type": "Assignment",
+            "feature": "assertions",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@21"
+              },
+              "arguments": []
+            },
+            "cardinality": "?"
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "ASTAlter",
+      "definition": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@73"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "Assignment",
+            "feature": "target",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@23"
+              },
+              "arguments": []
+            }
+          },
+          {
+            "$type": "Assignment",
+            "feature": "timeScope",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@47"
+              },
+              "arguments": []
+            }
+          },
+          {
+            "$type": "Assignment",
+            "feature": "trigger",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@46"
+              },
+              "arguments": []
+            },
+            "cardinality": "?"
+          },
+          {
+            "$type": "Assignment",
+            "feature": "parameters",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@31"
+              },
+              "arguments": []
+            }
+          },
+          {
+            "$type": "Assignment",
+            "feature": "assertions",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@21"
+              },
+              "arguments": []
+            },
+            "cardinality": "?"
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "ASTTrajectory",
+      "definition": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@73"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "Assignment",
+            "feature": "target",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@23"
+              },
+              "arguments": []
+            }
+          },
+          {
+            "$type": "Assignment",
+            "feature": "timeScope",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@47"
+              },
+              "arguments": []
+            }
+          },
+          {
+            "$type": "Assignment",
+            "feature": "trigger",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@46"
+              },
+              "arguments": []
+            },
+            "cardinality": "?"
+          },
+          {
+            "$type": "Assignment",
+            "feature": "trajectory",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@29"
+              },
+              "arguments": []
+            }
+          },
+          {
+            "$type": "Assignment",
+            "feature": "assertions",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@21"
+              },
+              "arguments": []
+            },
+            "cardinality": "?"
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "ASTAlterSpeed",
+      "definition": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@72"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "Assignment",
+            "feature": "target",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@23"
+              },
+              "arguments": []
+            }
+          },
+          {
+            "$type": "Assignment",
+            "feature": "timeScope",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@47"
+              },
+              "arguments": []
+            }
+          },
+          {
+            "$type": "Assignment",
+            "feature": "trigger",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@46"
+              },
+              "arguments": []
+            },
+            "cardinality": "?"
+          },
+          {
+            "$type": "Assignment",
+            "feature": "parameters",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@40"
+              },
+              "arguments": []
+            }
+          },
+          {
+            "$type": "Assignment",
+            "feature": "assertions",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@21"
+              },
+              "arguments": []
+            },
+            "cardinality": "?"
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "ASTSaturate",
+      "definition": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@122"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "Assignment",
+            "feature": "target",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@23"
+              },
+              "arguments": []
+            }
+          },
+          {
+            "$type": "Assignment",
+            "feature": "timeScope",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@47"
+              },
+              "arguments": []
+            }
+          },
+          {
+            "$type": "Assignment",
+            "feature": "trigger",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@46"
+              },
+              "arguments": []
+            },
+            "cardinality": "?"
+          },
+          {
+            "$type": "Assignment",
+            "feature": "parameters",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@42"
+              },
+              "arguments": []
+            }
+          },
+          {
+            "$type": "Assignment",
+            "feature": "assertions",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@21"
+              },
+              "arguments": []
+            },
+            "cardinality": "?"
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "ASTReplay",
+      "definition": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@114"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "Assignment",
+            "feature": "target",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@26"
+              },
+              "arguments": []
+            }
+          },
+          {
+            "$type": "Assignment",
+            "feature": "timeScope",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@47"
+              },
+              "arguments": []
+            }
+          },
+          {
+            "$type": "Assignment",
+            "feature": "parameters",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@31"
+              },
+              "arguments": []
+            },
+            "cardinality": "?"
+          },
+          {
+            "$type": "Assignment",
+            "feature": "assertions",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@21"
+              },
+              "arguments": []
+            },
+            "cardinality": "?"
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "ASTDelay",
+      "definition": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@115"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "Assignment",
+            "feature": "target",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@23"
+              },
+              "arguments": []
+            }
+          },
+          {
+            "$type": "Assignment",
+            "feature": "timeScope",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@47"
+              },
+              "arguments": []
+            }
+          },
+          {
+            "$type": "Assignment",
+            "feature": "delay",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@32"
+              },
+              "arguments": []
+            }
+          },
+          {
+            "$type": "Assignment",
+            "feature": "assertions",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@21"
+              },
+              "arguments": []
+            },
+            "cardinality": "?"
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "ASTRotate",
+      "definition": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@116"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "Assignment",
+            "feature": "target",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@23"
+              },
+              "arguments": []
+            }
+          },
+          {
+            "$type": "Assignment",
+            "feature": "timeScope",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@47"
+              },
+              "arguments": []
+            }
+          },
+          {
+            "$type": "Assignment",
+            "feature": "trigger",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@46"
+              },
+              "arguments": []
+            },
+            "cardinality": "?"
+          },
+          {
+            "$type": "Assignment",
+            "feature": "angle",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@34"
+              },
+              "arguments": []
+            }
+          },
+          {
+            "$type": "Assignment",
+            "feature": "assertions",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@21"
+              },
+              "arguments": []
+            },
+            "cardinality": "?"
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "ASTCut",
+      "definition": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@79"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "Assignment",
+            "feature": "target",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@23"
+              },
+              "arguments": []
+            }
+          },
+          {
+            "$type": "Assignment",
+            "feature": "timeScope",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@47"
+              },
+              "arguments": []
+            }
+          },
+          {
+            "$type": "Assignment",
+            "feature": "trigger",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@46"
+              },
+              "arguments": []
+            },
+            "cardinality": "?"
+          },
+          {
+            "$type": "Assignment",
+            "feature": "assertions",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@21"
+              },
+              "arguments": []
+            },
+            "cardinality": "?"
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "ASTAssertions",
+      "definition": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "Assignment",
+            "feature": "items",
+            "operator": "+=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@22"
+              },
+              "arguments": []
+            }
+          },
+          {
+            "$type": "Group",
+            "elements": [
+              {
+                "$type": "RuleCall",
+                "rule": {
+                  "$ref": "#/rules@75"
+                },
+                "arguments": []
+              },
+              {
+                "$type": "Assignment",
+                "feature": "items",
+                "operator": "+=",
+                "terminal": {
+                  "$type": "RuleCall",
+                  "rule": {
+                    "$ref": "#/rules@22"
+                  },
+                  "arguments": []
+                }
+              }
+            ],
+            "cardinality": "*"
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "ASTAssertion",
+      "definition": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@76"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "Assignment",
+            "feature": "timeScope",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@47"
+              },
+              "arguments": []
+            }
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@133"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "Assignment",
+            "feature": "file",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@141"
+              },
+              "arguments": []
+            }
+          },
+          {
+            "$type": "Group",
+            "elements": [
+              {
+                "$type": "RuleCall",
+                "rule": {
+                  "$ref": "#/rules@134"
+                },
+                "arguments": []
+              },
+              {
+                "$type": "Assignment",
+                "feature": "filter",
+                "operator": "=",
+                "terminal": {
+                  "$type": "RuleCall",
+                  "rule": {
+                    "$ref": "#/rules@141"
+                  },
+                  "arguments": []
+                }
+              }
+            ],
+            "cardinality": "?"
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "ASTTarget",
+      "definition": {
+        "$type": "Alternatives",
+        "elements": [
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@24"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@25"
+            },
+            "arguments": []
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "ASTPlane",
+      "definition": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@120"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "Assignment",
+            "feature": "filters",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@52"
+              },
+              "arguments": []
+            }
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "ASTAllPlanes",
+      "definition": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@70"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "Assignment",
+            "feature": "filters",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@52"
+              },
+              "arguments": []
+            },
+            "cardinality": "?"
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "ASTReplayTarget",
+      "definition": {
+        "$type": "Alternatives",
+        "elements": [
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@27"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@28"
+            },
+            "arguments": []
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "ASTPlaneFrom",
+      "definition": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@120"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "Assignment",
+            "feature": "filters",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@52"
+              },
+              "arguments": []
+            }
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@97"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "Assignment",
+            "feature": "recording",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@60"
+              },
+              "arguments": []
+            }
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "ASTAllPlaneFrom",
+      "definition": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@70"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "Assignment",
+            "feature": "filters",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@52"
+              },
+              "arguments": []
+            },
+            "cardinality": "?"
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@97"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "Assignment",
+            "feature": "recording",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@60"
+              },
+              "arguments": []
+            }
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "ASTWayPoints",
+      "definition": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@132"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@104"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "Assignment",
+            "feature": "waypoints",
+            "operator": "+=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@30"
+              },
+              "arguments": []
+            }
+          },
+          {
+            "$type": "Group",
+            "elements": [
+              {
+                "$type": "RuleCall",
+                "rule": {
+                  "$ref": "#/rules@84"
+                },
+                "arguments": []
+              },
+              {
+                "$type": "Assignment",
+                "feature": "waypoints",
+                "operator": "+=",
+                "terminal": {
+                  "$type": "RuleCall",
+                  "rule": {
+                    "$ref": "#/rules@30"
+                  },
+                  "arguments": []
+                }
+              }
+            ],
+            "cardinality": "*"
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@105"
+            },
+            "arguments": []
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "ASTWayPoint",
+      "definition": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@100"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "Assignment",
+            "feature": "latitude",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@60"
+              },
+              "arguments": []
+            }
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@84"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "Assignment",
+            "feature": "longitude",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@60"
+              },
+              "arguments": []
+            }
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@101"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@131"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "Assignment",
+            "feature": "altitude",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@60"
+              },
+              "arguments": []
+            }
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@77"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "Assignment",
+            "feature": "time",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@51"
+              },
+              "arguments": []
+            }
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "ASTParameters",
+      "definition": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@130"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "Assignment",
+            "feature": "items",
+            "operator": "+=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@35"
+              },
+              "arguments": []
+            }
+          },
+          {
+            "$type": "Group",
+            "elements": [
+              {
+                "$type": "RuleCall",
+                "rule": {
+                  "$ref": "#/rules@75"
+                },
+                "arguments": []
+              },
+              {
+                "$type": "Assignment",
+                "feature": "items",
+                "operator": "+=",
+                "terminal": {
+                  "$type": "RuleCall",
+                  "rule": {
+                    "$ref": "#/rules@35"
+                  },
+                  "arguments": []
+                }
+              }
+            ],
+            "cardinality": "*"
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "ASTDelayParameter",
+      "definition": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@117"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "Assignment",
+            "feature": "value",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@51"
+              },
+              "arguments": []
+            }
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "ASTHideParameter",
+      "definition": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@118"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "Assignment",
+            "feature": "value",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@60"
+              },
+              "arguments": []
+            }
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "ASTRotateParameter",
+      "definition": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@119"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "Assignment",
+            "feature": "value",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@60"
+              },
+              "arguments": []
+            }
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "ASTParameter",
+      "definition": {
+        "$type": "Alternatives",
+        "elements": [
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@36"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@37"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@38"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@39"
+            },
+            "arguments": []
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "ASTParamEdit",
+      "definition": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "Assignment",
+            "feature": "name",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@67"
+              },
+              "arguments": []
+            }
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@88"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "Assignment",
+            "feature": "value",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@60"
+              },
+              "arguments": []
+            }
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "ASTParamOffset",
+      "definition": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "Assignment",
+            "feature": "name",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@67"
+              },
+              "arguments": []
+            }
+          },
+          {
+            "$type": "Assignment",
+            "feature": "offset_op",
+            "operator": "=",
+            "terminal": {
+              "$type": "Alternatives",
+              "elements": [
+                {
+                  "$type": "RuleCall",
+                  "rule": {
+                    "$ref": "#/rules@90"
+                  },
+                  "arguments": []
+                },
+                {
+                  "$type": "RuleCall",
+                  "rule": {
+                    "$ref": "#/rules@91"
+                  },
+                  "arguments": []
+                }
+              ]
+            }
+          },
+          {
+            "$type": "Assignment",
+            "feature": "value",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@60"
+              },
+              "arguments": []
+            }
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "ASTParamNoise",
+      "definition": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "Assignment",
+            "feature": "name",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@67"
+              },
+              "arguments": []
+            }
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@89"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "Assignment",
+            "feature": "value",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@60"
+              },
+              "arguments": []
+            }
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "ASTParamDrift",
+      "definition": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "Assignment",
+            "feature": "name",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@67"
+              },
+              "arguments": []
+            }
+          },
+          {
+            "$type": "Assignment",
+            "feature": "drift_op",
+            "operator": "=",
+            "terminal": {
+              "$type": "Alternatives",
+              "elements": [
+                {
+                  "$type": "RuleCall",
+                  "rule": {
+                    "$ref": "#/rules@92"
+                  },
+                  "arguments": []
+                },
+                {
+                  "$type": "RuleCall",
+                  "rule": {
+                    "$ref": "#/rules@93"
+                  },
+                  "arguments": []
+                }
+              ]
+            }
+          },
+          {
+            "$type": "Assignment",
+            "feature": "value",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@60"
+              },
+              "arguments": []
+            }
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "ASTSpeedParameters",
+      "definition": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@130"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "Assignment",
+            "feature": "items",
+            "operator": "+=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@41"
+              },
+              "arguments": []
+            }
+          },
+          {
+            "$type": "Group",
+            "elements": [
+              {
+                "$type": "RuleCall",
+                "rule": {
+                  "$ref": "#/rules@75"
+                },
+                "arguments": []
+              },
+              {
+                "$type": "Assignment",
+                "feature": "items",
+                "operator": "+=",
+                "terminal": {
+                  "$type": "RuleCall",
+                  "rule": {
+                    "$ref": "#/rules@41"
+                  },
+                  "arguments": []
+                }
+              }
+            ],
+            "cardinality": "?"
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "ASTSpeedParameter",
+      "definition": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "Assignment",
+            "feature": "name",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@66"
+              },
+              "arguments": []
+            }
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@88"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "Assignment",
+            "feature": "value",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@60"
+              },
+              "arguments": []
+            }
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "ASTSaturationParameters",
+      "definition": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@130"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "Assignment",
+            "feature": "items",
+            "operator": "+=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@43"
+              },
+              "arguments": []
+            }
+          },
+          {
+            "$type": "Group",
+            "elements": [
+              {
+                "$type": "RuleCall",
+                "rule": {
+                  "$ref": "#/rules@75"
+                },
+                "arguments": []
+              },
+              {
+                "$type": "Assignment",
+                "feature": "items",
+                "operator": "+=",
+                "terminal": {
+                  "$type": "RuleCall",
+                  "rule": {
+                    "$ref": "#/rules@43"
+                  },
+                  "arguments": []
+                }
+              }
+            ],
+            "cardinality": "*"
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "ASTSaturationParameter",
+      "definition": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "Assignment",
+            "feature": "name",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@64"
+              },
+              "arguments": []
+            }
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@88"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "Assignment",
+            "feature": "value",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@60"
+              },
+              "arguments": []
+            }
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "ASTCreationParameters",
+      "definition": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@130"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "Assignment",
+            "feature": "items",
+            "operator": "+=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@45"
+              },
+              "arguments": []
+            }
+          },
+          {
+            "$type": "Group",
+            "elements": [
+              {
+                "$type": "RuleCall",
+                "rule": {
+                  "$ref": "#/rules@75"
+                },
+                "arguments": []
+              },
+              {
+                "$type": "Assignment",
+                "feature": "items",
+                "operator": "+=",
+                "terminal": {
+                  "$type": "RuleCall",
+                  "rule": {
+                    "$ref": "#/rules@45"
+                  },
+                  "arguments": []
+                }
+              }
+            ],
+            "cardinality": "*"
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "ASTCreationParameter",
+      "definition": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "Assignment",
+            "feature": "name",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@65"
+              },
+              "arguments": []
+            }
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@88"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "Assignment",
+            "feature": "value",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@60"
+              },
+              "arguments": []
+            }
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "ASTTrigger",
+      "definition": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@124"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "Assignment",
+            "feature": "triggername",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@60"
+              },
+              "arguments": []
+            }
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "ASTTimeScope",
+      "definition": {
+        "$type": "Alternatives",
+        "elements": [
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@48"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@49"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@50"
+            },
+            "arguments": []
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "ASTAt",
+      "definition": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@77"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "Assignment",
+            "feature": "time",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@51"
+              },
+              "arguments": []
+            }
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "ASTWindow",
+      "definition": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@98"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "Assignment",
+            "feature": "start",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@51"
+              },
+              "arguments": []
+            }
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@127"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "Assignment",
+            "feature": "end",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@51"
+              },
+              "arguments": []
+            }
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "ASTAtFor",
+      "definition": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@77"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "Assignment",
+            "feature": "time",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@51"
+              },
+              "arguments": []
+            }
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@96"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "Assignment",
+            "feature": "for",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@51"
+              },
+              "arguments": []
+            }
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "ASTTime",
+      "definition": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "Assignment",
+            "feature": "realTime",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@60"
+              },
+              "arguments": []
+            }
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@125"
+            },
+            "arguments": []
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "ASTFilters",
+      "definition": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@123"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "Assignment",
+            "feature": "filters",
+            "operator": "+=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@60"
+              },
+              "arguments": []
+            }
+          },
+          {
+            "$type": "Group",
+            "elements": [
+              {
+                "$type": "RuleCall",
+                "rule": {
+                  "$ref": "#/rules@75"
+                },
+                "arguments": []
+              },
+              {
+                "$type": "Assignment",
+                "feature": "filters",
+                "operator": "+=",
+                "terminal": {
+                  "$type": "RuleCall",
+                  "rule": {
+                    "$ref": "#/rules@60"
+                  },
+                  "arguments": []
+                }
+              }
+            ],
+            "cardinality": "*"
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "ASTNumberOffset",
+      "definition": {
+        "$type": "Alternatives",
+        "elements": [
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@56"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@54"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@55"
+            },
+            "arguments": []
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "ASTLeftShift",
+      "definition": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@94"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "Assignment",
+            "feature": "content",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@56"
+              },
+              "arguments": []
+            }
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "ASTRightShift",
+      "definition": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@95"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "Assignment",
+            "feature": "content",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@56"
+              },
+              "arguments": []
+            }
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "ASTNumber",
+      "definition": {
+        "$type": "Alternatives",
+        "elements": [
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@57"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@58"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@59"
+            },
+            "arguments": []
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "ASTIntegerValue",
+      "definition": {
+        "$type": "Assignment",
+        "feature": "content",
+        "operator": "=",
+        "terminal": {
+          "$type": "RuleCall",
+          "rule": {
+            "$ref": "#/rules@139"
+          },
+          "arguments": []
+        }
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "ASTDoubleValue",
+      "definition": {
+        "$type": "Assignment",
+        "feature": "content",
+        "operator": "=",
+        "terminal": {
+          "$type": "RuleCall",
+          "rule": {
+            "$ref": "#/rules@140"
+          },
+          "arguments": []
+        }
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "ASTRecordingValue",
+      "definition": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "Assignment",
+            "feature": "ratio",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@140"
+              },
+              "arguments": []
+            }
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@111"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "Assignment",
+            "feature": "content",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@68"
+              },
+              "arguments": []
+            }
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "ASTValue",
+      "definition": {
+        "$type": "Alternatives",
+        "elements": [
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@61"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@53"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@62"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@63"
+            },
+            "arguments": []
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "ASTStringValue",
+      "definition": {
+        "$type": "Assignment",
+        "feature": "content",
+        "operator": "=",
+        "terminal": {
+          "$type": "RuleCall",
+          "rule": {
+            "$ref": "#/rules@141"
+          },
+          "arguments": []
+        }
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "ASTVariableValue",
+      "definition": {
+        "$type": "Assignment",
+        "feature": "content",
+        "operator": "=",
+        "terminal": {
+          "$type": "RuleCall",
+          "rule": {
+            "$ref": "#/rules@138"
+          },
+          "arguments": []
+        }
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "ASTConstantValue",
+      "definition": {
+        "$type": "Assignment",
+        "feature": "content",
+        "operator": "=",
+        "terminal": {
+          "$type": "RuleCall",
+          "rule": {
+            "$ref": "#/rules@137"
+          },
+          "arguments": []
+        }
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "ASTSaturationParameterType",
+      "definition": {
+        "$type": "Alternatives",
+        "elements": [
+          {
+            "$type": "Assignment",
+            "feature": "ICAO",
+            "operator": "=",
+            "terminal": {
+              "$type": "Keyword",
+              "value": "ICAO"
+            }
+          },
+          {
+            "$type": "Assignment",
+            "feature": "AIRCRAFT_NUMBER",
+            "operator": "=",
+            "terminal": {
+              "$type": "Keyword",
+              "value": "NUMBER"
+            }
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "ASTCreationParameterType",
+      "definition": {
+        "$type": "Alternatives",
+        "elements": [
+          {
+            "$type": "Assignment",
+            "feature": "ICAO",
+            "operator": "=",
+            "terminal": {
+              "$type": "Keyword",
+              "value": "ICAO"
+            }
+          },
+          {
+            "$type": "Assignment",
+            "feature": "CALLSIGN",
+            "operator": "=",
+            "terminal": {
+              "$type": "Keyword",
+              "value": "CALLSIGN"
+            }
+          },
+          {
+            "$type": "Assignment",
+            "feature": "SQUAWK",
+            "operator": "=",
+            "terminal": {
+              "$type": "Keyword",
+              "value": "SQUAWK"
+            }
+          },
+          {
+            "$type": "Assignment",
+            "feature": "EMERGENCY",
+            "operator": "=",
+            "terminal": {
+              "$type": "Keyword",
+              "value": "EMERGENCY"
+            }
+          },
+          {
+            "$type": "Assignment",
+            "feature": "ALERT",
+            "operator": "=",
+            "terminal": {
+              "$type": "Keyword",
+              "value": "ALERT"
+            }
+          },
+          {
+            "$type": "Assignment",
+            "feature": "SPI",
+            "operator": "=",
+            "terminal": {
+              "$type": "Keyword",
+              "value": "SPI"
+            }
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "ASTSpeedParameterType",
+      "definition": {
+        "$type": "Alternatives",
+        "elements": [
+          {
+            "$type": "Assignment",
+            "feature": "EAST_WEST_VELOCITY",
+            "operator": "=",
+            "terminal": {
+              "$type": "Keyword",
+              "value": "EAST_WEST_VELOCITY"
+            }
+          },
+          {
+            "$type": "Assignment",
+            "feature": "NORTH_SOUTH_VELOCITY",
+            "operator": "=",
+            "terminal": {
+              "$type": "Keyword",
+              "value": "NORTH_SOUTH_VELOCITY"
+            }
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "ASTParameterType",
+      "definition": {
+        "$type": "Alternatives",
+        "elements": [
+          {
+            "$type": "Assignment",
+            "feature": "ALTITUDE",
+            "operator": "=",
+            "terminal": {
+              "$type": "Keyword",
+              "value": "ALTITUDE"
+            }
+          },
+          {
+            "$type": "Assignment",
+            "feature": "CALLSIGN",
+            "operator": "=",
+            "terminal": {
+              "$type": "Keyword",
+              "value": "CALLSIGN"
+            }
+          },
+          {
+            "$type": "Assignment",
+            "feature": "EMERGENCY",
+            "operator": "=",
+            "terminal": {
+              "$type": "Keyword",
+              "value": "EMERGENCY"
+            }
+          },
+          {
+            "$type": "Assignment",
+            "feature": "GROUND_SPEED",
+            "operator": "=",
+            "terminal": {
+              "$type": "Keyword",
+              "value": "GROUNDSPEED"
+            }
+          },
+          {
+            "$type": "Assignment",
+            "feature": "ICAO",
+            "operator": "=",
+            "terminal": {
+              "$type": "Keyword",
+              "value": "ICAO"
+            }
+          },
+          {
+            "$type": "Assignment",
+            "feature": "LATITUDE",
+            "operator": "=",
+            "terminal": {
+              "$type": "Keyword",
+              "value": "LATITUDE"
+            }
+          },
+          {
+            "$type": "Assignment",
+            "feature": "LONGITUDE",
+            "operator": "=",
+            "terminal": {
+              "$type": "Keyword",
+              "value": "LONGITUDE"
+            }
+          },
+          {
+            "$type": "Assignment",
+            "feature": "SPI",
+            "operator": "=",
+            "terminal": {
+              "$type": "Keyword",
+              "value": "SPI"
+            }
+          },
+          {
+            "$type": "Assignment",
+            "feature": "SQUAWK",
+            "operator": "=",
+            "terminal": {
+              "$type": "Keyword",
+              "value": "SQUAWK"
+            }
+          },
+          {
+            "$type": "Assignment",
+            "feature": "TRACK",
+            "operator": "=",
+            "terminal": {
+              "$type": "Keyword",
+              "value": "TRACK"
+            }
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "ASTRecordingParameterType",
+      "definition": {
+        "$type": "Alternatives",
+        "elements": [
+          {
+            "$type": "Assignment",
+            "feature": "REC_DURATION",
+            "operator": "=",
+            "terminal": {
+              "$type": "Keyword",
+              "value": "REC_DURATION"
+            }
+          },
+          {
+            "$type": "Assignment",
+            "feature": "ALT_DURATION",
+            "operator": "=",
+            "terminal": {
+              "$type": "Keyword",
+              "value": "ALT_DURATION"
+            }
+          },
+          {
+            "$type": "Assignment",
+            "feature": "REC_NBR_AIRCRAFT",
+            "operator": "=",
+            "terminal": {
+              "$type": "Keyword",
+              "value": "REC_NBR_AIRCRAFT"
+            }
           }
         ]
       },
@@ -127,8 +3585,1326 @@ const FditscenarioGrammar = () => loadedFditscenarioGrammar !== null && loadedFd
     },
     {
       "$type": "TerminalRule",
+      "name": "T_AREA",
+      "definition": {
+        "$type": "CharacterRange",
+        "left": {
+          "$type": "Keyword",
+          "value": "area"
+        }
+      },
+      "fragment": false,
+      "hidden": false
+    },
+    {
+      "$type": "TerminalRule",
+      "name": "T_ALL_PLANES",
+      "definition": {
+        "$type": "CharacterRange",
+        "left": {
+          "$type": "Keyword",
+          "value": "all_planes"
+        }
+      },
+      "fragment": false,
+      "hidden": false
+    },
+    {
+      "$type": "TerminalRule",
+      "name": "T_PLANES",
+      "definition": {
+        "$type": "CharacterRange",
+        "left": {
+          "$type": "Keyword",
+          "value": "planes"
+        }
+      },
+      "fragment": false,
+      "hidden": false
+    },
+    {
+      "$type": "TerminalRule",
+      "name": "T_ALTER_SPEED",
+      "definition": {
+        "$type": "CharacterRange",
+        "left": {
+          "$type": "Keyword",
+          "value": "alter_speed"
+        }
+      },
+      "fragment": false,
+      "hidden": false
+    },
+    {
+      "$type": "TerminalRule",
+      "name": "T_ALTER",
+      "definition": {
+        "$type": "CharacterRange",
+        "left": {
+          "$type": "Keyword",
+          "value": "alter"
+        }
+      },
+      "fragment": false,
+      "hidden": false
+    },
+    {
+      "$type": "TerminalRule",
+      "name": "T_ALTITUDE",
+      "definition": {
+        "$type": "CharacterRange",
+        "left": {
+          "$type": "Keyword",
+          "value": "altitude"
+        }
+      },
+      "fragment": false,
+      "hidden": false
+    },
+    {
+      "$type": "TerminalRule",
+      "name": "T_AND",
+      "definition": {
+        "$type": "CharacterRange",
+        "left": {
+          "$type": "Keyword",
+          "value": "and"
+        }
+      },
+      "fragment": false,
+      "hidden": false
+    },
+    {
+      "$type": "TerminalRule",
+      "name": "T_ASSERT",
+      "definition": {
+        "$type": "CharacterRange",
+        "left": {
+          "$type": "Keyword",
+          "value": "assert"
+        }
+      },
+      "fragment": false,
+      "hidden": false
+    },
+    {
+      "$type": "TerminalRule",
+      "name": "T_AT",
+      "definition": {
+        "$type": "CharacterRange",
+        "left": {
+          "$type": "Keyword",
+          "value": "at"
+        }
+      },
+      "fragment": false,
+      "hidden": false
+    },
+    {
+      "$type": "TerminalRule",
+      "name": "T_CIRCLE",
+      "definition": {
+        "$type": "CharacterRange",
+        "left": {
+          "$type": "Keyword",
+          "value": "circle"
+        }
+      },
+      "fragment": false,
+      "hidden": false
+    },
+    {
+      "$type": "TerminalRule",
+      "name": "T_CUT",
+      "definition": {
+        "$type": "CharacterRange",
+        "left": {
+          "$type": "Keyword",
+          "value": "cut"
+        }
+      },
+      "fragment": false,
+      "hidden": false
+    },
+    {
+      "$type": "TerminalRule",
+      "name": "T_DO",
+      "definition": {
+        "$type": "CharacterRange",
+        "left": {
+          "$type": "Keyword",
+          "value": "do"
+        }
+      },
+      "fragment": false,
+      "hidden": false
+    },
+    {
+      "$type": "TerminalRule",
+      "name": "T_EACH",
+      "definition": {
+        "$type": "CharacterRange",
+        "left": {
+          "$type": "Keyword",
+          "value": "each"
+        }
+      },
+      "fragment": false,
+      "hidden": false
+    },
+    {
+      "$type": "TerminalRule",
+      "name": "T_POLYGON",
+      "definition": {
+        "$type": "CharacterRange",
+        "left": {
+          "$type": "Keyword",
+          "value": "polygon"
+        }
+      },
+      "fragment": false,
+      "hidden": false
+    },
+    {
+      "$type": "TerminalRule",
+      "name": "T_CENTERED",
+      "definition": {
+        "$type": "CharacterRange",
+        "left": {
+          "$type": "Keyword",
+          "value": "centered"
+        }
+      },
+      "fragment": false,
+      "hidden": false
+    },
+    {
+      "$type": "TerminalRule",
+      "name": "T_COMMA",
+      "definition": {
+        "$type": "CharacterRange",
+        "left": {
+          "$type": "Keyword",
+          "value": ","
+        }
+      },
+      "fragment": false,
+      "hidden": false
+    },
+    {
+      "$type": "TerminalRule",
+      "name": "T_CREATE",
+      "definition": {
+        "$type": "CharacterRange",
+        "left": {
+          "$type": "Keyword",
+          "value": "create"
+        }
+      },
+      "fragment": false,
+      "hidden": false
+    },
+    {
+      "$type": "TerminalRule",
+      "name": "T_DOT",
+      "definition": {
+        "$type": "CharacterRange",
+        "left": {
+          "$type": "Keyword",
+          "value": "."
+        }
+      },
+      "fragment": false,
+      "hidden": false
+    },
+    {
+      "$type": "TerminalRule",
+      "name": "T_DIFFERENT",
+      "definition": {
+        "$type": "CharacterRange",
+        "left": {
+          "$type": "Keyword",
+          "value": "<>"
+        }
+      },
+      "fragment": false,
+      "hidden": false
+    },
+    {
+      "$type": "TerminalRule",
+      "name": "T_EQUAL",
+      "definition": {
+        "$type": "CharacterRange",
+        "left": {
+          "$type": "Keyword",
+          "value": "="
+        }
+      },
+      "fragment": false,
+      "hidden": false
+    },
+    {
+      "$type": "TerminalRule",
+      "name": "T_MULEQUAL",
+      "definition": {
+        "$type": "CharacterRange",
+        "left": {
+          "$type": "Keyword",
+          "value": "*="
+        }
+      },
+      "fragment": false,
+      "hidden": false
+    },
+    {
+      "$type": "TerminalRule",
+      "name": "T_PLUSEQUAL",
+      "definition": {
+        "$type": "CharacterRange",
+        "left": {
+          "$type": "Keyword",
+          "value": "+="
+        }
+      },
+      "fragment": false,
+      "hidden": false
+    },
+    {
+      "$type": "TerminalRule",
+      "name": "T_MINUSEQUAL",
+      "definition": {
+        "$type": "CharacterRange",
+        "left": {
+          "$type": "Keyword",
+          "value": "-="
+        }
+      },
+      "fragment": false,
+      "hidden": false
+    },
+    {
+      "$type": "TerminalRule",
+      "name": "T_PLUSPLUSEQUAL",
+      "definition": {
+        "$type": "CharacterRange",
+        "left": {
+          "$type": "Keyword",
+          "value": "++="
+        }
+      },
+      "fragment": false,
+      "hidden": false
+    },
+    {
+      "$type": "TerminalRule",
+      "name": "T_MINUSMINUSEQUAL",
+      "definition": {
+        "$type": "CharacterRange",
+        "left": {
+          "$type": "Keyword",
+          "value": "--="
+        }
+      },
+      "fragment": false,
+      "hidden": false
+    },
+    {
+      "$type": "TerminalRule",
+      "name": "T_LEFTSHIT",
+      "definition": {
+        "$type": "CharacterRange",
+        "left": {
+          "$type": "Keyword",
+          "value": "<<"
+        }
+      },
+      "fragment": false,
+      "hidden": false
+    },
+    {
+      "$type": "TerminalRule",
+      "name": "T_RIGHTSHIT",
+      "definition": {
+        "$type": "CharacterRange",
+        "left": {
+          "$type": "Keyword",
+          "value": ">>"
+        }
+      },
+      "fragment": false,
+      "hidden": false
+    },
+    {
+      "$type": "TerminalRule",
+      "name": "T_FOR",
+      "definition": {
+        "$type": "CharacterRange",
+        "left": {
+          "$type": "Keyword",
+          "value": "for"
+        }
+      },
+      "fragment": false,
+      "hidden": false
+    },
+    {
+      "$type": "TerminalRule",
+      "name": "T_FROM_RECORDING",
+      "definition": {
+        "$type": "CharacterRange",
+        "left": {
+          "$type": "Keyword",
+          "value": "from_recording"
+        }
+      },
+      "fragment": false,
+      "hidden": false
+    },
+    {
+      "$type": "TerminalRule",
+      "name": "T_FROM",
+      "definition": {
+        "$type": "CharacterRange",
+        "left": {
+          "$type": "Keyword",
+          "value": "from"
+        }
+      },
+      "fragment": false,
+      "hidden": false
+    },
+    {
+      "$type": "TerminalRule",
+      "name": "T_GLOBAL",
+      "definition": {
+        "$type": "CharacterRange",
+        "left": {
+          "$type": "Keyword",
+          "value": "global"
+        }
+      },
+      "fragment": false,
+      "hidden": false
+    },
+    {
+      "$type": "TerminalRule",
+      "name": "T_OPEN_PAR",
+      "definition": {
+        "$type": "CharacterRange",
+        "left": {
+          "$type": "Keyword",
+          "value": "("
+        }
+      },
+      "fragment": false,
+      "hidden": false
+    },
+    {
+      "$type": "TerminalRule",
+      "name": "T_CLOSE_PAR",
+      "definition": {
+        "$type": "CharacterRange",
+        "left": {
+          "$type": "Keyword",
+          "value": ")"
+        }
+      },
+      "fragment": false,
+      "hidden": false
+    },
+    {
+      "$type": "TerminalRule",
+      "name": "T_OPEN_BRACE",
+      "definition": {
+        "$type": "CharacterRange",
+        "left": {
+          "$type": "Keyword",
+          "value": "{"
+        }
+      },
+      "fragment": false,
+      "hidden": false
+    },
+    {
+      "$type": "TerminalRule",
+      "name": "T_CLOSE_BRACE",
+      "definition": {
+        "$type": "CharacterRange",
+        "left": {
+          "$type": "Keyword",
+          "value": "}"
+        }
+      },
+      "fragment": false,
+      "hidden": false
+    },
+    {
+      "$type": "TerminalRule",
+      "name": "T_OPEN_SBRACE",
+      "definition": {
+        "$type": "CharacterRange",
+        "left": {
+          "$type": "Keyword",
+          "value": "["
+        }
+      },
+      "fragment": false,
+      "hidden": false
+    },
+    {
+      "$type": "TerminalRule",
+      "name": "T_CLOSE_SBRACE",
+      "definition": {
+        "$type": "CharacterRange",
+        "left": {
+          "$type": "Keyword",
+          "value": "]"
+        }
+      },
+      "fragment": false,
+      "hidden": false
+    },
+    {
+      "$type": "TerminalRule",
+      "name": "T_LET",
+      "definition": {
+        "$type": "CharacterRange",
+        "left": {
+          "$type": "Keyword",
+          "value": "let"
+        }
+      },
+      "fragment": false,
+      "hidden": false
+    },
+    {
+      "$type": "TerminalRule",
+      "name": "T_LT",
+      "definition": {
+        "$type": "CharacterRange",
+        "left": {
+          "$type": "Keyword",
+          "value": "<"
+        }
+      },
+      "fragment": false,
+      "hidden": false
+    },
+    {
+      "$type": "TerminalRule",
+      "name": "T_GT",
+      "definition": {
+        "$type": "CharacterRange",
+        "left": {
+          "$type": "Keyword",
+          "value": ">"
+        }
+      },
+      "fragment": false,
+      "hidden": false
+    },
+    {
+      "$type": "TerminalRule",
+      "name": "T_LTE",
+      "definition": {
+        "$type": "CharacterRange",
+        "left": {
+          "$type": "Keyword",
+          "value": "<="
+        }
+      },
+      "fragment": false,
+      "hidden": false
+    },
+    {
+      "$type": "TerminalRule",
+      "name": "T_GTE",
+      "definition": {
+        "$type": "CharacterRange",
+        "left": {
+          "$type": "Keyword",
+          "value": ">="
+        }
+      },
+      "fragment": false,
+      "hidden": false
+    },
+    {
+      "$type": "TerminalRule",
+      "name": "T_MUL",
+      "definition": {
+        "$type": "CharacterRange",
+        "left": {
+          "$type": "Keyword",
+          "value": "*"
+        }
+      },
+      "fragment": false,
+      "hidden": false
+    },
+    {
+      "$type": "TerminalRule",
+      "name": "T_IN",
+      "definition": {
+        "$type": "CharacterRange",
+        "left": {
+          "$type": "Keyword",
+          "value": "in"
+        }
+      },
+      "fragment": false,
+      "hidden": false
+    },
+    {
+      "$type": "TerminalRule",
+      "name": "T_HIDE",
+      "definition": {
+        "$type": "CharacterRange",
+        "left": {
+          "$type": "Keyword",
+          "value": "hide"
+        }
+      },
+      "fragment": false,
+      "hidden": false
+    },
+    {
+      "$type": "TerminalRule",
+      "name": "T_REPLAY",
+      "definition": {
+        "$type": "CharacterRange",
+        "left": {
+          "$type": "Keyword",
+          "value": "replay"
+        }
+      },
+      "fragment": false,
+      "hidden": false
+    },
+    {
+      "$type": "TerminalRule",
+      "name": "T_DELAY",
+      "definition": {
+        "$type": "CharacterRange",
+        "left": {
+          "$type": "Keyword",
+          "value": "delay"
+        }
+      },
+      "fragment": false,
+      "hidden": false
+    },
+    {
+      "$type": "TerminalRule",
+      "name": "T_ROTATE",
+      "definition": {
+        "$type": "CharacterRange",
+        "left": {
+          "$type": "Keyword",
+          "value": "rotate"
+        }
+      },
+      "fragment": false,
+      "hidden": false
+    },
+    {
+      "$type": "TerminalRule",
+      "name": "T_WITH_DELAY",
+      "definition": {
+        "$type": "CharacterRange",
+        "left": {
+          "$type": "Keyword",
+          "value": "with_delay"
+        }
+      },
+      "fragment": false,
+      "hidden": false
+    },
+    {
+      "$type": "TerminalRule",
+      "name": "T_WITH_FREQUENCY",
+      "definition": {
+        "$type": "CharacterRange",
+        "left": {
+          "$type": "Keyword",
+          "value": "with_frequency"
+        }
+      },
+      "fragment": false,
+      "hidden": false
+    },
+    {
+      "$type": "TerminalRule",
+      "name": "T_WITH_ANGLE",
+      "definition": {
+        "$type": "CharacterRange",
+        "left": {
+          "$type": "Keyword",
+          "value": "with_angle"
+        }
+      },
+      "fragment": false,
+      "hidden": false
+    },
+    {
+      "$type": "TerminalRule",
+      "name": "T_PLANE",
+      "definition": {
+        "$type": "CharacterRange",
+        "left": {
+          "$type": "Keyword",
+          "value": "plane"
+        }
+      },
+      "fragment": false,
+      "hidden": false
+    },
+    {
+      "$type": "TerminalRule",
+      "name": "T_RADIUS",
+      "definition": {
+        "$type": "CharacterRange",
+        "left": {
+          "$type": "Keyword",
+          "value": "radius"
+        }
+      },
+      "fragment": false,
+      "hidden": false
+    },
+    {
+      "$type": "TerminalRule",
+      "name": "T_SATURATE",
+      "definition": {
+        "$type": "CharacterRange",
+        "left": {
+          "$type": "Keyword",
+          "value": "saturate"
+        }
+      },
+      "fragment": false,
+      "hidden": false
+    },
+    {
+      "$type": "TerminalRule",
+      "name": "T_SATISFYING",
+      "definition": {
+        "$type": "CharacterRange",
+        "left": {
+          "$type": "Keyword",
+          "value": "satisfying"
+        }
+      },
+      "fragment": false,
+      "hidden": false
+    },
+    {
+      "$type": "TerminalRule",
+      "name": "T_TRIGGERED_BY",
+      "definition": {
+        "$type": "CharacterRange",
+        "left": {
+          "$type": "Keyword",
+          "value": "triggered_by"
+        }
+      },
+      "fragment": false,
+      "hidden": false
+    },
+    {
+      "$type": "TerminalRule",
+      "name": "T_SECONDS",
+      "definition": {
+        "$type": "CharacterRange",
+        "left": {
+          "$type": "Keyword",
+          "value": "seconds"
+        }
+      },
+      "fragment": false,
+      "hidden": false
+    },
+    {
+      "$type": "TerminalRule",
+      "name": "T_TO",
+      "definition": {
+        "$type": "CharacterRange",
+        "left": {
+          "$type": "Keyword",
+          "value": "to"
+        }
+      },
+      "fragment": false,
+      "hidden": false
+    },
+    {
+      "$type": "TerminalRule",
+      "name": "T_UNTIL",
+      "definition": {
+        "$type": "CharacterRange",
+        "left": {
+          "$type": "Keyword",
+          "value": "until"
+        }
+      },
+      "fragment": false,
+      "hidden": false
+    },
+    {
+      "$type": "TerminalRule",
+      "name": "T_VERTICES",
+      "definition": {
+        "$type": "CharacterRange",
+        "left": {
+          "$type": "Keyword",
+          "value": "vertices"
+        }
+      },
+      "fragment": false,
+      "hidden": false
+    },
+    {
+      "$type": "TerminalRule",
+      "name": "T_WITH",
+      "definition": {
+        "$type": "CharacterRange",
+        "left": {
+          "$type": "Keyword",
+          "value": "with"
+        }
+      },
+      "fragment": false,
+      "hidden": false
+    },
+    {
+      "$type": "TerminalRule",
+      "name": "T_WITH_VALUES",
+      "definition": {
+        "$type": "CharacterRange",
+        "left": {
+          "$type": "Keyword",
+          "value": "with_values"
+        }
+      },
+      "fragment": false,
+      "hidden": false
+    },
+    {
+      "$type": "TerminalRule",
+      "name": "T_WITH_ALTITUDE",
+      "definition": {
+        "$type": "CharacterRange",
+        "left": {
+          "$type": "Keyword",
+          "value": "with_altitude"
+        }
+      },
+      "fragment": false,
+      "hidden": false
+    },
+    {
+      "$type": "TerminalRule",
+      "name": "T_WITH_WAYPOINTS",
+      "definition": {
+        "$type": "CharacterRange",
+        "left": {
+          "$type": "Keyword",
+          "value": "with_waypoints"
+        }
+      },
+      "fragment": false,
+      "hidden": false
+    },
+    {
+      "$type": "TerminalRule",
+      "name": "T_GROOVY_FILE",
+      "definition": {
+        "$type": "CharacterRange",
+        "left": {
+          "$type": "Keyword",
+          "value": "groovy_file"
+        }
+      },
+      "fragment": false,
+      "hidden": false
+    },
+    {
+      "$type": "TerminalRule",
+      "name": "T_FILTER",
+      "definition": {
+        "$type": "CharacterRange",
+        "left": {
+          "$type": "Keyword",
+          "value": "filter"
+        }
+      },
+      "fragment": false,
+      "hidden": false
+    },
+    {
+      "$type": "TerminalRule",
+      "fragment": true,
+      "name": "T_CONSTANT_BEGIN",
+      "definition": {
+        "$type": "CharacterRange",
+        "left": {
+          "$type": "Keyword",
+          "value": "$"
+        }
+      },
+      "hidden": false
+    },
+    {
+      "$type": "TerminalRule",
+      "fragment": true,
+      "name": "T_VARIABLE_BEGIN",
+      "definition": {
+        "$type": "CharacterRange",
+        "left": {
+          "$type": "Keyword",
+          "value": "#"
+        }
+      },
+      "hidden": false
+    },
+    {
+      "$type": "TerminalRule",
+      "name": "T_CONSTANT",
+      "definition": {
+        "$type": "TerminalGroup",
+        "elements": [
+          {
+            "$type": "TerminalRuleCall",
+            "rule": {
+              "$ref": "#/rules@135"
+            }
+          },
+          {
+            "$type": "TerminalRuleCall",
+            "rule": {
+              "$ref": "#/rules@145"
+            }
+          }
+        ]
+      },
+      "fragment": false,
+      "hidden": false
+    },
+    {
+      "$type": "TerminalRule",
+      "name": "T_VARIABLE",
+      "definition": {
+        "$type": "TerminalGroup",
+        "elements": [
+          {
+            "$type": "TerminalRuleCall",
+            "rule": {
+              "$ref": "#/rules@136"
+            }
+          },
+          {
+            "$type": "TerminalRuleCall",
+            "rule": {
+              "$ref": "#/rules@145"
+            }
+          }
+        ]
+      },
+      "fragment": false,
+      "hidden": false
+    },
+    {
+      "$type": "TerminalRule",
+      "name": "T_INTEGER_LITERAL",
+      "type": {
+        "$type": "ReturnType",
+        "name": "number"
+      },
+      "definition": {
+        "$type": "TerminalAlternatives",
+        "elements": [
+          {
+            "$type": "TerminalGroup",
+            "elements": [
+              {
+                "$type": "CharacterRange",
+                "left": {
+                  "$type": "Keyword",
+                  "value": "-"
+                },
+                "cardinality": "?"
+              },
+              {
+                "$type": "CharacterRange",
+                "left": {
+                  "$type": "Keyword",
+                  "value": "1"
+                },
+                "right": {
+                  "$type": "Keyword",
+                  "value": "9"
+                }
+              },
+              {
+                "$type": "CharacterRange",
+                "left": {
+                  "$type": "Keyword",
+                  "value": "0"
+                },
+                "right": {
+                  "$type": "Keyword",
+                  "value": "9"
+                },
+                "cardinality": "*"
+              }
+            ]
+          },
+          {
+            "$type": "CharacterRange",
+            "left": {
+              "$type": "Keyword",
+              "value": "0"
+            }
+          }
+        ]
+      },
+      "fragment": false,
+      "hidden": false
+    },
+    {
+      "$type": "TerminalRule",
+      "name": "T_DOUBLE_LITERAL",
+      "type": {
+        "$type": "ReturnType",
+        "name": "number"
+      },
+      "definition": {
+        "$type": "TerminalGroup",
+        "elements": [
+          {
+            "$type": "TerminalAlternatives",
+            "elements": [
+              {
+                "$type": "TerminalGroup",
+                "elements": [
+                  {
+                    "$type": "CharacterRange",
+                    "left": {
+                      "$type": "Keyword",
+                      "value": "-"
+                    },
+                    "cardinality": "?"
+                  },
+                  {
+                    "$type": "CharacterRange",
+                    "left": {
+                      "$type": "Keyword",
+                      "value": "1"
+                    },
+                    "right": {
+                      "$type": "Keyword",
+                      "value": "9"
+                    }
+                  },
+                  {
+                    "$type": "CharacterRange",
+                    "left": {
+                      "$type": "Keyword",
+                      "value": "0"
+                    },
+                    "right": {
+                      "$type": "Keyword",
+                      "value": "9"
+                    },
+                    "cardinality": "*"
+                  }
+                ]
+              },
+              {
+                "$type": "CharacterRange",
+                "left": {
+                  "$type": "Keyword",
+                  "value": "0"
+                }
+              }
+            ]
+          },
+          {
+            "$type": "CharacterRange",
+            "left": {
+              "$type": "Keyword",
+              "value": "."
+            }
+          },
+          {
+            "$type": "CharacterRange",
+            "left": {
+              "$type": "Keyword",
+              "value": "0"
+            },
+            "right": {
+              "$type": "Keyword",
+              "value": "9"
+            }
+          },
+          {
+            "$type": "CharacterRange",
+            "left": {
+              "$type": "Keyword",
+              "value": "0"
+            },
+            "right": {
+              "$type": "Keyword",
+              "value": "9"
+            },
+            "cardinality": "*"
+          }
+        ]
+      },
+      "fragment": false,
+      "hidden": false
+    },
+    {
+      "$type": "TerminalRule",
+      "name": "T_STRING_LITERAL",
+      "definition": {
+        "$type": "TerminalGroup",
+        "elements": [
+          {
+            "$type": "CharacterRange",
+            "left": {
+              "$type": "Keyword",
+              "value": "\\""
+            }
+          },
+          {
+            "$type": "TerminalAlternatives",
+            "elements": [
+              {
+                "$type": "TerminalRuleCall",
+                "rule": {
+                  "$ref": "#/rules@147"
+                }
+              },
+              {
+                "$type": "NegatedToken",
+                "terminal": {
+                  "$type": "TerminalAlternatives",
+                  "elements": [
+                    {
+                      "$type": "CharacterRange",
+                      "left": {
+                        "$type": "Keyword",
+                        "value": "\\\\\\\\"
+                      }
+                    },
+                    {
+                      "$type": "CharacterRange",
+                      "left": {
+                        "$type": "Keyword",
+                        "value": "\\""
+                      }
+                    }
+                  ]
+                }
+              }
+            ],
+            "cardinality": "*"
+          },
+          {
+            "$type": "CharacterRange",
+            "left": {
+              "$type": "Keyword",
+              "value": "\\""
+            }
+          }
+        ]
+      },
+      "fragment": false,
+      "hidden": false
+    },
+    {
+      "$type": "TerminalRule",
+      "fragment": true,
+      "name": "DIGIT",
+      "definition": {
+        "$type": "CharacterRange",
+        "left": {
+          "$type": "Keyword",
+          "value": "0"
+        },
+        "right": {
+          "$type": "Keyword",
+          "value": "9"
+        }
+      },
+      "hidden": false
+    },
+    {
+      "$type": "TerminalRule",
+      "fragment": true,
+      "name": "IDENTIFIER_FIRST",
+      "definition": {
+        "$type": "TerminalAlternatives",
+        "elements": [
+          {
+            "$type": "TerminalAlternatives",
+            "elements": [
+              {
+                "$type": "TerminalAlternatives",
+                "elements": [
+                  {
+                    "$type": "CharacterRange",
+                    "left": {
+                      "$type": "Keyword",
+                      "value": "a"
+                    },
+                    "right": {
+                      "$type": "Keyword",
+                      "value": "z"
+                    }
+                  },
+                  {
+                    "$type": "CharacterRange",
+                    "left": {
+                      "$type": "Keyword",
+                      "value": "A"
+                    },
+                    "right": {
+                      "$type": "Keyword",
+                      "value": "Z"
+                    }
+                  }
+                ]
+              },
+              {
+                "$type": "CharacterRange",
+                "left": {
+                  "$type": "Keyword",
+                  "value": "_"
+                }
+              }
+            ]
+          },
+          {
+            "$type": "CharacterRange",
+            "left": {
+              "$type": "Keyword",
+              "value": "*"
+            }
+          }
+        ]
+      },
+      "hidden": false
+    },
+    {
+      "$type": "TerminalRule",
+      "fragment": true,
+      "name": "IDENTIFIER_BODY",
+      "definition": {
+        "$type": "TerminalAlternatives",
+        "elements": [
+          {
+            "$type": "TerminalAlternatives",
+            "elements": [
+              {
+                "$type": "TerminalAlternatives",
+                "elements": [
+                  {
+                    "$type": "TerminalAlternatives",
+                    "elements": [
+                      {
+                        "$type": "TerminalAlternatives",
+                        "elements": [
+                          {
+                            "$type": "CharacterRange",
+                            "left": {
+                              "$type": "Keyword",
+                              "value": "a"
+                            },
+                            "right": {
+                              "$type": "Keyword",
+                              "value": "z"
+                            }
+                          },
+                          {
+                            "$type": "CharacterRange",
+                            "left": {
+                              "$type": "Keyword",
+                              "value": "A"
+                            },
+                            "right": {
+                              "$type": "Keyword",
+                              "value": "Z"
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "$type": "TerminalRuleCall",
+                        "rule": {
+                          "$ref": "#/rules@142"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "$type": "CharacterRange",
+                    "left": {
+                      "$type": "Keyword",
+                      "value": "_"
+                    }
+                  }
+                ]
+              },
+              {
+                "$type": "CharacterRange",
+                "left": {
+                  "$type": "Keyword",
+                  "value": "/"
+                }
+              }
+            ]
+          },
+          {
+            "$type": "CharacterRange",
+            "left": {
+              "$type": "Keyword",
+              "value": "*"
+            }
+          }
+        ]
+      },
+      "hidden": false
+    },
+    {
+      "$type": "TerminalRule",
+      "fragment": true,
+      "name": "IDENTIFIER",
+      "definition": {
+        "$type": "TerminalGroup",
+        "elements": [
+          {
+            "$type": "TerminalRuleCall",
+            "rule": {
+              "$ref": "#/rules@143"
+            }
+          },
+          {
+            "$type": "TerminalRuleCall",
+            "rule": {
+              "$ref": "#/rules@144"
+            },
+            "cardinality": "*"
+          }
+        ]
+      },
+      "hidden": false
+    },
+    {
+      "$type": "TerminalRule",
       "hidden": true,
-      "name": "WS",
+      "name": "SPACE_ESCAPE",
       "definition": {
         "$type": "RegexToken",
         "regex": "\\\\s+"
@@ -137,57 +4913,350 @@ const FditscenarioGrammar = () => loadedFditscenarioGrammar !== null && loadedFd
     },
     {
       "$type": "TerminalRule",
-      "name": "ID",
+      "fragment": true,
+      "name": "ESCAPE_SEQUENCE",
       "definition": {
-        "$type": "RegexToken",
-        "regex": "[_a-zA-Z][\\\\w_]*"
+        "$type": "TerminalAlternatives",
+        "elements": [
+          {
+            "$type": "TerminalAlternatives",
+            "elements": [
+              {
+                "$type": "TerminalGroup",
+                "elements": [
+                  {
+                    "$type": "CharacterRange",
+                    "left": {
+                      "$type": "Keyword",
+                      "value": "\\\\\\\\"
+                    }
+                  },
+                  {
+                    "$type": "TerminalAlternatives",
+                    "elements": [
+                      {
+                        "$type": "TerminalAlternatives",
+                        "elements": [
+                          {
+                            "$type": "TerminalAlternatives",
+                            "elements": [
+                              {
+                                "$type": "TerminalAlternatives",
+                                "elements": [
+                                  {
+                                    "$type": "TerminalAlternatives",
+                                    "elements": [
+                                      {
+                                        "$type": "TerminalAlternatives",
+                                        "elements": [
+                                          {
+                                            "$type": "TerminalAlternatives",
+                                            "elements": [
+                                              {
+                                                "$type": "CharacterRange",
+                                                "left": {
+                                                  "$type": "Keyword",
+                                                  "value": "b"
+                                                }
+                                              },
+                                              {
+                                                "$type": "CharacterRange",
+                                                "left": {
+                                                  "$type": "Keyword",
+                                                  "value": "t"
+                                                }
+                                              }
+                                            ]
+                                          },
+                                          {
+                                            "$type": "CharacterRange",
+                                            "left": {
+                                              "$type": "Keyword",
+                                              "value": "n"
+                                            }
+                                          }
+                                        ]
+                                      },
+                                      {
+                                        "$type": "CharacterRange",
+                                        "left": {
+                                          "$type": "Keyword",
+                                          "value": "f"
+                                        }
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "$type": "CharacterRange",
+                                    "left": {
+                                      "$type": "Keyword",
+                                      "value": "r"
+                                    }
+                                  }
+                                ]
+                              },
+                              {
+                                "$type": "CharacterRange",
+                                "left": {
+                                  "$type": "Keyword",
+                                  "value": "\\\\\\""
+                                }
+                              }
+                            ]
+                          },
+                          {
+                            "$type": "CharacterRange",
+                            "left": {
+                              "$type": "Keyword",
+                              "value": "\\\\'"
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "$type": "CharacterRange",
+                        "left": {
+                          "$type": "Keyword",
+                          "value": "\\\\\\\\"
+                        }
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "$type": "TerminalRuleCall",
+                "rule": {
+                  "$ref": "#/rules@149"
+                }
+              }
+            ]
+          },
+          {
+            "$type": "TerminalRuleCall",
+            "rule": {
+              "$ref": "#/rules@148"
+            }
+          }
+        ]
       },
-      "fragment": false,
       "hidden": false
     },
     {
       "$type": "TerminalRule",
-      "name": "INT",
-      "type": {
-        "$type": "ReturnType",
-        "name": "number"
-      },
+      "fragment": true,
+      "name": "OCTAL_ESCAPE",
       "definition": {
-        "$type": "RegexToken",
-        "regex": "[0-9]+"
+        "$type": "TerminalAlternatives",
+        "elements": [
+          {
+            "$type": "TerminalAlternatives",
+            "elements": [
+              {
+                "$type": "TerminalGroup",
+                "elements": [
+                  {
+                    "$type": "CharacterRange",
+                    "left": {
+                      "$type": "Keyword",
+                      "value": "\\\\\\\\"
+                    }
+                  },
+                  {
+                    "$type": "CharacterRange",
+                    "left": {
+                      "$type": "Keyword",
+                      "value": "0"
+                    },
+                    "right": {
+                      "$type": "Keyword",
+                      "value": "3"
+                    }
+                  },
+                  {
+                    "$type": "CharacterRange",
+                    "left": {
+                      "$type": "Keyword",
+                      "value": "0"
+                    },
+                    "right": {
+                      "$type": "Keyword",
+                      "value": "7"
+                    }
+                  },
+                  {
+                    "$type": "CharacterRange",
+                    "left": {
+                      "$type": "Keyword",
+                      "value": "0"
+                    },
+                    "right": {
+                      "$type": "Keyword",
+                      "value": "7"
+                    }
+                  }
+                ]
+              },
+              {
+                "$type": "TerminalGroup",
+                "elements": [
+                  {
+                    "$type": "CharacterRange",
+                    "left": {
+                      "$type": "Keyword",
+                      "value": "\\\\\\\\"
+                    }
+                  },
+                  {
+                    "$type": "CharacterRange",
+                    "left": {
+                      "$type": "Keyword",
+                      "value": "0"
+                    },
+                    "right": {
+                      "$type": "Keyword",
+                      "value": "7"
+                    }
+                  },
+                  {
+                    "$type": "CharacterRange",
+                    "left": {
+                      "$type": "Keyword",
+                      "value": "0"
+                    },
+                    "right": {
+                      "$type": "Keyword",
+                      "value": "7"
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "$type": "TerminalGroup",
+            "elements": [
+              {
+                "$type": "CharacterRange",
+                "left": {
+                  "$type": "Keyword",
+                  "value": "\\\\\\\\"
+                }
+              },
+              {
+                "$type": "CharacterRange",
+                "left": {
+                  "$type": "Keyword",
+                  "value": "0"
+                },
+                "right": {
+                  "$type": "Keyword",
+                  "value": "7"
+                }
+              }
+            ]
+          }
+        ]
       },
-      "fragment": false,
       "hidden": false
     },
     {
       "$type": "TerminalRule",
-      "name": "STRING",
+      "fragment": true,
+      "name": "UNICODE_ESCAPE",
       "definition": {
-        "$type": "RegexToken",
-        "regex": "\\"[^\\"]*\\"|'[^']*'"
+        "$type": "TerminalGroup",
+        "elements": [
+          {
+            "$type": "CharacterRange",
+            "left": {
+              "$type": "Keyword",
+              "value": "\\\\\\\\"
+            }
+          },
+          {
+            "$type": "CharacterRange",
+            "left": {
+              "$type": "Keyword",
+              "value": "u"
+            }
+          },
+          {
+            "$type": "TerminalRuleCall",
+            "rule": {
+              "$ref": "#/rules@150"
+            }
+          },
+          {
+            "$type": "TerminalRuleCall",
+            "rule": {
+              "$ref": "#/rules@150"
+            }
+          },
+          {
+            "$type": "TerminalRuleCall",
+            "rule": {
+              "$ref": "#/rules@150"
+            }
+          },
+          {
+            "$type": "TerminalRuleCall",
+            "rule": {
+              "$ref": "#/rules@150"
+            }
+          }
+        ]
       },
-      "fragment": false,
       "hidden": false
     },
     {
       "$type": "TerminalRule",
-      "hidden": true,
-      "name": "ML_COMMENT",
+      "fragment": true,
+      "name": "HEX_DIGIT",
       "definition": {
-        "$type": "RegexToken",
-        "regex": "\\\\/\\\\*[\\\\s\\\\S]*?\\\\*\\\\/"
+        "$type": "TerminalAlternatives",
+        "elements": [
+          {
+            "$type": "TerminalAlternatives",
+            "elements": [
+              {
+                "$type": "CharacterRange",
+                "left": {
+                  "$type": "Keyword",
+                  "value": "0"
+                },
+                "right": {
+                  "$type": "Keyword",
+                  "value": "9"
+                }
+              },
+              {
+                "$type": "CharacterRange",
+                "left": {
+                  "$type": "Keyword",
+                  "value": "a"
+                },
+                "right": {
+                  "$type": "Keyword",
+                  "value": "f"
+                }
+              }
+            ]
+          },
+          {
+            "$type": "CharacterRange",
+            "left": {
+              "$type": "Keyword",
+              "value": "A"
+            },
+            "right": {
+              "$type": "Keyword",
+              "value": "F"
+            }
+          }
+        ]
       },
-      "fragment": false
-    },
-    {
-      "$type": "TerminalRule",
-      "hidden": true,
-      "name": "SL_COMMENT",
-      "definition": {
-        "$type": "RegexToken",
-        "regex": "\\\\/\\\\/[^\\\\n\\\\r]*"
-      },
-      "fragment": false
+      "hidden": false
     }
   ],
   "definesHiddenTokens": false,
@@ -197,5 +5266,5 @@ const FditscenarioGrammar = () => loadedFditscenarioGrammar !== null && loadedFd
   "types": [],
   "usedGrammars": []
 }`));
-exports.FditscenarioGrammar = FditscenarioGrammar;
+exports.AttackScenarioGrammarGrammar = AttackScenarioGrammarGrammar;
 //# sourceMappingURL=grammar.js.map

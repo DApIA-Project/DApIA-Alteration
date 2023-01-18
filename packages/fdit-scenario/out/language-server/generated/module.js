@@ -4,10 +4,10 @@
  * DO NOT EDIT MANUALLY!
  ******************************************************************************/
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.FditscenarioGeneratedModule = exports.FditscenarioGeneratedSharedModule = exports.FditscenarioLanguageMetaData = void 0;
+exports.AttackScenarioGrammarGeneratedModule = exports.FditscenarioGeneratedSharedModule = exports.AttackScenarioGrammarLanguageMetaData = void 0;
 const ast_1 = require("./ast");
 const grammar_1 = require("./grammar");
-exports.FditscenarioLanguageMetaData = {
+exports.AttackScenarioGrammarLanguageMetaData = {
     languageId: 'fditscenario',
     fileExtensions: ['.fditscenario'],
     caseInsensitive: false
@@ -15,9 +15,9 @@ exports.FditscenarioLanguageMetaData = {
 exports.FditscenarioGeneratedSharedModule = {
     AstReflection: () => new ast_1.FditscenarioAstReflection()
 };
-exports.FditscenarioGeneratedModule = {
-    Grammar: () => (0, grammar_1.FditscenarioGrammar)(),
-    LanguageMetaData: () => exports.FditscenarioLanguageMetaData,
+exports.AttackScenarioGrammarGeneratedModule = {
+    Grammar: () => (0, grammar_1.AttackScenarioGrammarGrammar)(),
+    LanguageMetaData: () => exports.AttackScenarioGrammarLanguageMetaData,
     parser: {}
 };
 //# sourceMappingURL=module.js.map

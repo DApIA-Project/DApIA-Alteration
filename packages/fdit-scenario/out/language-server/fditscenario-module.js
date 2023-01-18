@@ -4,6 +4,8 @@ exports.createFditscenarioServices = exports.FditscenarioModule = void 0;
 const langium_1 = require("langium");
 const module_1 = require("./generated/module");
 const fditscenario_validator_1 = require("./fditscenario-validator");
+const langium_2 = require("langium");
+const web_1 = require("../web");
 /**
  * Dependency injection module that overrides Langium default services and contributes the
  * declared custom services. The Langium defaults can be partially specified to override only
@@ -31,10 +33,20 @@ exports.FditscenarioModule = {
  */
 function createFditscenarioServices(context) {
     const shared = (0, langium_1.inject)((0, langium_1.createDefaultSharedModule)(context), module_1.FditscenarioGeneratedSharedModule);
-    const Fditscenario = (0, langium_1.inject)((0, langium_1.createDefaultModule)({ shared }), module_1.FditscenarioGeneratedModule, exports.FditscenarioModule);
+    const Fditscenario = (0, langium_1.inject)((0, langium_1.createDefaultModule)({ shared }), module_1.AttackScenarioGrammarGeneratedModule, exports.FditscenarioModule);
+    shared.lsp.ExecuteCommandHandler = new FditscenarioCommandHandler();
     shared.ServiceRegistry.register(Fditscenario);
     (0, fditscenario_validator_1.registerValidationChecks)(Fditscenario);
     return { shared, Fditscenario };
 }
 exports.createFditscenarioServices = createFditscenarioServices;
+class FditscenarioCommandHandler extends langium_2.AbstractExecuteCommandHandler {
+    registerCommands(acceptor) {
+        // accept a single command called 'parseAndGenerate'
+        acceptor('parseAndGenerate', args => {
+            // invoke generator on this data, and return the response
+            return (0, web_1.parseAndGenerate)(args[0]);
+        });
+    }
+}
 //# sourceMappingURL=fditscenario-module.js.map
