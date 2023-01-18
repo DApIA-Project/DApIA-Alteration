@@ -11,7 +11,7 @@ import chalk from "chalk";
  * @param services For constructing & building a virtual document
  * @returns A promise for the parsed result of the document
  */
- async function extractAstNodeFromString<T extends AstNode>(content: string, services: LangiumServices): Promise<T> {
+ export async function extractAstNodeFromString<T extends AstNode>(content: string, services: LangiumServices): Promise<T> {
     // create a document from a string instead of a file
     const doc = services.shared.workspace.LangiumDocumentFactory.fromString(content, URI.parse('memory://fditscenario.document'));
     // proceed with build & validation
