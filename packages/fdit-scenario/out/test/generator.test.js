@@ -10,20 +10,19 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const generator_1 = require("../generator/generator");
-const globals_1 = require("@jest/globals");
 const langium_1 = require("langium");
 const fditscenario_module_1 = require("../language-server/fditscenario-module");
 const web_1 = require("../web");
-(0, globals_1.describe)('generatorTest', () => {
-    (0, globals_1.test)('callGenerateCommandsEmpty', () => __awaiter(void 0, void 0, void 0, function* () {
+describe('generatorTest', () => {
+    test('callGenerateCommandsEmpty', () => __awaiter(void 0, void 0, void 0, function* () {
         const services = (0, fditscenario_module_1.createFditscenarioServices)(langium_1.EmptyFileSystem).Fditscenario;
         const scenario = (0, web_1.extractAstNodeFromString)("", services);
-        (0, globals_1.expect)((0, generator_1.generateCommands)(yield scenario)).toStrictEqual([{ "instructions": [], },]);
+        expect((0, generator_1.generateCommands)(yield scenario)).toStrictEqual([{ "instructions": [], },]);
     }));
-    (0, globals_1.test)('callGenerateCommandsHideAllPlanes', () => __awaiter(void 0, void 0, void 0, function* () {
+    test('callGenerateCommandsHideAllPlanes', () => __awaiter(void 0, void 0, void 0, function* () {
         const services = (0, fditscenario_module_1.createFditscenarioServices)(langium_1.EmptyFileSystem).Fditscenario;
         const scenario = (0, web_1.extractAstNodeFromString)("hide all_planes from 56 seconds until 90 seconds", services);
-        (0, globals_1.expect)((0, generator_1.generateCommands)(yield scenario)).toStrictEqual([
+        expect((0, generator_1.generateCommands)(yield scenario)).toStrictEqual([
             {
                 "instructions": [
                     {
@@ -42,10 +41,10 @@ const web_1 = require("../web");
             }
         ]);
     }));
-    (0, globals_1.test)('callGenerateCommandsAlterAllPlanesValues', () => __awaiter(void 0, void 0, void 0, function* () {
+    test('callGenerateCommandsAlterAllPlanesValues', () => __awaiter(void 0, void 0, void 0, function* () {
         const services = (0, fditscenario_module_1.createFditscenarioServices)(langium_1.EmptyFileSystem).Fditscenario;
         const scenario = (0, web_1.extractAstNodeFromString)("alter all_planes from 56 seconds until 90 seconds with_values ALTITUDE = 90000 and LATITUDE -= 456 and ICAO *= 900 and TRACK ++= 800", services);
-        (0, globals_1.expect)((0, generator_1.generateCommands)(yield scenario)).toStrictEqual([
+        expect((0, generator_1.generateCommands)(yield scenario)).toStrictEqual([
             {
                 "instructions": [
                     {
@@ -98,10 +97,10 @@ const web_1 = require("../web");
             }
         ]);
     }));
-    (0, globals_1.test)('callGenerateCommandsAlterAllPlanesValuesOther', () => __awaiter(void 0, void 0, void 0, function* () {
+    test('callGenerateCommandsAlterAllPlanesValuesOther', () => __awaiter(void 0, void 0, void 0, function* () {
         const services = (0, fditscenario_module_1.createFditscenarioServices)(langium_1.EmptyFileSystem).Fditscenario;
         const scenario = (0, web_1.extractAstNodeFromString)("alter all_planes from 56 seconds until 90 seconds with_values CALLSIGN = 90000 and EMERGENCY -= 456 and GROUNDSPEED *= 900 and LONGITUDE ++= 800 and SPI = 67 and SQUAWK = 78", services);
-        (0, globals_1.expect)((0, generator_1.generateCommands)(yield scenario)).toStrictEqual([
+        expect((0, generator_1.generateCommands)(yield scenario)).toStrictEqual([
             {
                 "instructions": [
                     {
@@ -170,10 +169,10 @@ const web_1 = require("../web");
             }
         ]);
     }));
-    (0, globals_1.test)('callGenerateCommandsCreateAllPlanes', () => __awaiter(void 0, void 0, void 0, function* () {
+    test('callGenerateCommandsCreateAllPlanes', () => __awaiter(void 0, void 0, void 0, function* () {
         const services = (0, fditscenario_module_1.createFditscenarioServices)(langium_1.EmptyFileSystem).Fditscenario;
         const scenario = (0, web_1.extractAstNodeFromString)("create from 56 seconds until 89 seconds with_waypoints [(45,78) with_altitude 90000 at 78 seconds, (12,70) with_altitude 7000 at 99 seconds]", services);
-        (0, globals_1.expect)((0, generator_1.generateCommands)(yield scenario)).toStrictEqual([
+        expect((0, generator_1.generateCommands)(yield scenario)).toStrictEqual([
             {
                 "instructions": [
                     {
@@ -206,10 +205,10 @@ const web_1 = require("../web");
             }
         ]);
     }));
-    (0, globals_1.test)('callGenerateCommandsAlterAllPlanesWaypoints', () => __awaiter(void 0, void 0, void 0, function* () {
+    test('callGenerateCommandsAlterAllPlanesWaypoints', () => __awaiter(void 0, void 0, void 0, function* () {
         const services = (0, fditscenario_module_1.createFditscenarioServices)(langium_1.EmptyFileSystem).Fditscenario;
         const scenario = (0, web_1.extractAstNodeFromString)("alter all_planes from 56 seconds until 90 seconds with_waypoints [(45,78) with_altitude 90000 at 78 seconds, (12,70) with_altitude 7000 at 99 seconds]", services);
-        (0, globals_1.expect)((0, generator_1.generateCommands)(yield scenario)).toStrictEqual([
+        expect((0, generator_1.generateCommands)(yield scenario)).toStrictEqual([
             {
                 "instructions": [
                     {
@@ -244,10 +243,10 @@ const web_1 = require("../web");
             }
         ]);
     }));
-    (0, globals_1.test)('callGenerateCommandsAlterSpeedAllPlanes', () => __awaiter(void 0, void 0, void 0, function* () {
+    test('callGenerateCommandsAlterSpeedAllPlanes', () => __awaiter(void 0, void 0, void 0, function* () {
         const services = (0, fditscenario_module_1.createFditscenarioServices)(langium_1.EmptyFileSystem).Fditscenario;
         const scenario = (0, web_1.extractAstNodeFromString)("alter_speed all_planes from 56 seconds until 90 seconds with_values EAST_WEST_VELOCITY = 78 and NORTH_SOUTH_VELOCITY = 45", services);
-        (0, globals_1.expect)((0, generator_1.generateCommands)(yield scenario)).toStrictEqual([
+        expect((0, generator_1.generateCommands)(yield scenario)).toStrictEqual([
             {
                 "instructions": [
                     {
@@ -280,10 +279,10 @@ const web_1 = require("../web");
             }
         ]);
     }));
-    (0, globals_1.test)('callGenerateCommandsSaturateAllPlanes', () => __awaiter(void 0, void 0, void 0, function* () {
+    test('callGenerateCommandsSaturateAllPlanes', () => __awaiter(void 0, void 0, void 0, function* () {
         const services = (0, fditscenario_module_1.createFditscenarioServices)(langium_1.EmptyFileSystem).Fditscenario;
         const scenario = (0, web_1.extractAstNodeFromString)("saturate all_planes from 56 seconds until 90 seconds with_values ICAO = 78 and NUMBER = 45", services);
-        (0, globals_1.expect)((0, generator_1.generateCommands)(yield scenario)).toStrictEqual([
+        expect((0, generator_1.generateCommands)(yield scenario)).toStrictEqual([
             {
                 "instructions": [
                     {
@@ -316,10 +315,10 @@ const web_1 = require("../web");
             }
         ]);
     }));
-    (0, globals_1.test)('callGenerateCommandsReplayPlane', () => __awaiter(void 0, void 0, void 0, function* () {
+    test('callGenerateCommandsReplayPlane', () => __awaiter(void 0, void 0, void 0, function* () {
         const services = (0, fditscenario_module_1.createFditscenarioServices)(langium_1.EmptyFileSystem).Fditscenario;
         const scenario = (0, web_1.extractAstNodeFromString)("replay plane satisfying 6 and 78 from_recording 34 from 56 seconds until 90 seconds", services);
-        (0, globals_1.expect)((0, generator_1.generateCommands)(yield scenario)).toStrictEqual([
+        expect((0, generator_1.generateCommands)(yield scenario)).toStrictEqual([
             {
                 "instructions": [
                     {
@@ -340,10 +339,10 @@ const web_1 = require("../web");
             }
         ]);
     }));
-    (0, globals_1.test)('callGenerateCommandsReplayAllPlaneWithFilter', () => __awaiter(void 0, void 0, void 0, function* () {
+    test('callGenerateCommandsReplayAllPlaneWithFilter', () => __awaiter(void 0, void 0, void 0, function* () {
         const services = (0, fditscenario_module_1.createFditscenarioServices)(langium_1.EmptyFileSystem).Fditscenario;
         const scenario = (0, web_1.extractAstNodeFromString)("replay all_planes satisfying 6 and 78 from_recording 34 from 56 seconds until 90 seconds", services);
-        (0, globals_1.expect)((0, generator_1.generateCommands)(yield scenario)).toStrictEqual([
+        expect((0, generator_1.generateCommands)(yield scenario)).toStrictEqual([
             {
                 "instructions": [
                     {
@@ -364,10 +363,10 @@ const web_1 = require("../web");
             }
         ]);
     }));
-    (0, globals_1.test)('callGenerateCommandsReplayAllPlaneWithoutFilter', () => __awaiter(void 0, void 0, void 0, function* () {
+    test('callGenerateCommandsReplayAllPlaneWithoutFilter', () => __awaiter(void 0, void 0, void 0, function* () {
         const services = (0, fditscenario_module_1.createFditscenarioServices)(langium_1.EmptyFileSystem).Fditscenario;
         const scenario = (0, web_1.extractAstNodeFromString)("replay all_planes from_recording 34 from 56 seconds until 90 seconds", services);
-        (0, globals_1.expect)((0, generator_1.generateCommands)(yield scenario)).toStrictEqual([
+        expect((0, generator_1.generateCommands)(yield scenario)).toStrictEqual([
             {
                 "instructions": [
                     {
@@ -387,10 +386,10 @@ const web_1 = require("../web");
             }
         ]);
     }));
-    (0, globals_1.test)('callGenerateCommandsDelayAllPlanes', () => __awaiter(void 0, void 0, void 0, function* () {
+    test('callGenerateCommandsDelayAllPlanes', () => __awaiter(void 0, void 0, void 0, function* () {
         const services = (0, fditscenario_module_1.createFditscenarioServices)(langium_1.EmptyFileSystem).Fditscenario;
         const scenario = (0, web_1.extractAstNodeFromString)("delay all_planes from 56 seconds until 90 seconds with_delay 55 seconds", services);
-        (0, globals_1.expect)((0, generator_1.generateCommands)(yield scenario)).toStrictEqual([
+        expect((0, generator_1.generateCommands)(yield scenario)).toStrictEqual([
             {
                 "instructions": [
                     {
@@ -413,10 +412,10 @@ const web_1 = require("../web");
             }
         ]);
     }));
-    (0, globals_1.test)('callGenerateCommandsRotateAllPlanes', () => __awaiter(void 0, void 0, void 0, function* () {
+    test('callGenerateCommandsRotateAllPlanes', () => __awaiter(void 0, void 0, void 0, function* () {
         const services = (0, fditscenario_module_1.createFditscenarioServices)(langium_1.EmptyFileSystem).Fditscenario;
         const scenario = (0, web_1.extractAstNodeFromString)("rotate all_planes from 67 seconds until 99 seconds with_angle 90", services);
-        (0, globals_1.expect)((0, generator_1.generateCommands)(yield scenario)).toStrictEqual([
+        expect((0, generator_1.generateCommands)(yield scenario)).toStrictEqual([
             {
                 "instructions": [
                     {
@@ -440,10 +439,10 @@ const web_1 = require("../web");
             }
         ]);
     }));
-    (0, globals_1.test)('callGenerateCommandsCutAllPlanes', () => __awaiter(void 0, void 0, void 0, function* () {
+    test('callGenerateCommandsCutAllPlanes', () => __awaiter(void 0, void 0, void 0, function* () {
         const services = (0, fditscenario_module_1.createFditscenarioServices)(langium_1.EmptyFileSystem).Fditscenario;
         const scenario = (0, web_1.extractAstNodeFromString)("cut all_planes from 13 seconds until 88 seconds", services);
-        (0, globals_1.expect)((0, generator_1.generateCommands)(yield scenario)).toStrictEqual([
+        expect((0, generator_1.generateCommands)(yield scenario)).toStrictEqual([
             {
                 "instructions": [
                     {
@@ -462,10 +461,10 @@ const web_1 = require("../web");
             }
         ]);
     }));
-    (0, globals_1.test)('callGenerateCommandsDeclarationRange', () => __awaiter(void 0, void 0, void 0, function* () {
+    test('callGenerateCommandsDeclarationRange', () => __awaiter(void 0, void 0, void 0, function* () {
         const services = (0, fditscenario_module_1.createFditscenarioServices)(langium_1.EmptyFileSystem).Fditscenario;
         const scenario = (0, web_1.extractAstNodeFromString)("let $test = [2,8], cut all_planes from 13 seconds until 88 seconds", services);
-        (0, globals_1.expect)((0, generator_1.generateCommands)(yield scenario)).toStrictEqual([
+        expect((0, generator_1.generateCommands)(yield scenario)).toStrictEqual([
             {
                 "declarations": [{
                         "constant": "$test",
@@ -493,10 +492,10 @@ const web_1 = require("../web");
             }
         ]);
     }));
-    (0, globals_1.test)('callGenerateCommandsDeclarationList', () => __awaiter(void 0, void 0, void 0, function* () {
+    test('callGenerateCommandsDeclarationList', () => __awaiter(void 0, void 0, void 0, function* () {
         const services = (0, fditscenario_module_1.createFditscenarioServices)(langium_1.EmptyFileSystem).Fditscenario;
         const scenario = (0, web_1.extractAstNodeFromString)("let $test = {\"salut\",\"ola\"}, cut all_planes from 13 seconds until 88 seconds", services);
-        (0, globals_1.expect)((0, generator_1.generateCommands)(yield scenario)).toStrictEqual([
+        expect((0, generator_1.generateCommands)(yield scenario)).toStrictEqual([
             {
                 "declarations": [{
                         "constant": "$test",
@@ -526,10 +525,10 @@ const web_1 = require("../web");
             }
         ]);
     }));
-    (0, globals_1.test)('callGenerateCommandsTimescopeAt', () => __awaiter(void 0, void 0, void 0, function* () {
+    test('callGenerateCommandsTimescopeAt', () => __awaiter(void 0, void 0, void 0, function* () {
         const services = (0, fditscenario_module_1.createFditscenarioServices)(langium_1.EmptyFileSystem).Fditscenario;
         const scenario = (0, web_1.extractAstNodeFromString)("hide all_planes at 67 seconds", services);
-        (0, globals_1.expect)((0, generator_1.generateCommands)(yield scenario)).toStrictEqual([
+        expect((0, generator_1.generateCommands)(yield scenario)).toStrictEqual([
             {
                 "instructions": [
                     {
@@ -547,10 +546,10 @@ const web_1 = require("../web");
             }
         ]);
     }));
-    (0, globals_1.test)('callGenerateCommandsTimescopeAtFor', () => __awaiter(void 0, void 0, void 0, function* () {
+    test('callGenerateCommandsTimescopeAtFor', () => __awaiter(void 0, void 0, void 0, function* () {
         const services = (0, fditscenario_module_1.createFditscenarioServices)(langium_1.EmptyFileSystem).Fditscenario;
         const scenario = (0, web_1.extractAstNodeFromString)("hide all_planes at 67 seconds for 89 seconds", services);
-        (0, globals_1.expect)((0, generator_1.generateCommands)(yield scenario)).toStrictEqual([
+        expect((0, generator_1.generateCommands)(yield scenario)).toStrictEqual([
             {
                 "instructions": [
                     {
@@ -569,10 +568,10 @@ const web_1 = require("../web");
             }
         ]);
     }));
-    (0, globals_1.test)('callGenerateCommandsTargetPlane', () => __awaiter(void 0, void 0, void 0, function* () {
+    test('callGenerateCommandsTargetPlane', () => __awaiter(void 0, void 0, void 0, function* () {
         const services = (0, fditscenario_module_1.createFditscenarioServices)(langium_1.EmptyFileSystem).Fditscenario;
         const scenario = (0, web_1.extractAstNodeFromString)("hide plane at 67 seconds for 89 seconds", services);
-        (0, globals_1.expect)((0, generator_1.generateCommands)(yield scenario)).toStrictEqual([
+        expect((0, generator_1.generateCommands)(yield scenario)).toStrictEqual([
             {
                 "instructions": [
                     {
@@ -591,10 +590,10 @@ const web_1 = require("../web");
             }
         ]);
     }));
-    (0, globals_1.test)('callGenerateCommandsTrigger', () => __awaiter(void 0, void 0, void 0, function* () {
+    test('callGenerateCommandsTrigger', () => __awaiter(void 0, void 0, void 0, function* () {
         const services = (0, fditscenario_module_1.createFditscenarioServices)(langium_1.EmptyFileSystem).Fditscenario;
         const scenario = (0, web_1.extractAstNodeFromString)("hide all_planes at 67 seconds for 89 seconds triggered_by 78", services);
-        (0, globals_1.expect)((0, generator_1.generateCommands)(yield scenario)).toStrictEqual([
+        expect((0, generator_1.generateCommands)(yield scenario)).toStrictEqual([
             {
                 "instructions": [
                     {
