@@ -28,4 +28,5 @@ jobs:
         cache: 'npm'
         cache-dependency-path: packages/fdit-scenario/package-lock.json
     - run: npm run build --if-present
+    - run: npm run
     - run: npm test
