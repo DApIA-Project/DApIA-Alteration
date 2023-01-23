@@ -1,5 +1,4 @@
 import { generateCommands } from "../generator/generator";
-import {describe, expect, test} from '@jest/globals';
 import { ASTScenario } from "../language-server/generated/ast";
 import { EmptyFileSystem } from "langium";
 import { createFditscenarioServices } from "../language-server/fditscenario-module";
