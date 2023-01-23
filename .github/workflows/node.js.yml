@@ -28,7 +28,7 @@ jobs:
         cache: 'npm'
         cache-dependency-path: packages/fdit-scenario/package-lock.json
     - name: Install Dependencies
-29    run: npm install
+      run: npm install
     - name: Build Fdit-Scenario
       run: npm run build --if-present
     - name: Run tests
