@@ -2,7 +2,6 @@
   "scripts": {
     "langium:generate:client": "echo 'Not yet implemented'",
     "langium:generate:server": "echo 'Not yet implemented'",
-    "test": "jest --coverage",
     
     "docker:build:client": "echo 'Not yet implemented'",
     "docker:build:server": "echo 'Not yet implemented'"
