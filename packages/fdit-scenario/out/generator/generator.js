@@ -24,16 +24,16 @@ function generateCommands(scenario) {
 }
 exports.generateCommands = generateCommands;
 /*function generateStatements2(instr: ASTInstruction[]): Object[] {
-    //let env : FditscenarioGenEnv = new Map<string,number>();
+    //let env : DslGenEnv = new Map<string,number>();
     return instr.flatMap(i => evalInstr(i)).filter(i => i !== undefined) as Object[];
     
 }*/
 function generateStatements(scenar) {
-    //let env : FditscenarioGenEnv = new Map<string,number>();
+    //let env : DslGenEnv = new Map<string,number>();
     return evalScenario(scenar);
 }
 function evalScenario(scenar) {
-    if (scenar.declarations != undefined) {
+    if (scenar.declarations.length != 0) {
         return [{
                 declarations: evalDeclarations(scenar.declarations),
                 instructions: evalInstructions(scenar.instructions)
@@ -103,13 +103,12 @@ function evalDecl(decl) {
                 listDeclaration: evalList(decl.list)
             }];
     }
-    else if ((0, ast_1.isASTRangeDeclaration)(decl)) {
+    else {
         return [{
                 constant: decl.constant,
                 rangeDeclaration: evalRange(decl.range)
             }];
     }
-    return [];
 }
 function evalList(list) {
     return [{
@@ -210,7 +209,7 @@ function evalInstr(instr) {
                 //assertions : evalAssertions(instr.assertions!)
             }];
     }
-    else if ((0, ast_1.isASTCut)(instr)) {
+    else {
         return [{
                 ActionType: ActionType.reductionDF,
                 target: evalTarget(instr.target),
@@ -219,7 +218,6 @@ function evalInstr(instr) {
                 //assertions : evalAssertions(instr.assertions!)
             }];
     }
-    return [];
 }
 function evalTimeScope(ts) {
     if ((0, ast_1.isASTAt)(ts)) {
@@ -244,12 +242,7 @@ function evalTimeScope(ts) {
     }
 }
 function evalTrajectory(wp) {
-    if (wp != undefined) {
-        return evalWayPoint(wp.waypoints);
-    }
-    else {
-        return [];
-    }
+    return evalWayPoint(wp.waypoints);
 }
 function evalWayPoint(wp) {
     let waypoints = evalOneWaypoint(wp[0]);
@@ -261,7 +254,7 @@ function evalWayPoint(wp) {
 function evalOneWaypoint(wp) {
     return [{
             latitude: evalValue(wp.latitude),
-            longitute: evalValue(wp.longitude),
+            longitude: evalValue(wp.longitude),
             altitude: evalValue(wp.altitude),
             time: evalTime(wp.time)
         }];
@@ -316,12 +309,7 @@ function evalAssert(assert : ASTAssertion) : (Object|undefined)[]{
     
 }*/
 function evalParameters(param) {
-    if (param != undefined) {
-        return evalParameter(param.items);
-    }
-    else {
-        return [];
-    }
+    return evalParameter(param.items);
 }
 function evalParameter(pm) {
     let params = evalOneParameter(pm[0]);
@@ -353,7 +341,7 @@ function evalOneParameter(pm) {
                 }
             }];
     }
-    else if ((0, ast_1.isASTParamDrift)(pm)) {
+    else {
         return [{
                 parameter: { name: evalParametreType(pm.name),
                     operation: pm.drift_op,
@@ -361,7 +349,6 @@ function evalOneParameter(pm) {
                 }
             }];
     }
-    return [];
 }
 function evalParametreType(pm) {
     if (pm.ALTITUDE != undefined) {
@@ -391,18 +378,12 @@ function evalParametreType(pm) {
     else if (pm.SQUAWK != undefined) {
         return ParametreType.squawk;
     }
-    else if (pm.TRACK != undefined) {
+    else {
         return ParametreType.track;
     }
-    return undefined;
 }
 function evalSpeedParameters(param) {
-    if (param != undefined) {
-        return evalSpeedParameter(param.items);
-    }
-    else {
-        return [];
-    }
+    return evalSpeedParameter(param.items);
 }
 function evalSpeedParameter(pm) {
     let params = evalOneSpeedParameter(pm[0]);
@@ -422,18 +403,12 @@ function evalSpeedParametreType(pm) {
     if (pm.EAST_WEST_VELOCITY != undefined) {
         return ParametreSpeedType.east_west_velocity;
     }
-    else if (pm.NORTH_SOUTH_VELOCITY != undefined) {
+    else {
         return ParametreSpeedType.north_south_velocity;
     }
-    return undefined;
 }
 function evalSaturationParameters(param) {
-    if (param != undefined) {
-        return evalSaturationParameter(param.items);
-    }
-    else {
-        return [];
-    }
+    return evalSaturationParameter(param.items);
 }
 function evalSaturationParameter(pm) {
     let params = evalOneSaturationParameter(pm[0]);
@@ -453,10 +428,9 @@ function evalSaturationParametreType(pm) {
     if (pm.ICAO != undefined) {
         return ParametreSaturationType.icao;
     }
-    else if (pm.AIRCRAFT_NUMBER != undefined) {
+    else {
         return ParametreSaturationType.aircraft_number;
     }
-    return undefined;
 }
 function evalReplayTarget(rt) {
     if ((0, ast_1.isASTPlaneFrom)(rt)) {
@@ -465,7 +439,7 @@ function evalReplayTarget(rt) {
                 recording: rt.recording.content
             }];
     }
-    else if ((0, ast_1.isASTAllPlaneFrom)(rt)) {
+    else {
         if (rt.filters != undefined) {
             return [{
                     filters: evalFilters(rt.filters),
@@ -478,15 +452,9 @@ function evalReplayTarget(rt) {
                 }];
         }
     }
-    return [];
 }
 function evalFilters(f) {
-    if (f != undefined) {
-        return evalValues(f.filters);
-    }
-    else {
-        return [];
-    }
+    return evalValues(f.filters);
 }
 function evalValues(v) {
     let vals = [evalValue(v[0])];

@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.parseAndGenerate = void 0;
+exports.parseAndGenerate = exports.extractAstNodeFromString = void 0;
 const vscode_uri_1 = require("vscode-uri");
 const langium_1 = require("langium");
 const fditscenario_module_1 = require("../language-server/fditscenario-module");
@@ -35,6 +35,7 @@ function extractAstNodeFromString(content, services) {
         return (_a = doc.parseResult) === null || _a === void 0 ? void 0 : _a.value;
     });
 }
+exports.extractAstNodeFromString = extractAstNodeFromString;
 /**
  * Parses a MiniLogo program & generates output as a list of Objects
  * @param fditscenarioProgram fditscenario program to parse

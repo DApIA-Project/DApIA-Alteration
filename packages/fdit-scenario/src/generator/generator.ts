@@ -2,7 +2,7 @@
 //import { CompositeGeneratorNode, NL, toString } from 'langium';
 
 
-import { ASTDeclaration, ASTDelayParameter, ASTFilters, ASTInstruction, ASTList, ASTNumber, ASTParameter, ASTParameters, ASTParameterType, ASTRange, ASTRecordingParameterType, ASTReplayTarget, ASTRotateParameter, ASTSaturationParameter, ASTSaturationParameters, ASTSaturationParameterType, ASTScenario, ASTSpeedParameter, ASTSpeedParameters, ASTSpeedParameterType, ASTTarget, ASTTime, ASTTimeScope, ASTTrigger, ASTValue, ASTWayPoint, ASTWayPoints, isASTAllPlaneFrom, isASTAllPlanes, isASTAlter, isASTAlterSpeed, isASTAt, isASTCreate, isASTCut, isASTDelay, isASTHide, isASTListDeclaration, isASTParamDrift, isASTParamEdit, isASTParamNoise, isASTParamOffset, isASTPlaneFrom, isASTRangeDeclaration, isASTReplay, isASTRotate, isASTSaturate, isASTTrajectory, isASTWindow } from "../language-server/generated/ast";
+import { ASTDeclaration, ASTDelayParameter, ASTFilters, ASTInstruction, ASTList, ASTNumber, ASTParameter, ASTParameters, ASTParameterType, ASTRange, ASTRecordingParameterType, ASTReplayTarget, ASTRotateParameter, ASTSaturationParameter, ASTSaturationParameters, ASTSaturationParameterType, ASTScenario, ASTSpeedParameter, ASTSpeedParameters, ASTSpeedParameterType, ASTTarget, ASTTime, ASTTimeScope, ASTTrigger, ASTValue, ASTWayPoint, ASTWayPoints, isASTAllPlanes, isASTAlter, isASTAlterSpeed, isASTAt, isASTCreate, isASTDelay, isASTHide, isASTListDeclaration, isASTParamEdit, isASTParamNoise, isASTParamOffset, isASTPlaneFrom, isASTReplay, isASTRotate, isASTSaturate, isASTTrajectory, isASTWindow } from "../language-server/generated/ast";
 
 /*type FditscenarioGenEnv = Map<string,number>;
 
@@ -28,7 +28,7 @@ export function generateCommands(scenario: ASTScenario): (Object|undefined)[] {
 }
 
 /*function generateStatements2(instr: ASTInstruction[]): Object[] {
-    //let env : FditscenarioGenEnv = new Map<string,number>();
+    //let env : DslGenEnv = new Map<string,number>();
     return instr.flatMap(i => evalInstr(i)).filter(i => i !== undefined) as Object[];
     
 }*/
@@ -41,7 +41,7 @@ function generateStatements(scenar: ASTScenario): (Object|undefined)[] {
 
 function evalScenario(scenar : ASTScenario) : (Object | undefined)[]{
         
-    if(scenar.declarations != undefined){
+    if(scenar.declarations.length != 0){
         return [{
             
             declarations : evalDeclarations(scenar.declarations),
@@ -129,14 +129,13 @@ function evalDecl(decl : ASTDeclaration) : (Object | undefined)[]{
             constant : decl.constant,
             listDeclaration : evalList(decl.list)
         }];
-    }else if(isASTRangeDeclaration(decl)){
+    }else {
         return [{
             constant : decl.constant,
             rangeDeclaration : evalRange(decl.range)
         }];
     }
     
-    return [];
 }
 
 function evalList(list : ASTList) : (Object | undefined)[]{
@@ -250,7 +249,7 @@ function evalInstr(instr : ASTInstruction) : (Object | undefined)[]{
             
 
         }];
-    }else if(isASTCut(instr)){
+    }else{
         return [{
             ActionType : ActionType.reductionDF,
             target : evalTarget(instr.target),
@@ -262,7 +261,6 @@ function evalInstr(instr : ASTInstruction) : (Object | undefined)[]{
         }];
     }
     
-    return [];
 }
 
 
@@ -380,11 +378,9 @@ function evalAssert(assert : ASTAssertion) : (Object|undefined)[]{
 }*/
 
 function evalParameters(param : ASTParameters) : (Object|undefined)[]{
-    if(param != undefined){
-        return evalParameter(param.items);
-    }else{
-        return [];
-    }
+  
+    return evalParameter(param.items);
+    
 
 }
 
@@ -419,7 +415,7 @@ function evalOneParameter(pm : ASTParameter) : (Object|undefined)[]{
                     value : pm.value.content
                 }
         }];
-    }else if(isASTParamDrift(pm)){
+    }else {
         return [{
             parameter : 
                 {   name : evalParametreType(pm.name),
@@ -428,7 +424,6 @@ function evalOneParameter(pm : ASTParameter) : (Object|undefined)[]{
                 }
         }];
     }
-    return [];
 }
 
 function evalParametreType(pm : ASTParameterType) : string | undefined{
@@ -458,11 +453,9 @@ function evalParametreType(pm : ASTParameterType) : string | undefined{
 }
 
 function evalSpeedParameters(param : ASTSpeedParameters) : (Object|undefined)[]{
-    if(param != undefined){
-        return evalSpeedParameter(param.items);
-    }else{
-        return [];
-    }
+  
+    return evalSpeedParameter(param.items);
+    
 
 }
 
@@ -496,11 +489,9 @@ function evalSpeedParametreType(pm : ASTSpeedParameterType) : string | undefined
 }
 
 function evalSaturationParameters(param : ASTSaturationParameters) : (Object|undefined)[]{
-    if(param != undefined){
-        return evalSaturationParameter(param.items);
-    }else{
-        return [];
-    }
+    
+    return evalSaturationParameter(param.items);
+    
 
 }
 
@@ -539,7 +530,7 @@ function evalReplayTarget(rt : ASTReplayTarget) : (Object|undefined)[]{
             filters : evalFilters(rt.filters),
             recording : rt.recording.content
         }];
-    }else if(isASTAllPlaneFrom(rt)){
+    }else {
         if(rt.filters != undefined){
             return [{
                 filters : evalFilters(rt.filters),
@@ -552,18 +543,13 @@ function evalReplayTarget(rt : ASTReplayTarget) : (Object|undefined)[]{
         }
         
     }
-
-    return [];
     
 }
 
 function evalFilters(f : ASTFilters) : (Object|undefined)[]{
     
-    if(f != undefined){
-        return evalValues(f.filters);
-    }else{
-        return [];
-    }
+    return evalValues(f.filters);
+    
     
 }
 
