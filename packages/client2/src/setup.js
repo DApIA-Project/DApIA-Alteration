@@ -1,7 +1,5 @@
-"use strict"; 
-import { MonacoEditorLanguageClientWrapper, vscode } from "monaco-editor-wrapper";
-import { buildWorkerDefinition } from "monaco-editor-workers";
-import {} from "fdit-scenario"
+import {MonacoEditorLanguageClientWrapper, vscode} from "monaco-editor-wrapper";
+import {buildWorkerDefinition} from "monaco-editor-workers";
 
 buildWorkerDefinition('./monaco-editor-workers/workers', new URL('', window.location.href).href, false);
 
@@ -15,7 +13,7 @@ editorConfig.theme = 'vs-dark';
 editorConfig.useLanguageClient = true;
 editorConfig.useWebSocket = false;
 
-const workerURL = new URL('./fditscenario-server-worker.js', import.meta.url);
+const workerURL = new URL('../public/fditscenario-server-worker.js', import.meta.url);
 console.log(workerURL.href);
 
 const lsWorker = new Worker(workerURL.href, {
@@ -25,9 +23,9 @@ const lsWorker = new Worker(workerURL.href, {
 client.setWorker(lsWorker);
 
 // keep a reference to a promise for when the editor is finished starting, we'll use this to setup the canvas on load
-await client.startEditor(document.getElementById("monaco-editor-root"));
+const startPromise = client.startEditor(document.getElementById("monaco-editor-root"))
 
-console.log('here')
+startPromise.then(() => generateAndDisplay())
 
 const generateAndDisplay = (async () => {
     console.info('generating & running current code...');
@@ -47,13 +45,13 @@ window.generateAndDisplay = generateAndDisplay;
 function updateDslCanvas(cmds) {
     console.table(cmds);
     var zone_json = document.getElementById("zoneJson");
-    if(cmds != undefined){
-      
-        zone_json.innerHTML=JSON.stringify(cmds, undefined, 2);
-        
-        
-    }else{
-        zone_json.innerHTML="Erreur de syntaxe detecte !";
+    if (cmds != undefined) {
+
+        zone_json.innerHTML = JSON.stringify(cmds, undefined, 2);
+
+
+    } else {
+        zone_json.innerHTML = "Erreur de syntaxe detecte !";
     }
 
 }
