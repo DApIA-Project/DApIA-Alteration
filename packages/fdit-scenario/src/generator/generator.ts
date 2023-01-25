@@ -2,7 +2,7 @@
 //import { CompositeGeneratorNode, NL, toString } from 'langium';
 
 
-import { ASTDeclaration, ASTDelayParameter, ASTFilters, ASTInstruction, ASTList, ASTNumber, ASTParameter, ASTParameters, ASTParameterType, ASTRange, ASTRecordingParameterType, ASTReplayTarget, ASTRotateParameter, ASTSaturationParameter, ASTSaturationParameters, ASTSaturationParameterType, ASTScenario, ASTSpeedParameter, ASTSpeedParameters, ASTSpeedParameterType, ASTTarget, ASTTime, ASTTimeScope, ASTTrigger, ASTValue, ASTWayPoint, ASTWayPoints, isASTAllPlanes, isASTAlter, isASTAlterSpeed, isASTAt, isASTCreate, isASTDelay, isASTHide, isASTListDeclaration, isASTParamEdit, isASTParamNoise, isASTParamOffset, isASTPlaneFrom, isASTReplay, isASTRotate, isASTSaturate, isASTTrajectory, isASTWindow } from "../language-server/generated/ast";
+import {  ASTAssertion, ASTAssertions, ASTCreationParameter, ASTCreationParameters, ASTCreationParameterType, ASTDeclaration, ASTDelayParameter, ASTFilters, ASTHideParameter, ASTInstruction, ASTList, ASTNumber, ASTParameter, ASTParameters, ASTParameterType, ASTRange, ASTRecordingParameterType, ASTReplayTarget, ASTRotateParameter, ASTSaturationParameter, ASTSaturationParameters, ASTSaturationParameterType, ASTScenario, ASTSpeedParameter, ASTSpeedParameters, ASTSpeedParameterType, ASTTarget, ASTTime, ASTTimeScope, ASTTrigger, ASTValue, ASTWayPoint, ASTWayPoints, isASTAllPlanes, isASTAlter, isASTAlterSpeed, isASTAt, isASTCreate, isASTDelay, isASTHide, isASTListDeclaration, isASTParamEdit, isASTParamNoise, isASTParamOffset, isASTPlaneFrom, isASTReplay, isASTRotate, isASTSaturate, isASTTrajectory, isASTWindow } from "../language-server/generated/ast";
 
 /*type FditscenarioGenEnv = Map<string,number>;
 
@@ -106,6 +106,16 @@ enum ParametreSaturationType {
     aircraft_number = 'NUMBER'
 }
 
+enum ParametreCreationType {
+    icao = "ICAO",
+    callsign = 'CALLSIGN',
+    emergency = 'EMERGENCY',
+    spi = 'SPI',
+    squawk = 'SQUAWK',
+    alert = 'ALERT'
+
+}
+
 /*type AlterationSpecification = {
     scenarios: Scenario[]
 }
@@ -158,8 +168,8 @@ function evalInstr(instr : ASTInstruction) : (Object | undefined)[]{
             target : evalTarget(instr.target),
             timescope : evalTimeScope(instr.timeScope),
             trigger : evalTrigger(instr.trigger!),
-            /*frequency : evalFrequency(instr.frequency),
-            assertions : evalAssertions(instr.assertions)*/
+            frequency : evalFrequency(instr.frequency!),
+            assertions : evalAssertions(instr.assertions!)
 
         }];
 
@@ -170,7 +180,7 @@ function evalInstr(instr : ASTInstruction) : (Object | undefined)[]{
             timescope : evalTimeScope(instr.timeScope),
             trigger : evalTrigger(instr.trigger!),
             parameters : evalParameters(instr.parameters),
-            /*assertions : evalAssertions(instr.assertions)*/
+            assertions : evalAssertions(instr.assertions!)
             
 
         }];
@@ -178,9 +188,9 @@ function evalInstr(instr : ASTInstruction) : (Object | undefined)[]{
         return [{
             ActionType : ActionType.creation,
             timescope : evalTimeScope(instr.timeScope),
-            trajectory : evalTrajectory(instr.trajectory)
-            /*parameters : evalCreationParameters(instr.parameters),
-            assertions : evalAssertions(instr.assertions!)*/
+            trajectory : evalTrajectory(instr.trajectory),
+            parameters : evalCreationParameters(instr.parameters!),
+            assertions : evalAssertions(instr.assertions!)
 
             
 
@@ -192,7 +202,7 @@ function evalInstr(instr : ASTInstruction) : (Object | undefined)[]{
             timescope : evalTimeScope(instr.timeScope),
             trajectory : evalTrajectory(instr.trajectory),
             trigger : evalTrigger(instr.trigger!),
-            //assertions : evalAssertions(instr.assertions!)
+            assertions : evalAssertions(instr.assertions!)
             
 
         }];
@@ -203,7 +213,7 @@ function evalInstr(instr : ASTInstruction) : (Object | undefined)[]{
             timescope : evalTimeScope(instr.timeScope),
             parameters : evalSpeedParameters(instr.parameters),
             trigger : evalTrigger(instr.trigger!),
-            //assertions : evalAssertions(instr.assertions!)
+            assertions : evalAssertions(instr.assertions!)
             
 
         }];
@@ -214,7 +224,7 @@ function evalInstr(instr : ASTInstruction) : (Object | undefined)[]{
             timescope : evalTimeScope(instr.timeScope),
             parameters : evalSaturationParameters(instr.parameters),
             trigger : evalTrigger(instr.trigger!),
-            //assertions : evalAssertions(instr.assertions)
+            assertions : evalAssertions(instr.assertions!)
             
 
         }];
@@ -223,8 +233,8 @@ function evalInstr(instr : ASTInstruction) : (Object | undefined)[]{
             ActionType : ActionType.replay,
             target : evalReplayTarget(instr.target),
             timescope : evalTimeScope(instr.timeScope),
-            /*parameters : evalParameters(instr.parameters),
-            assertions : evalAssertions(instr.assertions!)*/
+            parameters : evalParameters(instr.parameters!),
+            assertions : evalAssertions(instr.assertions!)
             
 
         }];
@@ -234,7 +244,7 @@ function evalInstr(instr : ASTInstruction) : (Object | undefined)[]{
             target : evalTarget(instr.target),
             timescope : evalTimeScope(instr.timeScope),
             delay : evalDelayParameter(instr.delay),
-            //assertions : evalAssertions(instr.assertions!)
+            assertions : evalAssertions(instr.assertions!)
             
 
         }];
@@ -245,7 +255,7 @@ function evalInstr(instr : ASTInstruction) : (Object | undefined)[]{
             timescope : evalTimeScope(instr.timeScope),
             angle : evalRotateParameter(instr.angle),
             trigger : evalTrigger(instr.trigger!),
-            //assertions : evalAssertions(instr.assertions!)
+            assertions : evalAssertions(instr.assertions!)
             
 
         }];
@@ -255,7 +265,7 @@ function evalInstr(instr : ASTInstruction) : (Object | undefined)[]{
             target : evalTarget(instr.target),
             timescope : evalTimeScope(instr.timeScope),
             trigger : evalTrigger(instr.trigger!),
-            //assertions : evalAssertions(instr.assertions!)
+            assertions : evalAssertions(instr.assertions!)
             
 
         }];
@@ -349,13 +359,15 @@ function evalTrigger(trig : ASTTrigger) : (Object|undefined)[]{
         
   
 }
-/*
+
 function evalAssertions(assers : ASTAssertions) : (Object|undefined)[]{
+
     if(assers != undefined){
-        return evalAssertion(assers.items);
-    }else{
-        return [];
-    }
+          return evalAssertion(assers.items); 
+        }else{
+            return [];
+        }
+
     
 }
 
@@ -375,12 +387,16 @@ function evalAssert(assert : ASTAssertion) : (Object|undefined)[]{
         filter : assert.filter
     }];
     
-}*/
+}
 
 function evalParameters(param : ASTParameters) : (Object|undefined)[]{
   
-    return evalParameter(param.items);
     
+    if(param != undefined){
+        return evalParameter(param.items);
+      }else{
+          return [];
+      }
 
 }
 
@@ -577,4 +593,59 @@ function evalRotateParameter(rp : ASTRotateParameter) : (Object|undefined)[]{
         value : evalValue(rp.value)
     }];
     
+}
+
+function evalFrequency(hp : ASTHideParameter) : string | number | ASTNumber | ASTRecordingParameterType | undefined{
+    
+    if(hp != undefined){
+        return evalValue(hp.value);  
+    }else{
+        return undefined;
+    }
+    
+}
+
+
+function evalCreationParameters(param : ASTCreationParameters) : (Object|undefined)[]{
+  
+    if(param != undefined){
+        return evalCreationParameter(param.items);  
+    }else{
+        return [];
+    }
+    
+
+}
+
+function evalCreationParameter(cp : ASTCreationParameter[]) : (Object|undefined)[]{
+    let params : (Object|undefined)[]=evalCreationOneParameter(cp[0]);
+    for(let i = 1 ; i<cp.length;i++){
+        params.push(evalCreationOneParameter(cp[i]));
+    }
+    return params;
+}
+
+function evalCreationOneParameter(cp : ASTCreationParameter) : (Object|undefined)[]{
+    return [{
+        parameter : 
+            {   name : evalCreationParametreType(cp.name),
+                value : cp.value.content
+            }
+    }];
+}
+
+function evalCreationParametreType(cp : ASTCreationParameterType) : string | undefined{
+    if(cp.ICAO != undefined){
+        return ParametreCreationType.icao;
+    }else if(cp.CALLSIGN != undefined){
+        return ParametreCreationType.callsign;
+    }if(cp.SQUAWK != undefined){
+        return ParametreCreationType.squawk;
+    }if(cp.EMERGENCY != undefined){
+        return ParametreCreationType.emergency;
+    }if(cp.ALERT != undefined){
+        return ParametreCreationType.alert;
+    }else{
+        return ParametreCreationType.spi;
+    }
 }

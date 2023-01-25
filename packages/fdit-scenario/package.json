@@ -50,7 +50,14 @@
         "lint": "eslint src --ext ts",
         "langium:generate": "langium generate",
         "langium:watch": "langium generate --watch",
-        "test": "jest --coverage"
+        "test": "jest --coverage",
+        "build:worker": "esbuild --minify ./out/language-server/main-browser.js --bundle --format=iife --outfile=../server/public/fditscenario-server-worker.js",
+        "prepare:public": "npx shx mkdir -p ../server/public; npx shx cp -fr ../server/static/* ../server/public/",
+        "copy:monaco-editor-wrapper": "npx shx cp -fr ./node_modules/monaco-editor-wrapper/bundle ../server/public/monaco-editor-wrapper",
+        "copy:monaco-workers": "npx shx cp -fr ./node_modules/monaco-editor-workers/dist/ ../server/public/monaco-editor-workers",
+        "build:web": "npm run build && npm run prepare:public && npm run build:worker && npm run copy:monaco-editor-wrapper && npm run copy:monaco-workers"
+
+        
     },
     "dependencies": {
         "chalk": "^4.1.2",

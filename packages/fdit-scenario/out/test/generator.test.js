@@ -35,7 +35,9 @@ describe('generatorTest', () => {
                                 "upperBound": 90
                             }
                         ],
-                        "trigger": []
+                        "trigger": [],
+                        "frequency": undefined,
+                        "assertions": []
                     }
                 ]
             }
@@ -91,7 +93,8 @@ describe('generatorTest', () => {
                                     }
                                 }
                             ]
-                        ]
+                        ],
+                        "assertions": []
                     }
                 ]
             }
@@ -163,7 +166,8 @@ describe('generatorTest', () => {
                                     }
                                 }
                             ]
-                        ]
+                        ],
+                        "assertions": []
                     }
                 ]
             }
@@ -199,7 +203,9 @@ describe('generatorTest', () => {
                                     "time": 99
                                 }
                             ]
-                        ]
+                        ],
+                        "parameters": [],
+                        "assertions": []
                     }
                 ]
             }
@@ -237,7 +243,8 @@ describe('generatorTest', () => {
                                 }
                             ]
                         ],
-                        "trigger": []
+                        "trigger": [],
+                        "assertions": []
                     }
                 ]
             }
@@ -273,7 +280,8 @@ describe('generatorTest', () => {
                                     }
                                 }]
                         ],
-                        "trigger": []
+                        "trigger": [],
+                        "assertions": []
                     }
                 ]
             }
@@ -309,7 +317,8 @@ describe('generatorTest', () => {
                                     }
                                 }]
                         ],
-                        "trigger": []
+                        "trigger": [],
+                        "assertions": []
                     }
                 ]
             }
@@ -333,7 +342,8 @@ describe('generatorTest', () => {
                                 "lowerBound": 56,
                                 "upperBound": 90
                             }
-                        ]
+                        ],
+                        "assertions": []
                     }
                 ]
             }
@@ -357,7 +367,8 @@ describe('generatorTest', () => {
                                 "lowerBound": 56,
                                 "upperBound": 90
                             }
-                        ]
+                        ],
+                        "assertions": []
                     }
                 ]
             }
@@ -380,7 +391,8 @@ describe('generatorTest', () => {
                                 "lowerBound": 56,
                                 "upperBound": 90
                             }
-                        ]
+                        ],
+                        "assertions": []
                     }
                 ]
             }
@@ -406,7 +418,8 @@ describe('generatorTest', () => {
                             {
                                 "value": 55
                             }
-                        ]
+                        ],
+                        "assertions": []
                     }
                 ]
             }
@@ -433,7 +446,8 @@ describe('generatorTest', () => {
                                 "value": 90
                             }
                         ],
-                        "trigger": []
+                        "trigger": [],
+                        "assertions": []
                     }
                 ]
             }
@@ -455,7 +469,8 @@ describe('generatorTest', () => {
                                 "upperBound": 88
                             }
                         ],
-                        "trigger": []
+                        "trigger": [],
+                        "assertions": []
                     }
                 ]
             }
@@ -486,7 +501,8 @@ describe('generatorTest', () => {
                                 "upperBound": 88
                             }
                         ],
-                        "trigger": []
+                        "trigger": [],
+                        "assertions": []
                     }
                 ]
             }
@@ -519,7 +535,8 @@ describe('generatorTest', () => {
                                 "upperBound": 88
                             }
                         ],
-                        "trigger": []
+                        "trigger": [],
+                        "assertions": []
                     }
                 ]
             }
@@ -540,7 +557,9 @@ describe('generatorTest', () => {
                                 "time": 67
                             }
                         ],
-                        "trigger": []
+                        "trigger": [],
+                        "frequency": undefined,
+                        "assertions": []
                     }
                 ]
             }
@@ -562,7 +581,9 @@ describe('generatorTest', () => {
                                 "for": 89
                             }
                         ],
-                        "trigger": []
+                        "trigger": [],
+                        "frequency": undefined,
+                        "assertions": []
                     }
                 ]
             }
@@ -584,7 +605,9 @@ describe('generatorTest', () => {
                                 "for": 89
                             }
                         ],
-                        "trigger": []
+                        "trigger": [],
+                        "frequency": undefined,
+                        "assertions": []
                     }
                 ]
             }
@@ -608,7 +631,33 @@ describe('generatorTest', () => {
                         ],
                         "trigger": [
                             78
-                        ]
+                        ],
+                        "frequency": undefined,
+                        "assertions": []
+                    }
+                ]
+            }
+        ]);
+    }));
+    test('callGenerateCommandsHideWithFrequency', () => __awaiter(void 0, void 0, void 0, function* () {
+        const services = (0, fditscenario_module_1.createFditscenarioServices)(langium_1.EmptyFileSystem).Fditscenario;
+        const scenario = (0, web_1.extractAstNodeFromString)("hide all_planes from 56 seconds until 89 seconds with_frequency 89", services);
+        expect((0, generator_1.generateCommands)(yield scenario)).toStrictEqual([
+            {
+                "instructions": [
+                    {
+                        "action": "deletion",
+                        "target": "all_planes",
+                        "timescope": [
+                            {
+                                "type": "timeWindow",
+                                "lowerBound": 56,
+                                "upperBound": 89
+                            }
+                        ],
+                        "trigger": [],
+                        "frequency": 89,
+                        "assertions": []
                     }
                 ]
             }

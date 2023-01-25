@@ -86,6 +86,15 @@ var ParametreSaturationType;
     ParametreSaturationType["icao"] = "ICAO";
     ParametreSaturationType["aircraft_number"] = "NUMBER";
 })(ParametreSaturationType || (ParametreSaturationType = {}));
+var ParametreCreationType;
+(function (ParametreCreationType) {
+    ParametreCreationType["icao"] = "ICAO";
+    ParametreCreationType["callsign"] = "CALLSIGN";
+    ParametreCreationType["emergency"] = "EMERGENCY";
+    ParametreCreationType["spi"] = "SPI";
+    ParametreCreationType["squawk"] = "SQUAWK";
+    ParametreCreationType["alert"] = "ALERT";
+})(ParametreCreationType || (ParametreCreationType = {}));
 /*type AlterationSpecification = {
     scenarios: Scenario[]
 }
@@ -128,8 +137,8 @@ function evalInstr(instr) {
                 target: evalTarget(instr.target),
                 timescope: evalTimeScope(instr.timeScope),
                 trigger: evalTrigger(instr.trigger),
-                /*frequency : evalFrequency(instr.frequency),
-                assertions : evalAssertions(instr.assertions)*/
+                frequency: evalFrequency(instr.frequency),
+                assertions: evalAssertions(instr.assertions)
             }];
     }
     else if ((0, ast_1.isASTAlter)(instr)) {
@@ -139,16 +148,16 @@ function evalInstr(instr) {
                 timescope: evalTimeScope(instr.timeScope),
                 trigger: evalTrigger(instr.trigger),
                 parameters: evalParameters(instr.parameters),
-                /*assertions : evalAssertions(instr.assertions)*/
+                assertions: evalAssertions(instr.assertions)
             }];
     }
     else if ((0, ast_1.isASTCreate)(instr)) {
         return [{
                 ActionType: ActionType.creation,
                 timescope: evalTimeScope(instr.timeScope),
-                trajectory: evalTrajectory(instr.trajectory)
-                /*parameters : evalCreationParameters(instr.parameters),
-                assertions : evalAssertions(instr.assertions!)*/
+                trajectory: evalTrajectory(instr.trajectory),
+                parameters: evalCreationParameters(instr.parameters),
+                assertions: evalAssertions(instr.assertions)
             }];
     }
     else if ((0, ast_1.isASTTrajectory)(instr)) {
@@ -158,7 +167,7 @@ function evalInstr(instr) {
                 timescope: evalTimeScope(instr.timeScope),
                 trajectory: evalTrajectory(instr.trajectory),
                 trigger: evalTrigger(instr.trigger),
-                //assertions : evalAssertions(instr.assertions!)
+                assertions: evalAssertions(instr.assertions)
             }];
     }
     else if ((0, ast_1.isASTAlterSpeed)(instr)) {
@@ -168,7 +177,7 @@ function evalInstr(instr) {
                 timescope: evalTimeScope(instr.timeScope),
                 parameters: evalSpeedParameters(instr.parameters),
                 trigger: evalTrigger(instr.trigger),
-                //assertions : evalAssertions(instr.assertions!)
+                assertions: evalAssertions(instr.assertions)
             }];
     }
     else if ((0, ast_1.isASTSaturate)(instr)) {
@@ -178,7 +187,7 @@ function evalInstr(instr) {
                 timescope: evalTimeScope(instr.timeScope),
                 parameters: evalSaturationParameters(instr.parameters),
                 trigger: evalTrigger(instr.trigger),
-                //assertions : evalAssertions(instr.assertions)
+                assertions: evalAssertions(instr.assertions)
             }];
     }
     else if ((0, ast_1.isASTReplay)(instr)) {
@@ -186,8 +195,8 @@ function evalInstr(instr) {
                 ActionType: ActionType.replay,
                 target: evalReplayTarget(instr.target),
                 timescope: evalTimeScope(instr.timeScope),
-                /*parameters : evalParameters(instr.parameters),
-                assertions : evalAssertions(instr.assertions!)*/
+                parameters: evalParameters(instr.parameters),
+                assertions: evalAssertions(instr.assertions)
             }];
     }
     else if ((0, ast_1.isASTDelay)(instr)) {
@@ -196,7 +205,7 @@ function evalInstr(instr) {
                 target: evalTarget(instr.target),
                 timescope: evalTimeScope(instr.timeScope),
                 delay: evalDelayParameter(instr.delay),
-                //assertions : evalAssertions(instr.assertions!)
+                assertions: evalAssertions(instr.assertions)
             }];
     }
     else if ((0, ast_1.isASTRotate)(instr)) {
@@ -206,7 +215,7 @@ function evalInstr(instr) {
                 timescope: evalTimeScope(instr.timeScope),
                 angle: evalRotateParameter(instr.angle),
                 trigger: evalTrigger(instr.trigger),
-                //assertions : evalAssertions(instr.assertions!)
+                assertions: evalAssertions(instr.assertions)
             }];
     }
     else {
@@ -215,7 +224,7 @@ function evalInstr(instr) {
                 target: evalTarget(instr.target),
                 timescope: evalTimeScope(instr.timeScope),
                 trigger: evalTrigger(instr.trigger),
-                //assertions : evalAssertions(instr.assertions!)
+                assertions: evalAssertions(instr.assertions)
             }];
     }
 }
@@ -281,35 +290,35 @@ function evalTrigger(trig) {
         return [];
     }
 }
-/*
-function evalAssertions(assers : ASTAssertions) : (Object|undefined)[]{
-    if(assers != undefined){
+function evalAssertions(assers) {
+    if (assers != undefined) {
         return evalAssertion(assers.items);
-    }else{
+    }
+    else {
         return [];
     }
-    
 }
-
-function evalAssertion(asser : ASTAssertion[]) : (Object|undefined)[]{
-    let assertions : (Object|undefined)[]=evalAssert(asser[0]);
-    for(let i = 1 ; i<asser.length;i++){
+function evalAssertion(asser) {
+    let assertions = evalAssert(asser[0]);
+    for (let i = 1; i < asser.length; i++) {
         assertions.push(evalAssert(asser[i]));
     }
     return assertions;
-    
 }
-
-function evalAssert(assert : ASTAssertion) : (Object|undefined)[]{
+function evalAssert(assert) {
     return [{
-        timescope : evalTimeScope(assert.timeScope),
-        file : assert.file,
-        filter : assert.filter
-    }];
-    
-}*/
+            timescope: evalTimeScope(assert.timeScope),
+            file: assert.file,
+            filter: assert.filter
+        }];
+}
 function evalParameters(param) {
-    return evalParameter(param.items);
+    if (param != undefined) {
+        return evalParameter(param.items);
+    }
+    else {
+        return [];
+    }
 }
 function evalParameter(pm) {
     let params = evalOneParameter(pm[0]);
@@ -472,5 +481,55 @@ function evalRotateParameter(rp) {
     return [{
             value: evalValue(rp.value)
         }];
+}
+function evalFrequency(hp) {
+    if (hp != undefined) {
+        return evalValue(hp.value);
+    }
+    else {
+        return undefined;
+    }
+}
+function evalCreationParameters(param) {
+    if (param != undefined) {
+        return evalCreationParameter(param.items);
+    }
+    else {
+        return [];
+    }
+}
+function evalCreationParameter(cp) {
+    let params = evalCreationOneParameter(cp[0]);
+    for (let i = 1; i < cp.length; i++) {
+        params.push(evalCreationOneParameter(cp[i]));
+    }
+    return params;
+}
+function evalCreationOneParameter(cp) {
+    return [{
+            parameter: { name: evalCreationParametreType(cp.name),
+                value: cp.value.content
+            }
+        }];
+}
+function evalCreationParametreType(cp) {
+    if (cp.ICAO != undefined) {
+        return ParametreCreationType.icao;
+    }
+    else if (cp.CALLSIGN != undefined) {
+        return ParametreCreationType.callsign;
+    }
+    if (cp.SQUAWK != undefined) {
+        return ParametreCreationType.squawk;
+    }
+    if (cp.EMERGENCY != undefined) {
+        return ParametreCreationType.emergency;
+    }
+    if (cp.ALERT != undefined) {
+        return ParametreCreationType.alert;
+    }
+    else {
+        return ParametreCreationType.spi;
+    }
 }
 //# sourceMappingURL=generator.js.map

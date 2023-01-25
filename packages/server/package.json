@@ -7,6 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "serve": "node ./app.js",
     "compile": "tsc -b ."
+    
+        
   },
   "author": "",
   "license": "ISC",
