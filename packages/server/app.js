@@ -1,15 +1,19 @@
 "use strict";
-/**
- * Simple app for serving generated examples
- */
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-exports.__esModule = true;
-var express_1 = __importDefault(require("express"));
-var app = (0, express_1["default"])();
-app.listen(8080, function () {
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = __importDefault(require("express"));
+var path = require('path');
+const app = (0, express_1.default)();
+app.listen(8080, () => {
     console.log('Le serveur écoute sur le port 8080');
+});
+//Configuration d'express pour utiliser le repertoire public
+app.use(express_1.default.static('./public'));
+app.use(express_1.default.static('./static'));
+app.get('/', (req, res) => {
+    res.sendFile(path.resolve('./static/index.html'));
 });
 /*app.use((request, reponse) => {
   request.params.custom = 'FDI-T'

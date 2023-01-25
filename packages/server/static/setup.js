@@ -2,7 +2,7 @@
 import { MonacoEditorLanguageClientWrapper } from "/monaco-editor-wrapper/index.js";
 import { buildWorkerDefinition } from "/monaco-editor-workers/index.js";
 import { vscode } from './monaco-editor-wrapper/index.js';
-import  io  from "socket.io-client";
+
 
 buildWorkerDefinition('./monaco-editor-workers/workers', new URL('', window.location.href).href, false);
 
@@ -56,13 +56,3 @@ function updateDslCanvas(cmds) {
     }
 
 }
-
-document.addEventListener("DOMContentLoaded", function(_e) {
-
-    const sock = io();
-    document.getElementById("btnShowJson").addEventListener("click", function(){
-        
-        sock.emit("envoieScenario", document.getElementById("monaco-editor-root").value);
-    });
-
-});

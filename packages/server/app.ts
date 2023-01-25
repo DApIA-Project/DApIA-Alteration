@@ -1,16 +1,22 @@
-/**
- * Simple app for serving generated examples
- */
-
 import express from 'express';
+var path = require('path');
 
 
   const app = express();
-  app.listen(8080, () => {
+app.listen(8080, () => {
     console.log('Le serveur écoute sur le port 8080');
   });
 
 
+  //Configuration d'express pour utiliser le repertoire public
+  app.use(express.static('./public'));
+
+  app.use(express.static('./static'));
+  
+
+  app.get('/', (req, res) => {
+    res.sendFile(path.resolve('./static/index.html'));
+  });
   
   /*app.use((request, reponse) => {
     request.params.custom = 'FDI-T'
@@ -41,5 +47,3 @@ import express from 'express';
 
     return {directives: generateCommands(scenario), error: null}
   }*/
-
-  
