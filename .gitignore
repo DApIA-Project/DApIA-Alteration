@@ -52,4 +52,7 @@ Thumbs.db
 # Jest Coverage
 
 packages/fdit-scenario/coverage
+packages/server/public/monaco-editor-workers
+packages/server/public/monaco-editor-wrapper
+
 
