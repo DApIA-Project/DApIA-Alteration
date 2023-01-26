@@ -22,7 +22,7 @@ describe('generatorTest', () => {
               {
                   "instructions": [
                       {
-                      "action": "deletion",
+                      "action": "DELETION",
                       "target": "all_planes",
                       "timescope": [
                           {
@@ -50,7 +50,7 @@ describe('generatorTest', () => {
               {
                 "instructions": [
                   {
-                    "ActionType": "alteration",
+                    "action": "ALTERATION",
                     "target": "all_planes",
                     "timescope": [
                       {
@@ -111,7 +111,7 @@ describe('generatorTest', () => {
             {
               "instructions": [
                 {
-                  "ActionType": "alteration",
+                  "action": "ALTERATION",
                   "target": "all_planes",
                   "timescope": [
                     {
@@ -188,7 +188,7 @@ describe('generatorTest', () => {
               {
                 "instructions": [
                   {
-                    "ActionType": "creation",
+                    "action": "CREATION",
                     "timescope": [
                       {
                         "type": "timeWindow",
@@ -229,7 +229,7 @@ describe('generatorTest', () => {
               {
                   "instructions": [
                     {
-                      "ActionType": "trajectory",
+                      "action": "TRAJECTORY_MODIFICATION",
                       "target": "all_planes",
                       "timescope": [
                         {
@@ -272,7 +272,7 @@ describe('generatorTest', () => {
           {
               "instructions": [
                 {
-                  "ActionType": "speedAltaration",
+                  "action": "SPEED_ALTERATION",
                   "target": "all_planes",
                   "timescope": [
                     {
@@ -316,7 +316,7 @@ describe('generatorTest', () => {
           {
               "instructions": [
                 {
-                  "ActionType": "saturation",
+                  "action": "SATURATION",
                   "target": "all_planes",
                   "timescope": [
                     {
@@ -360,7 +360,7 @@ describe('generatorTest', () => {
           {
               "instructions": [
                 {
-                  "ActionType": "replay",
+                  "action": "REPLAY",
                   "target": [{
                     "filters" : [6, 78],
                     "recording" : 34
@@ -390,7 +390,7 @@ describe('generatorTest', () => {
         {
             "instructions": [
               {
-                "ActionType": "replay",
+                "action": "REPLAY",
                 "target": [{
                   "filters" : [6, 78],
                   "recording" : 34
@@ -420,7 +420,7 @@ test('callGenerateCommandsReplayAllPlaneWithoutFilter', async () => {
       {
           "instructions": [
             {
-              "ActionType": "replay",
+              "action": "REPLAY",
               "target": [{
                 "recording" : 34
               }],
@@ -449,7 +449,7 @@ test('callGenerateCommandsReplayAllPlaneWithoutFilter', async () => {
           {
               "instructions": [
                 {
-                  "ActionType": "timestamp",
+                  "action": "TIMESTAMP",
                   "target": "all_planes",
                   "timescope": [
                     {
@@ -480,7 +480,7 @@ test('callGenerateCommandsReplayAllPlaneWithoutFilter', async () => {
           {
               "instructions": [
                 {
-                  "ActionType": "convergence",
+                  "action": "ROTATION",
                   "target": "all_planes",
                   "timescope": [
                     {
@@ -513,7 +513,7 @@ test('callGenerateCommandsReplayAllPlaneWithoutFilter', async () => {
           {
               "instructions": [
                 {
-                  "ActionType": "reductionDF",
+                  "action": "CUT",
                   "target": "all_planes",
                   "timescope": [
                     {
@@ -549,7 +549,7 @@ test('callGenerateCommandsReplayAllPlaneWithoutFilter', async () => {
             }],
             "instructions": [
               {
-                "ActionType": "reductionDF",
+                "action": "CUT",
                 "target": "all_planes",
                 "timescope": [
                   {
@@ -586,7 +586,7 @@ test('callGenerateCommandsDeclarationList', async () => {
           }],
           "instructions": [
             {
-              "ActionType": "reductionDF",
+              "action": "CUT",
               "target": "all_planes",
               "timescope": [
                 {
@@ -613,7 +613,7 @@ test('callGenerateCommandsTimescopeAt', async () => {
       {
           "instructions": [
               {
-              "action": "deletion",
+              "action": "DELETION",
               "target": "all_planes",
               "timescope": [
                   {
@@ -640,7 +640,7 @@ test('callGenerateCommandsTimescopeAtFor', async () => {
       {
           "instructions": [
               {
-              "action": "deletion",
+              "action": "DELETION",
               "target": "all_planes",
               "timescope": [
                   {
@@ -667,7 +667,7 @@ test('callGenerateCommandsTargetPlane', async () => {
       {
           "instructions": [
               {
-              "action": "deletion",
+              "action": "DELETION",
               "target": "plane",
               "timescope": [
                   {
@@ -694,7 +694,7 @@ test('callGenerateCommandsTrigger', async () => {
       {
           "instructions": [
               {
-              "action": "deletion",
+              "action": "DELETION",
               "target": "all_planes",
               "timescope": [
                   {
@@ -723,7 +723,7 @@ test('callGenerateCommandsHideWithFrequency', async () => {
       {
           "instructions": [
               {
-              "action": "deletion",
+              "action": "DELETION",
               "target": "all_planes",
               "timescope": [
                   {
@@ -750,7 +750,7 @@ test('callGenerateCommandsCreateWithParameters', async () => {
           {
             "instructions": [
               {
-                "ActionType": "creation",
+                "action": "CREATION",
                 "timescope": [
                   {
                     "type": "timeWindow",
@@ -828,7 +828,7 @@ test('callGenerateCommandsReplayPlaneWithParameters', async () => {
       {
           "instructions": [
             {
-              "ActionType": "replay",
+              "action": "REPLAY",
               "target": [{
                 "filters" : [6, 78],
                 "recording" : 34
@@ -940,7 +940,7 @@ test('callGenerateCommandsHideWithAssert', async () => {
       {
           "instructions": [
               {
-              "action": "deletion",
+              "action": "DELETION",
               "target": "all_planes",
               "timescope": [
                   {
@@ -991,7 +991,7 @@ test('callGenerateCommandsAlterAllPlanesValuesWithAssert', async () => {
           {
             "instructions": [
               {
-                "ActionType": "alteration",
+                "action": "ALTERATION",
                 "target": "all_planes",
                 "timescope": [
                   {
@@ -1049,7 +1049,7 @@ test('callGenerateCommandsCreateAllPlanesWithAssert', async () => {
           {
             "instructions": [
               {
-                "ActionType": "creation",
+                "action": "CREATION",
                 "timescope": [
                   {
                     "type": "timeWindow",
@@ -1115,7 +1115,7 @@ test('callGenerateCommandsAlterAllPlanesWaypointsWithAssert', async () => {
           {
               "instructions": [
                 {
-                  "ActionType": "trajectory",
+                  "action": "TRAJECTORY_MODIFICATION",
                   "target": "all_planes",
                   "timescope": [
                     {
@@ -1182,7 +1182,7 @@ test('callGenerateCommandsAlterSpeedAllPlanesWithAssert', async () => {
       {
           "instructions": [
             {
-              "ActionType": "speedAltaration",
+              "action": "SPEED_ALTERATION",
               "target": "all_planes",
               "timescope": [
                 {
@@ -1250,7 +1250,7 @@ test('callGenerateCommandsSaturateAllPlanesWithAssert', async () => {
       {
           "instructions": [
             {
-              "ActionType": "saturation",
+              "action": "SATURATION",
               "target": "all_planes",
               "timescope": [
                 {
@@ -1318,7 +1318,7 @@ test('callGenerateCommandsReplayPlaneWithAssert', async () => {
       {
           "instructions": [
             {
-              "ActionType": "replay",
+              "action": "REPLAY",
               "target": [{
                 "filters" : [6, 78],
                 "recording" : 34
@@ -1371,7 +1371,7 @@ test('callGenerateCommandsDelayAllPlanesWithAssert', async () => {
       {
           "instructions": [
             {
-              "ActionType": "timestamp",
+              "action": "TIMESTAMP",
               "target": "all_planes",
               "timescope": [
                 {
@@ -1426,7 +1426,7 @@ test('callGenerateCommandsRotateAllPlanesWithAssert', async () => {
       {
           "instructions": [
             {
-              "ActionType": "convergence",
+              "action": "ROTATION",
               "target": "all_planes",
               "timescope": [
                 {
@@ -1482,7 +1482,7 @@ test('callGenerateCommandsCutAllPlanesWithAssert', async () => {
       {
           "instructions": [
             {
-              "ActionType": "reductionDF",
+              "action": "CUT",
               "target": "all_planes",
               "timescope": [
                 {

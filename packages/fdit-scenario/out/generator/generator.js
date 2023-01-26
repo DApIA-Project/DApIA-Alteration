@@ -50,18 +50,18 @@ function evalDeclarations(decls) {
 }
 var ActionType;
 (function (ActionType) {
-    ActionType["deletion"] = "deletion";
-    ActionType["creation"] = "creation";
-    ActionType["alteration"] = "alteration";
-    ActionType["saturation"] = "saturation";
-    ActionType["duplication"] = "duplication";
-    ActionType["convergence"] = "convergence";
-    ActionType["custom"] = "custom";
-    ActionType["replay"] = "replay";
-    ActionType["timestamp"] = "timestamp";
-    ActionType["reductionDF"] = "reductionDF";
-    ActionType["speedAltaration"] = "speedAltaration";
-    ActionType["trajectory"] = "trajectory";
+    ActionType["deletion"] = "DELETION";
+    ActionType["creation"] = "CREATION";
+    ActionType["alteration"] = "ALTERATION";
+    ActionType["saturation"] = "SATURATION";
+    ActionType["duplication"] = "DUPLICATION";
+    ActionType["rotation"] = "ROTATION";
+    ActionType["custom"] = "CUSTOM";
+    ActionType["replay"] = "REPLAY";
+    ActionType["timestamp"] = "TIMESTAMP";
+    ActionType["cut"] = "CUT";
+    ActionType["speedAltaration"] = "SPEED_ALTERATION";
+    ActionType["trajectory"] = "TRAJECTORY_MODIFICATION";
 })(ActionType || (ActionType = {}));
 var ParametreType;
 (function (ParametreType) {
@@ -143,7 +143,7 @@ function evalInstr(instr) {
     }
     else if ((0, ast_1.isASTAlter)(instr)) {
         return [{
-                ActionType: ActionType.alteration,
+                action: ActionType.alteration,
                 target: evalTarget(instr.target),
                 timescope: evalTimeScope(instr.timeScope),
                 trigger: evalTrigger(instr.trigger),
@@ -153,7 +153,7 @@ function evalInstr(instr) {
     }
     else if ((0, ast_1.isASTCreate)(instr)) {
         return [{
-                ActionType: ActionType.creation,
+                action: ActionType.creation,
                 timescope: evalTimeScope(instr.timeScope),
                 trajectory: evalTrajectory(instr.trajectory),
                 parameters: evalCreationParameters(instr.parameters),
@@ -162,7 +162,7 @@ function evalInstr(instr) {
     }
     else if ((0, ast_1.isASTTrajectory)(instr)) {
         return [{
-                ActionType: ActionType.trajectory,
+                action: ActionType.trajectory,
                 target: evalTarget(instr.target),
                 timescope: evalTimeScope(instr.timeScope),
                 trajectory: evalTrajectory(instr.trajectory),
@@ -172,7 +172,7 @@ function evalInstr(instr) {
     }
     else if ((0, ast_1.isASTAlterSpeed)(instr)) {
         return [{
-                ActionType: ActionType.speedAltaration,
+                action: ActionType.speedAltaration,
                 target: evalTarget(instr.target),
                 timescope: evalTimeScope(instr.timeScope),
                 parameters: evalSpeedParameters(instr.parameters),
@@ -182,7 +182,7 @@ function evalInstr(instr) {
     }
     else if ((0, ast_1.isASTSaturate)(instr)) {
         return [{
-                ActionType: ActionType.saturation,
+                action: ActionType.saturation,
                 target: evalTarget(instr.target),
                 timescope: evalTimeScope(instr.timeScope),
                 parameters: evalSaturationParameters(instr.parameters),
@@ -192,7 +192,7 @@ function evalInstr(instr) {
     }
     else if ((0, ast_1.isASTReplay)(instr)) {
         return [{
-                ActionType: ActionType.replay,
+                action: ActionType.replay,
                 target: evalReplayTarget(instr.target),
                 timescope: evalTimeScope(instr.timeScope),
                 parameters: evalParameters(instr.parameters),
@@ -201,7 +201,7 @@ function evalInstr(instr) {
     }
     else if ((0, ast_1.isASTDelay)(instr)) {
         return [{
-                ActionType: ActionType.timestamp,
+                action: ActionType.timestamp,
                 target: evalTarget(instr.target),
                 timescope: evalTimeScope(instr.timeScope),
                 delay: evalDelayParameter(instr.delay),
@@ -210,7 +210,7 @@ function evalInstr(instr) {
     }
     else if ((0, ast_1.isASTRotate)(instr)) {
         return [{
-                ActionType: ActionType.convergence,
+                action: ActionType.rotation,
                 target: evalTarget(instr.target),
                 timescope: evalTimeScope(instr.timeScope),
                 angle: evalRotateParameter(instr.angle),
@@ -220,7 +220,7 @@ function evalInstr(instr) {
     }
     else {
         return [{
-                ActionType: ActionType.reductionDF,
+                action: ActionType.cut,
                 target: evalTarget(instr.target),
                 timescope: evalTimeScope(instr.timeScope),
                 trigger: evalTrigger(instr.trigger),

@@ -22,7 +22,7 @@ describe('indexTest', () => {
             {
                 "instructions": [
                     {
-                        "action": "deletion",
+                        "action": "DELETION",
                         "target": "all_planes",
                         "timescope": [
                             {
