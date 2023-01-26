@@ -17,7 +17,7 @@ import chalk from "chalk";
     // proceed with build & validation
     await services.shared.workspace.DocumentBuilder.build([doc], { validationChecks: 'all' });
     // get the parse result (root of our AST)
-    return doc.parseResult?.value as T;
+    return doc.parseResult.value as T;
 }
 
 /**
@@ -39,6 +39,7 @@ export async function parseAndGenerate (fditscenrioProgram: string): Promise<(Ob
         console.log(chalk.green(`Parsed and validated successfully!`));
     } else {
         console.log(chalk.red(`Failed to parse and validate !`));
+        return Promise.resolve(["Erreur de syntaxe"]);
     }
     const cmds = generateCommands(scenario);
     return Promise.resolve(cmds);

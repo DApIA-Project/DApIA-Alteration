@@ -25,14 +25,13 @@ const chalk_1 = __importDefault(require("chalk"));
  * @returns A promise for the parsed result of the document
  */
 function extractAstNodeFromString(content, services) {
-    var _a;
     return __awaiter(this, void 0, void 0, function* () {
         // create a document from a string instead of a file
         const doc = services.shared.workspace.LangiumDocumentFactory.fromString(content, vscode_uri_1.URI.parse('memory://fditscenario.document'));
         // proceed with build & validation
         yield services.shared.workspace.DocumentBuilder.build([doc], { validationChecks: 'all' });
         // get the parse result (root of our AST)
-        return (_a = doc.parseResult) === null || _a === void 0 ? void 0 : _a.value;
+        return doc.parseResult.value;
     });
 }
 exports.extractAstNodeFromString = extractAstNodeFromString;
@@ -56,6 +55,7 @@ function parseAndGenerate(fditscenrioProgram) {
         }
         else {
             console.log(chalk_1.default.red(`Failed to parse and validate !`));
+            return Promise.resolve(["Erreur de syntaxe"]);
         }
         const cmds = (0, generator_1.generateCommands)(scenario);
         return Promise.resolve(cmds);
