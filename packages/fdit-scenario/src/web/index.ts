@@ -25,7 +25,7 @@ import chalk from "chalk";
  * @param fditscenarioProgram fditscenario program to parse
  * @returns Generated output from this MiniLogo program
  */
-export async function parseAndGenerate (fditscenrioProgram: string): Promise<(Object|undefined)[]> {
+export async function parseAndGenerate (fditscenrioProgram: string): Promise<{} | undefined> {
     const services = createFditscenarioServices(EmptyFileSystem).Fditscenario;
     const scenario = await extractAstNodeFromString<ASTScenario>(fditscenrioProgram, services);
     // generate fditscenario commands from the model
@@ -39,8 +39,8 @@ export async function parseAndGenerate (fditscenrioProgram: string): Promise<(Ob
         console.log(chalk.green(`Parsed and validated successfully!`));
     } else {
         console.log(chalk.red(`Failed to parse and validate !`));
-        return Promise.resolve(["Erreur de syntaxe"]);
+        return Promise.resolve(undefined);
     }
-    const cmds = generateCommands(scenario);
+    const cmds = {parameters : generateCommands(scenario)};
     return Promise.resolve(cmds);
 }

@@ -1,5 +1,6 @@
 package fdit.alteration.core.incident;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
 public class Action {
@@ -15,6 +16,7 @@ public class Action {
     public static final String ACTION_TYPE_CUT = "CUT";
 
     @JacksonXmlProperty(isAttribute = true, localName = "alterationType")
+    @JsonProperty("alterationType")
     private String actionType;
 
     private Scope scope;

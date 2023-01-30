@@ -2,6 +2,7 @@ package fdit.alteration.core.incident;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Collection;
 
@@ -13,6 +14,7 @@ public class Parameters {
 
     @JacksonXmlProperty(localName = "parameter")
     @JacksonXmlElementWrapper(useWrapping = false)
+    @JsonProperty("parameter")
     private Collection<Parameter> parameterList = newArrayList();
 
     private String recordPath;

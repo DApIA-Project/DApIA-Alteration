@@ -2,6 +2,7 @@ package fdit.alteration.core.incident;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Collection;
 
@@ -22,6 +23,7 @@ public class Sensor {
 
     @JacksonXmlProperty(localName = "action")
     @JacksonXmlElementWrapper(useWrapping = false)
+    @JsonProperty("action")
     private Collection<Action> actions = newArrayList();
 
     public String getSensorType() {

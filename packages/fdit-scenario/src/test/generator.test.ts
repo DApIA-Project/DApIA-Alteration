@@ -23,8 +23,13 @@ describe('generatorTest', () => {
                   "instructions": [
                       {
                       "action": "DELETION",
-                      "target": "all_planes",
-                      "timescope": [
+                      "target": [
+                        {
+                          "identifier" : "ALL",
+                          "filters" : []
+                        }
+                      ],
+                      "scope": [
                           {
                           "type": "timeWindow",
                           "lowerBound": 56,
@@ -51,8 +56,13 @@ describe('generatorTest', () => {
                 "instructions": [
                   {
                     "action": "ALTERATION",
-                    "target": "all_planes",
-                    "timescope": [
+                    "target": [
+                      {
+                        "identifier" : "ALL",
+                        "filters" : []
+                      }
+                    ],
+                    "scope": [
                       {
                         "type": "timeWindow",
                         "lowerBound": 56,
@@ -112,8 +122,13 @@ describe('generatorTest', () => {
               "instructions": [
                 {
                   "action": "ALTERATION",
-                  "target": "all_planes",
-                  "timescope": [
+                  "target": [
+                    {
+                      "identifier" : "ALL",
+                      "filters" : []
+                    }
+                  ],
+                  "scope": [
                     {
                       "type": "timeWindow",
                       "lowerBound": 56,
@@ -189,7 +204,7 @@ describe('generatorTest', () => {
                 "instructions": [
                   {
                     "action": "CREATION",
-                    "timescope": [
+                    "scope": [
                       {
                         "type": "timeWindow",
                         "lowerBound": 56,
@@ -230,8 +245,13 @@ describe('generatorTest', () => {
                   "instructions": [
                     {
                       "action": "TRAJECTORY_MODIFICATION",
-                      "target": "all_planes",
-                      "timescope": [
+                      "target": [
+                        {
+                          "identifier" : "ALL",
+                          "filters" : []
+                        }
+                      ],
+                      "scope": [
                         {
                           "type": "timeWindow",
                           "lowerBound": 56,
@@ -273,8 +293,13 @@ describe('generatorTest', () => {
               "instructions": [
                 {
                   "action": "SPEED_ALTERATION",
-                  "target": "all_planes",
-                  "timescope": [
+                  "target": [
+                    {
+                      "identifier" : "ALL",
+                      "filters" : []
+                    }
+                  ],
+                  "scope": [
                     {
                       "type": "timeWindow",
                       "lowerBound": 56,
@@ -317,8 +342,13 @@ describe('generatorTest', () => {
               "instructions": [
                 {
                   "action": "SATURATION",
-                  "target": "all_planes",
-                  "timescope": [
+                  "target": [
+                    {
+                      "identifier" : "ALL",
+                      "filters" : []
+                    }
+                  ],
+                  "scope": [
                     {
                       "type": "timeWindow",
                       "lowerBound": 56,
@@ -365,7 +395,7 @@ describe('generatorTest', () => {
                     "filters" : [6, 78],
                     "recording" : 34
                   }],
-                  "timescope": [
+                  "scope": [
                     {
                       "type": "timeWindow",
                       "lowerBound": 56,
@@ -395,7 +425,7 @@ describe('generatorTest', () => {
                   "filters" : [6, 78],
                   "recording" : 34
                 }],
-                "timescope": [
+                "scope": [
                   {
                     "type": "timeWindow",
                     "lowerBound": 56,
@@ -424,7 +454,7 @@ test('callGenerateCommandsReplayAllPlaneWithoutFilter', async () => {
               "target": [{
                 "recording" : 34
               }],
-              "timescope": [
+              "scope": [
                 {
                   "type": "timeWindow",
                   "lowerBound": 56,
@@ -450,8 +480,13 @@ test('callGenerateCommandsReplayAllPlaneWithoutFilter', async () => {
               "instructions": [
                 {
                   "action": "TIMESTAMP",
-                  "target": "all_planes",
-                  "timescope": [
+                  "target": [
+                    {
+                      "identifier" : "ALL",
+                      "filters" : []
+                    }
+                  ],
+                  "scope": [
                     {
                       "type": "timeWindow",
                       "lowerBound": 56,
@@ -481,8 +516,13 @@ test('callGenerateCommandsReplayAllPlaneWithoutFilter', async () => {
               "instructions": [
                 {
                   "action": "ROTATION",
-                  "target": "all_planes",
-                  "timescope": [
+                  "target": [
+                    {
+                      "identifier" : "ALL",
+                      "filters" : []
+                    }
+                  ],
+                  "scope": [
                     {
                       "type": "timeWindow",
                       "lowerBound": 67,
@@ -514,8 +554,13 @@ test('callGenerateCommandsReplayAllPlaneWithoutFilter', async () => {
               "instructions": [
                 {
                   "action": "CUT",
-                  "target": "all_planes",
-                  "timescope": [
+                  "target": [
+                    {
+                      "identifier" : "ALL",
+                      "filters" : []
+                    }
+                  ],
+                  "scope": [
                     {
                       "type": "timeWindow",
                       "lowerBound": 13,
@@ -550,8 +595,13 @@ test('callGenerateCommandsReplayAllPlaneWithoutFilter', async () => {
             "instructions": [
               {
                 "action": "CUT",
-                "target": "all_planes",
-                "timescope": [
+                "target": [
+                  {
+                    "identifier" : "ALL",
+                    "filters" : []
+                  }
+                ],
+                "scope": [
                   {
                     "type": "timeWindow",
                     "lowerBound": 13,
@@ -587,8 +637,13 @@ test('callGenerateCommandsDeclarationList', async () => {
           "instructions": [
             {
               "action": "CUT",
-              "target": "all_planes",
-              "timescope": [
+              "target": [
+                {
+                  "identifier" : "ALL",
+                  "filters" : []
+                }
+              ],
+              "scope": [
                 {
                   "type": "timeWindow",
                   "lowerBound": 13,
@@ -614,8 +669,13 @@ test('callGenerateCommandsTimescopeAt', async () => {
           "instructions": [
               {
               "action": "DELETION",
-              "target": "all_planes",
-              "timescope": [
+              "target": [
+                {
+                  "identifier" : "ALL",
+                  "filters" : []
+                }
+              ],
+              "scope": [
                   {
                   "type": "timeAt",
                   "time": 67
@@ -641,8 +701,13 @@ test('callGenerateCommandsTimescopeAtFor', async () => {
           "instructions": [
               {
               "action": "DELETION",
-              "target": "all_planes",
-              "timescope": [
+              "target": [
+                {
+                  "identifier" : "ALL",
+                  "filters" : []
+                }
+              ],
+              "scope": [
                   {
                   "type": "timeAtFor",
                   "time": 67,
@@ -668,8 +733,13 @@ test('callGenerateCommandsTargetPlane', async () => {
           "instructions": [
               {
               "action": "DELETION",
-              "target": "plane",
-              "timescope": [
+              "target": [
+                {
+                  "identifier" : "PLANE",
+                  "filters" : []
+                }
+              ],
+              "scope": [
                   {
                   "type": "timeAtFor",
                   "time": 67,
@@ -695,8 +765,13 @@ test('callGenerateCommandsTrigger', async () => {
           "instructions": [
               {
               "action": "DELETION",
-              "target": "all_planes",
-              "timescope": [
+              "target": [
+                {
+                  "identifier" : "ALL",
+                  "filters" : []
+                }
+              ],
+              "scope": [
                   {
                   "type": "timeAtFor",
                   "time": 67,
@@ -724,8 +799,13 @@ test('callGenerateCommandsHideWithFrequency', async () => {
           "instructions": [
               {
               "action": "DELETION",
-              "target": "all_planes",
-              "timescope": [
+              "target": [
+                {
+                  "identifier" : "ALL",
+                  "filters" : []
+                }
+              ],
+              "scope": [
                   {
                   "type": "timeWindow",
                   "lowerBound": 56,
@@ -751,7 +831,7 @@ test('callGenerateCommandsCreateWithParameters', async () => {
             "instructions": [
               {
                 "action": "CREATION",
-                "timescope": [
+                "scope": [
                   {
                     "type": "timeWindow",
                     "lowerBound": 56,
@@ -833,7 +913,7 @@ test('callGenerateCommandsReplayPlaneWithParameters', async () => {
                 "filters" : [6, 78],
                 "recording" : 34
               }],
-              "timescope": [
+              "scope": [
                 {
                   "type": "timeWindow",
                   "lowerBound": 56,
@@ -941,8 +1021,13 @@ test('callGenerateCommandsHideWithAssert', async () => {
           "instructions": [
               {
               "action": "DELETION",
-              "target": "all_planes",
-              "timescope": [
+              "target": [
+                {
+                  "identifier" : "ALL",
+                  "filters" : []
+                }
+              ],
+              "scope": [
                   {
                   "type": "timeWindow",
                   "lowerBound": 56,
@@ -953,7 +1038,7 @@ test('callGenerateCommandsHideWithAssert', async () => {
               "frequency" : undefined,
               "assertions" : [
                 {
-                  "timescope" : [
+                  "scope" : [
                     {
                       "type" : "timeWindow",
                       "lowerBound": 78,
@@ -965,7 +1050,7 @@ test('callGenerateCommandsHideWithAssert', async () => {
                 },
                 [
                   {
-                    "timescope" : [
+                    "scope" : [
                       {
                         "type" : "timeAt",
                         "time": 67
@@ -992,8 +1077,13 @@ test('callGenerateCommandsAlterAllPlanesValuesWithAssert', async () => {
             "instructions": [
               {
                 "action": "ALTERATION",
-                "target": "all_planes",
-                "timescope": [
+                "target": [
+                  {
+                    "identifier" : "ALL",
+                    "filters" : []
+                  }
+                ],
+                "scope": [
                   {
                     "type": "timeWindow",
                     "lowerBound": 56,
@@ -1011,7 +1101,7 @@ test('callGenerateCommandsAlterAllPlanesValuesWithAssert', async () => {
                 ],
                 "assertions" : [
                   {
-                    "timescope" : [
+                    "scope" : [
                       {
                         "type" : "timeWindow",
                         "lowerBound": 78,
@@ -1023,7 +1113,7 @@ test('callGenerateCommandsAlterAllPlanesValuesWithAssert', async () => {
                   },
                   [
                     {
-                      "timescope" : [
+                      "scope" : [
                         {
                           "type" : "timeAt",
                           "time": 67
@@ -1050,7 +1140,7 @@ test('callGenerateCommandsCreateAllPlanesWithAssert', async () => {
             "instructions": [
               {
                 "action": "CREATION",
-                "timescope": [
+                "scope": [
                   {
                     "type": "timeWindow",
                     "lowerBound": 56,
@@ -1076,7 +1166,7 @@ test('callGenerateCommandsCreateAllPlanesWithAssert', async () => {
                 "parameters" : [],
                 "assertions" : [
                   {
-                    "timescope" : [
+                    "scope" : [
                       {
                         "type" : "timeWindow",
                         "lowerBound": 78,
@@ -1088,7 +1178,7 @@ test('callGenerateCommandsCreateAllPlanesWithAssert', async () => {
                   },
                   [
                     {
-                      "timescope" : [
+                      "scope" : [
                         {
                           "type" : "timeAt",
                           "time": 67
@@ -1116,8 +1206,13 @@ test('callGenerateCommandsAlterAllPlanesWaypointsWithAssert', async () => {
               "instructions": [
                 {
                   "action": "TRAJECTORY_MODIFICATION",
-                  "target": "all_planes",
-                  "timescope": [
+                  "target": [
+                    {
+                      "identifier" : "ALL",
+                      "filters" : []
+                    }
+                  ],
+                  "scope": [
                     {
                       "type": "timeWindow",
                       "lowerBound": 56,
@@ -1144,7 +1239,7 @@ test('callGenerateCommandsAlterAllPlanesWaypointsWithAssert', async () => {
                   "trigger": [],
                   "assertions" : [
                     {
-                      "timescope" : [
+                      "scope" : [
                         {
                           "type" : "timeWindow",
                           "lowerBound": 78,
@@ -1156,7 +1251,7 @@ test('callGenerateCommandsAlterAllPlanesWaypointsWithAssert', async () => {
                     },
                     [
                       {
-                        "timescope" : [
+                        "scope" : [
                           {
                             "type" : "timeAt",
                             "time": 67
@@ -1183,8 +1278,13 @@ test('callGenerateCommandsAlterSpeedAllPlanesWithAssert', async () => {
           "instructions": [
             {
               "action": "SPEED_ALTERATION",
-              "target": "all_planes",
-              "timescope": [
+              "target": [
+                {
+                  "identifier" : "ALL",
+                  "filters" : []
+                }
+              ],
+              "scope": [
                 {
                   "type": "timeWindow",
                   "lowerBound": 56,
@@ -1212,7 +1312,7 @@ test('callGenerateCommandsAlterSpeedAllPlanesWithAssert', async () => {
               "trigger": [],
               "assertions" : [
                 {
-                  "timescope" : [
+                  "scope" : [
                     {
                       "type" : "timeWindow",
                       "lowerBound": 78,
@@ -1224,7 +1324,7 @@ test('callGenerateCommandsAlterSpeedAllPlanesWithAssert', async () => {
                 },
                 [
                   {
-                    "timescope" : [
+                    "scope" : [
                       {
                         "type" : "timeAt",
                         "time": 67
@@ -1251,8 +1351,13 @@ test('callGenerateCommandsSaturateAllPlanesWithAssert', async () => {
           "instructions": [
             {
               "action": "SATURATION",
-              "target": "all_planes",
-              "timescope": [
+              "target": [
+                {
+                  "identifier" : "ALL",
+                  "filters" : []
+                }
+              ],
+              "scope": [
                 {
                   "type": "timeWindow",
                   "lowerBound": 56,
@@ -1280,7 +1385,7 @@ test('callGenerateCommandsSaturateAllPlanesWithAssert', async () => {
               "trigger": [],
               "assertions" : [
                 {
-                  "timescope" : [
+                  "scope" : [
                     {
                       "type" : "timeWindow",
                       "lowerBound": 78,
@@ -1292,7 +1397,7 @@ test('callGenerateCommandsSaturateAllPlanesWithAssert', async () => {
                 },
                 [
                   {
-                    "timescope" : [
+                    "scope" : [
                       {
                         "type" : "timeAt",
                         "time": 67
@@ -1323,7 +1428,7 @@ test('callGenerateCommandsReplayPlaneWithAssert', async () => {
                 "filters" : [6, 78],
                 "recording" : 34
               }],
-              "timescope": [
+              "scope": [
                 {
                   "type": "timeWindow",
                   "lowerBound": 56,
@@ -1333,7 +1438,7 @@ test('callGenerateCommandsReplayPlaneWithAssert', async () => {
               "parameters" : [],
               "assertions" : [
                 {
-                  "timescope" : [
+                  "scope" : [
                     {
                       "type" : "timeWindow",
                       "lowerBound": 78,
@@ -1345,7 +1450,7 @@ test('callGenerateCommandsReplayPlaneWithAssert', async () => {
                 },
                 [
                   {
-                    "timescope" : [
+                    "scope" : [
                       {
                         "type" : "timeAt",
                         "time": 67
@@ -1372,8 +1477,13 @@ test('callGenerateCommandsDelayAllPlanesWithAssert', async () => {
           "instructions": [
             {
               "action": "TIMESTAMP",
-              "target": "all_planes",
-              "timescope": [
+              "target": [
+                {
+                  "identifier" : "ALL",
+                  "filters" : []
+                }
+              ],
+              "scope": [
                 {
                   "type": "timeWindow",
                   "lowerBound": 56,
@@ -1388,7 +1498,7 @@ test('callGenerateCommandsDelayAllPlanesWithAssert', async () => {
               ],
               "assertions" : [
                 {
-                  "timescope" : [
+                  "scope" : [
                     {
                       "type" : "timeWindow",
                       "lowerBound": 78,
@@ -1400,7 +1510,7 @@ test('callGenerateCommandsDelayAllPlanesWithAssert', async () => {
                 },
                 [
                   {
-                    "timescope" : [
+                    "scope" : [
                       {
                         "type" : "timeAt",
                         "time": 67
@@ -1427,8 +1537,13 @@ test('callGenerateCommandsRotateAllPlanesWithAssert', async () => {
           "instructions": [
             {
               "action": "ROTATION",
-              "target": "all_planes",
-              "timescope": [
+              "target": [
+                {
+                  "identifier" : "ALL",
+                  "filters" : []
+                }
+              ],
+              "scope": [
                 {
                   "type": "timeWindow",
                   "lowerBound": 67,
@@ -1444,7 +1559,7 @@ test('callGenerateCommandsRotateAllPlanesWithAssert', async () => {
               "trigger": [],
               "assertions" : [
                 {
-                  "timescope" : [
+                  "scope" : [
                     {
                       "type" : "timeWindow",
                       "lowerBound": 78,
@@ -1456,7 +1571,7 @@ test('callGenerateCommandsRotateAllPlanesWithAssert', async () => {
                 },
                 [
                   {
-                    "timescope" : [
+                    "scope" : [
                       {
                         "type" : "timeAt",
                         "time": 67
@@ -1483,8 +1598,13 @@ test('callGenerateCommandsCutAllPlanesWithAssert', async () => {
           "instructions": [
             {
               "action": "CUT",
-              "target": "all_planes",
-              "timescope": [
+              "target": [
+                {
+                  "identifier" : "ALL",
+                  "filters" : []
+                }
+              ],
+              "scope": [
                 {
                   "type": "timeWindow",
                   "lowerBound": 13,
@@ -1494,7 +1614,7 @@ test('callGenerateCommandsCutAllPlanesWithAssert', async () => {
               "trigger": [],
               "assertions" : [
                 {
-                  "timescope" : [
+                  "scope" : [
                     {
                       "type" : "timeWindow",
                       "lowerBound": 78,
@@ -1506,7 +1626,7 @@ test('callGenerateCommandsCutAllPlanesWithAssert', async () => {
                 },
                 [
                   {
-                    "timescope" : [
+                    "scope" : [
                       {
                         "type" : "timeAt",
                         "time": 67

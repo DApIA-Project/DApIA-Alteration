@@ -2,6 +2,7 @@ package fdit.alteration.core.incident;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlText;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Target {
 
@@ -11,6 +12,7 @@ public class Target {
     private String identifier;
 
     @JacksonXmlText()
+    @JsonProperty("value")
     private String content;
 
     public String getIdentifier() {

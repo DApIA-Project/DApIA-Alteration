@@ -3,6 +3,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.generateCommands = void 0;
 const ast_1 = require("../language-server/generated/ast");
+const VALEUR_TIME_DEFAULT = 50;
 /*type FditscenarioGenEnv = Map<string,number>;
 
 function evalExprWithEnv(e : ASTTimeScope, env: FditscenarioGenEnv) : number {
@@ -30,24 +31,38 @@ exports.generateCommands = generateCommands;
 }*/
 function generateStatements(scenar) {
     //let env : DslGenEnv = new Map<string,number>();
-    return evalScenario(scenar);
+    return { sensors: evalScenario(scenar) };
 }
 function evalScenario(scenar) {
-    if (scenar.declarations.length != 0) {
+    return {
+        sensor: [{
+                sensorType: "SBS",
+                sID: '',
+                record: '',
+                filter: '',
+                action: evalInstructions(scenar.instructions),
+            }]
+    };
+    /*if(scenar.declarations.length != 0){
         return [{
-                declarations: evalDeclarations(scenar.declarations),
-                instructions: evalInstructions(scenar.instructions)
-            }];
-    }
-    else {
+            
+            declarations : evalDeclarations(scenar.declarations),
+            instructions : evalInstructions(scenar.instructions)
+            
+        }];
+    }else{
         return [{
-                instructions: evalInstructions(scenar.instructions)
-            }];
-    }
+            instructions :
+            
+        }];
+    }*/
 }
-function evalDeclarations(decls) {
-    return decls.flatMap(i => evalDecl(i)).filter(i => i !== undefined);
-}
+/*
+function evalDeclarations(decls : ASTDeclaration[]) : (Object | undefined)[]{
+    return (decls.flatMap(i => evalDecl(i)).filter(i => i !== undefined) as Object[])
+
+    
+}*/
 var ActionType;
 (function (ActionType) {
     ActionType["deletion"] = "DELETION";
@@ -76,25 +91,26 @@ var ParametreType;
     ParametreType["spi"] = "SPI";
     ParametreType["squawk"] = "SQUAWK";
 })(ParametreType || (ParametreType = {}));
-var ParametreSpeedType;
-(function (ParametreSpeedType) {
-    ParametreSpeedType["east_west_velocity"] = "EAST_WEST_VELOCITY";
-    ParametreSpeedType["north_south_velocity"] = "NORTH_SOUTH_VELOCITY";
-})(ParametreSpeedType || (ParametreSpeedType = {}));
-var ParametreSaturationType;
-(function (ParametreSaturationType) {
-    ParametreSaturationType["icao"] = "ICAO";
-    ParametreSaturationType["aircraft_number"] = "NUMBER";
-})(ParametreSaturationType || (ParametreSaturationType = {}));
-var ParametreCreationType;
-(function (ParametreCreationType) {
-    ParametreCreationType["icao"] = "ICAO";
-    ParametreCreationType["callsign"] = "CALLSIGN";
-    ParametreCreationType["emergency"] = "EMERGENCY";
-    ParametreCreationType["spi"] = "SPI";
-    ParametreCreationType["squawk"] = "SQUAWK";
-    ParametreCreationType["alert"] = "ALERT";
-})(ParametreCreationType || (ParametreCreationType = {}));
+/*
+enum ParametreSpeedType {
+    east_west_velocity = 'EAST_WEST_VELOCITY',
+    north_south_velocity = 'NORTH_SOUTH_VELOCITY'
+}
+
+enum ParametreSaturationType {
+    icao = "ICAO",
+    aircraft_number = 'NUMBER'
+}
+
+enum ParametreCreationType {
+    icao = "ICAO",
+    callsign = 'CALLSIGN',
+    emergency = 'EMERGENCY',
+    spi = 'SPI',
+    squawk = 'SQUAWK',
+    alert = 'ALERT'
+
+}*/
 /*type AlterationSpecification = {
     scenarios: Scenario[]
 }
@@ -105,213 +121,304 @@ type Scenario {
 function evalInstructions(instrs) {
     return instrs.flatMap(i => evalInstr(i)).filter(i => i !== undefined);
 }
-function evalDecl(decl) {
-    if ((0, ast_1.isASTListDeclaration)(decl)) {
+/*
+function evalDecl(decl : ASTDeclaration) : (Object | undefined)[]{
+    if(isASTListDeclaration(decl)){
         return [{
-                constant: decl.constant,
-                listDeclaration: evalList(decl.list)
-            }];
-    }
-    else {
+            constant : decl.constant,
+            listDeclaration : evalList(decl.list)
+        }];
+    }else {
         return [{
-                constant: decl.constant,
-                rangeDeclaration: evalRange(decl.range)
-            }];
+            constant : decl.constant,
+            rangeDeclaration : evalRange(decl.range)
+        }];
     }
+    
 }
-function evalList(list) {
+
+function evalList(list : ASTList) : (Object | undefined)[]{
     return [{
-            items: list.items
-        }];
+        items : list.items
+    }];
 }
-function evalRange(range) {
+
+function evalRange(range : ASTRange) : (Object | undefined)[]{
     return [{
-            start: range.start,
-            end: range.end
-        }];
-}
+        start : range.start,
+        end : range.end
+    }];
+}*/
 function evalInstr(instr) {
     if ((0, ast_1.isASTHide)(instr)) {
-        return [{
-                action: ActionType.deletion,
+        return {
+            alterationType: ActionType.deletion,
+            scope: evalTimeScope(instr.timeScope),
+            parameters: {
                 target: evalTarget(instr.target),
-                timescope: evalTimeScope(instr.timeScope),
-                trigger: evalTrigger(instr.trigger),
-                frequency: evalFrequency(instr.frequency),
-                assertions: evalAssertions(instr.assertions)
-            }];
+            },
+        };
     }
     else if ((0, ast_1.isASTAlter)(instr)) {
-        return [{
-                action: ActionType.alteration,
+        return {
+            alterationType: ActionType.alteration,
+            scope: evalTimeScope(instr.timeScope),
+            parameters: {
                 target: evalTarget(instr.target),
-                timescope: evalTimeScope(instr.timeScope),
-                trigger: evalTrigger(instr.trigger),
-                parameters: evalParameters(instr.parameters),
-                assertions: evalAssertions(instr.assertions)
-            }];
-    }
-    else if ((0, ast_1.isASTCreate)(instr)) {
-        return [{
-                action: ActionType.creation,
-                timescope: evalTimeScope(instr.timeScope),
-                trajectory: evalTrajectory(instr.trajectory),
-                parameters: evalCreationParameters(instr.parameters),
-                assertions: evalAssertions(instr.assertions)
-            }];
-    }
-    else if ((0, ast_1.isASTTrajectory)(instr)) {
-        return [{
-                action: ActionType.trajectory,
-                target: evalTarget(instr.target),
-                timescope: evalTimeScope(instr.timeScope),
-                trajectory: evalTrajectory(instr.trajectory),
-                trigger: evalTrigger(instr.trigger),
-                assertions: evalAssertions(instr.assertions)
-            }];
-    }
-    else if ((0, ast_1.isASTAlterSpeed)(instr)) {
-        return [{
-                action: ActionType.speedAltaration,
-                target: evalTarget(instr.target),
-                timescope: evalTimeScope(instr.timeScope),
-                parameters: evalSpeedParameters(instr.parameters),
-                trigger: evalTrigger(instr.trigger),
-                assertions: evalAssertions(instr.assertions)
-            }];
-    }
-    else if ((0, ast_1.isASTSaturate)(instr)) {
-        return [{
-                action: ActionType.saturation,
-                target: evalTarget(instr.target),
-                timescope: evalTimeScope(instr.timeScope),
-                parameters: evalSaturationParameters(instr.parameters),
-                trigger: evalTrigger(instr.trigger),
-                assertions: evalAssertions(instr.assertions)
-            }];
-    }
-    else if ((0, ast_1.isASTReplay)(instr)) {
-        return [{
-                action: ActionType.replay,
-                target: evalReplayTarget(instr.target),
-                timescope: evalTimeScope(instr.timeScope),
-                parameters: evalParameters(instr.parameters),
-                assertions: evalAssertions(instr.assertions)
-            }];
-    }
-    else if ((0, ast_1.isASTDelay)(instr)) {
-        return [{
-                action: ActionType.timestamp,
-                target: evalTarget(instr.target),
-                timescope: evalTimeScope(instr.timeScope),
-                delay: evalDelayParameter(instr.delay),
-                assertions: evalAssertions(instr.assertions)
-            }];
-    }
-    else if ((0, ast_1.isASTRotate)(instr)) {
-        return [{
-                action: ActionType.rotation,
-                target: evalTarget(instr.target),
-                timescope: evalTimeScope(instr.timeScope),
-                angle: evalRotateParameter(instr.angle),
-                trigger: evalTrigger(instr.trigger),
-                assertions: evalAssertions(instr.assertions)
-            }];
+                parameter: evalParameters(instr.parameters)
+            },
+        };
     }
     else {
-        return [{
-                action: ActionType.cut,
-                target: evalTarget(instr.target),
-                timescope: evalTimeScope(instr.timeScope),
-                trigger: evalTrigger(instr.trigger),
-                assertions: evalAssertions(instr.assertions)
-            }];
+        return {
+            alterationType: ActionType.creation,
+            scope: evalTimeScope(instr.timeScope),
+            parameters: {
+                target: [{ identifier: "hexIdent", value: "TEST" }],
+            },
+        };
     }
+    /*
+    if(isASTHide(instr)){
+        return [{
+            action : ActionType.deletion,
+            target : evalTarget(instr.target),
+            scope: evalTimeScope(instr.timeScope),
+            trigger : evalTrigger(instr.trigger!),
+            frequency : evalFrequency(instr.frequency!),
+            assertions : evalAssertions(instr.assertions!)
+
+        }];
+
+    }else if(isASTAlter(instr)){
+        return [{
+            action : ActionType.alteration,
+            target : evalTarget(instr.target),
+            scope : evalTimeScope(instr.timeScope),
+            trigger : evalTrigger(instr.trigger!),
+            parameters : evalParameters(instr.parameters),
+            assertions : evalAssertions(instr.assertions!)
+            
+
+        }];
+    }else if(isASTCreate(instr)){
+        return [{
+            action : ActionType.creation,
+            scope : evalTimeScope(instr.timeScope),
+            trajectory : evalTrajectory(instr.trajectory),
+            parameters : evalCreationParameters(instr.parameters!),
+            assertions : evalAssertions(instr.assertions!)
+
+            
+
+        }];
+    }else if(isASTTrajectory(instr)){
+        return [{
+            action : ActionType.trajectory,
+            target : evalTarget(instr.target),
+            scope : evalTimeScope(instr.timeScope),
+            trajectory : evalTrajectory(instr.trajectory),
+            trigger : evalTrigger(instr.trigger!),
+            assertions : evalAssertions(instr.assertions!)
+            
+
+        }];
+    }else if(isASTAlterSpeed(instr)){
+        return [{
+            action : ActionType.speedAltaration,
+            target : evalTarget(instr.target),
+            scope : evalTimeScope(instr.timeScope),
+            parameters : evalSpeedParameters(instr.parameters),
+            trigger : evalTrigger(instr.trigger!),
+            assertions : evalAssertions(instr.assertions!)
+            
+
+        }];
+    }else if(isASTSaturate(instr)){
+        return [{
+            action : ActionType.saturation,
+            target : evalTarget(instr.target),
+            scope : evalTimeScope(instr.timeScope),
+            parameters : evalSaturationParameters(instr.parameters),
+            trigger : evalTrigger(instr.trigger!),
+            assertions : evalAssertions(instr.assertions!)
+            
+
+        }];
+    }else if(isASTReplay(instr)){
+        return [{
+            action : ActionType.replay,
+            target : evalReplayTarget(instr.target),
+            scope : evalTimeScope(instr.timeScope),
+            parameters : evalParameters(instr.parameters!),
+            assertions : evalAssertions(instr.assertions!)
+            
+
+        }];
+    }else if(isASTDelay(instr)){
+        return [{
+            action : ActionType.timestamp,
+            target : evalTarget(instr.target),
+            scope : evalTimeScope(instr.timeScope),
+            delay : evalDelayParameter(instr.delay),
+            assertions : evalAssertions(instr.assertions!)
+            
+
+        }];
+    }else if(isASTRotate(instr)){
+        return [{
+            action : ActionType.rotation,
+            target : evalTarget(instr.target),
+            scope : evalTimeScope(instr.timeScope),
+            angle : evalRotateParameter(instr.angle),
+            trigger : evalTrigger(instr.trigger!),
+            assertions : evalAssertions(instr.assertions!)
+            
+
+        }];
+    }else{
+        return [{
+            action : ActionType.cut,
+            target : evalTarget(instr.target),
+            scope : evalTimeScope(instr.timeScope),
+            trigger : evalTrigger(instr.trigger!),
+            assertions : evalAssertions(instr.assertions!)
+            
+
+        }];
+    }
+    */
 }
 function evalTimeScope(ts) {
     if ((0, ast_1.isASTAt)(ts)) {
-        return [{
-                type: "timeAt",
-                time: evalTime(ts.time)
-            }];
-    }
-    else if ((0, ast_1.isASTWindow)(ts)) {
-        return [{
-                type: "timeWindow",
-                lowerBound: evalTime(ts.start),
-                upperBound: evalTime(ts.end)
-            }];
+        return {
+            type: "timeWindow",
+            lowerBound: ts.time.realTime.content.toString(),
+            upperBound: ts.time.realTime.content.toString() + VALEUR_TIME_DEFAULT.toString()
+        };
     }
     else {
-        return [{
-                type: "timeAtFor",
-                time: evalTime(ts.time),
-                for: evalTime(ts.for)
-            }];
+        return {
+            type: "timeWindow"
+        };
     }
+    /*
+        if(isASTAt(ts)){
+            return [{
+                type : "timeAt",
+                time : evalTime(ts.time)
+            }];
+        }else if(isASTWindow(ts)){
+            return [{
+                type : "timeWindow",
+                lowerBound : evalTime(ts.start),
+                upperBound : evalTime(ts.end)
+            
+            }];
+        }else{
+            return [{
+                type : "timeAtFor",
+                time : evalTime(ts.time),
+                for : evalTime(ts.for)
+            
+            }];
+        }
+*/
 }
-function evalTrajectory(wp) {
-    return evalWayPoint(wp.waypoints);
+/*
+function evalTrajectory(wp : ASTWayPoints) : (Object)[]{
+   
+        return evalWayPoint(wp.waypoints);
+    
+   
 }
-function evalWayPoint(wp) {
-    let waypoints = evalOneWaypoint(wp[0]);
-    for (let i = 1; i < wp.length; i++) {
+
+function evalWayPoint(wp : ASTWayPoint[]) : (Object)[]{
+    let waypoints : (Object)[]=evalOneWaypoint(wp[0]);
+    for(let i = 1 ; i<wp.length;i++){
         waypoints.push(evalOneWaypoint(wp[i]));
     }
     return waypoints;
 }
-function evalOneWaypoint(wp) {
+
+function evalOneWaypoint(wp : ASTWayPoint) : (Object)[]{
     return [{
-            latitude: evalValue(wp.latitude),
-            longitude: evalValue(wp.longitude),
-            altitude: evalValue(wp.altitude),
-            time: evalTime(wp.time)
-        }];
+        latitude : evalValue(wp.latitude),
+        longitude : evalValue(wp.longitude),
+        altitude : evalValue(wp.altitude),
+        time : evalTime(wp.time)
+    }];
 }
+*/
 function evalTarget(t) {
     if ((0, ast_1.isASTAllPlanes)(t)) {
-        return "all_planes";
+        return [
+            {
+                identifier: "hexIdent",
+                value: "ALL"
+            }
+        ];
     }
     else {
-        return "plane";
+        return [
+            {
+                identifier: "hexIdent",
+                value: "TEST"
+            }
+        ];
     }
 }
-function evalTime(t) {
+/*
+function evalTime(t : ASTTime) : (number|string|ASTNumber|ASTRecordingParameterType){
+    
     return evalValue(t.realTime);
+
 }
-function evalValue(v) {
+
+function evalValue(v : ASTValue) : (number|string|ASTNumber|ASTRecordingParameterType){
     return v.content;
+    
+
+}*/
+/*
+function evalTrigger(trig : ASTTrigger) : (Object|undefined)[]{
+        if(trig != undefined){
+          return [evalValue(trig.triggername)];
+        }else{
+            return [];
+        }
+        
+  
 }
-function evalTrigger(trig) {
-    if (trig != undefined) {
-        return [evalValue(trig.triggername)];
-    }
-    else {
-        return [];
-    }
+
+function evalAssertions(assers : ASTAssertions) : (Object|undefined)[]{
+
+    if(assers != undefined){
+          return evalAssertion(assers.items);
+        }else{
+            return [];
+        }
+
+    
 }
-function evalAssertions(assers) {
-    if (assers != undefined) {
-        return evalAssertion(assers.items);
-    }
-    else {
-        return [];
-    }
-}
-function evalAssertion(asser) {
-    let assertions = evalAssert(asser[0]);
-    for (let i = 1; i < asser.length; i++) {
+
+function evalAssertion(asser : ASTAssertion[]) : (Object|undefined)[]{
+    let assertions : (Object|undefined)[]=evalAssert(asser[0]);
+    for(let i = 1 ; i<asser.length;i++){
         assertions.push(evalAssert(asser[i]));
     }
     return assertions;
+    
 }
-function evalAssert(assert) {
+
+function evalAssert(assert : ASTAssertion) : (Object|undefined)[]{
     return [{
-            timescope: evalTimeScope(assert.timeScope),
-            file: assert.file,
-            filter: assert.filter
-        }];
-}
+        scope : evalTimeScope(assert.timeScope),
+        file : assert.file,
+        filter : assert.filter
+    }];
+    
+}*/
 function evalParameters(param) {
     if (param != undefined) {
         return evalParameter(param.items);
@@ -321,42 +428,40 @@ function evalParameters(param) {
     }
 }
 function evalParameter(pm) {
-    let params = evalOneParameter(pm[0]);
-    for (let i = 1; i < pm.length; i++) {
+    let params = [];
+    for (let i = 0; i < pm.length; i++) {
         params.push(evalOneParameter(pm[i]));
     }
     return params;
 }
 function evalOneParameter(pm) {
     if ((0, ast_1.isASTParamEdit)(pm)) {
-        return [{
-                parameter: { name: evalParametreType(pm.name),
-                    value: pm.value.content
-                }
-            }];
+        return {
+            mode: "simple",
+            key: evalParametreType(pm.name),
+            value: pm.value.content.toString().replaceAll('"', ''),
+        };
     }
     else if ((0, ast_1.isASTParamOffset)(pm)) {
-        return [{
-                parameter: { name: evalParametreType(pm.name),
-                    operation: pm.offset_op,
-                    value: pm.value.content
-                }
-            }];
+        return {
+            mode: "offset",
+            key: evalParametreType(pm.name),
+            value: pm.value.content.toString().replaceAll('"', ''),
+        };
     }
     else if ((0, ast_1.isASTParamNoise)(pm)) {
-        return [{
-                parameter: { name: evalParametreType(pm.name),
-                    value: pm.value.content
-                }
-            }];
+        return {
+            mode: "noise",
+            key: evalParametreType(pm.name),
+            value: pm.value.content.toString().replaceAll('"', ''),
+        };
     }
     else {
-        return [{
-                parameter: { name: evalParametreType(pm.name),
-                    operation: pm.drift_op,
-                    value: pm.value.content
-                }
-            }];
+        return {
+            mode: "drift",
+            key: evalParametreType(pm.name),
+            value: pm.value.content.toString().replaceAll('"', ''),
+        };
     }
 }
 function evalParametreType(pm) {
@@ -391,145 +496,187 @@ function evalParametreType(pm) {
         return ParametreType.track;
     }
 }
-function evalSpeedParameters(param) {
+/*function evalSpeedParameters(param : ASTSpeedParameters) : (Object|undefined)[]{
+  
     return evalSpeedParameter(param.items);
+    
+
 }
-function evalSpeedParameter(pm) {
-    let params = evalOneSpeedParameter(pm[0]);
-    for (let i = 1; i < pm.length; i++) {
+
+function evalSpeedParameter(pm : ASTSpeedParameter[]) : (Object|undefined)[]{
+    let params : (Object|undefined)[]=evalOneSpeedParameter(pm[0]);
+    for(let i = 1 ; i<pm.length;i++){
         params.push(evalOneSpeedParameter(pm[i]));
     }
     return params;
 }
-function evalOneSpeedParameter(pm) {
+
+function evalOneSpeedParameter(pm : ASTSpeedParameter) : (Object|undefined)[]{
+    
     return [{
-            parameter: { name: evalSpeedParametreType(pm.name),
-                value: pm.value.content
+        parameter :
+            {   name : evalSpeedParametreType(pm.name),
+                value : pm.value.content
             }
-        }];
+    }];
+    
 }
-function evalSpeedParametreType(pm) {
-    if (pm.EAST_WEST_VELOCITY != undefined) {
+
+function evalSpeedParametreType(pm : ASTSpeedParameterType) : string | undefined{
+    if(pm.EAST_WEST_VELOCITY != undefined){
         return ParametreSpeedType.east_west_velocity;
-    }
-    else {
+    }else {
         return ParametreSpeedType.north_south_velocity;
     }
+
+    
 }
-function evalSaturationParameters(param) {
+
+function evalSaturationParameters(param : ASTSaturationParameters) : (Object|undefined)[]{
+    
     return evalSaturationParameter(param.items);
+    
+
 }
-function evalSaturationParameter(pm) {
-    let params = evalOneSaturationParameter(pm[0]);
-    for (let i = 1; i < pm.length; i++) {
+
+function evalSaturationParameter(pm : ASTSaturationParameter[]) : (Object|undefined)[]{
+    let params : (Object|undefined)[]=evalOneSaturationParameter(pm[0]);
+    for(let i = 1 ; i<pm.length;i++){
         params.push(evalOneSaturationParameter(pm[i]));
     }
     return params;
 }
-function evalOneSaturationParameter(pm) {
+
+function evalOneSaturationParameter(pm : ASTSaturationParameter) : (Object|undefined)[]{
+    
     return [{
-            parameter: { name: evalSaturationParametreType(pm.name),
-                value: pm.value.content
+        parameter :
+            {   name : evalSaturationParametreType(pm.name),
+                value : pm.value.content
             }
-        }];
+    }];
+    
 }
-function evalSaturationParametreType(pm) {
-    if (pm.ICAO != undefined) {
+
+function evalSaturationParametreType(pm : ASTSaturationParameterType) : string | undefined{
+    if(pm.ICAO != undefined){
         return ParametreSaturationType.icao;
-    }
-    else {
+    }else{
         return ParametreSaturationType.aircraft_number;
     }
+
+    
 }
-function evalReplayTarget(rt) {
-    if ((0, ast_1.isASTPlaneFrom)(rt)) {
+
+function evalReplayTarget(rt : ASTReplayTarget) : (Object|undefined)[]{
+    if(isASTPlaneFrom(rt)){
         return [{
-                filters: evalFilters(rt.filters),
-                recording: rt.recording.content
+            filters : evalFilters(rt.filters),
+            recording : rt.recording.content
+        }];
+    }else {
+        if(rt.filters != undefined){
+            return [{
+                filters : evalFilters(rt.filters),
+                recording : rt.recording.content
             }];
-    }
-    else {
-        if (rt.filters != undefined) {
+        }else{
             return [{
-                    filters: evalFilters(rt.filters),
-                    recording: rt.recording.content
-                }];
+                recording : rt.recording.content
+            }];
         }
-        else {
-            return [{
-                    recording: rt.recording.content
-                }];
-        }
+        
     }
+    
 }
-function evalFilters(f) {
-    return evalValues(f.filters);
+
+function evalFilters(f : ASTFilters) : (Object|undefined)[]{
+    if(f != undefined){
+        return evalValues(f.filters);
+      }else{
+          return [];
+      }
+    
 }
-function evalValues(v) {
-    let vals = [evalValue(v[0])];
-    for (let i = 1; i < v.length; i++) {
+
+function evalValues(v : ASTValue[]) : (Object|undefined)[]{
+    
+    let vals : (Object|undefined)[]=[evalValue(v[0])];
+    for(let i = 1 ; i<v.length;i++){
         vals.push(evalValue(v[i]));
     }
     return vals;
+    
 }
-function evalDelayParameter(dp) {
+
+function evalDelayParameter(dp : ASTDelayParameter) : (Object|undefined)[]{
+    
     return [{
-            value: evalTime(dp.value)
-        }];
+        value : evalTime(dp.value)
+    }];
+    
 }
-function evalRotateParameter(rp) {
+
+function evalRotateParameter(rp : ASTRotateParameter) : (Object|undefined)[]{
+    
     return [{
-            value: evalValue(rp.value)
-        }];
+        value : evalValue(rp.value)
+    }];
+    
 }
-function evalFrequency(hp) {
-    if (hp != undefined) {
+
+function evalFrequency(hp : ASTHideParameter) : string | number | ASTNumber | ASTRecordingParameterType | undefined{
+    
+    if(hp != undefined){
         return evalValue(hp.value);
-    }
-    else {
+    }else{
         return undefined;
     }
+    
 }
-function evalCreationParameters(param) {
-    if (param != undefined) {
+
+
+function evalCreationParameters(param : ASTCreationParameters) : (Object|undefined)[]{
+  
+    if(param != undefined){
         return evalCreationParameter(param.items);
-    }
-    else {
+    }else{
         return [];
     }
+    
+
 }
-function evalCreationParameter(cp) {
-    let params = evalCreationOneParameter(cp[0]);
-    for (let i = 1; i < cp.length; i++) {
+
+function evalCreationParameter(cp : ASTCreationParameter[]) : (Object|undefined)[]{
+    let params : (Object|undefined)[]=evalCreationOneParameter(cp[0]);
+    for(let i = 1 ; i<cp.length;i++){
         params.push(evalCreationOneParameter(cp[i]));
     }
     return params;
 }
-function evalCreationOneParameter(cp) {
+
+function evalCreationOneParameter(cp : ASTCreationParameter) : (Object|undefined)[]{
     return [{
-            parameter: { name: evalCreationParametreType(cp.name),
-                value: cp.value.content
+        parameter :
+            {   name : evalCreationParametreType(cp.name),
+                value : cp.value.content
             }
-        }];
+    }];
 }
-function evalCreationParametreType(cp) {
-    if (cp.ICAO != undefined) {
+
+function evalCreationParametreType(cp : ASTCreationParameterType) : string | undefined{
+    if(cp.ICAO != undefined){
         return ParametreCreationType.icao;
-    }
-    else if (cp.CALLSIGN != undefined) {
+    }else if(cp.CALLSIGN != undefined){
         return ParametreCreationType.callsign;
-    }
-    if (cp.SQUAWK != undefined) {
+    }if(cp.SQUAWK != undefined){
         return ParametreCreationType.squawk;
-    }
-    if (cp.EMERGENCY != undefined) {
+    }if(cp.EMERGENCY != undefined){
         return ParametreCreationType.emergency;
-    }
-    if (cp.ALERT != undefined) {
+    }if(cp.ALERT != undefined){
         return ParametreCreationType.alert;
-    }
-    else {
+    }else{
         return ParametreCreationType.spi;
     }
-}
+}*/ 
 //# sourceMappingURL=generator.js.map

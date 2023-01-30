@@ -17,8 +17,13 @@ describe('indexTest', () => {
               "instructions": [
                 {
                   "action": "DELETION",
-                  "target": "all_planes",
-                  "timescope": [
+                  "target": [
+                    {
+                      "identifier" : "ALL",
+                      "filters" : []
+                    }
+                  ],
+                  "scope": [
                     {
                       "type": "timeWindow",
                       "lowerBound": 56,

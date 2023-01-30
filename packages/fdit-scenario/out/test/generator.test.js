@@ -27,8 +27,13 @@ describe('generatorTest', () => {
                 "instructions": [
                     {
                         "action": "DELETION",
-                        "target": "all_planes",
-                        "timescope": [
+                        "target": [
+                            {
+                                "identifier": "ALL",
+                                "filters": []
+                            }
+                        ],
+                        "scope": [
                             {
                                 "type": "timeWindow",
                                 "lowerBound": 56,
@@ -51,8 +56,13 @@ describe('generatorTest', () => {
                 "instructions": [
                     {
                         "action": "ALTERATION",
-                        "target": "all_planes",
-                        "timescope": [
+                        "target": [
+                            {
+                                "identifier": "ALL",
+                                "filters": []
+                            }
+                        ],
+                        "scope": [
                             {
                                 "type": "timeWindow",
                                 "lowerBound": 56,
@@ -108,8 +118,13 @@ describe('generatorTest', () => {
                 "instructions": [
                     {
                         "action": "ALTERATION",
-                        "target": "all_planes",
-                        "timescope": [
+                        "target": [
+                            {
+                                "identifier": "ALL",
+                                "filters": []
+                            }
+                        ],
+                        "scope": [
                             {
                                 "type": "timeWindow",
                                 "lowerBound": 56,
@@ -181,7 +196,7 @@ describe('generatorTest', () => {
                 "instructions": [
                     {
                         "action": "CREATION",
-                        "timescope": [
+                        "scope": [
                             {
                                 "type": "timeWindow",
                                 "lowerBound": 56,
@@ -219,8 +234,13 @@ describe('generatorTest', () => {
                 "instructions": [
                     {
                         "action": "TRAJECTORY_MODIFICATION",
-                        "target": "all_planes",
-                        "timescope": [
+                        "target": [
+                            {
+                                "identifier": "ALL",
+                                "filters": []
+                            }
+                        ],
+                        "scope": [
                             {
                                 "type": "timeWindow",
                                 "lowerBound": 56,
@@ -258,8 +278,13 @@ describe('generatorTest', () => {
                 "instructions": [
                     {
                         "action": "SPEED_ALTERATION",
-                        "target": "all_planes",
-                        "timescope": [
+                        "target": [
+                            {
+                                "identifier": "ALL",
+                                "filters": []
+                            }
+                        ],
+                        "scope": [
                             {
                                 "type": "timeWindow",
                                 "lowerBound": 56,
@@ -295,8 +320,13 @@ describe('generatorTest', () => {
                 "instructions": [
                     {
                         "action": "SATURATION",
-                        "target": "all_planes",
-                        "timescope": [
+                        "target": [
+                            {
+                                "identifier": "ALL",
+                                "filters": []
+                            }
+                        ],
+                        "scope": [
                             {
                                 "type": "timeWindow",
                                 "lowerBound": 56,
@@ -336,7 +366,7 @@ describe('generatorTest', () => {
                                 "filters": [6, 78],
                                 "recording": 34
                             }],
-                        "timescope": [
+                        "scope": [
                             {
                                 "type": "timeWindow",
                                 "lowerBound": 56,
@@ -362,7 +392,7 @@ describe('generatorTest', () => {
                                 "filters": [6, 78],
                                 "recording": 34
                             }],
-                        "timescope": [
+                        "scope": [
                             {
                                 "type": "timeWindow",
                                 "lowerBound": 56,
@@ -387,7 +417,7 @@ describe('generatorTest', () => {
                         "target": [{
                                 "recording": 34
                             }],
-                        "timescope": [
+                        "scope": [
                             {
                                 "type": "timeWindow",
                                 "lowerBound": 56,
@@ -409,8 +439,13 @@ describe('generatorTest', () => {
                 "instructions": [
                     {
                         "action": "TIMESTAMP",
-                        "target": "all_planes",
-                        "timescope": [
+                        "target": [
+                            {
+                                "identifier": "ALL",
+                                "filters": []
+                            }
+                        ],
+                        "scope": [
                             {
                                 "type": "timeWindow",
                                 "lowerBound": 56,
@@ -436,8 +471,13 @@ describe('generatorTest', () => {
                 "instructions": [
                     {
                         "action": "ROTATION",
-                        "target": "all_planes",
-                        "timescope": [
+                        "target": [
+                            {
+                                "identifier": "ALL",
+                                "filters": []
+                            }
+                        ],
+                        "scope": [
                             {
                                 "type": "timeWindow",
                                 "lowerBound": 67,
@@ -464,8 +504,13 @@ describe('generatorTest', () => {
                 "instructions": [
                     {
                         "action": "CUT",
-                        "target": "all_planes",
-                        "timescope": [
+                        "target": [
+                            {
+                                "identifier": "ALL",
+                                "filters": []
+                            }
+                        ],
+                        "scope": [
                             {
                                 "type": "timeWindow",
                                 "lowerBound": 13,
@@ -496,8 +541,13 @@ describe('generatorTest', () => {
                 "instructions": [
                     {
                         "action": "CUT",
-                        "target": "all_planes",
-                        "timescope": [
+                        "target": [
+                            {
+                                "identifier": "ALL",
+                                "filters": []
+                            }
+                        ],
+                        "scope": [
                             {
                                 "type": "timeWindow",
                                 "lowerBound": 13,
@@ -530,8 +580,13 @@ describe('generatorTest', () => {
                 "instructions": [
                     {
                         "action": "CUT",
-                        "target": "all_planes",
-                        "timescope": [
+                        "target": [
+                            {
+                                "identifier": "ALL",
+                                "filters": []
+                            }
+                        ],
+                        "scope": [
                             {
                                 "type": "timeWindow",
                                 "lowerBound": 13,
@@ -553,8 +608,13 @@ describe('generatorTest', () => {
                 "instructions": [
                     {
                         "action": "DELETION",
-                        "target": "all_planes",
-                        "timescope": [
+                        "target": [
+                            {
+                                "identifier": "ALL",
+                                "filters": []
+                            }
+                        ],
+                        "scope": [
                             {
                                 "type": "timeAt",
                                 "time": 67
@@ -576,8 +636,13 @@ describe('generatorTest', () => {
                 "instructions": [
                     {
                         "action": "DELETION",
-                        "target": "all_planes",
-                        "timescope": [
+                        "target": [
+                            {
+                                "identifier": "ALL",
+                                "filters": []
+                            }
+                        ],
+                        "scope": [
                             {
                                 "type": "timeAtFor",
                                 "time": 67,
@@ -600,8 +665,13 @@ describe('generatorTest', () => {
                 "instructions": [
                     {
                         "action": "DELETION",
-                        "target": "plane",
-                        "timescope": [
+                        "target": [
+                            {
+                                "identifier": "PLANE",
+                                "filters": []
+                            }
+                        ],
+                        "scope": [
                             {
                                 "type": "timeAtFor",
                                 "time": 67,
@@ -624,8 +694,13 @@ describe('generatorTest', () => {
                 "instructions": [
                     {
                         "action": "DELETION",
-                        "target": "all_planes",
-                        "timescope": [
+                        "target": [
+                            {
+                                "identifier": "ALL",
+                                "filters": []
+                            }
+                        ],
+                        "scope": [
                             {
                                 "type": "timeAtFor",
                                 "time": 67,
@@ -650,8 +725,13 @@ describe('generatorTest', () => {
                 "instructions": [
                     {
                         "action": "DELETION",
-                        "target": "all_planes",
-                        "timescope": [
+                        "target": [
+                            {
+                                "identifier": "ALL",
+                                "filters": []
+                            }
+                        ],
+                        "scope": [
                             {
                                 "type": "timeWindow",
                                 "lowerBound": 56,
@@ -674,7 +754,7 @@ describe('generatorTest', () => {
                 "instructions": [
                     {
                         "action": "CREATION",
-                        "timescope": [
+                        "scope": [
                             {
                                 "type": "timeWindow",
                                 "lowerBound": 56,
@@ -753,7 +833,7 @@ describe('generatorTest', () => {
                                 "filters": [6, 78],
                                 "recording": 34
                             }],
-                        "timescope": [
+                        "scope": [
                             {
                                 "type": "timeWindow",
                                 "lowerBound": 56,
@@ -858,8 +938,13 @@ describe('generatorTest', () => {
                 "instructions": [
                     {
                         "action": "DELETION",
-                        "target": "all_planes",
-                        "timescope": [
+                        "target": [
+                            {
+                                "identifier": "ALL",
+                                "filters": []
+                            }
+                        ],
+                        "scope": [
                             {
                                 "type": "timeWindow",
                                 "lowerBound": 56,
@@ -870,7 +955,7 @@ describe('generatorTest', () => {
                         "frequency": undefined,
                         "assertions": [
                             {
-                                "timescope": [
+                                "scope": [
                                     {
                                         "type": "timeWindow",
                                         "lowerBound": 78,
@@ -882,7 +967,7 @@ describe('generatorTest', () => {
                             },
                             [
                                 {
-                                    "timescope": [
+                                    "scope": [
                                         {
                                             "type": "timeAt",
                                             "time": 67
@@ -906,8 +991,13 @@ describe('generatorTest', () => {
                 "instructions": [
                     {
                         "action": "ALTERATION",
-                        "target": "all_planes",
-                        "timescope": [
+                        "target": [
+                            {
+                                "identifier": "ALL",
+                                "filters": []
+                            }
+                        ],
+                        "scope": [
                             {
                                 "type": "timeWindow",
                                 "lowerBound": 56,
@@ -925,7 +1015,7 @@ describe('generatorTest', () => {
                         ],
                         "assertions": [
                             {
-                                "timescope": [
+                                "scope": [
                                     {
                                         "type": "timeWindow",
                                         "lowerBound": 78,
@@ -937,7 +1027,7 @@ describe('generatorTest', () => {
                             },
                             [
                                 {
-                                    "timescope": [
+                                    "scope": [
                                         {
                                             "type": "timeAt",
                                             "time": 67
@@ -960,8 +1050,8 @@ describe('generatorTest', () => {
             {
                 "instructions": [
                     {
-                        "action": "creation",
-                        "timescope": [
+                        "action": "CREATION",
+                        "scope": [
                             {
                                 "type": "timeWindow",
                                 "lowerBound": 56,
@@ -987,7 +1077,7 @@ describe('generatorTest', () => {
                         "parameters": [],
                         "assertions": [
                             {
-                                "timescope": [
+                                "scope": [
                                     {
                                         "type": "timeWindow",
                                         "lowerBound": 78,
@@ -999,7 +1089,7 @@ describe('generatorTest', () => {
                             },
                             [
                                 {
-                                    "timescope": [
+                                    "scope": [
                                         {
                                             "type": "timeAt",
                                             "time": 67
@@ -1023,8 +1113,13 @@ describe('generatorTest', () => {
                 "instructions": [
                     {
                         "action": "TRAJECTORY_MODIFICATION",
-                        "target": "all_planes",
-                        "timescope": [
+                        "target": [
+                            {
+                                "identifier": "ALL",
+                                "filters": []
+                            }
+                        ],
+                        "scope": [
                             {
                                 "type": "timeWindow",
                                 "lowerBound": 56,
@@ -1050,7 +1145,7 @@ describe('generatorTest', () => {
                         "trigger": [],
                         "assertions": [
                             {
-                                "timescope": [
+                                "scope": [
                                     {
                                         "type": "timeWindow",
                                         "lowerBound": 78,
@@ -1062,7 +1157,7 @@ describe('generatorTest', () => {
                             },
                             [
                                 {
-                                    "timescope": [
+                                    "scope": [
                                         {
                                             "type": "timeAt",
                                             "time": 67
@@ -1086,8 +1181,13 @@ describe('generatorTest', () => {
                 "instructions": [
                     {
                         "action": "SPEED_ALTERATION",
-                        "target": "all_planes",
-                        "timescope": [
+                        "target": [
+                            {
+                                "identifier": "ALL",
+                                "filters": []
+                            }
+                        ],
+                        "scope": [
                             {
                                 "type": "timeWindow",
                                 "lowerBound": 56,
@@ -1111,7 +1211,7 @@ describe('generatorTest', () => {
                         "trigger": [],
                         "assertions": [
                             {
-                                "timescope": [
+                                "scope": [
                                     {
                                         "type": "timeWindow",
                                         "lowerBound": 78,
@@ -1123,7 +1223,7 @@ describe('generatorTest', () => {
                             },
                             [
                                 {
-                                    "timescope": [
+                                    "scope": [
                                         {
                                             "type": "timeAt",
                                             "time": 67
@@ -1147,8 +1247,13 @@ describe('generatorTest', () => {
                 "instructions": [
                     {
                         "action": "SATURATION",
-                        "target": "all_planes",
-                        "timescope": [
+                        "target": [
+                            {
+                                "identifier": "ALL",
+                                "filters": []
+                            }
+                        ],
+                        "scope": [
                             {
                                 "type": "timeWindow",
                                 "lowerBound": 56,
@@ -1172,7 +1277,7 @@ describe('generatorTest', () => {
                         "trigger": [],
                         "assertions": [
                             {
-                                "timescope": [
+                                "scope": [
                                     {
                                         "type": "timeWindow",
                                         "lowerBound": 78,
@@ -1184,7 +1289,7 @@ describe('generatorTest', () => {
                             },
                             [
                                 {
-                                    "timescope": [
+                                    "scope": [
                                         {
                                             "type": "timeAt",
                                             "time": 67
@@ -1212,7 +1317,7 @@ describe('generatorTest', () => {
                                 "filters": [6, 78],
                                 "recording": 34
                             }],
-                        "timescope": [
+                        "scope": [
                             {
                                 "type": "timeWindow",
                                 "lowerBound": 56,
@@ -1222,7 +1327,7 @@ describe('generatorTest', () => {
                         "parameters": [],
                         "assertions": [
                             {
-                                "timescope": [
+                                "scope": [
                                     {
                                         "type": "timeWindow",
                                         "lowerBound": 78,
@@ -1234,7 +1339,7 @@ describe('generatorTest', () => {
                             },
                             [
                                 {
-                                    "timescope": [
+                                    "scope": [
                                         {
                                             "type": "timeAt",
                                             "time": 67
@@ -1258,8 +1363,13 @@ describe('generatorTest', () => {
                 "instructions": [
                     {
                         "action": "TIMESTAMP",
-                        "target": "all_planes",
-                        "timescope": [
+                        "target": [
+                            {
+                                "identifier": "ALL",
+                                "filters": []
+                            }
+                        ],
+                        "scope": [
                             {
                                 "type": "timeWindow",
                                 "lowerBound": 56,
@@ -1273,7 +1383,7 @@ describe('generatorTest', () => {
                         ],
                         "assertions": [
                             {
-                                "timescope": [
+                                "scope": [
                                     {
                                         "type": "timeWindow",
                                         "lowerBound": 78,
@@ -1285,7 +1395,7 @@ describe('generatorTest', () => {
                             },
                             [
                                 {
-                                    "timescope": [
+                                    "scope": [
                                         {
                                             "type": "timeAt",
                                             "time": 67
@@ -1309,8 +1419,13 @@ describe('generatorTest', () => {
                 "instructions": [
                     {
                         "action": "ROTATION",
-                        "target": "all_planes",
-                        "timescope": [
+                        "target": [
+                            {
+                                "identifier": "ALL",
+                                "filters": []
+                            }
+                        ],
+                        "scope": [
                             {
                                 "type": "timeWindow",
                                 "lowerBound": 67,
@@ -1325,7 +1440,7 @@ describe('generatorTest', () => {
                         "trigger": [],
                         "assertions": [
                             {
-                                "timescope": [
+                                "scope": [
                                     {
                                         "type": "timeWindow",
                                         "lowerBound": 78,
@@ -1337,7 +1452,7 @@ describe('generatorTest', () => {
                             },
                             [
                                 {
-                                    "timescope": [
+                                    "scope": [
                                         {
                                             "type": "timeAt",
                                             "time": 67
@@ -1361,8 +1476,13 @@ describe('generatorTest', () => {
                 "instructions": [
                     {
                         "action": "CUT",
-                        "target": "all_planes",
-                        "timescope": [
+                        "target": [
+                            {
+                                "identifier": "ALL",
+                                "filters": []
+                            }
+                        ],
+                        "scope": [
                             {
                                 "type": "timeWindow",
                                 "lowerBound": 13,
@@ -1372,7 +1492,7 @@ describe('generatorTest', () => {
                         "trigger": [],
                         "assertions": [
                             {
-                                "timescope": [
+                                "scope": [
                                     {
                                         "type": "timeWindow",
                                         "lowerBound": 78,
@@ -1384,7 +1504,7 @@ describe('generatorTest', () => {
                             },
                             [
                                 {
-                                    "timescope": [
+                                    "scope": [
                                         {
                                             "type": "timeAt",
                                             "time": 67

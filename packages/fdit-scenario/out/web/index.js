@@ -55,9 +55,9 @@ function parseAndGenerate(fditscenrioProgram) {
         }
         else {
             console.log(chalk_1.default.red(`Failed to parse and validate !`));
-            return Promise.resolve(["Erreur de syntaxe"]);
+            return Promise.resolve(undefined);
         }
-        const cmds = (0, generator_1.generateCommands)(scenario);
+        const cmds = { parameters: (0, generator_1.generateCommands)(scenario) };
         return Promise.resolve(cmds);
     });
 }

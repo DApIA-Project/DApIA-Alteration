@@ -1,6 +1,7 @@
 package fdit.alteration.core.incident;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Parameter {
 
@@ -28,6 +29,7 @@ public class Parameter {
     private String mode;
 
     @JacksonXmlProperty(localName = "key")
+    @JsonProperty("key")
     private String characteristic;
 
     private String value;

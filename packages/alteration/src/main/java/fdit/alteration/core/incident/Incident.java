@@ -1,11 +1,12 @@
 package fdit.alteration.core.incident;
 
+import org.codehaus.jackson.annotate.JsonProperty;
+
 import java.util.Collection;
 
 import static com.google.common.collect.Lists.newArrayList;
 
 public class Incident {
-
     private Sensors sensors;
 
     public Collection<Sensor> getSensors() {
