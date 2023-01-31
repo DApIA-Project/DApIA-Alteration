@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "serve": "node ./app.js",
     "build": "tsc -b .",
-    "dev": "nodemon app.ts"
+    "dev": "nodemon app.ts",
+    "copy:monaco-editor": "npx shx cp -fr ./node_modules/monaco-editor/min/vs/language/ ./public/monaco-editor"
   },
   "author": "",
   "license": "ISC",
@@ -18,6 +19,8 @@
     "ts-node": "^10.9.1"
   },
   "dependencies": {
-    "express": "^4.18.2"
+    "express": "^4.18.2",
+    "monaco-editor": "^0.34.1",
+    "monaco-languageclient": "^4.0.3"
   }
 }

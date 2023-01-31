@@ -56,8 +56,6 @@
         "copy:monaco-editor-wrapper": "npx shx cp -fr ./node_modules/monaco-editor-wrapper/bundle ../server/public/monaco-editor-wrapper",
         "copy:monaco-workers": "npx shx cp -fr ./node_modules/monaco-editor-workers/dist/ ../server/public/monaco-editor-workers",
         "build:web": "npm run build && npm run prepare:public && npm run build:worker && npm run copy:monaco-editor-wrapper && npm run copy:monaco-workers"
-
-        
     },
     "dependencies": {
         "chalk": "^4.1.2",
@@ -69,6 +67,7 @@
         "langium": "~1.0.0",
         "monaco-editor-workers": "^0.34.2",
         "monaco-editor-wrapper": "^1.6.0",
+        "monaco-languageclient": "^4.0.3",
         "path": "^0.12.7",
         "process": "^0.11.10",
         "socket.io": "^4.5.4",

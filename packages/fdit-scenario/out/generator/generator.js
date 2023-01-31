@@ -156,6 +156,12 @@ function evalInstr(instr) {
             scope: evalTimeScope(instr.timeScope),
             parameters: {
                 target: evalTarget(instr.target),
+                parameter: [
+                    {
+                        mode: "simple",
+                        frequency: evalFrequency(instr.frequency)
+                    }
+                ]
             },
         };
     }
@@ -623,19 +629,16 @@ function evalRotateParameter(rp : ASTRotateParameter) : (Object|undefined)[]{
         value : evalValue(rp.value)
     }];
     
-}
-
-function evalFrequency(hp : ASTHideParameter) : string | number | ASTNumber | ASTRecordingParameterType | undefined{
-    
-    if(hp != undefined){
-        return evalValue(hp.value);
-    }else{
-        return undefined;
+}*/
+function evalFrequency(hp) {
+    if (hp != undefined) {
+        return hp.value.content.toString();
     }
-    
+    else {
+        return "";
+    }
 }
-
-
+/*
 function evalCreationParameters(param : ASTCreationParameters) : (Object|undefined)[]{
   
     if(param != undefined){

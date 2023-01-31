@@ -2,7 +2,7 @@
 //import { CompositeGeneratorNode, NL, toString } from 'langium';
 
 
-import { ASTInstruction,ASTParameter, ASTParameters, ASTParameterType, ASTScenario,ASTTarget,ASTTimeScope, isASTAllPlanes, isASTAlter, isASTAt, isASTHide, isASTParamEdit, isASTParamNoise, isASTParamOffset} from "../language-server/generated/ast";
+import { ASTHideParameter, ASTInstruction,ASTParameter, ASTParameters, ASTParameterType, ASTScenario,ASTTarget,ASTTimeScope, isASTAllPlanes, isASTAlter, isASTAt, isASTHide, isASTParamEdit, isASTParamNoise, isASTParamOffset} from "../language-server/generated/ast";
 import { Action, Parameter, Parameters, Scope, Sensors, Target } from "../types";
 
 
@@ -186,7 +186,12 @@ function evalInstr(instr : ASTInstruction) : Action{
             scope : evalTimeScope(instr.timeScope),
             parameters: {
                 target : evalTarget(instr.target),
-
+                parameter : [
+                    {
+                        mode : "simple",
+                        frequency : evalFrequency(instr.frequency)
+                    }
+                ]
             },
             
         }
@@ -670,19 +675,20 @@ function evalRotateParameter(rp : ASTRotateParameter) : (Object|undefined)[]{
         value : evalValue(rp.value)
     }];
     
-}
+}*/
 
-function evalFrequency(hp : ASTHideParameter) : string | number | ASTNumber | ASTRecordingParameterType | undefined{
-    
+function evalFrequency(hp : ASTHideParameter | undefined) : string {
     if(hp != undefined){
-        return evalValue(hp.value);  
+        return hp.value.content.toString();
     }else{
-        return undefined;
+        return "";
     }
     
+    
+    
 }
 
-
+/*
 function evalCreationParameters(param : ASTCreationParameters) : (Object|undefined)[]{
   
     if(param != undefined){
