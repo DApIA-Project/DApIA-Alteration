@@ -30,7 +30,7 @@ export type FditscenarioServices = LangiumServices & FditscenarioAddedServices
 export const FditscenarioModule: Module<FditscenarioServices, PartialLangiumServices & FditscenarioAddedServices> = {
     validation: {
         FditscenarioValidator: () => new FditscenarioValidator()
-    }
+    },
 };
 
 /**
@@ -76,3 +76,4 @@ class FditscenarioCommandHandler extends AbstractExecuteCommandHandler {
         });
     }
 }
+

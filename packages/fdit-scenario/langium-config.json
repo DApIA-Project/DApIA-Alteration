@@ -6,6 +6,9 @@
         "fileExtensions": [".fditscenario"],
         "textMate": {
             "out": "syntaxes/fditscenario.tmLanguage.json"
+        },
+        "monarch": {
+            "out": "syntaxes/fditscenario.monarch.ts"
         }
     }],
     "out": "src/language-server/generated"

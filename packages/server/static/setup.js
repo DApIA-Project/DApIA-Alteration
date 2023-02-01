@@ -97,8 +97,8 @@ editorConfig.setMonarchTokensProvider({
 });
 
 editorConfig.setMainCode(`alter all_planes at 7 seconds 
-with_values ICAO = "TEST" 
-and GROUNDSPEED = "TEST"
+with_values ICAO = "39AC47" 
+and CALLSIGN = "SAMU25"
 
 `);
 
@@ -111,7 +111,7 @@ console.log(workerURL.href);
 
 const lsWorker = new Worker(workerURL.href, {
     type: 'classic',
-    name: 'fditscenario Language Server'
+    name: 'Fditscenario Language Server'
 });
 client.setWorker(lsWorker);
 
