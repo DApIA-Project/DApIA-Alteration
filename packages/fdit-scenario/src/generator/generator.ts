@@ -214,7 +214,7 @@ function evalInstr(instr : ASTInstruction) : Action{
             alterationType : ActionType.cut,
             scope : evalTimeScope(instr.timeScope),
             parameters: {
-                target : [{identifier : "SPI",value : ""}]
+                target : {identifier : "SPI",value : ""}
 
             },
             
@@ -402,22 +402,20 @@ function evalOneWaypoint(wp : ASTWayPoint) : (Object)[]{
 }
 */
 
-function evalTarget(t : ASTTarget) : Target[]{
+function evalTarget(t : ASTTarget) : Target{
     
     if(isASTAllPlanes(t)){
-        return [
-            {
-                identifier : "hexIdent",
-                value : "ALL"
-            }
-        ];
+        return {
+                    identifier : "hexIdent",
+                    value : "ALL"
+                }
+        ;
     }else{
-        return [
-            {
-                identifier : "hexIdent",
-                value : "TEST"
-            }
-        ];
+        return {
+                    identifier : "hexIdent",
+                    value : "TEST"
+                }
+        ;
     }
 
 }

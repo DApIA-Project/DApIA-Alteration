@@ -20,7 +20,7 @@ export type Sensor = {
 export type Action = {
     scope: Scope
     parameters: {
-        target: Target[]
+        target: Target
         trajectory?: Trajectory
         recordPath?: string
         parameter?: Parameter[]
