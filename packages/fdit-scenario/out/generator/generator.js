@@ -20,8 +20,8 @@ function evalExprWithEnv(e : ASTTimeScope, env: FditscenarioGenEnv) : number {
     fs.writeFileSync(generatedFilePath, JSON.stringify(result, undefined, 2));
     return generatedFilePath;
 }*/
-function generateCommands(scenario) {
-    return generateStatements(scenario);
+function generateCommands(scenario, fileName) {
+    return generateStatements(scenario, fileName);
 }
 exports.generateCommands = generateCommands;
 /*function generateStatements2(instr: ASTInstruction[]): Object[] {
@@ -29,16 +29,16 @@ exports.generateCommands = generateCommands;
     return instr.flatMap(i => evalInstr(i)).filter(i => i !== undefined) as Object[];
     
 }*/
-function generateStatements(scenar) {
+function generateStatements(scenar, fileName) {
     //let env : DslGenEnv = new Map<string,number>();
-    return { sensors: evalScenario(scenar) };
+    return { sensors: evalScenario(scenar, fileName) };
 }
-function evalScenario(scenar) {
+function evalScenario(scenar, fileName) {
     return {
         sensor: [{
                 sensorType: "SBS",
                 sID: '',
-                record: '',
+                record: '../../../server/src/' + fileName,
                 filter: '',
                 action: evalInstructions(scenar.instructions),
             }]
@@ -174,13 +174,16 @@ function evalInstr(instr) {
                 parameter: evalParameters(instr.parameters)
             },
         };
+        /*}else if(isASTCreate(instr)){
+        }else if(isASTTrajectory(instr)){
+        }else if(isASTAlterSpeed(instr)){*/
     }
     else {
         return {
-            alterationType: ActionType.creation,
+            alterationType: ActionType.cut,
             scope: evalTimeScope(instr.timeScope),
             parameters: {
-                target: [{ identifier: "hexIdent", value: "TEST" }],
+                target: [{ identifier: "SPI", value: "" }]
             },
         };
     }
@@ -445,28 +448,28 @@ function evalOneParameter(pm) {
         return {
             mode: "simple",
             key: evalParametreType(pm.name),
-            value: pm.value.content.toString().replaceAll('"', ''),
+            value: pm.value.content.toString().replace('"', ''),
         };
     }
     else if ((0, ast_1.isASTParamOffset)(pm)) {
         return {
             mode: "offset",
             key: evalParametreType(pm.name),
-            value: pm.value.content.toString().replaceAll('"', ''),
+            value: pm.value.content.toString().replace('"', ''),
         };
     }
     else if ((0, ast_1.isASTParamNoise)(pm)) {
         return {
             mode: "noise",
             key: evalParametreType(pm.name),
-            value: pm.value.content.toString().replaceAll('"', ''),
+            value: pm.value.content.toString().replace('"', ''),
         };
     }
     else {
         return {
             mode: "drift",
             key: evalParametreType(pm.name),
-            value: pm.value.content.toString().replaceAll('"', ''),
+            value: pm.value.content.toString().replace('"', ''),
         };
     }
 }

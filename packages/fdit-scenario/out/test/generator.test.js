@@ -17,12 +17,12 @@ describe('generatorTest', () => {
     test('callGenerateCommandsEmpty', () => __awaiter(void 0, void 0, void 0, function* () {
         const services = (0, fditscenario_module_1.createFditscenarioServices)(langium_1.EmptyFileSystem).Fditscenario;
         const scenario = (0, web_1.extractAstNodeFromString)("", services);
-        expect((0, generator_1.generateCommands)(yield scenario)).toStrictEqual([{ "instructions": [], },]);
+        expect((0, generator_1.generateCommands)(yield scenario, "")).toStrictEqual([{ "instructions": [], },]);
     }));
     test('callGenerateCommandsHideAllPlanes', () => __awaiter(void 0, void 0, void 0, function* () {
         const services = (0, fditscenario_module_1.createFditscenarioServices)(langium_1.EmptyFileSystem).Fditscenario;
         const scenario = (0, web_1.extractAstNodeFromString)("hide all_planes from 56 seconds until 90 seconds", services);
-        expect((0, generator_1.generateCommands)(yield scenario)).toStrictEqual([
+        expect((0, generator_1.generateCommands)(yield scenario, "")).toStrictEqual([
             {
                 "instructions": [
                     {
@@ -51,7 +51,7 @@ describe('generatorTest', () => {
     test('callGenerateCommandsAlterAllPlanesValues', () => __awaiter(void 0, void 0, void 0, function* () {
         const services = (0, fditscenario_module_1.createFditscenarioServices)(langium_1.EmptyFileSystem).Fditscenario;
         const scenario = (0, web_1.extractAstNodeFromString)("alter all_planes from 56 seconds until 90 seconds with_values ALTITUDE = 90000 and LATITUDE -= 456 and ICAO *= 900 and TRACK ++= 800", services);
-        expect((0, generator_1.generateCommands)(yield scenario)).toStrictEqual([
+        expect((0, generator_1.generateCommands)(yield scenario, "")).toStrictEqual([
             {
                 "instructions": [
                     {
@@ -113,7 +113,7 @@ describe('generatorTest', () => {
     test('callGenerateCommandsAlterAllPlanesValuesOther', () => __awaiter(void 0, void 0, void 0, function* () {
         const services = (0, fditscenario_module_1.createFditscenarioServices)(langium_1.EmptyFileSystem).Fditscenario;
         const scenario = (0, web_1.extractAstNodeFromString)("alter all_planes from 56 seconds until 90 seconds with_values CALLSIGN = 90000 and EMERGENCY -= 456 and GROUNDSPEED *= 900 and LONGITUDE ++= 800 and SPI = 67 and SQUAWK = 78", services);
-        expect((0, generator_1.generateCommands)(yield scenario)).toStrictEqual([
+        expect((0, generator_1.generateCommands)(yield scenario, "")).toStrictEqual([
             {
                 "instructions": [
                     {
@@ -191,7 +191,7 @@ describe('generatorTest', () => {
     test('callGenerateCommandsCreateAllPlanes', () => __awaiter(void 0, void 0, void 0, function* () {
         const services = (0, fditscenario_module_1.createFditscenarioServices)(langium_1.EmptyFileSystem).Fditscenario;
         const scenario = (0, web_1.extractAstNodeFromString)("create from 56 seconds until 89 seconds with_waypoints [(45,78) with_altitude 90000 at 78 seconds, (12,70) with_altitude 7000 at 99 seconds]", services);
-        expect((0, generator_1.generateCommands)(yield scenario)).toStrictEqual([
+        expect((0, generator_1.generateCommands)(yield scenario, "")).toStrictEqual([
             {
                 "instructions": [
                     {
@@ -229,7 +229,7 @@ describe('generatorTest', () => {
     test('callGenerateCommandsAlterAllPlanesWaypoints', () => __awaiter(void 0, void 0, void 0, function* () {
         const services = (0, fditscenario_module_1.createFditscenarioServices)(langium_1.EmptyFileSystem).Fditscenario;
         const scenario = (0, web_1.extractAstNodeFromString)("alter all_planes from 56 seconds until 90 seconds with_waypoints [(45,78) with_altitude 90000 at 78 seconds, (12,70) with_altitude 7000 at 99 seconds]", services);
-        expect((0, generator_1.generateCommands)(yield scenario)).toStrictEqual([
+        expect((0, generator_1.generateCommands)(yield scenario, "")).toStrictEqual([
             {
                 "instructions": [
                     {
@@ -273,7 +273,7 @@ describe('generatorTest', () => {
     test('callGenerateCommandsAlterSpeedAllPlanes', () => __awaiter(void 0, void 0, void 0, function* () {
         const services = (0, fditscenario_module_1.createFditscenarioServices)(langium_1.EmptyFileSystem).Fditscenario;
         const scenario = (0, web_1.extractAstNodeFromString)("alter_speed all_planes from 56 seconds until 90 seconds with_values EAST_WEST_VELOCITY = 78 and NORTH_SOUTH_VELOCITY = 45", services);
-        expect((0, generator_1.generateCommands)(yield scenario)).toStrictEqual([
+        expect((0, generator_1.generateCommands)(yield scenario, "")).toStrictEqual([
             {
                 "instructions": [
                     {
@@ -315,7 +315,7 @@ describe('generatorTest', () => {
     test('callGenerateCommandsSaturateAllPlanes', () => __awaiter(void 0, void 0, void 0, function* () {
         const services = (0, fditscenario_module_1.createFditscenarioServices)(langium_1.EmptyFileSystem).Fditscenario;
         const scenario = (0, web_1.extractAstNodeFromString)("saturate all_planes from 56 seconds until 90 seconds with_values ICAO = 78 and NUMBER = 45", services);
-        expect((0, generator_1.generateCommands)(yield scenario)).toStrictEqual([
+        expect((0, generator_1.generateCommands)(yield scenario, "")).toStrictEqual([
             {
                 "instructions": [
                     {
@@ -357,7 +357,7 @@ describe('generatorTest', () => {
     test('callGenerateCommandsReplayPlane', () => __awaiter(void 0, void 0, void 0, function* () {
         const services = (0, fditscenario_module_1.createFditscenarioServices)(langium_1.EmptyFileSystem).Fditscenario;
         const scenario = (0, web_1.extractAstNodeFromString)("replay plane satisfying 6 and 78 from_recording 34 from 56 seconds until 90 seconds", services);
-        expect((0, generator_1.generateCommands)(yield scenario)).toStrictEqual([
+        expect((0, generator_1.generateCommands)(yield scenario, "")).toStrictEqual([
             {
                 "instructions": [
                     {
@@ -383,7 +383,7 @@ describe('generatorTest', () => {
     test('callGenerateCommandsReplayAllPlaneWithFilter', () => __awaiter(void 0, void 0, void 0, function* () {
         const services = (0, fditscenario_module_1.createFditscenarioServices)(langium_1.EmptyFileSystem).Fditscenario;
         const scenario = (0, web_1.extractAstNodeFromString)("replay all_planes satisfying 6 and 78 from_recording 34 from 56 seconds until 90 seconds", services);
-        expect((0, generator_1.generateCommands)(yield scenario)).toStrictEqual([
+        expect((0, generator_1.generateCommands)(yield scenario, "")).toStrictEqual([
             {
                 "instructions": [
                     {
@@ -409,7 +409,7 @@ describe('generatorTest', () => {
     test('callGenerateCommandsReplayAllPlaneWithoutFilter', () => __awaiter(void 0, void 0, void 0, function* () {
         const services = (0, fditscenario_module_1.createFditscenarioServices)(langium_1.EmptyFileSystem).Fditscenario;
         const scenario = (0, web_1.extractAstNodeFromString)("replay all_planes from_recording 34 from 56 seconds until 90 seconds", services);
-        expect((0, generator_1.generateCommands)(yield scenario)).toStrictEqual([
+        expect((0, generator_1.generateCommands)(yield scenario, "")).toStrictEqual([
             {
                 "instructions": [
                     {
@@ -434,7 +434,7 @@ describe('generatorTest', () => {
     test('callGenerateCommandsDelayAllPlanes', () => __awaiter(void 0, void 0, void 0, function* () {
         const services = (0, fditscenario_module_1.createFditscenarioServices)(langium_1.EmptyFileSystem).Fditscenario;
         const scenario = (0, web_1.extractAstNodeFromString)("delay all_planes from 56 seconds until 90 seconds with_delay 55 seconds", services);
-        expect((0, generator_1.generateCommands)(yield scenario)).toStrictEqual([
+        expect((0, generator_1.generateCommands)(yield scenario, "")).toStrictEqual([
             {
                 "instructions": [
                     {
@@ -466,7 +466,7 @@ describe('generatorTest', () => {
     test('callGenerateCommandsRotateAllPlanes', () => __awaiter(void 0, void 0, void 0, function* () {
         const services = (0, fditscenario_module_1.createFditscenarioServices)(langium_1.EmptyFileSystem).Fditscenario;
         const scenario = (0, web_1.extractAstNodeFromString)("rotate all_planes from 67 seconds until 99 seconds with_angle 90", services);
-        expect((0, generator_1.generateCommands)(yield scenario)).toStrictEqual([
+        expect((0, generator_1.generateCommands)(yield scenario, "")).toStrictEqual([
             {
                 "instructions": [
                     {
@@ -499,7 +499,7 @@ describe('generatorTest', () => {
     test('callGenerateCommandsCutAllPlanes', () => __awaiter(void 0, void 0, void 0, function* () {
         const services = (0, fditscenario_module_1.createFditscenarioServices)(langium_1.EmptyFileSystem).Fditscenario;
         const scenario = (0, web_1.extractAstNodeFromString)("cut all_planes from 13 seconds until 88 seconds", services);
-        expect((0, generator_1.generateCommands)(yield scenario)).toStrictEqual([
+        expect((0, generator_1.generateCommands)(yield scenario, "")).toStrictEqual([
             {
                 "instructions": [
                     {
@@ -527,7 +527,7 @@ describe('generatorTest', () => {
     test('callGenerateCommandsDeclarationRange', () => __awaiter(void 0, void 0, void 0, function* () {
         const services = (0, fditscenario_module_1.createFditscenarioServices)(langium_1.EmptyFileSystem).Fditscenario;
         const scenario = (0, web_1.extractAstNodeFromString)("let $test = [2,8], cut all_planes from 13 seconds until 88 seconds", services);
-        expect((0, generator_1.generateCommands)(yield scenario)).toStrictEqual([
+        expect((0, generator_1.generateCommands)(yield scenario, "")).toStrictEqual([
             {
                 "declarations": [{
                         "constant": "$test",
@@ -564,7 +564,7 @@ describe('generatorTest', () => {
     test('callGenerateCommandsDeclarationList', () => __awaiter(void 0, void 0, void 0, function* () {
         const services = (0, fditscenario_module_1.createFditscenarioServices)(langium_1.EmptyFileSystem).Fditscenario;
         const scenario = (0, web_1.extractAstNodeFromString)("let $test = {\"salut\",\"ola\"}, cut all_planes from 13 seconds until 88 seconds", services);
-        expect((0, generator_1.generateCommands)(yield scenario)).toStrictEqual([
+        expect((0, generator_1.generateCommands)(yield scenario, "")).toStrictEqual([
             {
                 "declarations": [{
                         "constant": "$test",
@@ -603,7 +603,7 @@ describe('generatorTest', () => {
     test('callGenerateCommandsTimescopeAt', () => __awaiter(void 0, void 0, void 0, function* () {
         const services = (0, fditscenario_module_1.createFditscenarioServices)(langium_1.EmptyFileSystem).Fditscenario;
         const scenario = (0, web_1.extractAstNodeFromString)("hide all_planes at 67 seconds", services);
-        expect((0, generator_1.generateCommands)(yield scenario)).toStrictEqual([
+        expect((0, generator_1.generateCommands)(yield scenario, "")).toStrictEqual([
             {
                 "instructions": [
                     {
@@ -631,7 +631,7 @@ describe('generatorTest', () => {
     test('callGenerateCommandsTimescopeAtFor', () => __awaiter(void 0, void 0, void 0, function* () {
         const services = (0, fditscenario_module_1.createFditscenarioServices)(langium_1.EmptyFileSystem).Fditscenario;
         const scenario = (0, web_1.extractAstNodeFromString)("hide all_planes at 67 seconds for 89 seconds", services);
-        expect((0, generator_1.generateCommands)(yield scenario)).toStrictEqual([
+        expect((0, generator_1.generateCommands)(yield scenario, "")).toStrictEqual([
             {
                 "instructions": [
                     {
@@ -660,7 +660,7 @@ describe('generatorTest', () => {
     test('callGenerateCommandsTargetPlane', () => __awaiter(void 0, void 0, void 0, function* () {
         const services = (0, fditscenario_module_1.createFditscenarioServices)(langium_1.EmptyFileSystem).Fditscenario;
         const scenario = (0, web_1.extractAstNodeFromString)("hide plane at 67 seconds for 89 seconds", services);
-        expect((0, generator_1.generateCommands)(yield scenario)).toStrictEqual([
+        expect((0, generator_1.generateCommands)(yield scenario, "")).toStrictEqual([
             {
                 "instructions": [
                     {
@@ -689,7 +689,7 @@ describe('generatorTest', () => {
     test('callGenerateCommandsTrigger', () => __awaiter(void 0, void 0, void 0, function* () {
         const services = (0, fditscenario_module_1.createFditscenarioServices)(langium_1.EmptyFileSystem).Fditscenario;
         const scenario = (0, web_1.extractAstNodeFromString)("hide all_planes at 67 seconds for 89 seconds triggered_by 78", services);
-        expect((0, generator_1.generateCommands)(yield scenario)).toStrictEqual([
+        expect((0, generator_1.generateCommands)(yield scenario, "")).toStrictEqual([
             {
                 "instructions": [
                     {
@@ -720,7 +720,7 @@ describe('generatorTest', () => {
     test('callGenerateCommandsHideWithFrequency', () => __awaiter(void 0, void 0, void 0, function* () {
         const services = (0, fditscenario_module_1.createFditscenarioServices)(langium_1.EmptyFileSystem).Fditscenario;
         const scenario = (0, web_1.extractAstNodeFromString)("hide all_planes from 56 seconds until 89 seconds with_frequency 89", services);
-        expect((0, generator_1.generateCommands)(yield scenario)).toStrictEqual([
+        expect((0, generator_1.generateCommands)(yield scenario, "")).toStrictEqual([
             {
                 "instructions": [
                     {
@@ -749,7 +749,7 @@ describe('generatorTest', () => {
     test('callGenerateCommandsCreateWithParameters', () => __awaiter(void 0, void 0, void 0, function* () {
         const services = (0, fditscenario_module_1.createFditscenarioServices)(langium_1.EmptyFileSystem).Fditscenario;
         const scenario = (0, web_1.extractAstNodeFromString)("create from 56 seconds until 89 seconds with_waypoints [(45,78) with_altitude 90000 at 78 seconds, (12,70) with_altitude 7000 at 99 seconds] with_values ICAO = 8 and CALLSIGN = 44 and SQUAWK = 900 and EMERGENCY = 786 and ALERT = 56 and SPI = 1234", services);
-        expect((0, generator_1.generateCommands)(yield scenario)).toStrictEqual([
+        expect((0, generator_1.generateCommands)(yield scenario, "")).toStrictEqual([
             {
                 "instructions": [
                     {
@@ -824,7 +824,7 @@ describe('generatorTest', () => {
     test('callGenerateCommandsReplayPlaneWithParameters', () => __awaiter(void 0, void 0, void 0, function* () {
         const services = (0, fditscenario_module_1.createFditscenarioServices)(langium_1.EmptyFileSystem).Fditscenario;
         const scenario = (0, web_1.extractAstNodeFromString)("replay plane satisfying 6 and 78 from_recording 34 from 56 seconds until 90 seconds with_values ALTITUDE = 90000 and LATITUDE -= 456 and ICAO *= 900 and TRACK ++= 800 and CALLSIGN = 90000 and EMERGENCY -= 456 and GROUNDSPEED *= 900 and LONGITUDE ++= 800 and SPI = 67 and SQUAWK = 78", services);
-        expect((0, generator_1.generateCommands)(yield scenario)).toStrictEqual([
+        expect((0, generator_1.generateCommands)(yield scenario, "")).toStrictEqual([
             {
                 "instructions": [
                     {
@@ -933,7 +933,7 @@ describe('generatorTest', () => {
     test('callGenerateCommandsHideWithAssert', () => __awaiter(void 0, void 0, void 0, function* () {
         const services = (0, fditscenario_module_1.createFditscenarioServices)(langium_1.EmptyFileSystem).Fditscenario;
         const scenario = (0, web_1.extractAstNodeFromString)("hide all_planes from 56 seconds until 89 seconds assert from 78 seconds until 90 seconds groovy_file \"test\" filter \"monFiltre\" and assert at 67 seconds groovy_file \"test2\"", services);
-        expect((0, generator_1.generateCommands)(yield scenario)).toStrictEqual([
+        expect((0, generator_1.generateCommands)(yield scenario, "")).toStrictEqual([
             {
                 "instructions": [
                     {
@@ -986,7 +986,7 @@ describe('generatorTest', () => {
     test('callGenerateCommandsAlterAllPlanesValuesWithAssert', () => __awaiter(void 0, void 0, void 0, function* () {
         const services = (0, fditscenario_module_1.createFditscenarioServices)(langium_1.EmptyFileSystem).Fditscenario;
         const scenario = (0, web_1.extractAstNodeFromString)("alter all_planes from 56 seconds until 90 seconds with_values ALTITUDE = 90000 assert from 78 seconds until 90 seconds groovy_file \"test\" filter \"monFiltre\" and assert at 67 seconds groovy_file \"test2\"", services);
-        expect((0, generator_1.generateCommands)(yield scenario)).toStrictEqual([
+        expect((0, generator_1.generateCommands)(yield scenario, "")).toStrictEqual([
             {
                 "instructions": [
                     {
@@ -1046,7 +1046,7 @@ describe('generatorTest', () => {
     test('callGenerateCommandsCreateAllPlanesWithAssert', () => __awaiter(void 0, void 0, void 0, function* () {
         const services = (0, fditscenario_module_1.createFditscenarioServices)(langium_1.EmptyFileSystem).Fditscenario;
         const scenario = (0, web_1.extractAstNodeFromString)("create from 56 seconds until 89 seconds with_waypoints [(45,78) with_altitude 90000 at 78 seconds, (12,70) with_altitude 7000 at 99 seconds] assert from 78 seconds until 90 seconds groovy_file \"test\" filter \"monFiltre\" and assert at 67 seconds groovy_file \"test2\"", services);
-        expect((0, generator_1.generateCommands)(yield scenario)).toStrictEqual([
+        expect((0, generator_1.generateCommands)(yield scenario, "")).toStrictEqual([
             {
                 "instructions": [
                     {
@@ -1108,7 +1108,7 @@ describe('generatorTest', () => {
     test('callGenerateCommandsAlterAllPlanesWaypointsWithAssert', () => __awaiter(void 0, void 0, void 0, function* () {
         const services = (0, fditscenario_module_1.createFditscenarioServices)(langium_1.EmptyFileSystem).Fditscenario;
         const scenario = (0, web_1.extractAstNodeFromString)("alter all_planes from 56 seconds until 90 seconds with_waypoints [(45,78) with_altitude 90000 at 78 seconds, (12,70) with_altitude 7000 at 99 seconds] assert from 78 seconds until 90 seconds groovy_file \"test\" filter \"monFiltre\" and assert at 67 seconds groovy_file \"test2\"", services);
-        expect((0, generator_1.generateCommands)(yield scenario)).toStrictEqual([
+        expect((0, generator_1.generateCommands)(yield scenario, "")).toStrictEqual([
             {
                 "instructions": [
                     {
@@ -1176,7 +1176,7 @@ describe('generatorTest', () => {
     test('callGenerateCommandsAlterSpeedAllPlanesWithAssert', () => __awaiter(void 0, void 0, void 0, function* () {
         const services = (0, fditscenario_module_1.createFditscenarioServices)(langium_1.EmptyFileSystem).Fditscenario;
         const scenario = (0, web_1.extractAstNodeFromString)("alter_speed all_planes from 56 seconds until 90 seconds with_values EAST_WEST_VELOCITY = 78 and NORTH_SOUTH_VELOCITY = 45 assert from 78 seconds until 90 seconds groovy_file \"test\" filter \"monFiltre\" and assert at 67 seconds groovy_file \"test2\"", services);
-        expect((0, generator_1.generateCommands)(yield scenario)).toStrictEqual([
+        expect((0, generator_1.generateCommands)(yield scenario, "")).toStrictEqual([
             {
                 "instructions": [
                     {
@@ -1242,7 +1242,7 @@ describe('generatorTest', () => {
     test('callGenerateCommandsSaturateAllPlanesWithAssert', () => __awaiter(void 0, void 0, void 0, function* () {
         const services = (0, fditscenario_module_1.createFditscenarioServices)(langium_1.EmptyFileSystem).Fditscenario;
         const scenario = (0, web_1.extractAstNodeFromString)("saturate all_planes from 56 seconds until 90 seconds with_values ICAO = 78 and NUMBER = 45 assert from 78 seconds until 90 seconds groovy_file \"test\" filter \"monFiltre\" and assert at 67 seconds groovy_file \"test2\"", services);
-        expect((0, generator_1.generateCommands)(yield scenario)).toStrictEqual([
+        expect((0, generator_1.generateCommands)(yield scenario, "")).toStrictEqual([
             {
                 "instructions": [
                     {
@@ -1308,7 +1308,7 @@ describe('generatorTest', () => {
     test('callGenerateCommandsReplayPlaneWithAssert', () => __awaiter(void 0, void 0, void 0, function* () {
         const services = (0, fditscenario_module_1.createFditscenarioServices)(langium_1.EmptyFileSystem).Fditscenario;
         const scenario = (0, web_1.extractAstNodeFromString)("replay plane satisfying 6 and 78 from_recording 34 from 56 seconds until 90 seconds assert from 78 seconds until 90 seconds groovy_file \"test\" filter \"monFiltre\" and assert at 67 seconds groovy_file \"test2\"", services);
-        expect((0, generator_1.generateCommands)(yield scenario)).toStrictEqual([
+        expect((0, generator_1.generateCommands)(yield scenario, "")).toStrictEqual([
             {
                 "instructions": [
                     {
@@ -1358,7 +1358,7 @@ describe('generatorTest', () => {
     test('callGenerateCommandsDelayAllPlanesWithAssert', () => __awaiter(void 0, void 0, void 0, function* () {
         const services = (0, fditscenario_module_1.createFditscenarioServices)(langium_1.EmptyFileSystem).Fditscenario;
         const scenario = (0, web_1.extractAstNodeFromString)("delay all_planes from 56 seconds until 90 seconds with_delay 55 seconds assert from 78 seconds until 90 seconds groovy_file \"test\" filter \"monFiltre\" and assert at 67 seconds groovy_file \"test2\"", services);
-        expect((0, generator_1.generateCommands)(yield scenario)).toStrictEqual([
+        expect((0, generator_1.generateCommands)(yield scenario, "")).toStrictEqual([
             {
                 "instructions": [
                     {
@@ -1414,7 +1414,7 @@ describe('generatorTest', () => {
     test('callGenerateCommandsRotateAllPlanesWithAssert', () => __awaiter(void 0, void 0, void 0, function* () {
         const services = (0, fditscenario_module_1.createFditscenarioServices)(langium_1.EmptyFileSystem).Fditscenario;
         const scenario = (0, web_1.extractAstNodeFromString)("rotate all_planes from 67 seconds until 99 seconds with_angle 90 assert from 78 seconds until 90 seconds groovy_file \"test\" filter \"monFiltre\" and assert at 67 seconds groovy_file \"test2\"", services);
-        expect((0, generator_1.generateCommands)(yield scenario)).toStrictEqual([
+        expect((0, generator_1.generateCommands)(yield scenario, "")).toStrictEqual([
             {
                 "instructions": [
                     {
@@ -1471,7 +1471,7 @@ describe('generatorTest', () => {
     test('callGenerateCommandsCutAllPlanesWithAssert', () => __awaiter(void 0, void 0, void 0, function* () {
         const services = (0, fditscenario_module_1.createFditscenarioServices)(langium_1.EmptyFileSystem).Fditscenario;
         const scenario = (0, web_1.extractAstNodeFromString)("cut all_planes from 13 seconds until 88 seconds  assert from 78 seconds until 90 seconds groovy_file \"test\" filter \"monFiltre\" and assert at 67 seconds groovy_file \"test2\"", services);
-        expect((0, generator_1.generateCommands)(yield scenario)).toStrictEqual([
+        expect((0, generator_1.generateCommands)(yield scenario, "")).toStrictEqual([
             {
                 "instructions": [
                     {

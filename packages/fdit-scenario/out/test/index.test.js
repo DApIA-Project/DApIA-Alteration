@@ -15,7 +15,7 @@ describe('indexTest', () => {
         const value = "hide all_planes from 56 seconds until 90 seconds";
         // parse & generate commands for drawing an image
         // execute custom LSP command, and receive the response
-        const cmds = yield (0, web_1.parseAndGenerate)(value);
+        const cmds = yield (0, web_1.parseAndGenerate)(value, "", "", "");
         const resJSONString = JSON.stringify(cmds, undefined, 2);
         const resJson = JSON.parse(resJSONString);
         expect(resJson).toStrictEqual([
@@ -47,7 +47,7 @@ describe('indexTest', () => {
         const value = "hide all_planes from seconds until 90 sconds";
         // parse & generate commands for drawing an image
         // execute custom LSP command, and receive the response
-        const cmds = yield (0, web_1.parseAndGenerate)(value);
+        const cmds = yield (0, web_1.parseAndGenerate)(value, "", "", "");
         const resJSONString = JSON.stringify(cmds, undefined, 2);
         const resJson = JSON.parse(resJSONString);
         expect(resJson).toStrictEqual([

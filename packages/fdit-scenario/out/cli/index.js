@@ -27,7 +27,7 @@ const generateAction = (fileName, opts) => __awaiter(void 0, void 0, void 0, fun
     const services = (0, fditscenario_module_1.createFditscenarioServices)(node_1.NodeFileSystem).Fditscenario;
     const scenario = yield (0, cli_util_1.extractAstNode)(fileName, services);
     // invoke generator to get commands
-    const cmds = (0, generator_1.generateCommands)(scenario);
+    const cmds = (0, generator_1.generateCommands)(scenario, "");
     // handle file related functionality here now
     const data = (0, cli_util_2.extractDestinationAndName)(fileName, opts.destination);
     const generatedFilePath = `${path_1.default.join(data.destination, data.name)}.json`;

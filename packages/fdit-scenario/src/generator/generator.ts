@@ -2,7 +2,7 @@
 //import { CompositeGeneratorNode, NL, toString } from 'langium';
 
 
-import { ASTHideParameter, ASTInstruction,ASTParameter, ASTParameters, ASTParameterType, ASTScenario,ASTTarget,ASTTimeScope, isASTAllPlanes, isASTAlter, isASTAt, isASTHide, isASTParamEdit, isASTParamNoise, isASTParamOffset} from "../language-server/generated/ast";
+import { ASTHideParameter, ASTInstruction,ASTParameter, ASTParameters, ASTParameterType, ASTScenario,ASTTarget,ASTTimeScope, isASTAllPlanes, isASTAlter,  isASTAt,  isASTHide, isASTParamEdit, isASTParamNoise, isASTParamOffset} from "../language-server/generated/ast";
 import { Action, Parameter, Parameters, Scope, Sensors, Target } from "../types";
 
 
@@ -27,8 +27,8 @@ function evalExprWithEnv(e : ASTTimeScope, env: FditscenarioGenEnv) : number {
     return generatedFilePath;
 }*/
 
-export function generateCommands(scenario: ASTScenario): Parameters | undefined {
-    return generateStatements(scenario);
+export function generateCommands(scenario: ASTScenario, fileName : string): Parameters | undefined {
+    return generateStatements(scenario, fileName);
 }
 
 /*function generateStatements2(instr: ASTInstruction[]): Object[] {
@@ -37,20 +37,20 @@ export function generateCommands(scenario: ASTScenario): Parameters | undefined 
     
 }*/
 
-function generateStatements(scenar: ASTScenario):  Parameters | undefined {
+function generateStatements(scenar: ASTScenario, fileName : string):  Parameters | undefined {
     //let env : DslGenEnv = new Map<string,number>();
     
-    return {sensors : evalScenario(scenar)};
+    return {sensors : evalScenario(scenar, fileName)};
     
 }
 
-function evalScenario(scenar : ASTScenario) : Sensors{
+function evalScenario(scenar : ASTScenario, fileName : string) : Sensors{
         
         return {
             sensor: [{
                 sensorType: "SBS",
                 sID: '',
-                record: '',
+                record: '../../../server/src/'+fileName,
                 filter: '',
                 action: evalInstructions(scenar.instructions),
                 
@@ -206,12 +206,15 @@ function evalInstr(instr : ASTInstruction) : Action{
             },
             
         }
+    /*}else if(isASTCreate(instr)){
+    }else if(isASTTrajectory(instr)){
+    }else if(isASTAlterSpeed(instr)){*/
     }else{
         return {
-            alterationType : ActionType.creation,
+            alterationType : ActionType.cut,
             scope : evalTimeScope(instr.timeScope),
             parameters: {
-                target : [{identifier : "hexIdent",value : "TEST"}],
+                target : [{identifier : "SPI",value : ""}]
 
             },
             
@@ -495,28 +498,28 @@ function evalOneParameter(pm : ASTParameter) : Parameter{
         return {
             mode : "simple",
             key : evalParametreType(pm.name),
-            value : pm.value.content.toString().replaceAll('"',''),
+            value : pm.value.content.toString().replace('"',''),
             
         }
     }else if(isASTParamOffset(pm)){
         return {
             mode : "offset",
             key : evalParametreType(pm.name),
-            value : pm.value.content.toString().replaceAll('"',''),
+            value : pm.value.content.toString().replace('"',''),
             
         }
     }else if(isASTParamNoise(pm)){
         return {
             mode : "noise",
             key : evalParametreType(pm.name),
-            value : pm.value.content.toString().replaceAll('"',''),
+            value : pm.value.content.toString().replace('"',''),
             
         }
     }else {
         return {
             mode : "drift",
             key : evalParametreType(pm.name),
-            value : pm.value.content.toString().replaceAll('"',''),
+            value : pm.value.content.toString().replace('"',''),
             
         }
     }

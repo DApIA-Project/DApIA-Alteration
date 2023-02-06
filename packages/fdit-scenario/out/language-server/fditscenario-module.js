@@ -14,7 +14,7 @@ const web_1 = require("../web");
 exports.FditscenarioModule = {
     validation: {
         FditscenarioValidator: () => new fditscenario_validator_1.FditscenarioValidator()
-    }
+    },
 };
 /**
  * Create the full set of services required by Langium.
@@ -45,7 +45,7 @@ class FditscenarioCommandHandler extends langium_2.AbstractExecuteCommandHandler
         // accept a single command called 'parseAndGenerate'
         acceptor('parseAndGenerate', args => {
             // invoke generator on this data, and return the response
-            return (0, web_1.parseAndGenerate)(args[0]);
+            return (0, web_1.parseAndGenerate)(args[0], args[1], args[2], args[3]);
         });
     }
 }

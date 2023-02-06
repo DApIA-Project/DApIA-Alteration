@@ -40,7 +40,7 @@ exports.extractAstNodeFromString = extractAstNodeFromString;
  * @param fditscenarioProgram fditscenario program to parse
  * @returns Generated output from this MiniLogo program
  */
-function parseAndGenerate(fditscenrioProgram) {
+function parseAndGenerate(fditscenrioProgram, recording, fileName, fileContent) {
     return __awaiter(this, void 0, void 0, function* () {
         const services = (0, fditscenario_module_1.createFditscenarioServices)(langium_1.EmptyFileSystem).Fditscenario;
         const scenario = yield extractAstNodeFromString(fditscenrioProgram, services);
@@ -57,7 +57,7 @@ function parseAndGenerate(fditscenrioProgram) {
             console.log(chalk_1.default.red(`Failed to parse and validate !`));
             return Promise.resolve(undefined);
         }
-        const cmds = { parameters: (0, generator_1.generateCommands)(scenario) };
+        const cmds = (0, generator_1.generateCommands)(scenario, fileName);
         return Promise.resolve(cmds);
     });
 }
