@@ -1,11 +1,9 @@
-"use strict"; 
+"use strict";
 import express from 'express';
 import cors from 'cors';
-import {parseAndGenerate} from '../fdit-scenario/src/web/index.js';
+import {parseAndGenerate} from '@smartesting/fdit-scenario/src/web';
 import * as fs from 'fs';
 import {exec} from 'child_process';
-
-
 
 const app = express();
 
@@ -19,9 +17,9 @@ app.post('/api/data', async (req, res) => {
   console.log(JSON.stringify(dslCmds));
   res.json(dslCmds);
 
-  
 
-  
+
+
 });
 
 export const generateAndDisplay = (async (scenario : string, nom_fichier : string) : Promise<{} | undefined> => {
@@ -34,7 +32,7 @@ export const generateAndDisplay = (async (scenario : string, nom_fichier : strin
     executeAlterationJar();
 
     return Promise.resolve(dslCmds);
-   
+
     //updateDslCanvas(dslCmds);
 });
 

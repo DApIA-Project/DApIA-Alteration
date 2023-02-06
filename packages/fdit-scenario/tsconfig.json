@@ -4,7 +4,6 @@
     "module": "commonjs",
     "lib": ["ESNext","DOM","webworker"],
     "sourceMap": true,
-    "outDir": "out",
     "strict": true,
     "noUnusedLocals": true,
     "noImplicitReturns": true,
@@ -13,12 +12,13 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
+    "noEmit": true
   },
   "include": [
      "src/**/*.ts"
   ],
   "exclude": [
-     "out",
+     "build",
      "node_modules"
   ]
 }
