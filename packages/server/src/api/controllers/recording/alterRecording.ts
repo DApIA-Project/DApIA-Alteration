@@ -1,9 +1,20 @@
-import { RequestHandler } from "express";
-const alterRecording : RequestHandler = async (req, res) => {
-    const scenario = req.body.scenario;
-    const nom_fichier = req.body.nom_fichier;
+import {RequestHandler} from "express";
+import {AlterRecordingError} from '@smartesting/shared/dist/responses'
+import alterRecordingCore from '../../core/recording/alterRecording'
 
-    /*const dslCmds = await generateAndDisplay(scenario,nom_fichier);
-    console.log(JSON.stringify(dslCmds));*/
-    res.json({});
-  }
+const alterRecording: RequestHandler = async (req, res) => {
+    const {scenario, fileContent} = req.body
+
+    if (isBlank(scenario) || isBlank(fileContent)) {
+        return res.status(422).json({error: AlterRecordingError.invalidFormat})
+    }
+    const response = await alterRecordingCore(scenario, fileContent)
+
+    res.status(200).json({});
+}
+
+function isBlank(str: string | undefined) {
+    return !str || str.trim().length === 0
+}
+
+export default alterRecording;

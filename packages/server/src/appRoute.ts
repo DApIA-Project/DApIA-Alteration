@@ -1,11 +1,12 @@
 import express, { Router } from 'express';
 import { ApiRoutes } from '@smartesting/shared/dist';
+import alterRecording from "./api/controllers/recording/alterRecording";
 const router  = express.Router();
 
 
 
  function setRoutes() : Router {
-    router.post(ApiRoutes.alteration(), );
+    router.post(ApiRoutes.alteration(), alterRecording);
 
       return router;
 }
