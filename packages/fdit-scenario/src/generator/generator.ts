@@ -2,7 +2,7 @@
 //import { CompositeGeneratorNode, NL, toString } from 'langium';
 
 
-import { ASTHideParameter, ASTInstruction,ASTParameter, ASTParameters, ASTParameterType, ASTScenario,ASTTarget,ASTTimeScope, isASTAllPlanes, isASTAlter,  isASTAt,  isASTHide, isASTParamEdit, isASTParamNoise, isASTParamOffset} from "../language-server/generated/ast";
+import { ASTHideParameter, ASTInstruction,ASTParameter, ASTParameters, ASTParameterType, ASTScenario,ASTTarget,ASTTimeScope, ASTValue, isASTAllPlanes, isASTAlter,  isASTAt,  isASTHide, isASTNumberOffset, isASTParamEdit, isASTParamNoise, isASTParamOffset} from "../language-server/generated/ast";
 import { Action, Parameter, Parameters, Scope, Sensors, Target } from "../types";
 
 
@@ -351,31 +351,11 @@ function evalTimeScope(ts : ASTTimeScope) : Scope{
             type : "timeWindow"
         }
     }
-    /*
-        if(isASTAt(ts)){
-            return [{
-                type : "timeAt",
-                time : evalTime(ts.time)
-            }];
-        }else if(isASTWindow(ts)){
-            return [{
-                type : "timeWindow",
-                lowerBound : evalTime(ts.start),
-                upperBound : evalTime(ts.end)
-            
-            }];
-        }else{
-            return [{
-                type : "timeAtFor",
-                time : evalTime(ts.time),
-                for : evalTime(ts.for)
-            
-            }];
-        }
-*/
+    
         
     
 }
+
 /*
 function evalTrajectory(wp : ASTWayPoints) : (Object)[]{
    
