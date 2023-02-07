@@ -52,11 +52,14 @@ public class EngineManager {
     }
 
     public File run() throws Exception {
+        System.out.println("Running..");
         extension = getFileExtension(recording.getFile().getName()).toLowerCase().trim();
+
         if (extension.compareTo(BEAST_EXTENSION) == 0) {
             engines.addAll(BeastActionEngine.createEngines(recording, actions, logger, parameters));
         } else if (extension.compareTo(BST_EXTENSION) == 0 ||
                 extension.compareTo(SBS_EXTENSION) == 0) {
+            System.out.println("Ext : " + extension);
             engines.addAll(BaseStationActionEngine.createEngines(recording, actions, logger, parameters));
         } else {
             throw new UnrecognizedRecordingException(recording.getFile().getName());
@@ -65,6 +68,7 @@ public class EngineManager {
     }
 
     protected File runEngines() throws IOException, UnknownScopeException, UnknownCharacteristicException {
+        System.out.println("Run engine...");
         final File recordingFile = recording.getFile();
         final File outputFile = createTempFile(UUID.randomUUID().toString(), extension);
         try (final FileReader fileReader = new FileReader(recordingFile);
@@ -96,6 +100,7 @@ public class EngineManager {
             }
         }
         if (!message.isEmpty()) {
+
             return of(message);
         }
         return empty();

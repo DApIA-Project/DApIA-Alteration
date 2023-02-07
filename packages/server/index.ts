@@ -29,15 +29,15 @@ export const generateAndDisplay = (async (scenario : string, nom_fichier : strin
     const dslCmds = await parseAndGenerate(scenario, "",nom_fichier,"");
     fs.writeFileSync("public/test.json",JSON.stringify(dslCmds));
 
-    executeAlterationJar();
+    executeAlterationJar(nom_fichier);
 
     return Promise.resolve(dslCmds);
 
     //updateDslCanvas(dslCmds);
 });
 
-function executeAlterationJar() : void {
-  exec("java -jar C:\\Users\\morga\\Documents\\Programmation\\FDI-T-Web2\\packages\\alteration\\out\\artifacts\\alteration_atc_jar\\alteration-atc.jar C:\\Users\\morga\\Documents\\Programmation\\FDI-T-Web2\\packages\\server\\public\\test.json", (error, stdout, stderr) => {
+function executeAlterationJar(nom_fichier : string) : void {
+  exec("java -jar ..\\alteration\\out\\artifacts\\alteration_atc_jar\\alteration-atc.jar .\\public\\test.json " + nom_fichier, (error, stdout, stderr) => {
     if (error) {
         console.error(`L'exécution a échoué : ${error}`);
         return;

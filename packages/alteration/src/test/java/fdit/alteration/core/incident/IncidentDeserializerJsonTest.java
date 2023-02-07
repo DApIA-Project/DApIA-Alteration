@@ -77,4 +77,69 @@ public class IncidentDeserializerJsonTest {
                                         )))));
 
     }
+
+
+    @Test
+    public void deserialize_json_test_2() throws IOException {
+        final File incidentFile = File.createTempFile("incidentjson", ".json");
+        write("{" +
+
+                "\"sensors\": {\n" +
+                "\"sensor\":\n" +
+                "[{\n" +
+                "\"sensorType\": \"SBS\",\n" +
+                "\"sID\": \"ALL\",\n" +
+                "\"record\": \"../../../server/src/zigzag.sbs\",\n" +
+                "\"filter\": \"\",\n" +
+                "\"action\": [\n" +
+                "{\n" +
+                "\"alterationType\": \"ALTERATION\",\n" +
+                "\"scope\": {\n" +
+                "\"type\": \"timeWindow\",\n" +
+                "\"lowerBound\": \"7\",\n" +
+                "\"upperBound\": \"750\"\n" +
+                "},\n" +
+                "\"parameters\": {\n" +
+                "\"target\": \n" +
+                "{\n" +
+                "\"identifier\": \"hexIdent\",\n" +
+                "\"value\": \"ALL\"\n" +
+                "}\n" +
+                ",\n" +
+                "\"parameter\": [\n" +
+                "{\n" +
+                "\"mode\": \"simple\",\n" +
+                "\"key\": \"ICAO\",\n" +
+                "\"value\": \"39AC47\"\n" +
+                "},\n" +
+                "{\n" +
+                "\"mode\": \"simple\",\n" +
+                "\"key\": \"CALLSIGN\",\n" +
+                "\"value\": \"SAMU25\"\n" +
+                "}\n" +
+                "]\n" +
+                "}\n" +
+                "}\n" +
+                "]\n" +
+                "}]\n" +
+                "\n" +
+                "}\n" +
+
+                "}\n", incidentFile, UTF_8);
+
+        final IncidentDeserializerJson deserializer = new IncidentDeserializerJson(incidentFile);
+        System.out.println(deserializer.deserialize().getSensors().size());
+        assertThat(deserializer.deserialize(),
+                anIncident(withSensors(
+                        aSensor("SBS", "ALL", "../../../server/src/zigzag.sbs", "",
+                                withActions(
+                                        anAction("ALTERATION",
+                                                withScopeTimeWindow(7, 750),
+                                                withParameters(
+                                                        onTargetHexIdent("ALL"),
+                                                        aParameter(MODE_SIMPLE, "ICAO", "39AC47"),
+                                                        aParameter(MODE_SIMPLE, "CALLSIGN", "SAMU25")))
+                                )))));
+
+    }
 }

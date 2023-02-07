@@ -2,6 +2,7 @@ package fdit.alteration.application;
 
 import fdit.alteration.api.AlterationAPI;
 import fdit.alteration.api.AlterationAPIJson;
+import fdit.alteration.core.engine.EngineParameters;
 
 import java.io.File;
 
@@ -11,7 +12,7 @@ class Main {
     public static void main(final String[] args) throws Exception {
         if (args.length > 0) {
             System.out.println("main");
-            alterRecording(args[0]);
+            alterRecording(args[0], args[1]);
         }
     }
 
@@ -22,7 +23,19 @@ class Main {
         if (incidentFile.exists() && incidentFile.isFile()) {
             System.out.println("alterRecording");
             //AlterationAPI.startAlteration(new File("."), new File(incidentFilePath));
-            AlterationAPIJson.startAlteration(new File("."), new File(incidentFilePath));
+            AlterationAPIJson.startAlteration(new File("./public"), new File(incidentFilePath));
+        }
+    }
+
+    private static void alterRecording(final String incidentFilePath, final String file_name) throws Exception {
+        String file_name_without_ext = file_name.replaceFirst("[.][^.]+$", "");
+        final File incidentFile = new File(incidentFilePath);
+        System.out.println(incidentFile.exists());
+        System.out.println(incidentFile.isFile());
+        if (incidentFile.exists() && incidentFile.isFile()) {
+            System.out.println("alterRecording");
+            //AlterationAPI.startAlteration(new File("."), new File(incidentFilePath));
+            AlterationAPIJson.startAlteration(new File("./public"), new File(incidentFilePath),true,new EngineParameters(),"modified",file_name_without_ext);
         }
     }
 }

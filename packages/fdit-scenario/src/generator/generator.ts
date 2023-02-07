@@ -50,7 +50,7 @@ function evalScenario(scenar : ASTScenario, fileName : string) : Sensors{
             sensor: [{
                 sensorType: "SBS",
                 sID: '',
-                record: '../../../server/src/'+fileName,
+                record: fileName,
                 filter: '',
                 action: evalInstructions(scenar.instructions),
                 
@@ -496,28 +496,28 @@ function evalOneParameter(pm : ASTParameter) : Parameter{
         return {
             mode : "simple",
             key : evalParametreType(pm.name),
-            value : pm.value.content.toString().replace('"',''),
+            value : (pm.value.content.toString().replace('"','')).replace('"',''),
             
         }
     }else if(isASTParamOffset(pm)){
         return {
             mode : "offset",
             key : evalParametreType(pm.name),
-            value : pm.value.content.toString().replace('"',''),
+            value : (pm.value.content.toString().replace('"','')).replace('"',''),
             
         }
     }else if(isASTParamNoise(pm)){
         return {
             mode : "noise",
             key : evalParametreType(pm.name),
-            value : pm.value.content.toString().replace('"',''),
+            value : (pm.value.content.toString().replace('"','')).replace('"',''),
             
         }
     }else {
         return {
             mode : "drift",
             key : evalParametreType(pm.name),
-            value : pm.value.content.toString().replace('"',''),
+            value : (pm.value.content.toString().replace('"','')).replace('"',''),
             
         }
     }

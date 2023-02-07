@@ -11,7 +11,7 @@ services:
       - ./nodemon.json:/nodemon.json
     container_name: ts-node-docker
     expose:
-      - '8080'
+      - '3001'
     ports:
-      - '8080:8080'
-    command: npm run dev
+      - '3001:3001'
+    command: npm run serve

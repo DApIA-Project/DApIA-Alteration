@@ -71,10 +71,12 @@ public class AlterationAPIJson {
                     separatorsToSystem("/") +
                     sensor.getRecord());
             if (!recordingFile.exists() || !recordingFile.isFile()) {
+                System.out.println("FileNotFound");
                 throw new FileNotFoundException(recordingFile.getAbsolutePath());
             }
             final Recording recording = new Recording(recordingFile, sensor.getFirstDate());
             final ActionLogger logger = new ActionLogger();
+            System.out.println("Nombre action : " + sensor.getActions().size());
             final EngineManager engineManager = new EngineManager(recording, sensor.getActions(), logger, parameters);
             recording.setFile(engineManager.run());
             copy(recording.getFile(), new File(
@@ -86,6 +88,8 @@ public class AlterationAPIJson {
             if (logResults) {
                 logger.print(new File(recordingFile.getParent(), "metrics.csv"));
             }
+            System.out.println("in for");
         }
+        System.out.println("For finish");
     }
 }

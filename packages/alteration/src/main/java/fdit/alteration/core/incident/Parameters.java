@@ -10,6 +10,7 @@ import static com.google.common.collect.Lists.newArrayList;
 
 public class Parameters {
 
+    @JsonProperty("target")
     private Target target;
 
     @JacksonXmlProperty(localName = "parameter")

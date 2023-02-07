@@ -4,4 +4,4 @@ services:
   ts-node-docker:
     build:
       target: production
-    command: node build/app.js
+    command: npm run build
