@@ -2,12 +2,12 @@
 //import { CompositeGeneratorNode, NL, toString } from 'langium';
 
 
-import { ASTHideParameter, ASTInstruction,ASTParameter, ASTParameters, ASTParameterType, ASTScenario,ASTTarget,ASTTimeScope, ASTValue, isASTAllPlanes, isASTAlter,  isASTAt,  isASTHide, isASTNumberOffset, isASTParamEdit, isASTParamNoise, isASTParamOffset} from "../language-server/generated/ast";
+import { ASTHideParameter, ASTInstruction,ASTNumber,ASTNumberOffset,ASTParameter, ASTParameters, ASTParameterType, ASTScenario,ASTTarget,ASTTime,ASTTimeScope, ASTValue, isASTAllPlanes, isASTAlter,  isASTAt,  isASTHide, isASTIntegerValue, isASTNumber, isASTNumberOffset, isASTParamEdit, isASTParamNoise, isASTParamOffset, isASTTime} from "../language-server/generated/ast";
 import { Action, Parameter, Parameters, Scope, Sensors, Target } from "../types";
 
 
 
-const VALEUR_TIME_DEFAULT = 50;
+const VALEUR_TIME_DEFAULT = 60000;
 /*type FditscenarioGenEnv = Map<string,number>;
 
 function evalExprWithEnv(e : ASTTimeScope, env: FditscenarioGenEnv) : number {
@@ -342,8 +342,8 @@ function evalTimeScope(ts : ASTTimeScope) : Scope{
     if(isASTAt(ts)){
         return {
             type: "timeWindow",
-            lowerBound : ts.time.realTime.content.toString(),
-            upperBound : ts.time.realTime.content.toString()+VALEUR_TIME_DEFAULT.toString()
+            lowerBound : evalTime(ts.time),
+            upperBound : (parseInt(evalTime(ts.time))+VALEUR_TIME_DEFAULT).toString()
             
         }
     }else{
@@ -351,6 +351,47 @@ function evalTimeScope(ts : ASTTimeScope) : Scope{
             type : "timeWindow"
         }
     }
+    
+        
+    
+}
+
+function evalTime(t : ASTTime) : string {
+    if(isASTTime(t)){
+        return evalValue(t.realTime);
+    }
+    
+    return "0";
+    
+        
+    
+}
+
+function evalValue(v : ASTValue) : string {
+    if(isASTNumberOffset(v)){
+        return evalNumberOffset(v);
+    }
+    return "0";
+    
+        
+    
+}
+
+function evalNumberOffset(n : ASTNumberOffset) : string {
+    if(isASTNumber(n)){
+        return evalNumber(n);
+    }
+    return "0";
+    
+        
+    
+}
+
+function evalNumber(n : ASTNumber) : string {
+    if(isASTIntegerValue(n)){
+        return (n.content*1000).toString();
+    }
+    return "0";
     
         
     
