@@ -1,26 +1,18 @@
 "use strict";
 import express from 'express';
 import cors from 'cors';
-import {parseAndGenerate} from '@smartesting/fdit-scenario/src/web';
 import * as fs from 'fs';
 import {exec} from 'child_process';
+import setRoutes from './appRoute';
+import {parseAndGenerate} from '@smartesting/fdit-scenario/dist/web'
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
-
-app.post('/api/data', async (req, res) => {
-  const scenario = req.body.scenario;
-  const nom_fichier = req.body.nom_fichier;
-  const dslCmds = await generateAndDisplay(scenario,nom_fichier);
-  console.log(JSON.stringify(dslCmds));
-  res.json(dslCmds);
+app.use('/', setRoutes());
 
 
-
-
-});
 
 export const generateAndDisplay = (async (scenario : string, nom_fichier : string) : Promise<{} | undefined> => {
     console.info('generating & running current code...');

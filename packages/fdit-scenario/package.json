@@ -3,6 +3,7 @@
     "displayName": "fdit-scenario",
     "description": "Please enter a brief description here",
     "version": "0.0.1",
+    "type": "module",
     "engines": {
         "vscode": "^1.56.0"
     },
@@ -35,14 +36,14 @@
         "onLanguage:fditscenario"
     ],
     "files": [
-        "bin",
-        "out",
+        "dist",
         "src"
     ],
     "bin": {
         "fditscenario-cli": "./bin/cli"
     },
-    "main": "./out/extension.js",
+    "main": "dist/type.js",
+    "types": "dist/type.d.ts",
     "scripts": {
         "vscode:prepublish": "npm run build && npm run lint",
         "build": "tsc -b tsconfig.json",
