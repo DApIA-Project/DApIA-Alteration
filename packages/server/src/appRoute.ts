@@ -1,5 +1,5 @@
 import express, { Router } from 'express';
-import { ApiRoutes } from '@smartesting/shared/dist/routes';
+import { ApiRoutes } from '@smartesting/shared/dist';
 const router  = express.Router();
 
 
