@@ -42,4 +42,4 @@ export function buildWorkerDefinition(workerPath, basePath, useModuleWorker) {
     };
     monWin.MonacoEnvironment.getWorker = getWorker;
 }
-//# sourceMappingURL=index.js.map
+//# sourceMappingURL=index.tsx.map
