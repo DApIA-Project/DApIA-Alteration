@@ -25,7 +25,7 @@ import chalk from "chalk";
  * @param fditscenarioProgram fditscenario program to parse
  * @returns Generated output from this MiniLogo program
  */
-export async function parseAndGenerate (fditscenrioProgram: string, recording : string,fileName : string, fileContent : string): Promise<{} | undefined> {
+export async function parseAndGenerate (fditscenrioProgram: string, fileName : string): Promise<{} | undefined> {
     const services = createFditscenarioServices(EmptyFileSystem).Fditscenario;
     const scenario = await extractAstNodeFromString<ASTScenario>(fditscenrioProgram, services);
     // generate fditscenario commands from the model
@@ -44,7 +44,7 @@ export async function parseAndGenerate (fditscenrioProgram: string, recording : 
     }
 
 
-    const cmds = generateCommands(scenario, fileName);
+    const cmds = generateCommands(scenario,fileName);
     return Promise.resolve(cmds);
 }
 

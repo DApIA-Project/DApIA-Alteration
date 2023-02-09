@@ -7,7 +7,8 @@ import { Action, Parameter, Parameters, Scope, Sensors, Target } from "../types"
 
 
 
-const VALEUR_TIME_DEFAULT = 60000;
+const VALEUR_TIME_DEFAULT = 6000000000000;
+const CHEMIN_TEMP_DIRECTORY_SERVER = "temp/";
 /*type FditscenarioGenEnv = Map<string,number>;
 
 function evalExprWithEnv(e : ASTTimeScope, env: FditscenarioGenEnv) : number {
@@ -92,7 +93,7 @@ enum ActionType {
     rotation = 'ROTATION',
     custom = 'CUSTOM',
     replay = 'REPLAY',
-    timestamp = 'TIMESTAMP',
+    timestamp = 'ALTERATIONTIMESTAMP',
     cut = 'CUT',
     speedAltaration = 'SPEED_ALTERATION',
     trajectory = 'TRAJECTORY_MODIFICATION'
@@ -101,16 +102,16 @@ enum ActionType {
 
 
 enum ParametreType {
-    altitude = 'ALTITUDE',
-    latitude = 'LATITUDE',
-    icao = 'ICAO',
-    track = 'TRACK',
-    callsign = 'CALLSIGN',
-    emergency = 'EMERGENCY',
-    groundspeed = 'GROUNDSPEED',
-    longitude = 'LONGITUDE',
+    altitude = 'altitude',
+    latitude = 'latitude',
+    icao = 'icao',
+    track = 'track',
+    callsign = 'callsign',
+    emergency = 'emergency',
+    groundspeed = 'groundSpeed',
+    longitude = 'longitude',
     spi = 'SPI',
-    squawk = 'SQUAWK'
+    squawk = 'squawk'
 
 }
 /*

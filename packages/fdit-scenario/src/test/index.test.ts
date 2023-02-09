@@ -8,7 +8,7 @@ describe('indexTest', () => {
         const value = "hide all_planes from 56 seconds until 90 seconds";
         // parse & generate commands for drawing an image
         // execute custom LSP command, and receive the response
-        const cmds  = await parseAndGenerate(value,"","","");
+        const cmds  = await parseAndGenerate(value,"");
         const resJSONString = JSON.stringify(cmds, undefined, 2);
 
         const resJson = JSON.parse(resJSONString);
@@ -43,7 +43,7 @@ describe('indexTest', () => {
       const value = "hide all_planes from seconds until 90 sconds";
       // parse & generate commands for drawing an image
       // execute custom LSP command, and receive the response
-      const cmds  = await parseAndGenerate(value,"","","");
+      const cmds  = await parseAndGenerate(value,"");
       const resJSONString = JSON.stringify(cmds, undefined, 2);
 
       const resJson = JSON.parse(resJSONString);

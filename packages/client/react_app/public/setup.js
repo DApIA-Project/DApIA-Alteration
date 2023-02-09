@@ -2,8 +2,6 @@
 import { MonacoEditorLanguageClientWrapper } from "./monaco/monaco-editor-wrapper/index.js";
 import { buildWorkerDefinition } from "./monaco/monaco-editor-workers/index.js";
 
-
-
 let fileName="";
 let fileContent = "";
 
@@ -13,10 +11,7 @@ MonacoEditorLanguageClientWrapper.addMonacoStyles('monaco-editor-styles');
 
 const client = new MonacoEditorLanguageClientWrapper();
 const editorConfig = client.getEditorConfig();
-const client2 = new MonacoEditorLanguageClientWrapper();
-const editorConfig2 = client2.getEditorConfig();
 editorConfig.setMainLanguageId('fditscenario');
-editorConfig2.setMainLanguageId('java');
 
 editorConfig.setMonarchTokensProvider({
     //defaultToken: 'invalid',
@@ -104,16 +99,11 @@ editorConfig.setMonarchTokensProvider({
 
 editorConfig.setMainCode(`alter all_planes at 7 seconds 
 with_values ICAO = "39AC47" 
-and CALLSIGN = "SAMU25"
-
-`);
+and CALLSIGN = "SAMU25"`);
 
 editorConfig.theme = 'vs-dark';
 editorConfig.useLanguageClient = true;
 editorConfig.useWebSocket = false;
-editorConfig2.theme = 'vs-dark';
-editorConfig2.useLanguageClient = true;
-editorConfig2.useWebSocket = false;
 
 const workerURL = new URL('./monaco/fditscenario-server-worker.js', import.meta.url);
 console.log(workerURL.href);
@@ -123,98 +113,66 @@ const lsWorker = new Worker(workerURL.href, {
     name: 'Fditscenario Language Server'
 });
 
-const workerURL2 = new URL('./monaco/fditscenario-server-worker.js', import.meta.url);
-console.log(workerURL2.href);
-
-const lsWorker2 = new Worker(workerURL2.href, {
-    type: 'classic',
-    name: 'Java Language Server'
-});
 client.setWorker(lsWorker);
-client2.setWorker(lsWorker2);
-
-// keep a reference to a promise for when the editor is finished starting, we'll use this to setup the canvas on load
 await client.startEditor(document.getElementById("monaco-editor-root"));
-client2.startEditor(document.getElementById("monaco-editor-root2"));
-
-
-
-
 async function sendData() {
 
-  const value = client.editor.getValue();
-  const value2 = client2.editor.getValue();
-
-  try {
-    const response = await fetch('http://localhost:3001/api/data', {
+    const value = client.editor.getValue();
+    const response = await fetch('http://localhost:3001/recording/alteration', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
         scenario: value,
-        nom_fichier : fileName,
-
+        fileContent : fileContent,
+        fileName : fileName,
       })
     });
     const data = await response.json();
-    console.log(JSON.stringify(data));
-    updateDslCanvas(data);
-  } catch (error) {
-    console.error(error);
-  }
+    if(data.error != undefined){
+        updateCanvasError(data.error);
+    }else{
+        updateCanvas(data);
+    }
 }
 
 window.sendData = sendData;
-
-/*const generateAndDisplay = (async () => {
-    console.info('generating & running current code...');
-    const value = client.editor.getValue();
-    const value2 = client2.editor.getValue();
-    console.log(value2);
-    // parse & generate commands for drawing an image
-    // execute custom LSP command, and receive the response
-    const dslCmds = await vscode.commands.executeCommand('parseAndGenerate', value, value2,fileName,fileContent);
-    updateDslCanvas(dslCmds);
-});
-
-// Updates the dsl canvas
-
-window.generateAndDisplay = generateAndDisplay;
-*/
-
-// Takes generated MiniLogo commands, and draws on an HTML5 canvas
-function updateDslCanvas(cmds) {
-    console.table(cmds);
-    var zone_json = document.getElementById("zoneJson");
-    if(cmds != undefined){
-      
-        zone_json.innerHTML=JSON.stringify(cmds, undefined, 2);
-        
-        
+function updateCanvas(cmds) {
+    const str_to_json = JSON.parse(cmds);
+    const zone_json = document.getElementById("zoneJson");
+    if(cmds !== undefined){
+        zone_json.innerHTML=JSON.stringify(str_to_json, null, 2);
     }else{
         zone_json.innerHTML="Erreur de syntaxe detecte !";
     }
-
 }
+function updateCanvasError(error) {
+    const zone_json = document.getElementById("zoneJson");
+    switch (error) {
+        case "invalid_syntax":
+            zone_json.innerHTML="La syntaxe est invalide";
+            break;
+        case "invalid_format":
+            zone_json.innerHTML="Le format est invalide";
+            break;
+        default :
+            zone_json.innerHTML="Une erreur est survenue!";
+            break;
+    }
+}
+
 const inputElement = document.getElementById("myfile");
 inputElement.addEventListener("change", handleFiles, false);
 function handleFiles() {
-  const fileList = this.files; 
-  const file = fileList[0];
-
-  const reader = new FileReader();
-  reader.readAsText(file);
-  reader.onload = function() {
-    console.log(reader.result);
-    fileName=file.name;
-    fileContent= reader.result;
-  };
-
-  
-  
-
-
-
+    const fileList = this.files;
+    const file = fileList[0];
+    const reader = new FileReader();
+    reader.readAsText(file);
+    reader.onload = function() {
+        console.log(reader.result);
+        fileName=file.name;
+        fileContent= reader.result;
+    };
 }
 

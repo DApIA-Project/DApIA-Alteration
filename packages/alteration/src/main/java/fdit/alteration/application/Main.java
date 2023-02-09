@@ -35,7 +35,7 @@ class Main {
         if (incidentFile.exists() && incidentFile.isFile()) {
             System.out.println("alterRecording");
             //AlterationAPI.startAlteration(new File("."), new File(incidentFilePath));
-            AlterationAPIJson.startAlteration(new File("./public"), new File(incidentFilePath),true,new EngineParameters(),"modified",file_name_without_ext);
+            AlterationAPIJson.startAlteration(new File(".\\temp"), new File(incidentFilePath),true,new EngineParameters(),"modified",file_name_without_ext);
         }
     }
 }
