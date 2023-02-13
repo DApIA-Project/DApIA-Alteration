@@ -1,4 +1,4 @@
-FROM node:18.12.1 as base
+FROM node:16
 
 WORKDIR /my_docker
 
@@ -8,8 +8,5 @@ RUN npm i
 
 COPY . .
 
-FROM base as production
 
-ENV NODE_PATH=./build
-
-RUN npm run build
+CMD ["npm", "run", "start"]

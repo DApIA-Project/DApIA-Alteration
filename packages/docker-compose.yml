@@ -1,0 +1,17 @@
+version: '3.7'
+
+services:
+  server:
+    build:
+      context: ./server
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./server:/my_docker
+  client:
+    build:
+      context: ./client/react_app
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./client/react_app:/my_docker
