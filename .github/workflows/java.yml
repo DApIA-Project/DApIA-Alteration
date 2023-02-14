@@ -18,6 +18,10 @@ jobs:
           java-version: '17'
           distribution: 'oracle'
 
+      - name: Install a Maven artifact
+        uses: andresrc/maven-install@v1.0.0
+
+
       - name: Copy fdit to .m2
         run: |
           mkdir -p $HOME/.m2/repository/com/fdit/
