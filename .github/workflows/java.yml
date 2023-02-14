@@ -23,17 +23,5 @@ jobs:
           mkdir -p $HOME/.m2/repository/com/fdit/
           cp -r packages/alteration/libs/com/fdit $HOME/.m2/repository/com/fdit/
 
-      - name: Install missing artifacts tools
-        uses: actions/upload-artifact@v3
-        with:
-          name: tools-atc
-          path: packages/alteration/libs/com/fdit/tools/tools-atc/1.4.4-SNAPSHOT/tools-atc-1.4.4-SNAPSHOT.jar
-
-      - name: Install missing artifacts testTools
-        uses: actions/upload-artifact@v3
-        with:
-          name: testTools-atc
-          path: packages/alteration/libs/com/fdit/tools/testTools-atc/1.4.4-SNAPSHOT/testTools-atc-1.4.4-SNAPSHOT.jar
-
       - name: Build with Maven
         run: mvn --batch-mode --file packages/alteration/pom.xml --update-snapshots package
