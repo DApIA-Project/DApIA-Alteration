@@ -25,3 +25,6 @@ jobs:
 
       - name: Build with Maven
         run: mvn --batch-mode --file packages/alteration/pom.xml --update-snapshots package
+      - name: Run test Alteration
+        working-directory: packages/alteration
+        run: mvn test
