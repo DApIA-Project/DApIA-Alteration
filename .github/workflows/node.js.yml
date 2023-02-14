@@ -53,8 +53,7 @@ jobs:
 
     - name : List Repo
       run : |
-        ls $HOME
-        ls $HOME/.m2
+        ls -r $HOME
     - name: Extract downloaded artifact
       run: |
         mkdir -p $HOME/.m2/repository/com/fdit/tools/
