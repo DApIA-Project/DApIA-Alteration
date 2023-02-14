@@ -18,4 +18,4 @@ jobs:
           java-version: '17'
           distribution: 'oracle'
       - name: Build with Maven
-        run: mvn --batch-mode --update-snapshots package/alteration
+        run: mvn --batch-mode --file packages/alteration/pom.xml --update-snapshots package
