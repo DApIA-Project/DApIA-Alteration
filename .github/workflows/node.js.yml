@@ -53,8 +53,8 @@ jobs:
 
     - name: Extract downloaded artifact
       run: |
-        mkdir -p $HOME/.m2/repository/com/fdit/tools/tools-atc/
-        tar xzf ${{ steps.download.outputs.download_path }} -C $HOME/.m2/repository/com/fdit/tools/tools-atc/
+        mkdir -p $HOME/.m2/repository/com/fdit/tools/
+        tar xzf ${{ steps.download.outputs.download_path }} -C $HOME/.m2/repository/com/fdit/tools/
 
     - name: Download and extract testTools artifacts
       uses: actions/download-artifact@v3
@@ -63,8 +63,8 @@ jobs:
 
     - name: Extract downloaded artifact
       run: |
-        mkdir -p $HOME/.m2/repository/com/fdit/tools/testTools-atc/
-        tar xzf ${{ steps.download-1.outputs.download_path }} -C $HOME/.m2/repository/com/fdit/tools/testTools-atc/
+        mkdir -p $HOME/.m2/repository/com/fdit/tools/
+        tar xzf ${{ steps.download-1.outputs.download_path }} -C $HOME/.m2/repository/com/fdit/tools/
 
     - name: Run test Alteration
       working-directory: packages/alteration
