@@ -22,3 +22,9 @@ npm run docker:build:client
 ```shell
 npm run docker:build:server
 ```
+
+## Build FDI-T client/server Docker image
+
+```shell
+cd packages ; docker-compose up
+```

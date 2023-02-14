@@ -1,17 +1,89 @@
-version: '3.7'
+version: '3.8'
 
 services:
-  server:
-    build:
-      context: ./server
-    ports:
-      - "3001:3001"
+  #       $$$$$$$\                                                $$\                               $$\
+  #       $$  __$$\                                               $$ |                              \__|
+  #       $$ |  $$ | $$$$$$\   $$$$$$\   $$$$$$\  $$$$$$$\   $$$$$$$ | $$$$$$\  $$$$$$$\   $$$$$$$\ $$\  $$$$$$\   $$$$$$$\
+  #       $$ |  $$ |$$  __$$\ $$  __$$\ $$  __$$\ $$  __$$\ $$  __$$ |$$  __$$\ $$  __$$\ $$  _____|$$ |$$  __$$\ $$  _____|
+  #       $$ |  $$ |$$$$$$$$ |$$ /  $$ |$$$$$$$$ |$$ |  $$ |$$ /  $$ |$$$$$$$$ |$$ |  $$ |$$ /      $$ |$$$$$$$$ |\$$$$$$\
+  #       $$ |  $$ |$$   ____|$$ |  $$ |$$   ____|$$ |  $$ |$$ |  $$ |$$   ____|$$ |  $$ |$$ |      $$ |$$   ____| \____$$\
+  #       $$$$$$$  |\$$$$$$$\ $$$$$$$  |\$$$$$$$\ $$ |  $$ |\$$$$$$$ |\$$$$$$$\ $$ |  $$ |\$$$$$$$\ $$ |\$$$$$$$\ $$$$$$$  |
+  #       \_______/  \_______|$$  ____/  \_______|\__|  \__| \_______| \_______|\__|  \__| \_______|\__| \_______|\_______/
+  #                           $$ |
+  #                           $$ |
+  #                           \__|
+
+  install-server-dependencies:
+    image: node:16-alpine
+    container_name: install-server-dependencies
     volumes:
-      - ./server:/my_docker
-  client:
-    build:
-      context: ./client/react_app
-    ports:
-      - "3000:3000"
+      - .:/app
+    working_dir: /app/server
+    entrypoint: npm install
+
+  install-client-dependencies:
+    image: node:16-alpine
+    container_name: install-client-dependencies
     volumes:
-      - ./client/react_app:/my_docker
+      - .:/app
+    working_dir: /app/client/react_app
+    entrypoint: npm install
+
+  build-server:
+    image: node:16-alpine
+    container_name: build-server
+    volumes:
+      - .:/app
+    working_dir: /app/server
+    entrypoint: npm run build
+    depends_on:
+      install-server-dependencies:
+        condition: service_completed_successfully
+
+  build-client:
+    image: node:16-alpine
+    container_name: build-client
+    profiles:
+      - production
+    volumes:
+      - .:/app
+    working_dir: /app/client/react_app
+    entrypoint: npm run build
+    depends_on:
+      install-client-dependencies:
+        condition: service_completed_successfully
+
+    #       $$$$$$$\                            $$\                                               $$\
+    #       $$  __$$\                           $$ |                                              \__|
+    #       $$ |  $$ | $$$$$$\   $$$$$$\   $$$$$$$ |       $$$$$$$\  $$$$$$\   $$$$$$\ $$\    $$\ $$\  $$$$$$$\  $$$$$$\   $$$$$$$\
+    #       $$$$$$$  |$$  __$$\ $$  __$$\ $$  __$$ |      $$  _____|$$  __$$\ $$  __$$\\$$\  $$  |$$ |$$  _____|$$  __$$\ $$  _____|
+    #       $$  ____/ $$ |  \__|$$ /  $$ |$$ /  $$ |      \$$$$$$\  $$$$$$$$ |$$ |  \__|\$$\$$  / $$ |$$ /      $$$$$$$$ |\$$$$$$\
+    #       $$ |      $$ |      $$ |  $$ |$$ |  $$ |       \____$$\ $$   ____|$$ |       \$$$  /  $$ |$$ |      $$   ____| \____$$\
+    #       $$ |      $$ |      \$$$$$$  |\$$$$$$$ |      $$$$$$$  |\$$$$$$$\ $$ |        \$  /   $$ |\$$$$$$$\ \$$$$$$$\ $$$$$$$  |
+    #       \__|      \__|       \______/  \_______|      \_______/  \_______|\__|         \_/    \__| \_______| \_______|\_______/
+
+  prod-server:
+    image: node:16-alpine
+    container_name: server-prod
+    volumes:
+      - .:/app
+    working_dir: /app/server
+    entrypoint: npm run start
+    depends_on:
+      build-server:
+        condition: service_completed_successfully
+    ports:
+      - '3001:3001'
+
+  prod-client:
+    image: node:16-alpine
+    container_name: client-prod
+    volumes:
+      - .:/app
+    working_dir: /app/client/react_app
+    entrypoint: npm run start
+    depends_on:
+      build-client:
+        condition: service_completed_successfully
+    ports:
+      - '3000:3000'
