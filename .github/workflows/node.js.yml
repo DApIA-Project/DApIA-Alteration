@@ -46,14 +46,20 @@ jobs:
         name: testTools-atc
         path: packages/alteration/libs/com/fdit/tools/testTools-atc
 
-
+    - name: Download artifacts and copy to .m2
+      uses: actions/download-artifact@v3
+      with:
+        name: tools-atc
 
     - name: Extract downloaded artifact
       run: |
         mkdir -p $HOME/.m2/repository/com/fdit/tools/
         tar xzf ${{ steps.download.outputs.download_path }} -C $HOME/.m2/repository/com/fdit/tools/
 
-    
+    - name: Download and extract testTools artifacts
+      uses: actions/download-artifact@v3
+      with:
+        name: testTools-atc
 
     - name: Extract downloaded artifact
       run: |
