@@ -21,7 +21,7 @@ jobs:
       - name: Copy fdit to .m2
         run: |
           mkdir -p $HOME/.m2/repository/com/fdit/
-          cp -r packages/alteration/libs/com/fdit $HOME/.m2/repository/com/fdit/
+          cp -r packages/alteration/libs/com/fdit/tools $HOME/.m2/repository/com/fdit/
 
       - name: Build with Maven
         run: mvn --batch-mode --file packages/alteration/pom.xml --update-snapshots package
