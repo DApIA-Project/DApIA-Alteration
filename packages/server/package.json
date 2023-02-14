@@ -11,7 +11,8 @@
     "bundle": "npm run bundle-server",
     "build": "tsc && npm run bundle",
     "dev": "nodemon app.ts",
-    "copy:fs": "npx shx cp -fr ./node_modules/fs/ ./public/fs"
+    "copy:fs": "npx shx cp -fr ./node_modules/fs/ ./public/fs",
+    "preinstall": "(cd ../fdit-scenario && npm i && npm run build) && (cd ../shared && npm i && npm run build)"
   },
   "author": "",
   "license": "ISC",
