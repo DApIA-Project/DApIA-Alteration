@@ -28,3 +28,9 @@ npm run docker:build:server
 ```shell
 cd packages ; docker-compose up
 ```
+
+## Copy tools directory in .m2 directory (do this in git bash on windows)
+
+```shell
+sh copy_in_m2.sh
+```

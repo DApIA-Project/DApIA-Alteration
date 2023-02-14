@@ -1,1 +1,40 @@
-{}
+{
+  "sensors": {
+    "sensor": [
+      {
+        "sensorType": "SBS",
+        "sID": "",
+        "record": "zigzag.sbs",
+        "filter": "",
+        "action": [
+          {
+            "alterationType": "ALTERATION",
+            "scope": {
+              "type": "timeWindow",
+              "lowerBound": "8000",
+              "upperBound": "6000000008000"
+            },
+            "parameters": {
+              "target": {
+                "identifier": "hexIdent",
+                "value": "ALL"
+              },
+              "parameter": [
+                {
+                  "mode": "simple",
+                  "key": "icao",
+                  "value": "39AC47"
+                },
+                {
+                  "mode": "simple",
+                  "key": "callsign",
+                  "value": "SAMU25"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    ]
+  }
+}
