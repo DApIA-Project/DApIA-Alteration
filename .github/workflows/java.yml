@@ -18,10 +18,6 @@ jobs:
           java-version: '17'
           distribution: 'oracle'
 
-      - name: Build and Install Artifact
-        run: mvn install
-
-
       - name: Copy fdit to .m2
         run: |
           mkdir -p $HOME/.m2/repository/com/fdit/
