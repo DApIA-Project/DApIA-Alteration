@@ -64,7 +64,7 @@ jobs:
     - name: Extract downloaded artifact
       run: |
         mkdir -p $HOME/.m2/repository/com/fdit/tools/testTools-atc/
-        tar xzf ${{ steps.download.outputs.download_path }} -C $HOME/.m2/repository/com/fdit/tools/testTools-atc/
+        tar xzf ${{ steps.download-1.outputs.download_path }} -C $HOME/.m2/repository/com/fdit/tools/testTools-atc/
 
     - name: Run test Alteration
       working-directory: packages/alteration
