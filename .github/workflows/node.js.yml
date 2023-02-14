@@ -49,18 +49,21 @@ jobs:
       uses: actions/download-artifact@v3
       with:
         name: tools
+
+    - name: Extract downloaded artifact
       run: |
         mkdir -p $HOME/.m2/repository/com/fdit/tools/
         tar xzf ${{ steps.download.outputs.download_path }} -C $HOME/.m2/repository/com/fdit/tools/
 
-    - name: Download artifacts and copy to .m2
+    - name: Download and extract testTools artifacts
       uses: actions/download-artifact@v3
       with:
         name: testTools
+
+    - name: Extract downloaded artifact
       run: |
         mkdir -p $HOME/.m2/repository/com/fdit/tools/
-        tar xzf ${{ steps.download.outputs.download_path }} -C $HOME/.m2/repository/com/fdit/tools/  
-      
+        tar xzf ${{ steps.download.outputs.download_path }} -C $HOME/.m2/repository/com/fdit/tools/
 
     - name: Run test Alteration
       working-directory: packages/alteration
