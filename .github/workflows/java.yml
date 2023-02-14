@@ -17,5 +17,29 @@ jobs:
         with:
           java-version: '17'
           distribution: 'oracle'
+
+      - name: Copy fdit to .m2
+        run: |
+          mkdir -p $HOME/.m2/repository/com/fdit/
+          cp -r packages/alteration/libs/com/fdit $HOME/.m2/repository/com/fdit/
+
+      - name: Install missing artifacts tools
+        uses: andresrc/maven-install@v1.0.0
+        with:
+          groupId: com.fdit.tools
+          artifactId: tools-atc
+          version: 1.4.4-SNAPSHOT
+          packaging: jar
+          file: packages/alteration/libs/com/fdit/tools/tools-atc/1.4.4-SNAPSHOT/tools-atc-1.4.4-SNAPSHOT.jar
+
+      - name: Install missing artifacts testTools
+        uses: andresrc/maven-install@v1.0.0
+        with:
+          groupId: com.fdit.tools
+          artifactId: testTools-atc
+          version: 1.4.4-SNAPSHOT
+          packaging: jar
+          file: packages/alteration/libs/com/fdit/tools/testTools-atc/1.4.4-SNAPSHOT/testTools-atc-1.4.4-SNAPSHOT.jar
+
       - name: Build with Maven
         run: mvn --batch-mode --file packages/alteration/pom.xml --update-snapshots package
