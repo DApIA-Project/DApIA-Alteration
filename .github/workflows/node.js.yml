@@ -33,4 +33,7 @@ jobs:
     - name: Run test Server
       working-directory: packages/server
       run : npm run test
+    - name: Run test Alteration
+      working-directory: packages/alteration
+      run: mvn test
 
