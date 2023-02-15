@@ -26,7 +26,7 @@ services:
     container_name: install-client-dependencies
     volumes:
       - .:/app
-    working_dir: /app/client/react_app
+    working_dir: /app/client
     entrypoint: npm install
 
   build-server:
@@ -47,7 +47,7 @@ services:
       - production
     volumes:
       - .:/app
-    working_dir: /app/client/react_app
+    working_dir: /app/client
     entrypoint: npm run build
     depends_on:
       install-client-dependencies:
@@ -80,7 +80,7 @@ services:
     container_name: client-prod
     volumes:
       - .:/app
-    working_dir: /app/client/react_app
+    working_dir: /app/client
     entrypoint: npm run start
     depends_on:
       build-client:

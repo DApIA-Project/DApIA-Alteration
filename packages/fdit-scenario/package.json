@@ -51,10 +51,10 @@
         "langium:generate": "langium generate",
         "langium:watch": "langium generate --watch",
         "test": "jest --coverage",
-        "build:worker": "esbuild --minify ./out/language-server/main-browser.js --bundle --format=iife --outfile=../client/react_app/public/monaco/fditscenario-server-worker.js",
-        "prepare:public": "npx shx mkdir -p ../client/react_app/public/monaco; npx shx cp -fr ../client/react_app/public/monaco/* ../client/react_app/public/monaco/",
-        "copy:monaco-editor-wrapper": "npx shx cp -fr ./node_modules/monaco-editor-wrapper/bundle ../client/react_app/public/monaco/monaco-editor-wrapper",
-        "copy:monaco-workers": "npx shx cp -fr ./node_modules/monaco-editor-workers/dist/ ../client/react_app/public/monaco/monaco-editor-workers",
+        "build:worker": "esbuild --minify ./out/language-server/main-browser.js --bundle --format=iife --outfile=../client/public/monaco/fditscenario-server-worker.js",
+        "prepare:public": "npx shx mkdir -p ../client/public/monaco; npx shx cp -fr ../client/public/monaco/* ../client/public/monaco/",
+        "copy:monaco-editor-wrapper": "npx shx cp -fr ./node_modules/monaco-editor-wrapper/bundle ../client/public/monaco/monaco-editor-wrapper",
+        "copy:monaco-workers": "npx shx cp -fr ./node_modules/monaco-editor-workers/dist/ ../client/public/monaco/monaco-editor-workers",
         "build:web": "npm run build && npm run prepare:public && npm run build:worker && npm run copy:monaco-editor-wrapper && npm run copy:monaco-workers"
     },
     "dependencies": {

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset='utf-8'>
+        <!-- Page & Monaco styling -->
+        <link type="text/css" href="styles.css" rel="stylesheet"/>
+        <title>FDIT Scenario</title>
+
+    </head>
+    <body>
+        <h1>FDIT</h1>
+
+        <!-- Use a wrapper to display Monaco + Canvas side-by-side -->
+        <div id="page-wrapper">
+            <!-- Monaco half -->
+            <div class="half">
+                <div class="wrapper">
+                    <div id="monaco-editor-root"></div>
+                </div>
+            </div>
+            <!-- Canvas half -->
+            <div class="half">
+                <div class="wrapper">
+                    <pre id="zoneJson"></pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add a button to update our canvas, will invoke a globally accessible function -->
+        <div>
+            <input class="build" type="button" value="Show JSON" onclick="window.sendData()">
+        </div>
+        <div>
+            <input type="file" id="myfile" name="myfile" multiple/>
+
+        </div>
+
+        <br/>
+
+        <!-- Monaco Configuration -->
+        <script type="module" src="setup.js"></script>
+    </body>
+</html>
