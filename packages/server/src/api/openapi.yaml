@@ -1,0 +1,55 @@
+  openapi: 3.0.0
+  info:
+    title: FDI-T-WEB API
+    version: 2.0.0
+  servers:
+    - url: /
+  security:
+    - ApiKeyAuth: [ ]
+  paths:
+    /recording/alteration:
+        post:
+            summary: Alterer un enregistrement
+            description: Altere un enregistrement existant dans l'application
+            requestBody:
+                description: Représentation JSON de l'enregistrement à alterer
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                scenario:
+                                    type: string
+                                    description: Le scénario d'altération de l'enregistrement
+                                fileContent:
+                                    type: string
+                                    description: Le contenu du fichier à altérer
+                                fileName:
+                                    type: string
+                                    description: Le nom du fichier à altérer
+                            required:
+                                - scenario
+                                - fileContent
+                                - fileName
+            responses:
+                200:
+                    description: Enregistrement altéré avec succès
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    alteredRecording:
+                                        type: string
+                                        description: Le contenu de l'enregistrement altéré
+                422:
+                    description: Format invalide ou erreur de syntaxe
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                        description: Une description de l'erreur (format invalide ou syntaxe invalide)
