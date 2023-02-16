@@ -11,8 +11,8 @@
             "alterationType": "ALTERATION",
             "scope": {
               "type": "timeWindow",
-              "lowerBound": "8000",
-              "upperBound": "6000000008000"
+              "lowerBound": "7000",
+              "upperBound": "6000000007000"
             },
             "parameters": {
               "target": {
@@ -28,7 +28,7 @@
                 {
                   "mode": "simple",
                   "key": "callsign",
-                  "value": "SAMU25"
+                  "value": "SAMU2"
                 }
               ]
             }

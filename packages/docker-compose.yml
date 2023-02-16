@@ -29,6 +29,8 @@ services:
     working_dir: /app/client
     entrypoint: npm install
 
+
+
   build-server:
     image: node:16-alpine
     container_name: build-server

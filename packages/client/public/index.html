@@ -3,28 +3,15 @@
     <head>
         <meta charset='utf-8'>
         <!-- Page & Monaco styling -->
-        <link type="text/css" href="styles.css" rel="stylesheet"/>
+        <link type="text/css" href="../src/styles.css" rel="stylesheet"/>
         <title>FDIT Scenario</title>
 
     </head>
     <body>
-        <h1>FDIT</h1>
+    <div id="root">
 
-        <!-- Use a wrapper to display Monaco + Canvas side-by-side -->
-        <div id="page-wrapper">
-            <!-- Monaco half -->
-            <div class="half">
-                <div class="wrapper">
-                    <div id="monaco-editor-root"></div>
-                </div>
-            </div>
-            <!-- Canvas half -->
-            <div class="half">
-                <div class="wrapper">
-                    <pre id="zoneJson"></pre>
-                </div>
-            </div>
-        </div>
+
+    </div>
 
         <!-- Add a button to update our canvas, will invoke a globally accessible function -->
         <div>
@@ -38,6 +25,8 @@
         <br/>
 
         <!-- Monaco Configuration -->
-        <script type="module" src="setup.js"></script>
+        <script type="module" src="monacoCanva.js"></script>
+    <script type="module" src="alterate.js"></script>
+
     </body>
 </html>
