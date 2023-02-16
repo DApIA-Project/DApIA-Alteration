@@ -1,4 +1,5 @@
 ![Node workflow](https://github.com/DApIA-Project/FDI-T-Web/actions/workflows/node.js.yml/badge.svg)
+![Node workflow](https://github.com/DApIA-Project/FDI-T-Web/actions/workflows/java.yml/badge.svg)
 # FDI-T Web
 
 ## Generate FDI-T client using Langium
