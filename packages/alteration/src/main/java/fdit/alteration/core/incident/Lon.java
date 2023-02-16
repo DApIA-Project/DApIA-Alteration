@@ -1,5 +1,6 @@
 package fdit.alteration.core.incident;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlText;
 
@@ -9,6 +10,7 @@ public class Lon {
     private Boolean offset;
 
     @JacksonXmlText()
+    @JsonProperty("value")
     private Double content;
 
     public Boolean getOffset() {

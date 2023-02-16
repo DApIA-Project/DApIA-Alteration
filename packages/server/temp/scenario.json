@@ -8,27 +8,60 @@
         "filter": "",
         "action": [
           {
-            "alterationType": "ALTERATION",
+            "alterationType": "CREATION",
             "scope": {
               "type": "timeWindow",
-              "lowerBound": "7000",
-              "upperBound": "6000000007000"
+              "lowerBound": "0",
+              "upperBound": "22000"
             },
             "parameters": {
               "target": {
                 "identifier": "hexIdent",
-                "value": "ALL"
+                "value": ""
+              },
+              "trajectory": {
+                "waypoint": [
+                  {
+                    "vertex": {
+                      "lat": {
+                        "value": 45,
+                        "offset": false
+                      },
+                      "lon": {
+                        "value": 78,
+                        "offset": false
+                      }
+                    },
+                    "altitude": {
+                      "value": 90000,
+                      "offset": false
+                    },
+                    "time": 78000
+                  },
+                  {
+                    "vertex": {
+                      "lat": {
+                        "value": 12,
+                        "offset": false
+                      },
+                      "lon": {
+                        "value": 70,
+                        "offset": false
+                      }
+                    },
+                    "altitude": {
+                      "value": 7000,
+                      "offset": false
+                    },
+                    "time": 99000
+                  }
+                ]
               },
               "parameter": [
                 {
-                  "mode": "simple",
-                  "key": "icao",
-                  "value": "39AC47"
-                },
-                {
-                  "mode": "simple",
                   "key": "callsign",
-                  "value": "SAMU2"
+                  "value": "XXXX",
+                  "mode": "offset"
                 }
               ]
             }

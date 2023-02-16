@@ -2,12 +2,38 @@
 //import { CompositeGeneratorNode, NL, toString } from 'langium';
 
 
-import { ASTHideParameter, ASTInstruction,ASTNumber,ASTNumberOffset,ASTParameter, ASTParameters, ASTParameterType, ASTScenario,ASTTarget,ASTTime,ASTTimeScope, ASTValue, isASTAllPlanes, isASTAlter,  isASTAt,  isASTHide, isASTIntegerValue, isASTNumber, isASTNumberOffset, isASTParamEdit, isASTParamNoise, isASTParamOffset, isASTTime} from "../language-server/generated/ast";
-import { Action, Parameter, Parameters, Scope, Sensors, Target } from "../types";
+import {
+    ASTCreationParameter, ASTCreationParameters, ASTCreationParameterType,
+    ASTHideParameter,
+    ASTInstruction,
+    ASTNumber,
+    ASTNumberOffset,
+    ASTParameter,
+    ASTParameters,
+    ASTParameterType,
+    ASTScenario,
+    ASTTarget,
+    ASTTime,
+    ASTTimeScope, ASTTrajectory,
+    ASTValue, ASTWayPoint, ASTWayPoints,
+    isASTAllPlanes,
+    isASTAlter,
+    isASTAt,
+    isASTCreate,
+    isASTHide,
+    isASTIntegerValue,
+    isASTNumber,
+    isASTNumberOffset,
+    isASTParamEdit,
+    isASTParamNoise,
+    isASTParamOffset,
+    isASTTime
+} from "../language-server/generated/ast";
+import {Action, Altitude, Parameter, Parameters, Scope, Sensors, Target, Trajectory, Vertex, Waypoint} from "../types";
 
 
 
-const VALEUR_TIME_DEFAULT = 6000000000000;
+const VALEUR_TIME_DEFAULT = 22000;
 const CHEMIN_TEMP_DIRECTORY_SERVER = "temp/";
 /*type FditscenarioGenEnv = Map<string,number>;
 
@@ -114,6 +140,15 @@ enum ParametreType {
     squawk = 'squawk'
 
 }
+enum CreationParametreType {
+    icao = 'icao',
+    callsign = 'callsign',
+    emergency = 'emergency',
+    spi = 'SPI',
+    squawk = 'squawk',
+    alert = 'alert'
+
+}
 /*
 enum ParametreSpeedType {
     east_west_velocity = 'EAST_WEST_VELOCITY',
@@ -207,8 +242,20 @@ function evalInstr(instr : ASTInstruction) : Action{
             },
             
         }
-    /*}else if(isASTCreate(instr)){
-    }else if(isASTTrajectory(instr)){
+    }else if(isASTCreate(instr)){
+        return {
+            alterationType : ActionType.creation,
+            scope : evalTimeScope(instr.timeScope),
+            parameters: {
+                target : {
+                    identifier : "hexIdent",
+                    value : ""
+                },
+                trajectory : evalTrajectory(instr.trajectory),
+                parameter : evalCreationParameters(instr.parameters!)
+            }
+        }
+    /*}else if(isASTTrajectory(instr)){
     }else if(isASTAlterSpeed(instr)){*/
     }else{
         return {
@@ -442,6 +489,87 @@ function evalTarget(t : ASTTarget) : Target{
 
 }
 
+function evalTrajectory(tr : ASTWayPoints) : Trajectory{
+
+    return {
+        waypoint : evalWaypoint(tr.waypoints)
+    };
+}
+function evalWaypoint(wp : ASTWayPoint[]) : Waypoint[]{
+
+    let waypoint : Waypoint[]=[];
+    for(let i = 0 ; i<wp.length;i++){
+        waypoint.push(evalOneWaypoint(wp[i]));
+    }
+    return waypoint;
+}
+
+function evalOneWaypoint(wp : ASTWayPoint) : Waypoint{
+
+    return {
+        vertex : evalVertex(wp.latitude,wp.longitude),
+        altitude : evalAltitude(wp.altitude),
+        time :( (wp.time.realTime.content) as number)*1000
+    }
+}
+
+function evalVertex(lat : ASTValue, long : ASTValue) : Vertex {
+    return {
+        lat :{
+            value: lat.content as string,
+            offset : false
+        },
+        lon :{
+            value: long.content as string,
+            offset : false
+        }
+    }
+}
+
+function evalAltitude(alt : ASTValue) : Altitude {
+    return {
+            value: alt.content as number,
+            offset : false
+    }
+}
+
+function evalCreationParameters(param : ASTCreationParameters) : Parameter[]{
+        return evalCreationParameter(param.items);
+}
+
+function evalCreationParameter(pm : ASTCreationParameter[]) : Parameter[]{
+    let params : Parameter[]=[];
+    for(let i = 0 ; i<pm.length;i++){
+        params.push(evalOneCreationParameter(pm[i]));
+    }
+    return params;
+}
+
+function evalOneCreationParameter(pm : ASTCreationParameter) : Parameter{
+    return {
+        key : evalCreationParametreType(pm.name),
+        value : (pm.value.content.toString().replace('"','')).replace('"',''),
+        mode : "offset"
+    }
+}
+
+function evalCreationParametreType(pm : ASTCreationParameterType) : string | undefined{
+    if(pm.ICAO != undefined){
+        return CreationParametreType.icao;
+    }else if(pm.CALLSIGN != undefined){
+        return CreationParametreType.callsign;
+    }else if(pm.EMERGENCY != undefined){
+        return CreationParametreType.emergency;
+    }else if(pm.ALERT != undefined){
+        return CreationParametreType.alert;
+    }else if(pm.SPI != undefined){
+        return CreationParametreType.spi;
+    }else{
+        return CreationParametreType.squawk;
+    }
+
+
+}
 /*
 function evalTime(t : ASTTime) : (number|string|ASTNumber|ASTRecordingParameterType){
     

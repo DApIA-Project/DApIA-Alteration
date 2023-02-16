@@ -20,6 +20,7 @@ public class Parameters {
 
     private String recordPath;
 
+    @JsonProperty("trajectory")
     private Trajectory trajectory;
 
     public Trajectory getTrajectory() {

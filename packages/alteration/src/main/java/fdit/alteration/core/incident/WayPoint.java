@@ -1,11 +1,14 @@
 package fdit.alteration.core.incident;
-
+import com.fasterxml.jackson.annotation.JsonProperty;
 public class WayPoint {
 
+    @JsonProperty("vertex")
     private Vertex vertex;
 
+    @JsonProperty("altitude")
     private Altitude altitude;
 
+    @JsonProperty("time")
     private long time;
 
     public Vertex getVertex() {

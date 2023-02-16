@@ -1,5 +1,6 @@
 package fdit.alteration.core.incident;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlText;
 
@@ -12,6 +13,7 @@ public class Altitude {
     private Boolean time;
 
     @JacksonXmlText()
+    @JsonProperty("value")
     private Integer content;
 
     public Boolean getOffset() {

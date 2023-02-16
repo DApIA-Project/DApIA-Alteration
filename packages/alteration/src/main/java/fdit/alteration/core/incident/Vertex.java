@@ -1,9 +1,12 @@
 package fdit.alteration.core.incident;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Vertex {
 
+    @JsonProperty("lat")
     private Lat lat;
-
+    @JsonProperty("lon")
     private Lon lon;
 
     private Long time;
