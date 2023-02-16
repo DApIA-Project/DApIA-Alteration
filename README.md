@@ -5,12 +5,12 @@
 ## Generate FDI-T client using Langium
 
 ```shell
-npm run langium:generate:client
+npm run client
 ```
 
 ## Generate FDI-T server using Langium
 ```shell
-npm run langium:generate:server
+npm run serve
 ```
 
 ## Build FDI-T client Docker image
@@ -34,5 +34,5 @@ npm run docker:compose:up
 ## Copy tools directory in .m2 directory (do this in git bash on windows)
 
 ```shell
-npm run copy:dependancies:m2
+npm run copy:dependencies:m2
 ```

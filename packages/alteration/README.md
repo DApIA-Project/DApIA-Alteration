@@ -1,3 +1,4 @@
+![Java Tests workflow](https://github.com/DApIA-Project/FDI-T-Web/actions/workflows/java.yml/badge.svg)
 # FDI-T Alteration Engine
 
 ## Develop
