@@ -68,31 +68,31 @@ public class Action {
         T visitCut();
 
         default T doSwitch(final String type) throws UnknownActionException {
-            if (type.compareTo(ACTION_TYPE_ALTERATION) == 0) {
+            if ((type.toLowerCase()).compareTo(ACTION_TYPE_ALTERATION.toLowerCase()) == 0) {
                 return visitAlteration();
             }
-            if (type.compareTo(ACTION_TYPE_CREATION) == 0) {
+            if ((type.toLowerCase()).compareTo(ACTION_TYPE_CREATION.toLowerCase()) == 0) {
                 return visitCreation();
             }
-            if (type.compareTo(ACTION_TYPE_DELAY) == 0) {
+            if ((type.toLowerCase()).compareTo(ACTION_TYPE_DELAY.toLowerCase()) == 0) {
                 return visitDelay();
             }
-            if (type.compareTo(ACTION_TYPE_DELETION) == 0) {
+            if ((type.toLowerCase()).compareTo(ACTION_TYPE_DELETION.toLowerCase()) == 0) {
                 return visitDeletion();
             }
-            if (type.compareTo(ACTION_TYPE_SATURATION) == 0) {
+            if ((type.toLowerCase()).compareTo(ACTION_TYPE_SATURATION.toLowerCase()) == 0) {
                 return visitSaturation();
             }
-            if (type.compareTo(ACTION_TYPE_REPLAY) == 0) {
+            if ((type.toLowerCase()).compareTo(ACTION_TYPE_REPLAY.toLowerCase()) == 0) {
                 return visitReplay();
             }
-            if (type.compareTo(ACTION_TYPE_TRAJECTORY_MODIFICATION) == 0) {
+            if ((type.toLowerCase()).compareTo(ACTION_TYPE_TRAJECTORY_MODIFICATION.toLowerCase()) == 0) {
                 return visitTrajectoryModification();
             }
-            if (type.compareTo(ACTION_TYPE_ROTATION) == 0) {
+            if ((type.toLowerCase()).compareTo(ACTION_TYPE_ROTATION.toLowerCase()) == 0) {
                 return visitRotation();
             }
-            if (type.compareTo(ACTION_TYPE_CUT) == 0) {
+            if ((type.toLowerCase()).compareTo(ACTION_TYPE_CUT.toLowerCase()) == 0) {
                 return visitCut();
             }
             throw new UnknownActionException(type);

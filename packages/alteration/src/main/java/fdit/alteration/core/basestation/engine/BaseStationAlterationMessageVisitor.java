@@ -28,7 +28,7 @@ public class BaseStationAlterationMessageVisitor implements ParameterVisitor {
     }
 
     private static boolean isParameterCharacteristic(final Parameter parameter, final String characteristic) {
-        return parameter.getCharacteristic().compareTo(characteristic) == 0;
+        return (parameter.getCharacteristic().toLowerCase()).compareTo(characteristic.toLowerCase()) == 0;
     }
 
     @Override
