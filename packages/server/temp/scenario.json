@@ -59,9 +59,9 @@
               },
               "parameter": [
                 {
+                  "mode": "simple",
                   "key": "callsign",
-                  "value": "XXXX",
-                  "mode": "offset"
+                  "value": "TEST"
                 }
               ]
             }
