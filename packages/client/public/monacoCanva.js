@@ -3,6 +3,7 @@ import { MonacoEditorLanguageClientWrapper } from "./monaco/monaco-editor-wrappe
 import { buildWorkerDefinition } from "./monaco/monaco-editor-workers/index.js";
 
 
+
 buildWorkerDefinition('./monaco/monaco-editor-workers/workers', new URL('', window.location.href).href, false);
 
 MonacoEditorLanguageClientWrapper.addMonacoStyles('monaco-editor-styles');
@@ -11,11 +12,11 @@ const client = new MonacoEditorLanguageClientWrapper();
 const editorConfig = client.getEditorConfig();
 editorConfig.setMainLanguageId('fditscenario');
 
+let keywords = ['hide','create','alter','alter_speed','saturate','replay','delay','rotate', 'cut', 'at', 'from', 'until', 'for', 'with_values'];
+
 editorConfig.setMonarchTokensProvider({
     //defaultToken: 'invalid',
-    keywords: [
-        'hide','create','alter','alter_speed','saturate','replay','delay','rotate', 'cut', 'at', 'from', 'until', 'for', 'with_values'
-    ],
+    keywords,
     typeKeywords: [
         'seconds', 'and'
     ],
