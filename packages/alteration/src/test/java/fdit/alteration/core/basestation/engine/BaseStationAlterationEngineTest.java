@@ -13,7 +13,6 @@ import static fdit.alteration.core.engine.SuperActionHelper.superAction;
 import static fdit.alteration.core.incident.IncidentHelper.*;
 import static fdit.alteration.core.incident.Parameter.*;
 import static org.junit.Assert.assertEquals;
-import static org.powermock.reflect.Whitebox.invokeMethod;
 
 public class BaseStationAlterationEngineTest {
 
@@ -43,7 +42,7 @@ public class BaseStationAlterationEngineTest {
                 emergency(false),
                 spi(false),
                 onGround(false));
-        final String result = invokeMethod(engine, "applyAction", message);
+        final String result = engine.applyAction(message);
         assertEquals(
                 "MSG,0,0,0,4B1613,0,2019/04/19,17:30:00.000,2019/04/19,17:30:00.000,BAW256,12000,442.2,358.1,49.6684,8.4823,0,4022,0,0,0,0",
                 result);
@@ -75,7 +74,7 @@ public class BaseStationAlterationEngineTest {
                 emergency(false),
                 spi(false),
                 onGround(false));
-        final String result = invokeMethod(engine, "applyAction", message);
+        final String result = engine.applyAction(message);
         assertEquals(
                 "MSG,0,0,0,4B1613,0,2019/04/19,17:29:45.200,2019/04/19,17:29:45.200,BAW256,20350,442.2,358.1,1.1,8.4823,0,4022,0,0,0,0",
                 result);
@@ -107,7 +106,7 @@ public class BaseStationAlterationEngineTest {
                 emergency(false),
                 spi(false),
                 onGround(false));
-        final String result = invokeMethod(engine, "applyAction", message);
+        final String result = engine.applyAction(message);
         assertEquals(
                 "MSG,0,0,0,4B1613,0,2019/04/19,17:29:45.200,2019/04/19,17:29:45.200,BAW256,20350,442.2,358.1,49.6684,10.7,0,4022,0,0,0,0",
                 result);
@@ -140,7 +139,7 @@ public class BaseStationAlterationEngineTest {
                 emergency(false),
                 spi(false),
                 onGround(false));
-        final String result = invokeMethod(engine, "applyAction", message);
+        final String result = engine.applyAction(message);
         assertEquals(
                 "MSG,0,0,0,39AC45,0,2019/04/19,17:29:55.000,2019/04/19,17:29:55.000,BAW256,20350,442.2,358.1,49.6684,8.4823,0,4022,0,0,0,0",
                 result);
@@ -172,7 +171,7 @@ public class BaseStationAlterationEngineTest {
                 emergency(false),
                 spi(false),
                 onGround(false));
-        final String result = invokeMethod(engine, "applyAction", message);
+        final String result = engine.applyAction(message);
         assertEquals(
                 "MSG,0,0,0,4B1613,0,2019/04/19,17:29:54.000,2019/04/19,17:29:54.000,BAW256,20350,442.2,358.1,49.6684,8.4823,0,4022,0,0,0,0",
                 result);
@@ -204,7 +203,7 @@ public class BaseStationAlterationEngineTest {
                 emergency(false),
                 spi(false),
                 onGround(false));
-        final String result = invokeMethod(engine, "applyAction", message);
+        final String result = engine.applyAction(message);
         assertEquals(
                 "MSG,0,0,0,4B1613,0,2019/04/19,17:30:06.000,2019/04/19,17:30:06.000,BAW256,20350,442.2,358.1,49.6684,8.4823,0,4022,0,0,0,0",
                 result);
@@ -237,7 +236,7 @@ public class BaseStationAlterationEngineTest {
                 emergency(false),
                 spi(false),
                 onGround(false));
-        final String result = invokeMethod(engine, "applyAction", message);
+        final String result = engine.applyAction(message);
         assertEquals(
                 "MSG,0,0,0,4B1613,0,2019/04/19,17:30:00.000,2019/04/19,17:30:00.000,BAW256,20350,442.2,358.1,1.1,2.2,0,4022,0,0,0,0",
                 result);
@@ -271,7 +270,7 @@ public class BaseStationAlterationEngineTest {
                 emergency(false),
                 spi(false),
                 onGround(false));
-        final String result = invokeMethod(engine, "applyAction", message);
+        final String result = engine.applyAction(message);
         assertEquals(
                 "MSG,0,0,0,4B1613,0,2019/04/19,17:29:45.020,2019/04/19,17:29:45.020,BAW256,20350,442.2,358.1,49.6684,8.4823,0,7700,1,1,0,0",
                 result);
@@ -304,7 +303,7 @@ public class BaseStationAlterationEngineTest {
                 emergency(false),
                 spi(false),
                 onGround(false));
-        final String result = invokeMethod(engine, "applyAction", message);
+        String result = engine.applyAction(message);
         assertEquals(
                 "MSG,0,0,0,4B1613,0,2019/04/19,17:29:54.999,2019/04/19,17:29:54.999,BAW256,20350,442.2,358.1,49.6684,8.4823,0,4022,0,0,0,0",
                 result);
@@ -337,7 +336,7 @@ public class BaseStationAlterationEngineTest {
                 emergency(false),
                 spi(false),
                 onGround(false));
-        final String result = invokeMethod(engine, "applyAction", message);
+        final String result = engine.applyAction(message);
         assertEquals(
                 "MSG,0,0,0,4B1613,0,2019/04/19,17:30:05.001,2019/04/19,17:30:05.001,BAW256,20350,442.2,358.1,49.6684,8.4823,0,4022,0,0,0,0",
                 result);
@@ -369,7 +368,7 @@ public class BaseStationAlterationEngineTest {
                 emergency(false),
                 spi(false),
                 onGround(false));
-        final String result = invokeMethod(engine, "applyAction", message);
+        final String result = engine.applyAction(message);
         assertEquals(
                 "MSG,0,0,0,4B1613,0,2019/04/19,17:29:45.030,2019/04/19,17:29:45.030,SAMU25,20350,442.2,358.1,49.6684,8.4823,0,4022,0,0,0,0",
                 result);
@@ -401,7 +400,7 @@ public class BaseStationAlterationEngineTest {
                 emergency(false),
                 spi(false),
                 onGround(false));
-        final String result = invokeMethod(engine, "applyAction", message);
+        final String result = engine.applyAction(message);
         assertEquals(
                 "MSG,0,0,0,4B1613,0,2019/04/19,17:29:45.035,2019/04/19,17:29:45.035,BAW256,20350,492.6,358.1,49.6684,8.4823,0,4022,0,0,0,0",
                 result);
@@ -433,7 +432,7 @@ public class BaseStationAlterationEngineTest {
                 emergency(false),
                 spi(false),
                 onGround(false));
-        final String result = invokeMethod(engine, "applyAction", message);
+        final String result = engine.applyAction(message);
         assertEquals(
                 "MSG,0,0,0,4B1613,0,2019/04/19,17:29:45.041,2019/04/19,17:29:45.041,BAW256,20350,442.2,358.1,49.6684,8.4823,0,4022,0,0,0,0,0,0",
                 result);
@@ -465,7 +464,7 @@ public class BaseStationAlterationEngineTest {
                 emergency(false),
                 spi(false),
                 onGround(false));
-        final String result = invokeMethod(engine, "applyAction", message);
+        final String result = engine.applyAction(message);
         assertEquals(
                 "MSG,0,0,0,4B1613,0,2019/04/19,17:29:45.035,2019/04/19,17:29:45.035,BAW256,20350,492.6,358.1,49.6684,8.4823,0,4022,0,0,0,0,1,512",
                 result);

@@ -18,7 +18,6 @@ import static fdit.alteration.core.engine.SuperActionHelper.superAction;
 import static fdit.alteration.core.incident.IncidentHelper.*;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.junit.Assert.assertEquals;
-import static org.powermock.reflect.Whitebox.invokeMethod;
 
 public class BaseStationDeletionEngineTest {
 
@@ -100,7 +99,7 @@ public class BaseStationDeletionEngineTest {
                 emergency(false),
                 spi(false),
                 onGround(false));
-        final String result = invokeMethod(engine, "applyAction", message);
+        final String result = engine.applyAction(message);
         assertEquals("", result);
     }
 
@@ -127,7 +126,7 @@ public class BaseStationDeletionEngineTest {
                 emergency(false),
                 spi(false),
                 onGround(false));
-        final String result = invokeMethod(engine, "applyAction", message);
+        final String result = engine.applyAction(message);
         assertEquals("", result);
     }
 
@@ -154,7 +153,7 @@ public class BaseStationDeletionEngineTest {
                 emergency(false),
                 spi(false),
                 onGround(false));
-        final String result = invokeMethod(engine, "applyAction", message);
+        final String result = engine.applyAction(message);
         assertEquals("", result);
     }
 
@@ -181,7 +180,7 @@ public class BaseStationDeletionEngineTest {
                 emergency(false),
                 spi(false),
                 onGround(false));
-        final String result = invokeMethod(engine, "applyAction", message);
+        final String result = engine.applyAction(message);
         assertEquals("", result);
     }
 
@@ -208,7 +207,7 @@ public class BaseStationDeletionEngineTest {
                 emergency(false),
                 spi(false),
                 onGround(false));
-        final String result = invokeMethod(engine, "applyAction", message);
+        final String result = engine.applyAction(message);
         assertEquals("", result);
     }
 
@@ -235,7 +234,7 @@ public class BaseStationDeletionEngineTest {
                 emergency(false),
                 spi(false),
                 onGround(false));
-        final String result = invokeMethod(engine, "applyAction", message);
+        final String result = engine.applyAction(message);
         assertEquals("", result);
     }
 
@@ -262,7 +261,7 @@ public class BaseStationDeletionEngineTest {
                 emergency(false),
                 spi(false),
                 onGround(false));
-        final String result = invokeMethod(engine, "applyAction", message);
+        final String result = engine.applyAction(message);
         assertEquals(
                 "MSG,0,0,0,4B1613,0,2019/04/19,17:29:56.999,2019/04/19,17:29:56.999,BAW256,20350,442.2,358.6,49.6684,8.4823,0,4022,0,0,0,0",
                 result);
@@ -291,7 +290,7 @@ public class BaseStationDeletionEngineTest {
                 emergency(false),
                 spi(false),
                 onGround(false));
-        final String result = invokeMethod(engine, "applyAction", message);
+        final String result = engine.applyAction(message);
         assertEquals(
                 "MSG,0,0,0,4B1613,0,2019/04/19,17:30:04.001,2019/04/19,17:30:04.001,BAW256,20350,442.2,358.6,49.6684,8.4823,0,4022,0,0,0,0",
                 result);
@@ -320,7 +319,7 @@ public class BaseStationDeletionEngineTest {
                 emergency(false),
                 spi(false),
                 onGround(false));
-        final String result = invokeMethod(engine, "applyAction", message);
+        final String result = engine.applyAction(message);
         assertEquals(
                 "MSG,0,0,0,4B1613,0,2019/04/19,17:30:04.001,2019/04/19,17:30:04.001,BAW256,20350,442.2,358.6,49.6684,8.4823,0,4022,0,0,0,0",
                 result);
