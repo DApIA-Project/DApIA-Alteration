@@ -1,0 +1,56 @@
+{
+  "sensors": {
+    "sensor": [
+      {
+        "sensorType": "SBS",
+        "sID": "",
+        "record": "zigzag.sbs",
+        "filter": "",
+        "action": [
+          {
+            "alterationType": "CREATION",
+            "scope": {
+              "type": "timeWindow",
+              "lowerBound": "8000",
+              "upperBound": "10000020"
+            },
+            "parameters": {
+              "target": {
+                "identifier": "hexIdent",
+                "value": ""
+              },
+              "trajectory": {
+                "waypoint": [
+                  {
+                    "vertex": {
+                      "lat": {
+                        "value": 2,
+                        "offset": false
+                      },
+                      "lon": {
+                        "value": 8,
+                        "offset": false
+                      }
+                    },
+                    "altitude": {
+                      "value": 7000,
+                      "offset": false
+                    },
+                    "time": 6000
+                  }
+                ]
+              },
+              "parameter": [
+                {
+                  "key": "callsign",
+                  "value": "SAMU79",
+                  "mode": "simple"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

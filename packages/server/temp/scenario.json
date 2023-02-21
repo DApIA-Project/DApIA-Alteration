@@ -8,60 +8,27 @@
         "filter": "",
         "action": [
           {
-            "alterationType": "CREATION",
+            "alterationType": "ALTERATION",
             "scope": {
               "type": "timeWindow",
-              "lowerBound": "0",
-              "upperBound": "22000"
+              "lowerBound": "7000",
+              "upperBound": "29000"
             },
             "parameters": {
               "target": {
                 "identifier": "hexIdent",
-                "value": ""
-              },
-              "trajectory": {
-                "waypoint": [
-                  {
-                    "vertex": {
-                      "lat": {
-                        "value": 45,
-                        "offset": false
-                      },
-                      "lon": {
-                        "value": 78,
-                        "offset": false
-                      }
-                    },
-                    "altitude": {
-                      "value": 90000,
-                      "offset": false
-                    },
-                    "time": 78000
-                  },
-                  {
-                    "vertex": {
-                      "lat": {
-                        "value": 12,
-                        "offset": false
-                      },
-                      "lon": {
-                        "value": 70,
-                        "offset": false
-                      }
-                    },
-                    "altitude": {
-                      "value": 7000,
-                      "offset": false
-                    },
-                    "time": 99000
-                  }
-                ]
+                "value": "ALL"
               },
               "parameter": [
                 {
                   "mode": "simple",
+                  "key": "icao",
+                  "value": "39AC47"
+                },
+                {
+                  "mode": "simple",
                   "key": "callsign",
-                  "value": "TEST"
+                  "value": "SAMU25"
                 }
               ]
             }

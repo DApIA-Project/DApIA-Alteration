@@ -2,8 +2,6 @@
 import { MonacoEditorLanguageClientWrapper } from "./monaco/monaco-editor-wrapper/index.js";
 import { buildWorkerDefinition } from "./monaco/monaco-editor-workers/index.js";
 
-
-
 buildWorkerDefinition('./monaco/monaco-editor-workers/workers', new URL('', window.location.href).href, false);
 
 MonacoEditorLanguageClientWrapper.addMonacoStyles('monaco-editor-styles');
