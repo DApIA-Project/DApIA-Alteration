@@ -8,11 +8,11 @@
         "filter": "",
         "action": [
           {
-            "alterationType": "ALTERATION",
+            "alterationType": "ALTERATIONTIMESTAMP",
             "scope": {
               "type": "timeWindow",
-              "lowerBound": "7000",
-              "upperBound": "29000"
+              "lowerBound": "89000",
+              "upperBound": "111000"
             },
             "parameters": {
               "target": {
@@ -22,13 +22,7 @@
               "parameter": [
                 {
                   "mode": "simple",
-                  "key": "icao",
-                  "value": "39AC47"
-                },
-                {
-                  "mode": "simple",
-                  "key": "callsign",
-                  "value": "SAMU25"
+                  "value": "67000"
                 }
               ]
             }

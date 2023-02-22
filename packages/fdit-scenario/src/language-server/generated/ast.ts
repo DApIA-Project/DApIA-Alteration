@@ -6,14 +6,6 @@
 /* eslint-disable */
 import { AstNode, AbstractAstReflection, ReferenceInfo, TypeMetaData } from 'langium';
 
-export type ASTDeclaration = ASTListDeclaration | ASTRangeDeclaration;
-
-export const ASTDeclaration = 'ASTDeclaration';
-
-export function isASTDeclaration(item: unknown): item is ASTDeclaration {
-    return reflection.isInstance(item, ASTDeclaration);
-}
-
 export type ASTInstruction = ASTAlter | ASTAlterSpeed | ASTCreate | ASTCut | ASTDelay | ASTHide | ASTReplay | ASTRotate | ASTSaturate | ASTTrajectory;
 
 export const ASTInstruction = 'ASTInstruction';
@@ -94,10 +86,143 @@ export function isASTValue(item: unknown): item is ASTValue {
     return reflection.isInstance(item, ASTValue);
 }
 
+export type T_ALL_PLANES = string;
+
+export type T_ALTER = string;
+
+export type T_ALTER_SPEED = string;
+
+export type T_ALTITUDE = string;
+
+export type T_AND = string;
+
+export type T_AREA = string;
+
+export type T_ASSERT = string;
+
+export type T_AT = string;
+
+export type T_CENTERED = string;
+
+export type T_CIRCLE = string;
+
+export type T_CLOSE_BRACE = string;
+
+export type T_CLOSE_PAR = string;
+
+export type T_CLOSE_SBRACE = string;
+
+export type T_COMMA = string;
+
+export type T_CREATE = string;
+
+export type T_CUT = string;
+
+export type T_DELAY = string;
+
+export type T_DIFFERENT = string;
+
+export type T_DO = string;
+
+export type T_DOT = string;
+
+export type T_EACH = string;
+
+export type T_EQUAL = string;
+
+export type T_FILTER = string;
+
+export type T_FOR = string;
+
+export type T_FROM = string;
+
+export type T_FROM_RECORDING = string;
+
+export type T_GLOBAL = string;
+
+export type T_GROOVY_FILE = string;
+
+export type T_GT = string;
+
+export type T_GTE = string;
+
+export type T_HIDE = string;
+
+export type T_IN = string;
+
+export type T_LEFTSHIT = string;
+
+export type T_LET = string;
+
+export type T_LT = string;
+
+export type T_LTE = string;
+
+export type T_MINUSEQUAL = string;
+
+export type T_MINUSMINUSEQUAL = string;
+
+export type T_MUL = string;
+
+export type T_MULEQUAL = string;
+
+export type T_OPEN_BRACE = string;
+
+export type T_OPEN_PAR = string;
+
+export type T_OPEN_SBRACE = string;
+
+export type T_PLANE = string;
+
+export type T_PLANES = string;
+
+export type T_PLUSEQUAL = string;
+
+export type T_PLUSPLUSEQUAL = string;
+
+export type T_POLYGON = string;
+
+export type T_RADIUS = string;
+
+export type T_REPLAY = string;
+
+export type T_RIGHTSHIT = string;
+
+export type T_ROTATE = string;
+
+export type T_SATISFYING = string;
+
+export type T_SATURATE = string;
+
+export type T_SECONDS = string;
+
+export type T_TO = string;
+
+export type T_TRIGGERED_BY = string;
+
+export type T_UNTIL = string;
+
+export type T_VERTICES = string;
+
+export type T_WITH = string;
+
+export type T_WITH_ALTITUDE = string;
+
+export type T_WITH_ANGLE = string;
+
+export type T_WITH_DELAY = string;
+
+export type T_WITH_FREQUENCY = string;
+
+export type T_WITH_VALUES = string;
+
+export type T_WITH_WAYPOINTS = string;
+
 export interface ASTAllPlaneFrom extends AstNode {
     readonly $container: ASTReplay;
     readonly $type: 'ASTAllPlaneFrom';
     filters?: ASTFilters
+    keyword: T_ALL_PLANES | T_FROM_RECORDING
     recording: ASTValue
 }
 
@@ -111,6 +236,7 @@ export interface ASTAllPlanes extends AstNode {
     readonly $container: ASTAlter | ASTAlterSpeed | ASTCut | ASTDelay | ASTHide | ASTRotate | ASTSaturate | ASTTrajectory;
     readonly $type: 'ASTAllPlanes';
     filters?: ASTFilters
+    keyword: T_ALL_PLANES
 }
 
 export const ASTAllPlanes = 'ASTAllPlanes';
@@ -123,6 +249,7 @@ export interface ASTAlter extends AstNode {
     readonly $container: ASTScenario;
     readonly $type: 'ASTAlter';
     assertions?: ASTAssertions
+    keyword: T_ALTER
     parameters: ASTParameters
     target: ASTTarget
     timeScope: ASTTimeScope
@@ -139,6 +266,7 @@ export interface ASTAlterSpeed extends AstNode {
     readonly $container: ASTScenario;
     readonly $type: 'ASTAlterSpeed';
     assertions?: ASTAssertions
+    keyword: T_ALTER_SPEED
     parameters: ASTSpeedParameters
     target: ASTTarget
     timeScope: ASTTimeScope
@@ -156,6 +284,7 @@ export interface ASTAssertion extends AstNode {
     readonly $type: 'ASTAssertion';
     file: string
     filter?: string
+    keyword: T_ASSERT | T_FILTER | T_GROOVY_FILE
     timeScope: ASTTimeScope
 }
 
@@ -169,6 +298,7 @@ export interface ASTAssertions extends AstNode {
     readonly $container: ASTAlter | ASTAlterSpeed | ASTCreate | ASTCut | ASTDelay | ASTHide | ASTReplay | ASTRotate | ASTSaturate | ASTTrajectory;
     readonly $type: 'ASTAssertions';
     items: Array<ASTAssertion>
+    keyword?: T_AND
 }
 
 export const ASTAssertions = 'ASTAssertions';
@@ -180,6 +310,7 @@ export function isASTAssertions(item: unknown): item is ASTAssertions {
 export interface ASTAt extends AstNode {
     readonly $container: ASTAlter | ASTAlterSpeed | ASTAssertion | ASTCreate | ASTCut | ASTDelay | ASTHide | ASTReplay | ASTRotate | ASTSaturate | ASTTrajectory;
     readonly $type: 'ASTAt';
+    keyword: T_AT
     time: ASTTime
 }
 
@@ -193,6 +324,7 @@ export interface ASTAtFor extends AstNode {
     readonly $container: ASTAlter | ASTAlterSpeed | ASTAssertion | ASTCreate | ASTCut | ASTDelay | ASTHide | ASTReplay | ASTRotate | ASTSaturate | ASTTrajectory;
     readonly $type: 'ASTAtFor';
     for: ASTTime
+    keyword: T_AT | T_FOR
     time: ASTTime
 }
 
@@ -218,6 +350,7 @@ export interface ASTCreate extends AstNode {
     readonly $container: ASTScenario;
     readonly $type: 'ASTCreate';
     assertions?: ASTAssertions
+    keyword: T_CREATE
     parameters?: ASTCreationParameters
     timeScope: ASTTimeScope
     trajectory: ASTWayPoints
@@ -232,6 +365,7 @@ export function isASTCreate(item: unknown): item is ASTCreate {
 export interface ASTCreationParameter extends AstNode {
     readonly $container: ASTCreationParameters;
     readonly $type: 'ASTCreationParameter';
+    keyword: T_EQUAL
     name: ASTCreationParameterType
     value: ASTValue
 }
@@ -246,6 +380,7 @@ export interface ASTCreationParameters extends AstNode {
     readonly $container: ASTCreate;
     readonly $type: 'ASTCreationParameters';
     items: Array<ASTCreationParameter>
+    keyword: T_AND | T_WITH_VALUES
 }
 
 export const ASTCreationParameters = 'ASTCreationParameters';
@@ -275,6 +410,7 @@ export interface ASTCut extends AstNode {
     readonly $container: ASTScenario;
     readonly $type: 'ASTCut';
     assertions?: ASTAssertions
+    keyword: T_CUT
     target: ASTTarget
     timeScope: ASTTimeScope
     trigger?: ASTTrigger
@@ -286,11 +422,24 @@ export function isASTCut(item: unknown): item is ASTCut {
     return reflection.isInstance(item, ASTCut);
 }
 
+export interface ASTDeclaration extends AstNode {
+    readonly $container: ASTScenario;
+    readonly $type: 'ASTDeclaration' | 'ASTListDeclaration' | 'ASTRangeDeclaration';
+    keyword: T_COMMA
+}
+
+export const ASTDeclaration = 'ASTDeclaration';
+
+export function isASTDeclaration(item: unknown): item is ASTDeclaration {
+    return reflection.isInstance(item, ASTDeclaration);
+}
+
 export interface ASTDelay extends AstNode {
     readonly $container: ASTScenario;
     readonly $type: 'ASTDelay';
     assertions?: ASTAssertions
     delay: ASTDelayParameter
+    keyword: T_DELAY
     target: ASTTarget
     timeScope: ASTTimeScope
 }
@@ -304,6 +453,7 @@ export function isASTDelay(item: unknown): item is ASTDelay {
 export interface ASTDelayParameter extends AstNode {
     readonly $container: ASTDelay;
     readonly $type: 'ASTDelayParameter';
+    keyword: T_WITH_DELAY
     value: ASTTime
 }
 
@@ -317,6 +467,7 @@ export interface ASTDoubleRange extends AstNode {
     readonly $container: ASTRangeDeclaration;
     readonly $type: 'ASTDoubleRange';
     end: number
+    keyword: T_CLOSE_SBRACE | T_COMMA | T_OPEN_SBRACE
     start: number
 }
 
@@ -342,6 +493,7 @@ export interface ASTFilters extends AstNode {
     readonly $container: ASTAllPlaneFrom | ASTAllPlanes | ASTPlane | ASTPlaneFrom;
     readonly $type: 'ASTFilters';
     filters: Array<ASTValue>
+    keyword: T_AND | T_SATISFYING
 }
 
 export const ASTFilters = 'ASTFilters';
@@ -355,6 +507,7 @@ export interface ASTHide extends AstNode {
     readonly $type: 'ASTHide';
     assertions?: ASTAssertions
     frequency?: ASTHideParameter
+    keyword: T_HIDE
     target: ASTTarget
     timeScope: ASTTimeScope
     trigger?: ASTTrigger
@@ -369,6 +522,7 @@ export function isASTHide(item: unknown): item is ASTHide {
 export interface ASTHideParameter extends AstNode {
     readonly $container: ASTHide;
     readonly $type: 'ASTHideParameter';
+    keyword: T_WITH_FREQUENCY
     value: ASTValue
 }
 
@@ -382,6 +536,7 @@ export interface ASTIntegerRange extends AstNode {
     readonly $container: ASTRangeDeclaration;
     readonly $type: 'ASTIntegerRange';
     end: number
+    keyword: T_CLOSE_SBRACE | T_COMMA | T_OPEN_SBRACE
     start: number
 }
 
@@ -407,6 +562,7 @@ export interface ASTLeftShift extends AstNode {
     readonly $container: ASTAllPlaneFrom | ASTCreationParameter | ASTFilters | ASTHideParameter | ASTLeftShift | ASTOffsetList | ASTParamDrift | ASTParamEdit | ASTParamNoise | ASTParamOffset | ASTPlaneFrom | ASTRightShift | ASTRotateParameter | ASTSaturationParameter | ASTSpeedParameter | ASTTime | ASTTrigger | ASTWayPoint;
     readonly $type: 'ASTLeftShift';
     content: ASTNumber
+    keyword: T_LEFTSHIT
 }
 
 export const ASTLeftShift = 'ASTLeftShift';
@@ -415,23 +571,11 @@ export function isASTLeftShift(item: unknown): item is ASTLeftShift {
     return reflection.isInstance(item, ASTLeftShift);
 }
 
-export interface ASTListDeclaration extends AstNode {
-    readonly $container: ASTScenario;
-    readonly $type: 'ASTListDeclaration';
-    constant: string
-    list: ASTList
-}
-
-export const ASTListDeclaration = 'ASTListDeclaration';
-
-export function isASTListDeclaration(item: unknown): item is ASTListDeclaration {
-    return reflection.isInstance(item, ASTListDeclaration);
-}
-
 export interface ASTOffsetList extends AstNode {
     readonly $container: ASTListDeclaration;
     readonly $type: 'ASTOffsetList';
     items: Array<ASTNumberOffset>
+    keyword: T_CLOSE_BRACE | T_COMMA | T_OPEN_BRACE
 }
 
 export const ASTOffsetList = 'ASTOffsetList';
@@ -443,7 +587,7 @@ export function isASTOffsetList(item: unknown): item is ASTOffsetList {
 export interface ASTParamDrift extends AstNode {
     readonly $container: ASTParameters;
     readonly $type: 'ASTParamDrift';
-    drift_op: string
+    drift_op: T_MINUSMINUSEQUAL | T_PLUSPLUSEQUAL
     name: ASTParameterType
     value: ASTValue
 }
@@ -457,6 +601,7 @@ export function isASTParamDrift(item: unknown): item is ASTParamDrift {
 export interface ASTParamEdit extends AstNode {
     readonly $container: ASTParameters;
     readonly $type: 'ASTParamEdit';
+    keyword: T_EQUAL
     name: ASTParameterType
     value: ASTValue
 }
@@ -471,6 +616,7 @@ export interface ASTParameters extends AstNode {
     readonly $container: ASTAlter | ASTReplay;
     readonly $type: 'ASTParameters';
     items: Array<ASTParameter>
+    keyword: T_AND | T_WITH_VALUES
 }
 
 export const ASTParameters = 'ASTParameters';
@@ -503,6 +649,7 @@ export function isASTParameterType(item: unknown): item is ASTParameterType {
 export interface ASTParamNoise extends AstNode {
     readonly $container: ASTParameters;
     readonly $type: 'ASTParamNoise';
+    keyword: T_MULEQUAL
     name: ASTParameterType
     value: ASTValue
 }
@@ -517,7 +664,7 @@ export interface ASTParamOffset extends AstNode {
     readonly $container: ASTParameters;
     readonly $type: 'ASTParamOffset';
     name: ASTParameterType
-    offset_op: string
+    offset_op: T_MINUSEQUAL | T_PLUSEQUAL
     value: ASTValue
 }
 
@@ -531,6 +678,7 @@ export interface ASTPlane extends AstNode {
     readonly $container: ASTAlter | ASTAlterSpeed | ASTCut | ASTDelay | ASTHide | ASTRotate | ASTSaturate | ASTTrajectory;
     readonly $type: 'ASTPlane';
     filters: ASTFilters
+    keyword: T_PLANE
 }
 
 export const ASTPlane = 'ASTPlane';
@@ -543,6 +691,7 @@ export interface ASTPlaneFrom extends AstNode {
     readonly $container: ASTReplay;
     readonly $type: 'ASTPlaneFrom';
     filters: ASTFilters
+    keyword: T_FROM_RECORDING | T_PLANE
     recording: ASTValue
 }
 
@@ -550,19 +699,6 @@ export const ASTPlaneFrom = 'ASTPlaneFrom';
 
 export function isASTPlaneFrom(item: unknown): item is ASTPlaneFrom {
     return reflection.isInstance(item, ASTPlaneFrom);
-}
-
-export interface ASTRangeDeclaration extends AstNode {
-    readonly $container: ASTScenario;
-    readonly $type: 'ASTRangeDeclaration';
-    constant: string
-    range: ASTRange
-}
-
-export const ASTRangeDeclaration = 'ASTRangeDeclaration';
-
-export function isASTRangeDeclaration(item: unknown): item is ASTRangeDeclaration {
-    return reflection.isInstance(item, ASTRangeDeclaration);
 }
 
 export interface ASTRecordingParameterType extends AstNode {
@@ -583,6 +719,7 @@ export interface ASTRecordingValue extends AstNode {
     readonly $container: ASTAllPlaneFrom | ASTCreationParameter | ASTFilters | ASTHideParameter | ASTLeftShift | ASTOffsetList | ASTParamDrift | ASTParamEdit | ASTParamNoise | ASTParamOffset | ASTPlaneFrom | ASTRightShift | ASTRotateParameter | ASTSaturationParameter | ASTSpeedParameter | ASTTime | ASTTrigger | ASTWayPoint;
     readonly $type: 'ASTRecordingValue';
     content: ASTRecordingParameterType
+    keyword: T_MUL
     ratio: number
 }
 
@@ -596,6 +733,7 @@ export interface ASTReplay extends AstNode {
     readonly $container: ASTScenario;
     readonly $type: 'ASTReplay';
     assertions?: ASTAssertions
+    keyword: T_REPLAY
     parameters?: ASTParameters
     target: ASTReplayTarget
     timeScope: ASTTimeScope
@@ -611,6 +749,7 @@ export interface ASTRightShift extends AstNode {
     readonly $container: ASTAllPlaneFrom | ASTCreationParameter | ASTFilters | ASTHideParameter | ASTLeftShift | ASTOffsetList | ASTParamDrift | ASTParamEdit | ASTParamNoise | ASTParamOffset | ASTPlaneFrom | ASTRightShift | ASTRotateParameter | ASTSaturationParameter | ASTSpeedParameter | ASTTime | ASTTrigger | ASTWayPoint;
     readonly $type: 'ASTRightShift';
     content: ASTNumber
+    keyword: T_RIGHTSHIT
 }
 
 export const ASTRightShift = 'ASTRightShift';
@@ -624,6 +763,7 @@ export interface ASTRotate extends AstNode {
     readonly $type: 'ASTRotate';
     angle: ASTRotateParameter
     assertions?: ASTAssertions
+    keyword: T_ROTATE
     target: ASTTarget
     timeScope: ASTTimeScope
     trigger?: ASTTrigger
@@ -638,6 +778,7 @@ export function isASTRotate(item: unknown): item is ASTRotate {
 export interface ASTRotateParameter extends AstNode {
     readonly $container: ASTRotate;
     readonly $type: 'ASTRotateParameter';
+    keyword: T_WITH_ANGLE
     value: ASTValue
 }
 
@@ -651,6 +792,7 @@ export interface ASTSaturate extends AstNode {
     readonly $container: ASTScenario;
     readonly $type: 'ASTSaturate';
     assertions?: ASTAssertions
+    keyword: T_SATURATE
     parameters: ASTSaturationParameters
     target: ASTTarget
     timeScope: ASTTimeScope
@@ -666,6 +808,7 @@ export function isASTSaturate(item: unknown): item is ASTSaturate {
 export interface ASTSaturationParameter extends AstNode {
     readonly $container: ASTSaturationParameters;
     readonly $type: 'ASTSaturationParameter';
+    keyword: T_EQUAL
     name: ASTSaturationParameterType
     value: ASTValue
 }
@@ -680,6 +823,7 @@ export interface ASTSaturationParameters extends AstNode {
     readonly $container: ASTSaturate;
     readonly $type: 'ASTSaturationParameters';
     items: Array<ASTSaturationParameter>
+    keyword: T_AND | T_WITH_VALUES
 }
 
 export const ASTSaturationParameters = 'ASTSaturationParameters';
@@ -716,6 +860,7 @@ export function isASTScenario(item: unknown): item is ASTScenario {
 export interface ASTSpeedParameter extends AstNode {
     readonly $container: ASTSpeedParameters;
     readonly $type: 'ASTSpeedParameter';
+    keyword: T_EQUAL
     name: ASTSpeedParameterType
     value: ASTValue
 }
@@ -730,6 +875,7 @@ export interface ASTSpeedParameters extends AstNode {
     readonly $container: ASTAlterSpeed;
     readonly $type: 'ASTSpeedParameters';
     items: Array<ASTSpeedParameter>
+    keyword: T_AND | T_WITH_VALUES
 }
 
 export const ASTSpeedParameters = 'ASTSpeedParameters';
@@ -755,6 +901,7 @@ export interface ASTStringList extends AstNode {
     readonly $container: ASTListDeclaration;
     readonly $type: 'ASTStringList';
     items: Array<string>
+    keyword: T_CLOSE_BRACE | T_COMMA | T_OPEN_BRACE
 }
 
 export const ASTStringList = 'ASTStringList';
@@ -778,6 +925,7 @@ export function isASTStringValue(item: unknown): item is ASTStringValue {
 export interface ASTTime extends AstNode {
     readonly $container: ASTAt | ASTAtFor | ASTDelayParameter | ASTWayPoint | ASTWindow;
     readonly $type: 'ASTTime';
+    keyword: T_SECONDS
     realTime: ASTValue
 }
 
@@ -791,6 +939,7 @@ export interface ASTTrajectory extends AstNode {
     readonly $container: ASTScenario;
     readonly $type: 'ASTTrajectory';
     assertions?: ASTAssertions
+    keyword: T_ALTER
     target: ASTTarget
     timeScope: ASTTimeScope
     trajectory: ASTWayPoints
@@ -806,6 +955,7 @@ export function isASTTrajectory(item: unknown): item is ASTTrajectory {
 export interface ASTTrigger extends AstNode {
     readonly $container: ASTAlter | ASTAlterSpeed | ASTCut | ASTHide | ASTRotate | ASTSaturate | ASTTrajectory;
     readonly $type: 'ASTTrigger';
+    keyword: T_TRIGGERED_BY
     triggername: ASTValue
 }
 
@@ -831,6 +981,7 @@ export interface ASTWayPoint extends AstNode {
     readonly $container: ASTWayPoints;
     readonly $type: 'ASTWayPoint';
     altitude: ASTValue
+    keyword: T_AT | T_CLOSE_PAR | T_COMMA | T_OPEN_PAR | T_WITH_ALTITUDE
     latitude: ASTValue
     longitude: ASTValue
     time: ASTTime
@@ -845,6 +996,7 @@ export function isASTWayPoint(item: unknown): item is ASTWayPoint {
 export interface ASTWayPoints extends AstNode {
     readonly $container: ASTCreate | ASTTrajectory;
     readonly $type: 'ASTWayPoints';
+    keyword: T_CLOSE_SBRACE | T_COMMA | T_OPEN_SBRACE | T_WITH_WAYPOINTS
     waypoints: Array<ASTWayPoint>
 }
 
@@ -858,6 +1010,7 @@ export interface ASTWindow extends AstNode {
     readonly $container: ASTAlter | ASTAlterSpeed | ASTAssertion | ASTCreate | ASTCut | ASTDelay | ASTHide | ASTReplay | ASTRotate | ASTSaturate | ASTTrajectory;
     readonly $type: 'ASTWindow';
     end: ASTTime
+    keyword: T_FROM | T_UNTIL
     start: ASTTime
 }
 
@@ -865,6 +1018,34 @@ export const ASTWindow = 'ASTWindow';
 
 export function isASTWindow(item: unknown): item is ASTWindow {
     return reflection.isInstance(item, ASTWindow);
+}
+
+export interface ASTListDeclaration extends ASTDeclaration {
+    readonly $container: ASTScenario;
+    readonly $type: 'ASTListDeclaration';
+    constant: string
+    keyword: T_EQUAL | T_LET
+    list: ASTList
+}
+
+export const ASTListDeclaration = 'ASTListDeclaration';
+
+export function isASTListDeclaration(item: unknown): item is ASTListDeclaration {
+    return reflection.isInstance(item, ASTListDeclaration);
+}
+
+export interface ASTRangeDeclaration extends ASTDeclaration {
+    readonly $container: ASTScenario;
+    readonly $type: 'ASTRangeDeclaration';
+    constant: string
+    keyword: T_EQUAL | T_LET
+    range: ASTRange
+}
+
+export const ASTRangeDeclaration = 'ASTRangeDeclaration';
+
+export function isASTRangeDeclaration(item: unknown): item is ASTRangeDeclaration {
+    return reflection.isInstance(item, ASTRangeDeclaration);
 }
 
 export interface FditscenarioAstType {
@@ -992,10 +1173,6 @@ export class FditscenarioAstReflection extends AbstractAstReflection {
             case ASTNumber: {
                 return this.isSubtype(ASTNumberOffset, supertype);
             }
-            case ASTListDeclaration:
-            case ASTRangeDeclaration: {
-                return this.isSubtype(ASTDeclaration, supertype);
-            }
             case ASTOffsetList:
             case ASTStringList: {
                 return this.isSubtype(ASTList, supertype);
@@ -1005,6 +1182,10 @@ export class FditscenarioAstReflection extends AbstractAstReflection {
             case ASTParamNoise:
             case ASTParamOffset: {
                 return this.isSubtype(ASTParameter, supertype);
+            }
+            case ASTListDeclaration:
+            case ASTRangeDeclaration: {
+                return this.isSubtype(ASTDeclaration, supertype);
             }
             default: {
                 return false;

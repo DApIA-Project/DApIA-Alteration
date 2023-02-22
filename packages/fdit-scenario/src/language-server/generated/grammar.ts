@@ -88,11 +88,16 @@ export const AttackScenarioGrammarGrammar = (): Grammar => loadedAttackScenarioG
         "$type": "Group",
         "elements": [
           {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@102"
-            },
-            "arguments": []
+            "$type": "Assignment",
+            "feature": "keyword",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@102"
+              },
+              "arguments": []
+            }
           },
           {
             "$type": "Assignment",
@@ -110,11 +115,16 @@ export const AttackScenarioGrammarGrammar = (): Grammar => loadedAttackScenarioG
             "$type": "Group",
             "elements": [
               {
-                "$type": "RuleCall",
-                "rule": {
-                  "$ref": "#/rules@84"
-                },
-                "arguments": []
+                "$type": "Assignment",
+                "feature": "keyword",
+                "operator": "=",
+                "terminal": {
+                  "$type": "RuleCall",
+                  "rule": {
+                    "$ref": "#/rules@84"
+                  },
+                  "arguments": []
+                }
               },
               {
                 "$type": "Assignment",
@@ -132,11 +142,16 @@ export const AttackScenarioGrammarGrammar = (): Grammar => loadedAttackScenarioG
             "cardinality": "*"
           },
           {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@103"
-            },
-            "arguments": []
+            "$type": "Assignment",
+            "feature": "keyword",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@103"
+              },
+              "arguments": []
+            }
           }
         ]
       },
@@ -154,11 +169,16 @@ export const AttackScenarioGrammarGrammar = (): Grammar => loadedAttackScenarioG
         "$type": "Group",
         "elements": [
           {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@102"
-            },
-            "arguments": []
+            "$type": "Assignment",
+            "feature": "keyword",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@102"
+              },
+              "arguments": []
+            }
           },
           {
             "$type": "Assignment",
@@ -176,11 +196,16 @@ export const AttackScenarioGrammarGrammar = (): Grammar => loadedAttackScenarioG
             "$type": "Group",
             "elements": [
               {
-                "$type": "RuleCall",
-                "rule": {
-                  "$ref": "#/rules@84"
-                },
-                "arguments": []
+                "$type": "Assignment",
+                "feature": "keyword",
+                "operator": "=",
+                "terminal": {
+                  "$type": "RuleCall",
+                  "rule": {
+                    "$ref": "#/rules@84"
+                  },
+                  "arguments": []
+                }
               },
               {
                 "$type": "Assignment",
@@ -198,11 +223,16 @@ export const AttackScenarioGrammarGrammar = (): Grammar => loadedAttackScenarioG
             "cardinality": "*"
           },
           {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@103"
-            },
-            "arguments": []
+            "$type": "Assignment",
+            "feature": "keyword",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@103"
+              },
+              "arguments": []
+            }
           }
         ]
       },
@@ -249,11 +279,16 @@ export const AttackScenarioGrammarGrammar = (): Grammar => loadedAttackScenarioG
         "$type": "Group",
         "elements": [
           {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@104"
-            },
-            "arguments": []
+            "$type": "Assignment",
+            "feature": "keyword",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@104"
+              },
+              "arguments": []
+            }
           },
           {
             "$type": "Assignment",
@@ -268,11 +303,16 @@ export const AttackScenarioGrammarGrammar = (): Grammar => loadedAttackScenarioG
             }
           },
           {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@84"
-            },
-            "arguments": []
+            "$type": "Assignment",
+            "feature": "keyword",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@84"
+              },
+              "arguments": []
+            }
           },
           {
             "$type": "Assignment",
@@ -287,11 +327,16 @@ export const AttackScenarioGrammarGrammar = (): Grammar => loadedAttackScenarioG
             }
           },
           {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@105"
-            },
-            "arguments": []
+            "$type": "Assignment",
+            "feature": "keyword",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@105"
+              },
+              "arguments": []
+            }
           }
         ]
       },
@@ -309,11 +354,16 @@ export const AttackScenarioGrammarGrammar = (): Grammar => loadedAttackScenarioG
         "$type": "Group",
         "elements": [
           {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@104"
-            },
-            "arguments": []
+            "$type": "Assignment",
+            "feature": "keyword",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@104"
+              },
+              "arguments": []
+            }
           },
           {
             "$type": "Assignment",
@@ -328,11 +378,16 @@ export const AttackScenarioGrammarGrammar = (): Grammar => loadedAttackScenarioG
             }
           },
           {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@84"
-            },
-            "arguments": []
+            "$type": "Assignment",
+            "feature": "keyword",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@84"
+              },
+              "arguments": []
+            }
           },
           {
             "$type": "Assignment",
@@ -347,11 +402,16 @@ export const AttackScenarioGrammarGrammar = (): Grammar => loadedAttackScenarioG
             }
           },
           {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@105"
-            },
-            "arguments": []
+            "$type": "Assignment",
+            "feature": "keyword",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@105"
+              },
+              "arguments": []
+            }
           }
         ]
       },
@@ -388,11 +448,16 @@ export const AttackScenarioGrammarGrammar = (): Grammar => loadedAttackScenarioG
             ]
           },
           {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@84"
-            },
-            "arguments": []
+            "$type": "Assignment",
+            "feature": "keyword",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@84"
+              },
+              "arguments": []
+            }
           }
         ]
       },
@@ -410,11 +475,16 @@ export const AttackScenarioGrammarGrammar = (): Grammar => loadedAttackScenarioG
         "$type": "Group",
         "elements": [
           {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@106"
-            },
-            "arguments": []
+            "$type": "Assignment",
+            "feature": "keyword",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@106"
+              },
+              "arguments": []
+            }
           },
           {
             "$type": "Assignment",
@@ -429,11 +499,16 @@ export const AttackScenarioGrammarGrammar = (): Grammar => loadedAttackScenarioG
             }
           },
           {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@88"
-            },
-            "arguments": []
+            "$type": "Assignment",
+            "feature": "keyword",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@88"
+              },
+              "arguments": []
+            }
           },
           {
             "$type": "Assignment",
@@ -463,11 +538,16 @@ export const AttackScenarioGrammarGrammar = (): Grammar => loadedAttackScenarioG
         "$type": "Group",
         "elements": [
           {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@106"
-            },
-            "arguments": []
+            "$type": "Assignment",
+            "feature": "keyword",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@106"
+              },
+              "arguments": []
+            }
           },
           {
             "$type": "Assignment",
@@ -482,11 +562,16 @@ export const AttackScenarioGrammarGrammar = (): Grammar => loadedAttackScenarioG
             }
           },
           {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@88"
-            },
-            "arguments": []
+            "$type": "Assignment",
+            "feature": "keyword",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@88"
+              },
+              "arguments": []
+            }
           },
           {
             "$type": "Assignment",
@@ -601,11 +686,16 @@ export const AttackScenarioGrammarGrammar = (): Grammar => loadedAttackScenarioG
         "$type": "Group",
         "elements": [
           {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@113"
-            },
-            "arguments": []
+            "$type": "Assignment",
+            "feature": "keyword",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@113"
+              },
+              "arguments": []
+            }
           },
           {
             "$type": "Assignment",
@@ -686,11 +776,16 @@ export const AttackScenarioGrammarGrammar = (): Grammar => loadedAttackScenarioG
         "$type": "Group",
         "elements": [
           {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@85"
-            },
-            "arguments": []
+            "$type": "Assignment",
+            "feature": "keyword",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@85"
+              },
+              "arguments": []
+            }
           },
           {
             "$type": "Assignment",
@@ -758,11 +853,16 @@ export const AttackScenarioGrammarGrammar = (): Grammar => loadedAttackScenarioG
         "$type": "Group",
         "elements": [
           {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@73"
-            },
-            "arguments": []
+            "$type": "Assignment",
+            "feature": "keyword",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@73"
+              },
+              "arguments": []
+            }
           },
           {
             "$type": "Assignment",
@@ -842,11 +942,16 @@ export const AttackScenarioGrammarGrammar = (): Grammar => loadedAttackScenarioG
         "$type": "Group",
         "elements": [
           {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@73"
-            },
-            "arguments": []
+            "$type": "Assignment",
+            "feature": "keyword",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@73"
+              },
+              "arguments": []
+            }
           },
           {
             "$type": "Assignment",
@@ -926,11 +1031,16 @@ export const AttackScenarioGrammarGrammar = (): Grammar => loadedAttackScenarioG
         "$type": "Group",
         "elements": [
           {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@72"
-            },
-            "arguments": []
+            "$type": "Assignment",
+            "feature": "keyword",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@72"
+              },
+              "arguments": []
+            }
           },
           {
             "$type": "Assignment",
@@ -1010,11 +1120,16 @@ export const AttackScenarioGrammarGrammar = (): Grammar => loadedAttackScenarioG
         "$type": "Group",
         "elements": [
           {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@122"
-            },
-            "arguments": []
+            "$type": "Assignment",
+            "feature": "keyword",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@122"
+              },
+              "arguments": []
+            }
           },
           {
             "$type": "Assignment",
@@ -1094,11 +1209,16 @@ export const AttackScenarioGrammarGrammar = (): Grammar => loadedAttackScenarioG
         "$type": "Group",
         "elements": [
           {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@114"
-            },
-            "arguments": []
+            "$type": "Assignment",
+            "feature": "keyword",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@114"
+              },
+              "arguments": []
+            }
           },
           {
             "$type": "Assignment",
@@ -1166,11 +1286,16 @@ export const AttackScenarioGrammarGrammar = (): Grammar => loadedAttackScenarioG
         "$type": "Group",
         "elements": [
           {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@115"
-            },
-            "arguments": []
+            "$type": "Assignment",
+            "feature": "keyword",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@115"
+              },
+              "arguments": []
+            }
           },
           {
             "$type": "Assignment",
@@ -1237,11 +1362,16 @@ export const AttackScenarioGrammarGrammar = (): Grammar => loadedAttackScenarioG
         "$type": "Group",
         "elements": [
           {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@116"
-            },
-            "arguments": []
+            "$type": "Assignment",
+            "feature": "keyword",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@116"
+              },
+              "arguments": []
+            }
           },
           {
             "$type": "Assignment",
@@ -1321,11 +1451,16 @@ export const AttackScenarioGrammarGrammar = (): Grammar => loadedAttackScenarioG
         "$type": "Group",
         "elements": [
           {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@79"
-            },
-            "arguments": []
+            "$type": "Assignment",
+            "feature": "keyword",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@79"
+              },
+              "arguments": []
+            }
           },
           {
             "$type": "Assignment",
@@ -1408,11 +1543,16 @@ export const AttackScenarioGrammarGrammar = (): Grammar => loadedAttackScenarioG
             "$type": "Group",
             "elements": [
               {
-                "$type": "RuleCall",
-                "rule": {
-                  "$ref": "#/rules@75"
-                },
-                "arguments": []
+                "$type": "Assignment",
+                "feature": "keyword",
+                "operator": "=",
+                "terminal": {
+                  "$type": "RuleCall",
+                  "rule": {
+                    "$ref": "#/rules@75"
+                  },
+                  "arguments": []
+                }
               },
               {
                 "$type": "Assignment",
@@ -1445,11 +1585,16 @@ export const AttackScenarioGrammarGrammar = (): Grammar => loadedAttackScenarioG
         "$type": "Group",
         "elements": [
           {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@76"
-            },
-            "arguments": []
+            "$type": "Assignment",
+            "feature": "keyword",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@76"
+              },
+              "arguments": []
+            }
           },
           {
             "$type": "Assignment",
@@ -1464,11 +1609,16 @@ export const AttackScenarioGrammarGrammar = (): Grammar => loadedAttackScenarioG
             }
           },
           {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@133"
-            },
-            "arguments": []
+            "$type": "Assignment",
+            "feature": "keyword",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@133"
+              },
+              "arguments": []
+            }
           },
           {
             "$type": "Assignment",
@@ -1486,11 +1636,16 @@ export const AttackScenarioGrammarGrammar = (): Grammar => loadedAttackScenarioG
             "$type": "Group",
             "elements": [
               {
-                "$type": "RuleCall",
-                "rule": {
-                  "$ref": "#/rules@134"
-                },
-                "arguments": []
+                "$type": "Assignment",
+                "feature": "keyword",
+                "operator": "=",
+                "terminal": {
+                  "$type": "RuleCall",
+                  "rule": {
+                    "$ref": "#/rules@134"
+                  },
+                  "arguments": []
+                }
               },
               {
                 "$type": "Assignment",
@@ -1552,11 +1707,16 @@ export const AttackScenarioGrammarGrammar = (): Grammar => loadedAttackScenarioG
         "$type": "Group",
         "elements": [
           {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@120"
-            },
-            "arguments": []
+            "$type": "Assignment",
+            "feature": "keyword",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@120"
+              },
+              "arguments": []
+            }
           },
           {
             "$type": "Assignment",
@@ -1586,11 +1746,16 @@ export const AttackScenarioGrammarGrammar = (): Grammar => loadedAttackScenarioG
         "$type": "Group",
         "elements": [
           {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@70"
-            },
-            "arguments": []
+            "$type": "Assignment",
+            "feature": "keyword",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@70"
+              },
+              "arguments": []
+            }
           },
           {
             "$type": "Assignment",
@@ -1650,11 +1815,16 @@ export const AttackScenarioGrammarGrammar = (): Grammar => loadedAttackScenarioG
         "$type": "Group",
         "elements": [
           {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@120"
-            },
-            "arguments": []
+            "$type": "Assignment",
+            "feature": "keyword",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@120"
+              },
+              "arguments": []
+            }
           },
           {
             "$type": "Assignment",
@@ -1669,11 +1839,16 @@ export const AttackScenarioGrammarGrammar = (): Grammar => loadedAttackScenarioG
             }
           },
           {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@97"
-            },
-            "arguments": []
+            "$type": "Assignment",
+            "feature": "keyword",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@97"
+              },
+              "arguments": []
+            }
           },
           {
             "$type": "Assignment",
@@ -1703,11 +1878,16 @@ export const AttackScenarioGrammarGrammar = (): Grammar => loadedAttackScenarioG
         "$type": "Group",
         "elements": [
           {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@70"
-            },
-            "arguments": []
+            "$type": "Assignment",
+            "feature": "keyword",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@70"
+              },
+              "arguments": []
+            }
           },
           {
             "$type": "Assignment",
@@ -1723,11 +1903,16 @@ export const AttackScenarioGrammarGrammar = (): Grammar => loadedAttackScenarioG
             "cardinality": "?"
           },
           {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@97"
-            },
-            "arguments": []
+            "$type": "Assignment",
+            "feature": "keyword",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@97"
+              },
+              "arguments": []
+            }
           },
           {
             "$type": "Assignment",
@@ -1757,18 +1942,28 @@ export const AttackScenarioGrammarGrammar = (): Grammar => loadedAttackScenarioG
         "$type": "Group",
         "elements": [
           {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@132"
-            },
-            "arguments": []
+            "$type": "Assignment",
+            "feature": "keyword",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@132"
+              },
+              "arguments": []
+            }
           },
           {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@104"
-            },
-            "arguments": []
+            "$type": "Assignment",
+            "feature": "keyword",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@104"
+              },
+              "arguments": []
+            }
           },
           {
             "$type": "Assignment",
@@ -1786,11 +1981,16 @@ export const AttackScenarioGrammarGrammar = (): Grammar => loadedAttackScenarioG
             "$type": "Group",
             "elements": [
               {
-                "$type": "RuleCall",
-                "rule": {
-                  "$ref": "#/rules@84"
-                },
-                "arguments": []
+                "$type": "Assignment",
+                "feature": "keyword",
+                "operator": "=",
+                "terminal": {
+                  "$type": "RuleCall",
+                  "rule": {
+                    "$ref": "#/rules@84"
+                  },
+                  "arguments": []
+                }
               },
               {
                 "$type": "Assignment",
@@ -1808,11 +2008,16 @@ export const AttackScenarioGrammarGrammar = (): Grammar => loadedAttackScenarioG
             "cardinality": "*"
           },
           {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@105"
-            },
-            "arguments": []
+            "$type": "Assignment",
+            "feature": "keyword",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@105"
+              },
+              "arguments": []
+            }
           }
         ]
       },
@@ -1830,11 +2035,16 @@ export const AttackScenarioGrammarGrammar = (): Grammar => loadedAttackScenarioG
         "$type": "Group",
         "elements": [
           {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@100"
-            },
-            "arguments": []
+            "$type": "Assignment",
+            "feature": "keyword",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@100"
+              },
+              "arguments": []
+            }
           },
           {
             "$type": "Assignment",
@@ -1849,11 +2059,16 @@ export const AttackScenarioGrammarGrammar = (): Grammar => loadedAttackScenarioG
             }
           },
           {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@84"
-            },
-            "arguments": []
+            "$type": "Assignment",
+            "feature": "keyword",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@84"
+              },
+              "arguments": []
+            }
           },
           {
             "$type": "Assignment",
@@ -1868,18 +2083,28 @@ export const AttackScenarioGrammarGrammar = (): Grammar => loadedAttackScenarioG
             }
           },
           {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@101"
-            },
-            "arguments": []
+            "$type": "Assignment",
+            "feature": "keyword",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@101"
+              },
+              "arguments": []
+            }
           },
           {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@131"
-            },
-            "arguments": []
+            "$type": "Assignment",
+            "feature": "keyword",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@131"
+              },
+              "arguments": []
+            }
           },
           {
             "$type": "Assignment",
@@ -1894,11 +2119,16 @@ export const AttackScenarioGrammarGrammar = (): Grammar => loadedAttackScenarioG
             }
           },
           {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@77"
-            },
-            "arguments": []
+            "$type": "Assignment",
+            "feature": "keyword",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@77"
+              },
+              "arguments": []
+            }
           },
           {
             "$type": "Assignment",
@@ -1928,11 +2158,16 @@ export const AttackScenarioGrammarGrammar = (): Grammar => loadedAttackScenarioG
         "$type": "Group",
         "elements": [
           {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@130"
-            },
-            "arguments": []
+            "$type": "Assignment",
+            "feature": "keyword",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@130"
+              },
+              "arguments": []
+            }
           },
           {
             "$type": "Assignment",
@@ -1950,11 +2185,16 @@ export const AttackScenarioGrammarGrammar = (): Grammar => loadedAttackScenarioG
             "$type": "Group",
             "elements": [
               {
-                "$type": "RuleCall",
-                "rule": {
-                  "$ref": "#/rules@75"
-                },
-                "arguments": []
+                "$type": "Assignment",
+                "feature": "keyword",
+                "operator": "=",
+                "terminal": {
+                  "$type": "RuleCall",
+                  "rule": {
+                    "$ref": "#/rules@75"
+                  },
+                  "arguments": []
+                }
               },
               {
                 "$type": "Assignment",
@@ -1987,11 +2227,16 @@ export const AttackScenarioGrammarGrammar = (): Grammar => loadedAttackScenarioG
         "$type": "Group",
         "elements": [
           {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@117"
-            },
-            "arguments": []
+            "$type": "Assignment",
+            "feature": "keyword",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@117"
+              },
+              "arguments": []
+            }
           },
           {
             "$type": "Assignment",
@@ -2021,11 +2266,16 @@ export const AttackScenarioGrammarGrammar = (): Grammar => loadedAttackScenarioG
         "$type": "Group",
         "elements": [
           {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@118"
-            },
-            "arguments": []
+            "$type": "Assignment",
+            "feature": "keyword",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@118"
+              },
+              "arguments": []
+            }
           },
           {
             "$type": "Assignment",
@@ -2055,11 +2305,16 @@ export const AttackScenarioGrammarGrammar = (): Grammar => loadedAttackScenarioG
         "$type": "Group",
         "elements": [
           {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@119"
-            },
-            "arguments": []
+            "$type": "Assignment",
+            "feature": "keyword",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@119"
+              },
+              "arguments": []
+            }
           },
           {
             "$type": "Assignment",
@@ -2144,11 +2399,16 @@ export const AttackScenarioGrammarGrammar = (): Grammar => loadedAttackScenarioG
             }
           },
           {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@88"
-            },
-            "arguments": []
+            "$type": "Assignment",
+            "feature": "keyword",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@88"
+              },
+              "arguments": []
+            }
           },
           {
             "$type": "Assignment",
@@ -2253,11 +2513,16 @@ export const AttackScenarioGrammarGrammar = (): Grammar => loadedAttackScenarioG
             }
           },
           {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@89"
-            },
-            "arguments": []
+            "$type": "Assignment",
+            "feature": "keyword",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@89"
+              },
+              "arguments": []
+            }
           },
           {
             "$type": "Assignment",
@@ -2350,11 +2615,16 @@ export const AttackScenarioGrammarGrammar = (): Grammar => loadedAttackScenarioG
         "$type": "Group",
         "elements": [
           {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@130"
-            },
-            "arguments": []
+            "$type": "Assignment",
+            "feature": "keyword",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@130"
+              },
+              "arguments": []
+            }
           },
           {
             "$type": "Assignment",
@@ -2372,11 +2642,16 @@ export const AttackScenarioGrammarGrammar = (): Grammar => loadedAttackScenarioG
             "$type": "Group",
             "elements": [
               {
-                "$type": "RuleCall",
-                "rule": {
-                  "$ref": "#/rules@75"
-                },
-                "arguments": []
+                "$type": "Assignment",
+                "feature": "keyword",
+                "operator": "=",
+                "terminal": {
+                  "$type": "RuleCall",
+                  "rule": {
+                    "$ref": "#/rules@75"
+                  },
+                  "arguments": []
+                }
               },
               {
                 "$type": "Assignment",
@@ -2421,11 +2696,16 @@ export const AttackScenarioGrammarGrammar = (): Grammar => loadedAttackScenarioG
             }
           },
           {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@88"
-            },
-            "arguments": []
+            "$type": "Assignment",
+            "feature": "keyword",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@88"
+              },
+              "arguments": []
+            }
           },
           {
             "$type": "Assignment",
@@ -2455,11 +2735,16 @@ export const AttackScenarioGrammarGrammar = (): Grammar => loadedAttackScenarioG
         "$type": "Group",
         "elements": [
           {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@130"
-            },
-            "arguments": []
+            "$type": "Assignment",
+            "feature": "keyword",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@130"
+              },
+              "arguments": []
+            }
           },
           {
             "$type": "Assignment",
@@ -2477,11 +2762,16 @@ export const AttackScenarioGrammarGrammar = (): Grammar => loadedAttackScenarioG
             "$type": "Group",
             "elements": [
               {
-                "$type": "RuleCall",
-                "rule": {
-                  "$ref": "#/rules@75"
-                },
-                "arguments": []
+                "$type": "Assignment",
+                "feature": "keyword",
+                "operator": "=",
+                "terminal": {
+                  "$type": "RuleCall",
+                  "rule": {
+                    "$ref": "#/rules@75"
+                  },
+                  "arguments": []
+                }
               },
               {
                 "$type": "Assignment",
@@ -2526,11 +2816,16 @@ export const AttackScenarioGrammarGrammar = (): Grammar => loadedAttackScenarioG
             }
           },
           {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@88"
-            },
-            "arguments": []
+            "$type": "Assignment",
+            "feature": "keyword",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@88"
+              },
+              "arguments": []
+            }
           },
           {
             "$type": "Assignment",
@@ -2560,11 +2855,16 @@ export const AttackScenarioGrammarGrammar = (): Grammar => loadedAttackScenarioG
         "$type": "Group",
         "elements": [
           {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@130"
-            },
-            "arguments": []
+            "$type": "Assignment",
+            "feature": "keyword",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@130"
+              },
+              "arguments": []
+            }
           },
           {
             "$type": "Assignment",
@@ -2582,11 +2882,16 @@ export const AttackScenarioGrammarGrammar = (): Grammar => loadedAttackScenarioG
             "$type": "Group",
             "elements": [
               {
-                "$type": "RuleCall",
-                "rule": {
-                  "$ref": "#/rules@75"
-                },
-                "arguments": []
+                "$type": "Assignment",
+                "feature": "keyword",
+                "operator": "=",
+                "terminal": {
+                  "$type": "RuleCall",
+                  "rule": {
+                    "$ref": "#/rules@75"
+                  },
+                  "arguments": []
+                }
               },
               {
                 "$type": "Assignment",
@@ -2631,11 +2936,16 @@ export const AttackScenarioGrammarGrammar = (): Grammar => loadedAttackScenarioG
             }
           },
           {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@88"
-            },
-            "arguments": []
+            "$type": "Assignment",
+            "feature": "keyword",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@88"
+              },
+              "arguments": []
+            }
           },
           {
             "$type": "Assignment",
@@ -2665,11 +2975,16 @@ export const AttackScenarioGrammarGrammar = (): Grammar => loadedAttackScenarioG
         "$type": "Group",
         "elements": [
           {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@124"
-            },
-            "arguments": []
+            "$type": "Assignment",
+            "feature": "keyword",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@124"
+              },
+              "arguments": []
+            }
           },
           {
             "$type": "Assignment",
@@ -2735,11 +3050,16 @@ export const AttackScenarioGrammarGrammar = (): Grammar => loadedAttackScenarioG
         "$type": "Group",
         "elements": [
           {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@77"
-            },
-            "arguments": []
+            "$type": "Assignment",
+            "feature": "keyword",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@77"
+              },
+              "arguments": []
+            }
           },
           {
             "$type": "Assignment",
@@ -2769,11 +3089,16 @@ export const AttackScenarioGrammarGrammar = (): Grammar => loadedAttackScenarioG
         "$type": "Group",
         "elements": [
           {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@98"
-            },
-            "arguments": []
+            "$type": "Assignment",
+            "feature": "keyword",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@98"
+              },
+              "arguments": []
+            }
           },
           {
             "$type": "Assignment",
@@ -2788,11 +3113,16 @@ export const AttackScenarioGrammarGrammar = (): Grammar => loadedAttackScenarioG
             }
           },
           {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@127"
-            },
-            "arguments": []
+            "$type": "Assignment",
+            "feature": "keyword",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@127"
+              },
+              "arguments": []
+            }
           },
           {
             "$type": "Assignment",
@@ -2822,11 +3152,16 @@ export const AttackScenarioGrammarGrammar = (): Grammar => loadedAttackScenarioG
         "$type": "Group",
         "elements": [
           {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@77"
-            },
-            "arguments": []
+            "$type": "Assignment",
+            "feature": "keyword",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@77"
+              },
+              "arguments": []
+            }
           },
           {
             "$type": "Assignment",
@@ -2841,11 +3176,16 @@ export const AttackScenarioGrammarGrammar = (): Grammar => loadedAttackScenarioG
             }
           },
           {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@96"
-            },
-            "arguments": []
+            "$type": "Assignment",
+            "feature": "keyword",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@96"
+              },
+              "arguments": []
+            }
           },
           {
             "$type": "Assignment",
@@ -2887,11 +3227,16 @@ export const AttackScenarioGrammarGrammar = (): Grammar => loadedAttackScenarioG
             }
           },
           {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@125"
-            },
-            "arguments": []
+            "$type": "Assignment",
+            "feature": "keyword",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@125"
+              },
+              "arguments": []
+            }
           }
         ]
       },
@@ -2909,11 +3254,16 @@ export const AttackScenarioGrammarGrammar = (): Grammar => loadedAttackScenarioG
         "$type": "Group",
         "elements": [
           {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@123"
-            },
-            "arguments": []
+            "$type": "Assignment",
+            "feature": "keyword",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@123"
+              },
+              "arguments": []
+            }
           },
           {
             "$type": "Assignment",
@@ -2931,11 +3281,16 @@ export const AttackScenarioGrammarGrammar = (): Grammar => loadedAttackScenarioG
             "$type": "Group",
             "elements": [
               {
-                "$type": "RuleCall",
-                "rule": {
-                  "$ref": "#/rules@75"
-                },
-                "arguments": []
+                "$type": "Assignment",
+                "feature": "keyword",
+                "operator": "=",
+                "terminal": {
+                  "$type": "RuleCall",
+                  "rule": {
+                    "$ref": "#/rules@75"
+                  },
+                  "arguments": []
+                }
               },
               {
                 "$type": "Assignment",
@@ -3004,11 +3359,16 @@ export const AttackScenarioGrammarGrammar = (): Grammar => loadedAttackScenarioG
         "$type": "Group",
         "elements": [
           {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@94"
-            },
-            "arguments": []
+            "$type": "Assignment",
+            "feature": "keyword",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@94"
+              },
+              "arguments": []
+            }
           },
           {
             "$type": "Assignment",
@@ -3038,11 +3398,16 @@ export const AttackScenarioGrammarGrammar = (): Grammar => loadedAttackScenarioG
         "$type": "Group",
         "elements": [
           {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@95"
-            },
-            "arguments": []
+            "$type": "Assignment",
+            "feature": "keyword",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@95"
+              },
+              "arguments": []
+            }
           },
           {
             "$type": "Assignment",
@@ -3164,11 +3529,16 @@ export const AttackScenarioGrammarGrammar = (): Grammar => loadedAttackScenarioG
             }
           },
           {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@111"
-            },
-            "arguments": []
+            "$type": "Assignment",
+            "feature": "keyword",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@111"
+              },
+              "arguments": []
+            }
           },
           {
             "$type": "Assignment",
@@ -3583,862 +3953,994 @@ export const AttackScenarioGrammarGrammar = (): Grammar => loadedAttackScenarioG
       "wildcard": false
     },
     {
-      "$type": "TerminalRule",
+      "$type": "ParserRule",
       "name": "T_AREA",
+      "dataType": "string",
       "definition": {
-        "$type": "CharacterRange",
-        "left": {
-          "$type": "Keyword",
-          "value": "area"
-        }
+        "$type": "Keyword",
+        "value": "area"
       },
+      "definesHiddenTokens": false,
+      "entry": false,
       "fragment": false,
-      "hidden": false
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
     },
     {
-      "$type": "TerminalRule",
+      "$type": "ParserRule",
       "name": "T_ALL_PLANES",
+      "dataType": "string",
       "definition": {
-        "$type": "CharacterRange",
-        "left": {
-          "$type": "Keyword",
-          "value": "all_planes"
-        }
+        "$type": "Keyword",
+        "value": "all_planes"
       },
+      "definesHiddenTokens": false,
+      "entry": false,
       "fragment": false,
-      "hidden": false
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
     },
     {
-      "$type": "TerminalRule",
+      "$type": "ParserRule",
       "name": "T_PLANES",
+      "dataType": "string",
       "definition": {
-        "$type": "CharacterRange",
-        "left": {
-          "$type": "Keyword",
-          "value": "planes"
-        }
+        "$type": "Keyword",
+        "value": "planes"
       },
+      "definesHiddenTokens": false,
+      "entry": false,
       "fragment": false,
-      "hidden": false
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
     },
     {
-      "$type": "TerminalRule",
+      "$type": "ParserRule",
       "name": "T_ALTER_SPEED",
+      "dataType": "string",
       "definition": {
-        "$type": "CharacterRange",
-        "left": {
-          "$type": "Keyword",
-          "value": "alter_speed"
-        }
+        "$type": "Keyword",
+        "value": "alter_speed"
       },
+      "definesHiddenTokens": false,
+      "entry": false,
       "fragment": false,
-      "hidden": false
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
     },
     {
-      "$type": "TerminalRule",
+      "$type": "ParserRule",
       "name": "T_ALTER",
+      "dataType": "string",
       "definition": {
-        "$type": "CharacterRange",
-        "left": {
-          "$type": "Keyword",
-          "value": "alter"
-        }
+        "$type": "Keyword",
+        "value": "alter"
       },
+      "definesHiddenTokens": false,
+      "entry": false,
       "fragment": false,
-      "hidden": false
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
     },
     {
-      "$type": "TerminalRule",
+      "$type": "ParserRule",
       "name": "T_ALTITUDE",
+      "dataType": "string",
       "definition": {
-        "$type": "CharacterRange",
-        "left": {
-          "$type": "Keyword",
-          "value": "altitude"
-        }
+        "$type": "Keyword",
+        "value": "altitude"
       },
+      "definesHiddenTokens": false,
+      "entry": false,
       "fragment": false,
-      "hidden": false
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
     },
     {
-      "$type": "TerminalRule",
+      "$type": "ParserRule",
       "name": "T_AND",
+      "dataType": "string",
       "definition": {
-        "$type": "CharacterRange",
-        "left": {
-          "$type": "Keyword",
-          "value": "and"
-        }
+        "$type": "Keyword",
+        "value": "and"
       },
+      "definesHiddenTokens": false,
+      "entry": false,
       "fragment": false,
-      "hidden": false
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
     },
     {
-      "$type": "TerminalRule",
+      "$type": "ParserRule",
       "name": "T_ASSERT",
+      "dataType": "string",
       "definition": {
-        "$type": "CharacterRange",
-        "left": {
-          "$type": "Keyword",
-          "value": "assert"
-        }
+        "$type": "Keyword",
+        "value": "assert"
       },
+      "definesHiddenTokens": false,
+      "entry": false,
       "fragment": false,
-      "hidden": false
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
     },
     {
-      "$type": "TerminalRule",
+      "$type": "ParserRule",
       "name": "T_AT",
+      "dataType": "string",
       "definition": {
-        "$type": "CharacterRange",
-        "left": {
-          "$type": "Keyword",
-          "value": "at"
-        }
+        "$type": "Keyword",
+        "value": "at"
       },
+      "definesHiddenTokens": false,
+      "entry": false,
       "fragment": false,
-      "hidden": false
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
     },
     {
-      "$type": "TerminalRule",
+      "$type": "ParserRule",
       "name": "T_CIRCLE",
+      "dataType": "string",
       "definition": {
-        "$type": "CharacterRange",
-        "left": {
-          "$type": "Keyword",
-          "value": "circle"
-        }
+        "$type": "Keyword",
+        "value": "circle"
       },
+      "definesHiddenTokens": false,
+      "entry": false,
       "fragment": false,
-      "hidden": false
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
     },
     {
-      "$type": "TerminalRule",
+      "$type": "ParserRule",
       "name": "T_CUT",
+      "dataType": "string",
       "definition": {
-        "$type": "CharacterRange",
-        "left": {
-          "$type": "Keyword",
-          "value": "cut"
-        }
+        "$type": "Keyword",
+        "value": "cut"
       },
+      "definesHiddenTokens": false,
+      "entry": false,
       "fragment": false,
-      "hidden": false
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
     },
     {
-      "$type": "TerminalRule",
+      "$type": "ParserRule",
       "name": "T_DO",
+      "dataType": "string",
       "definition": {
-        "$type": "CharacterRange",
-        "left": {
-          "$type": "Keyword",
-          "value": "do"
-        }
+        "$type": "Keyword",
+        "value": "do"
       },
+      "definesHiddenTokens": false,
+      "entry": false,
       "fragment": false,
-      "hidden": false
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
     },
     {
-      "$type": "TerminalRule",
+      "$type": "ParserRule",
       "name": "T_EACH",
+      "dataType": "string",
       "definition": {
-        "$type": "CharacterRange",
-        "left": {
-          "$type": "Keyword",
-          "value": "each"
-        }
+        "$type": "Keyword",
+        "value": "each"
       },
+      "definesHiddenTokens": false,
+      "entry": false,
       "fragment": false,
-      "hidden": false
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
     },
     {
-      "$type": "TerminalRule",
+      "$type": "ParserRule",
       "name": "T_POLYGON",
+      "dataType": "string",
       "definition": {
-        "$type": "CharacterRange",
-        "left": {
-          "$type": "Keyword",
-          "value": "polygon"
-        }
+        "$type": "Keyword",
+        "value": "polygon"
       },
+      "definesHiddenTokens": false,
+      "entry": false,
       "fragment": false,
-      "hidden": false
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
     },
     {
-      "$type": "TerminalRule",
+      "$type": "ParserRule",
       "name": "T_CENTERED",
+      "dataType": "string",
       "definition": {
-        "$type": "CharacterRange",
-        "left": {
-          "$type": "Keyword",
-          "value": "centered"
-        }
+        "$type": "Keyword",
+        "value": "centered"
       },
+      "definesHiddenTokens": false,
+      "entry": false,
       "fragment": false,
-      "hidden": false
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
     },
     {
-      "$type": "TerminalRule",
+      "$type": "ParserRule",
       "name": "T_COMMA",
+      "dataType": "string",
       "definition": {
-        "$type": "CharacterRange",
-        "left": {
-          "$type": "Keyword",
-          "value": ","
-        }
+        "$type": "Keyword",
+        "value": ","
       },
+      "definesHiddenTokens": false,
+      "entry": false,
       "fragment": false,
-      "hidden": false
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
     },
     {
-      "$type": "TerminalRule",
+      "$type": "ParserRule",
       "name": "T_CREATE",
+      "dataType": "string",
       "definition": {
-        "$type": "CharacterRange",
-        "left": {
-          "$type": "Keyword",
-          "value": "create"
-        }
+        "$type": "Keyword",
+        "value": "create"
       },
+      "definesHiddenTokens": false,
+      "entry": false,
       "fragment": false,
-      "hidden": false
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
     },
     {
-      "$type": "TerminalRule",
+      "$type": "ParserRule",
       "name": "T_DOT",
+      "dataType": "string",
       "definition": {
-        "$type": "CharacterRange",
-        "left": {
-          "$type": "Keyword",
-          "value": "."
-        }
+        "$type": "Keyword",
+        "value": "."
       },
+      "definesHiddenTokens": false,
+      "entry": false,
       "fragment": false,
-      "hidden": false
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
     },
     {
-      "$type": "TerminalRule",
+      "$type": "ParserRule",
       "name": "T_DIFFERENT",
+      "dataType": "string",
       "definition": {
-        "$type": "CharacterRange",
-        "left": {
-          "$type": "Keyword",
-          "value": "<>"
-        }
+        "$type": "Keyword",
+        "value": "<>"
       },
+      "definesHiddenTokens": false,
+      "entry": false,
       "fragment": false,
-      "hidden": false
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
     },
     {
-      "$type": "TerminalRule",
+      "$type": "ParserRule",
       "name": "T_EQUAL",
+      "dataType": "string",
       "definition": {
-        "$type": "CharacterRange",
-        "left": {
-          "$type": "Keyword",
-          "value": "="
-        }
+        "$type": "Keyword",
+        "value": "="
       },
+      "definesHiddenTokens": false,
+      "entry": false,
       "fragment": false,
-      "hidden": false
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
     },
     {
-      "$type": "TerminalRule",
+      "$type": "ParserRule",
       "name": "T_MULEQUAL",
+      "dataType": "string",
       "definition": {
-        "$type": "CharacterRange",
-        "left": {
-          "$type": "Keyword",
-          "value": "*="
-        }
+        "$type": "Keyword",
+        "value": "*="
       },
+      "definesHiddenTokens": false,
+      "entry": false,
       "fragment": false,
-      "hidden": false
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
     },
     {
-      "$type": "TerminalRule",
+      "$type": "ParserRule",
       "name": "T_PLUSEQUAL",
+      "dataType": "string",
       "definition": {
-        "$type": "CharacterRange",
-        "left": {
-          "$type": "Keyword",
-          "value": "+="
-        }
+        "$type": "Keyword",
+        "value": "+="
       },
+      "definesHiddenTokens": false,
+      "entry": false,
       "fragment": false,
-      "hidden": false
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
     },
     {
-      "$type": "TerminalRule",
+      "$type": "ParserRule",
       "name": "T_MINUSEQUAL",
+      "dataType": "string",
       "definition": {
-        "$type": "CharacterRange",
-        "left": {
-          "$type": "Keyword",
-          "value": "-="
-        }
+        "$type": "Keyword",
+        "value": "-="
       },
+      "definesHiddenTokens": false,
+      "entry": false,
       "fragment": false,
-      "hidden": false
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
     },
     {
-      "$type": "TerminalRule",
+      "$type": "ParserRule",
       "name": "T_PLUSPLUSEQUAL",
+      "dataType": "string",
       "definition": {
-        "$type": "CharacterRange",
-        "left": {
-          "$type": "Keyword",
-          "value": "++="
-        }
+        "$type": "Keyword",
+        "value": "++="
       },
+      "definesHiddenTokens": false,
+      "entry": false,
       "fragment": false,
-      "hidden": false
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
     },
     {
-      "$type": "TerminalRule",
+      "$type": "ParserRule",
       "name": "T_MINUSMINUSEQUAL",
+      "dataType": "string",
       "definition": {
-        "$type": "CharacterRange",
-        "left": {
-          "$type": "Keyword",
-          "value": "--="
-        }
+        "$type": "Keyword",
+        "value": "--="
       },
+      "definesHiddenTokens": false,
+      "entry": false,
       "fragment": false,
-      "hidden": false
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
     },
     {
-      "$type": "TerminalRule",
+      "$type": "ParserRule",
       "name": "T_LEFTSHIT",
+      "dataType": "string",
       "definition": {
-        "$type": "CharacterRange",
-        "left": {
-          "$type": "Keyword",
-          "value": "<<"
-        }
+        "$type": "Keyword",
+        "value": "<<"
       },
+      "definesHiddenTokens": false,
+      "entry": false,
       "fragment": false,
-      "hidden": false
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
     },
     {
-      "$type": "TerminalRule",
+      "$type": "ParserRule",
       "name": "T_RIGHTSHIT",
+      "dataType": "string",
       "definition": {
-        "$type": "CharacterRange",
-        "left": {
-          "$type": "Keyword",
-          "value": ">>"
-        }
+        "$type": "Keyword",
+        "value": ">>"
       },
+      "definesHiddenTokens": false,
+      "entry": false,
       "fragment": false,
-      "hidden": false
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
     },
     {
-      "$type": "TerminalRule",
+      "$type": "ParserRule",
       "name": "T_FOR",
+      "dataType": "string",
       "definition": {
-        "$type": "CharacterRange",
-        "left": {
-          "$type": "Keyword",
-          "value": "for"
-        }
+        "$type": "Keyword",
+        "value": "for"
       },
+      "definesHiddenTokens": false,
+      "entry": false,
       "fragment": false,
-      "hidden": false
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
     },
     {
-      "$type": "TerminalRule",
+      "$type": "ParserRule",
       "name": "T_FROM_RECORDING",
+      "dataType": "string",
       "definition": {
-        "$type": "CharacterRange",
-        "left": {
-          "$type": "Keyword",
-          "value": "from_recording"
-        }
+        "$type": "Keyword",
+        "value": "from_recording"
       },
+      "definesHiddenTokens": false,
+      "entry": false,
       "fragment": false,
-      "hidden": false
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
     },
     {
-      "$type": "TerminalRule",
+      "$type": "ParserRule",
       "name": "T_FROM",
+      "dataType": "string",
       "definition": {
-        "$type": "CharacterRange",
-        "left": {
-          "$type": "Keyword",
-          "value": "from"
-        }
+        "$type": "Keyword",
+        "value": "from"
       },
+      "definesHiddenTokens": false,
+      "entry": false,
       "fragment": false,
-      "hidden": false
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
     },
     {
-      "$type": "TerminalRule",
+      "$type": "ParserRule",
       "name": "T_GLOBAL",
+      "dataType": "string",
       "definition": {
-        "$type": "CharacterRange",
-        "left": {
-          "$type": "Keyword",
-          "value": "global"
-        }
+        "$type": "Keyword",
+        "value": "global"
       },
+      "definesHiddenTokens": false,
+      "entry": false,
       "fragment": false,
-      "hidden": false
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
     },
     {
-      "$type": "TerminalRule",
+      "$type": "ParserRule",
       "name": "T_OPEN_PAR",
+      "dataType": "string",
       "definition": {
-        "$type": "CharacterRange",
-        "left": {
-          "$type": "Keyword",
-          "value": "("
-        }
+        "$type": "Keyword",
+        "value": "("
       },
+      "definesHiddenTokens": false,
+      "entry": false,
       "fragment": false,
-      "hidden": false
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
     },
     {
-      "$type": "TerminalRule",
+      "$type": "ParserRule",
       "name": "T_CLOSE_PAR",
+      "dataType": "string",
       "definition": {
-        "$type": "CharacterRange",
-        "left": {
-          "$type": "Keyword",
-          "value": ")"
-        }
+        "$type": "Keyword",
+        "value": ")"
       },
+      "definesHiddenTokens": false,
+      "entry": false,
       "fragment": false,
-      "hidden": false
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
     },
     {
-      "$type": "TerminalRule",
+      "$type": "ParserRule",
       "name": "T_OPEN_BRACE",
+      "dataType": "string",
       "definition": {
-        "$type": "CharacterRange",
-        "left": {
-          "$type": "Keyword",
-          "value": "{"
-        }
+        "$type": "Keyword",
+        "value": "{"
       },
+      "definesHiddenTokens": false,
+      "entry": false,
       "fragment": false,
-      "hidden": false
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
     },
     {
-      "$type": "TerminalRule",
+      "$type": "ParserRule",
       "name": "T_CLOSE_BRACE",
+      "dataType": "string",
       "definition": {
-        "$type": "CharacterRange",
-        "left": {
-          "$type": "Keyword",
-          "value": "}"
-        }
+        "$type": "Keyword",
+        "value": "}"
       },
+      "definesHiddenTokens": false,
+      "entry": false,
       "fragment": false,
-      "hidden": false
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
     },
     {
-      "$type": "TerminalRule",
+      "$type": "ParserRule",
       "name": "T_OPEN_SBRACE",
+      "dataType": "string",
       "definition": {
-        "$type": "CharacterRange",
-        "left": {
-          "$type": "Keyword",
-          "value": "["
-        }
+        "$type": "Keyword",
+        "value": "["
       },
+      "definesHiddenTokens": false,
+      "entry": false,
       "fragment": false,
-      "hidden": false
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
     },
     {
-      "$type": "TerminalRule",
+      "$type": "ParserRule",
       "name": "T_CLOSE_SBRACE",
+      "dataType": "string",
       "definition": {
-        "$type": "CharacterRange",
-        "left": {
-          "$type": "Keyword",
-          "value": "]"
-        }
+        "$type": "Keyword",
+        "value": "]"
       },
+      "definesHiddenTokens": false,
+      "entry": false,
       "fragment": false,
-      "hidden": false
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
     },
     {
-      "$type": "TerminalRule",
+      "$type": "ParserRule",
       "name": "T_LET",
+      "dataType": "string",
       "definition": {
-        "$type": "CharacterRange",
-        "left": {
-          "$type": "Keyword",
-          "value": "let"
-        }
+        "$type": "Keyword",
+        "value": "let"
       },
+      "definesHiddenTokens": false,
+      "entry": false,
       "fragment": false,
-      "hidden": false
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
     },
     {
-      "$type": "TerminalRule",
+      "$type": "ParserRule",
       "name": "T_LT",
+      "dataType": "string",
       "definition": {
-        "$type": "CharacterRange",
-        "left": {
-          "$type": "Keyword",
-          "value": "<"
-        }
+        "$type": "Keyword",
+        "value": "<"
       },
+      "definesHiddenTokens": false,
+      "entry": false,
       "fragment": false,
-      "hidden": false
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
     },
     {
-      "$type": "TerminalRule",
+      "$type": "ParserRule",
       "name": "T_GT",
+      "dataType": "string",
       "definition": {
-        "$type": "CharacterRange",
-        "left": {
-          "$type": "Keyword",
-          "value": ">"
-        }
+        "$type": "Keyword",
+        "value": ">"
       },
+      "definesHiddenTokens": false,
+      "entry": false,
       "fragment": false,
-      "hidden": false
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
     },
     {
-      "$type": "TerminalRule",
+      "$type": "ParserRule",
       "name": "T_LTE",
+      "dataType": "string",
       "definition": {
-        "$type": "CharacterRange",
-        "left": {
-          "$type": "Keyword",
-          "value": "<="
-        }
+        "$type": "Keyword",
+        "value": "<="
       },
+      "definesHiddenTokens": false,
+      "entry": false,
       "fragment": false,
-      "hidden": false
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
     },
     {
-      "$type": "TerminalRule",
+      "$type": "ParserRule",
       "name": "T_GTE",
+      "dataType": "string",
       "definition": {
-        "$type": "CharacterRange",
-        "left": {
-          "$type": "Keyword",
-          "value": ">="
-        }
+        "$type": "Keyword",
+        "value": ">="
       },
+      "definesHiddenTokens": false,
+      "entry": false,
       "fragment": false,
-      "hidden": false
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
     },
     {
-      "$type": "TerminalRule",
+      "$type": "ParserRule",
       "name": "T_MUL",
+      "dataType": "string",
       "definition": {
-        "$type": "CharacterRange",
-        "left": {
-          "$type": "Keyword",
-          "value": "*"
-        }
+        "$type": "Keyword",
+        "value": "*"
       },
+      "definesHiddenTokens": false,
+      "entry": false,
       "fragment": false,
-      "hidden": false
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
     },
     {
-      "$type": "TerminalRule",
+      "$type": "ParserRule",
       "name": "T_IN",
+      "dataType": "string",
       "definition": {
-        "$type": "CharacterRange",
-        "left": {
-          "$type": "Keyword",
-          "value": "in"
-        }
+        "$type": "Keyword",
+        "value": "in"
       },
+      "definesHiddenTokens": false,
+      "entry": false,
       "fragment": false,
-      "hidden": false
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
     },
     {
-      "$type": "TerminalRule",
+      "$type": "ParserRule",
       "name": "T_HIDE",
+      "dataType": "string",
       "definition": {
-        "$type": "CharacterRange",
-        "left": {
-          "$type": "Keyword",
-          "value": "hide"
-        }
+        "$type": "Keyword",
+        "value": "hide"
       },
+      "definesHiddenTokens": false,
+      "entry": false,
       "fragment": false,
-      "hidden": false
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
     },
     {
-      "$type": "TerminalRule",
+      "$type": "ParserRule",
       "name": "T_REPLAY",
+      "dataType": "string",
       "definition": {
-        "$type": "CharacterRange",
-        "left": {
-          "$type": "Keyword",
-          "value": "replay"
-        }
+        "$type": "Keyword",
+        "value": "replay"
       },
+      "definesHiddenTokens": false,
+      "entry": false,
       "fragment": false,
-      "hidden": false
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
     },
     {
-      "$type": "TerminalRule",
+      "$type": "ParserRule",
       "name": "T_DELAY",
+      "dataType": "string",
       "definition": {
-        "$type": "CharacterRange",
-        "left": {
-          "$type": "Keyword",
-          "value": "delay"
-        }
+        "$type": "Keyword",
+        "value": "delay"
       },
+      "definesHiddenTokens": false,
+      "entry": false,
       "fragment": false,
-      "hidden": false
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
     },
     {
-      "$type": "TerminalRule",
+      "$type": "ParserRule",
       "name": "T_ROTATE",
+      "dataType": "string",
       "definition": {
-        "$type": "CharacterRange",
-        "left": {
-          "$type": "Keyword",
-          "value": "rotate"
-        }
+        "$type": "Keyword",
+        "value": "rotate"
       },
+      "definesHiddenTokens": false,
+      "entry": false,
       "fragment": false,
-      "hidden": false
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
     },
     {
-      "$type": "TerminalRule",
+      "$type": "ParserRule",
       "name": "T_WITH_DELAY",
+      "dataType": "string",
       "definition": {
-        "$type": "CharacterRange",
-        "left": {
-          "$type": "Keyword",
-          "value": "with_delay"
-        }
+        "$type": "Keyword",
+        "value": "with_delay"
       },
+      "definesHiddenTokens": false,
+      "entry": false,
       "fragment": false,
-      "hidden": false
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
     },
     {
-      "$type": "TerminalRule",
+      "$type": "ParserRule",
       "name": "T_WITH_FREQUENCY",
+      "dataType": "string",
       "definition": {
-        "$type": "CharacterRange",
-        "left": {
-          "$type": "Keyword",
-          "value": "with_frequency"
-        }
+        "$type": "Keyword",
+        "value": "with_frequency"
       },
+      "definesHiddenTokens": false,
+      "entry": false,
       "fragment": false,
-      "hidden": false
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
     },
     {
-      "$type": "TerminalRule",
+      "$type": "ParserRule",
       "name": "T_WITH_ANGLE",
+      "dataType": "string",
       "definition": {
-        "$type": "CharacterRange",
-        "left": {
-          "$type": "Keyword",
-          "value": "with_angle"
-        }
+        "$type": "Keyword",
+        "value": "with_angle"
       },
+      "definesHiddenTokens": false,
+      "entry": false,
       "fragment": false,
-      "hidden": false
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
     },
     {
-      "$type": "TerminalRule",
+      "$type": "ParserRule",
       "name": "T_PLANE",
+      "dataType": "string",
       "definition": {
-        "$type": "CharacterRange",
-        "left": {
-          "$type": "Keyword",
-          "value": "plane"
-        }
+        "$type": "Keyword",
+        "value": "plane"
       },
+      "definesHiddenTokens": false,
+      "entry": false,
       "fragment": false,
-      "hidden": false
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
     },
     {
-      "$type": "TerminalRule",
+      "$type": "ParserRule",
       "name": "T_RADIUS",
+      "dataType": "string",
       "definition": {
-        "$type": "CharacterRange",
-        "left": {
-          "$type": "Keyword",
-          "value": "radius"
-        }
+        "$type": "Keyword",
+        "value": "radius"
       },
+      "definesHiddenTokens": false,
+      "entry": false,
       "fragment": false,
-      "hidden": false
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
     },
     {
-      "$type": "TerminalRule",
+      "$type": "ParserRule",
       "name": "T_SATURATE",
+      "dataType": "string",
       "definition": {
-        "$type": "CharacterRange",
-        "left": {
-          "$type": "Keyword",
-          "value": "saturate"
-        }
+        "$type": "Keyword",
+        "value": "saturate"
       },
+      "definesHiddenTokens": false,
+      "entry": false,
       "fragment": false,
-      "hidden": false
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
     },
     {
-      "$type": "TerminalRule",
+      "$type": "ParserRule",
       "name": "T_SATISFYING",
+      "dataType": "string",
       "definition": {
-        "$type": "CharacterRange",
-        "left": {
-          "$type": "Keyword",
-          "value": "satisfying"
-        }
+        "$type": "Keyword",
+        "value": "satisfying"
       },
+      "definesHiddenTokens": false,
+      "entry": false,
       "fragment": false,
-      "hidden": false
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
     },
     {
-      "$type": "TerminalRule",
+      "$type": "ParserRule",
       "name": "T_TRIGGERED_BY",
+      "dataType": "string",
       "definition": {
-        "$type": "CharacterRange",
-        "left": {
-          "$type": "Keyword",
-          "value": "triggered_by"
-        }
+        "$type": "Keyword",
+        "value": "triggered_by"
       },
+      "definesHiddenTokens": false,
+      "entry": false,
       "fragment": false,
-      "hidden": false
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
     },
     {
-      "$type": "TerminalRule",
+      "$type": "ParserRule",
       "name": "T_SECONDS",
+      "dataType": "string",
       "definition": {
-        "$type": "CharacterRange",
-        "left": {
-          "$type": "Keyword",
-          "value": "seconds"
-        }
+        "$type": "Keyword",
+        "value": "seconds"
       },
+      "definesHiddenTokens": false,
+      "entry": false,
       "fragment": false,
-      "hidden": false
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
     },
     {
-      "$type": "TerminalRule",
+      "$type": "ParserRule",
       "name": "T_TO",
+      "dataType": "string",
       "definition": {
-        "$type": "CharacterRange",
-        "left": {
-          "$type": "Keyword",
-          "value": "to"
-        }
+        "$type": "Keyword",
+        "value": "to"
       },
+      "definesHiddenTokens": false,
+      "entry": false,
       "fragment": false,
-      "hidden": false
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
     },
     {
-      "$type": "TerminalRule",
+      "$type": "ParserRule",
       "name": "T_UNTIL",
+      "dataType": "string",
       "definition": {
-        "$type": "CharacterRange",
-        "left": {
-          "$type": "Keyword",
-          "value": "until"
-        }
+        "$type": "Keyword",
+        "value": "until"
       },
+      "definesHiddenTokens": false,
+      "entry": false,
       "fragment": false,
-      "hidden": false
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
     },
     {
-      "$type": "TerminalRule",
+      "$type": "ParserRule",
       "name": "T_VERTICES",
+      "dataType": "string",
       "definition": {
-        "$type": "CharacterRange",
-        "left": {
-          "$type": "Keyword",
-          "value": "vertices"
-        }
+        "$type": "Keyword",
+        "value": "vertices"
       },
+      "definesHiddenTokens": false,
+      "entry": false,
       "fragment": false,
-      "hidden": false
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
     },
     {
-      "$type": "TerminalRule",
+      "$type": "ParserRule",
       "name": "T_WITH",
+      "dataType": "string",
       "definition": {
-        "$type": "CharacterRange",
-        "left": {
-          "$type": "Keyword",
-          "value": "with"
-        }
+        "$type": "Keyword",
+        "value": "with"
       },
+      "definesHiddenTokens": false,
+      "entry": false,
       "fragment": false,
-      "hidden": false
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
     },
     {
-      "$type": "TerminalRule",
+      "$type": "ParserRule",
       "name": "T_WITH_VALUES",
+      "dataType": "string",
       "definition": {
-        "$type": "CharacterRange",
-        "left": {
-          "$type": "Keyword",
-          "value": "with_values"
-        }
+        "$type": "Keyword",
+        "value": "with_values"
       },
+      "definesHiddenTokens": false,
+      "entry": false,
       "fragment": false,
-      "hidden": false
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
     },
     {
-      "$type": "TerminalRule",
+      "$type": "ParserRule",
       "name": "T_WITH_ALTITUDE",
+      "dataType": "string",
       "definition": {
-        "$type": "CharacterRange",
-        "left": {
-          "$type": "Keyword",
-          "value": "with_altitude"
-        }
+        "$type": "Keyword",
+        "value": "with_altitude"
       },
+      "definesHiddenTokens": false,
+      "entry": false,
       "fragment": false,
-      "hidden": false
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
     },
     {
-      "$type": "TerminalRule",
+      "$type": "ParserRule",
       "name": "T_WITH_WAYPOINTS",
+      "dataType": "string",
       "definition": {
-        "$type": "CharacterRange",
-        "left": {
-          "$type": "Keyword",
-          "value": "with_waypoints"
-        }
+        "$type": "Keyword",
+        "value": "with_waypoints"
       },
+      "definesHiddenTokens": false,
+      "entry": false,
       "fragment": false,
-      "hidden": false
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
     },
     {
-      "$type": "TerminalRule",
+      "$type": "ParserRule",
       "name": "T_GROOVY_FILE",
+      "dataType": "string",
       "definition": {
-        "$type": "CharacterRange",
-        "left": {
-          "$type": "Keyword",
-          "value": "groovy_file"
-        }
+        "$type": "Keyword",
+        "value": "groovy_file"
       },
+      "definesHiddenTokens": false,
+      "entry": false,
       "fragment": false,
-      "hidden": false
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
     },
     {
-      "$type": "TerminalRule",
+      "$type": "ParserRule",
       "name": "T_FILTER",
+      "dataType": "string",
       "definition": {
-        "$type": "CharacterRange",
-        "left": {
-          "$type": "Keyword",
-          "value": "filter"
-        }
+        "$type": "Keyword",
+        "value": "filter"
       },
+      "definesHiddenTokens": false,
+      "entry": false,
       "fragment": false,
-      "hidden": false
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
     },
     {
       "$type": "TerminalRule",

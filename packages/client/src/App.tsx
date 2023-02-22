@@ -2,7 +2,7 @@ import React from 'react';
 import './styles.css';
 import Editor, { loader } from "@monaco-editor/react";
 import FDITSCENARIO_FORMAT,{ KEYWORD, TYPE_KEYWORD}  from "./fditscenario";
-
+/*
 loader.init().then((monaco) => {
     monaco.languages.register({ id: "fditscenario" });
 
@@ -41,7 +41,7 @@ loader.init().then((monaco) => {
 
 
 
-});
+});*/
 
 function App() {
 
@@ -51,12 +51,13 @@ function App() {
       <div id="page-wrapper">
           <div className="half">
               <div className="wrapper">
-                  <Editor
+                  <div id="monaco-editor-root"></div>
+                  {/*<Editor
                       height="90vh"
                       theme="vs-dark"
                       language="fditscenario"
                       defaultValue='alter all_planes at 7 seconds with_values ICAO = "39AC47" and CALLSIGN = "SAMU25" '
-                  />
+                  />*/}
               </div></div>
         <div className="half">
           <div className="wrapper">

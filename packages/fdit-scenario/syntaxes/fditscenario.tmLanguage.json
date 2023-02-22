@@ -10,7 +10,7 @@
     },
     {
       "name": "keyword.control.fditscenario",
-      "match": "\\b(ALERT|ALT_DURATION|ALTITUDE|CALLSIGN|EAST_WEST_VELOCITY|EMERGENCY|GROUNDSPEED|ICAO|LATITUDE|LONGITUDE|NORTH_SOUTH_VELOCITY|NUMBER|REC_DURATION|REC_NBR_AIRCRAFT|SPI|SQUAWK|TRACK)\\b"
+      "match": "\\b(ALERT|all_planes|ALT_DURATION|alter|alter_speed|ALTITUDE|and|assert|at|CALLSIGN|create|cut|delay|EAST_WEST_VELOCITY|EMERGENCY|filter|for|from|from_recording|groovy_file|GROUNDSPEED|hide|ICAO|LATITUDE|let|LONGITUDE|NORTH_SOUTH_VELOCITY|NUMBER|plane|REC_DURATION|REC_NBR_AIRCRAFT|replay|rotate|satisfying|saturate|seconds|SPI|SQUAWK|TRACK|triggered_by|until|with_altitude|with_angle|with_delay|with_frequency|with_values|with_waypoints)\\b"
     }
   ],
   "repository": {

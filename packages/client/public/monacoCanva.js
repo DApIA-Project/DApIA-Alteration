@@ -6,7 +6,7 @@ buildWorkerDefinition('./monaco/monaco-editor-workers/workers', new URL('', wind
 
 MonacoEditorLanguageClientWrapper.addMonacoStyles('monaco-editor-styles');
 
-const client = new MonacoEditorLanguageClientWrapper();
+const client = new MonacoEditorLanguageClientWrapper('42');
 const editorConfig = client.getEditorConfig();
 editorConfig.setMainLanguageId('fditscenario');
 

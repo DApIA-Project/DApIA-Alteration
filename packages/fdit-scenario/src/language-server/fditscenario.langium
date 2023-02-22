@@ -11,11 +11,11 @@ ASTList
 ;
 
 ASTStringList
-: T_OPEN_BRACE items+=T_STRING_LITERAL (T_COMMA items+=T_STRING_LITERAL)* T_CLOSE_BRACE
+: keyword=T_OPEN_BRACE items+=T_STRING_LITERAL (keyword=T_COMMA items+=T_STRING_LITERAL)* keyword=T_CLOSE_BRACE
 ;
 
 ASTOffsetList
-: T_OPEN_BRACE items+=ASTNumberOffset (T_COMMA items+=ASTNumberOffset)* T_CLOSE_BRACE
+: keyword=T_OPEN_BRACE items+=ASTNumberOffset (keyword=T_COMMA items+=ASTNumberOffset)* keyword=T_CLOSE_BRACE
 ;
 
 ASTRange
@@ -23,22 +23,22 @@ ASTRange
     ASTDoubleRange
 ;
 ASTIntegerRange
-: T_OPEN_SBRACE start=T_INTEGER_LITERAL T_COMMA end=T_INTEGER_LITERAL T_CLOSE_SBRACE 
+: keyword=T_OPEN_SBRACE start=T_INTEGER_LITERAL keyword=T_COMMA end=T_INTEGER_LITERAL keyword=T_CLOSE_SBRACE
 ;
 ASTDoubleRange
-:  T_OPEN_SBRACE start=T_DOUBLE_LITERAL T_COMMA end=T_DOUBLE_LITERAL T_CLOSE_SBRACE
+:  keyword=T_OPEN_SBRACE start=T_DOUBLE_LITERAL keyword=T_COMMA end=T_DOUBLE_LITERAL keyword=T_CLOSE_SBRACE
 ;
 
 ASTDeclaration
-: (ASTListDeclaration  | ASTRangeDeclaration) T_COMMA
+: (ASTListDeclaration  | ASTRangeDeclaration) keyword=T_COMMA
 ;
 
 ASTListDeclaration
-: T_LET constant=T_CONSTANT T_EQUAL list=ASTList 
+: keyword=T_LET constant=T_CONSTANT keyword=T_EQUAL list=ASTList
 ;
 
 ASTRangeDeclaration
-: T_LET constant=T_CONSTANT T_EQUAL range=ASTRange
+: keyword=T_LET constant=T_CONSTANT keyword=T_EQUAL range=ASTRange
 
 ;
 
@@ -56,51 +56,51 @@ ASTInstruction
 ;
 
 ASTHide
-: T_HIDE target=ASTTarget timeScope=ASTTimeScope trigger=ASTTrigger? frequency=ASTHideParameter? assertions=ASTAssertions?
+: keyword=T_HIDE target=ASTTarget timeScope=ASTTimeScope trigger=ASTTrigger? frequency=ASTHideParameter? assertions=ASTAssertions?
 ;
 
 ASTCreate
-: T_CREATE timeScope=ASTTimeScope trajectory=ASTWayPoints parameters=ASTCreationParameters? assertions=ASTAssertions?
+: keyword=T_CREATE timeScope=ASTTimeScope trajectory=ASTWayPoints parameters=ASTCreationParameters? assertions=ASTAssertions?
 ;
 
 ASTAlter
-: T_ALTER target=ASTTarget timeScope=ASTTimeScope trigger=ASTTrigger? parameters=ASTParameters assertions=ASTAssertions?
+: keyword=T_ALTER target=ASTTarget timeScope=ASTTimeScope trigger=ASTTrigger? parameters=ASTParameters assertions=ASTAssertions?
 ;
 
 ASTTrajectory
-: T_ALTER target=ASTTarget timeScope=ASTTimeScope trigger=ASTTrigger? trajectory=ASTWayPoints assertions=ASTAssertions?
+: keyword=T_ALTER target=ASTTarget timeScope=ASTTimeScope trigger=ASTTrigger? trajectory=ASTWayPoints assertions=ASTAssertions?
 ;
 
 ASTAlterSpeed
-: T_ALTER_SPEED target=ASTTarget timeScope=ASTTimeScope trigger=ASTTrigger? parameters=ASTSpeedParameters assertions=ASTAssertions?
+: keyword=T_ALTER_SPEED target=ASTTarget timeScope=ASTTimeScope trigger=ASTTrigger? parameters=ASTSpeedParameters assertions=ASTAssertions?
 ;
 
 ASTSaturate
-: T_SATURATE target=ASTTarget timeScope=ASTTimeScope trigger=ASTTrigger? parameters=ASTSaturationParameters assertions=ASTAssertions?
+: keyword=T_SATURATE target=ASTTarget timeScope=ASTTimeScope trigger=ASTTrigger? parameters=ASTSaturationParameters assertions=ASTAssertions?
 ;
 
 ASTReplay
-: T_REPLAY target=ASTReplayTarget timeScope=ASTTimeScope parameters=ASTParameters? assertions=ASTAssertions?
+: keyword=T_REPLAY target=ASTReplayTarget timeScope=ASTTimeScope parameters=ASTParameters? assertions=ASTAssertions?
 ;
 
 ASTDelay
-: T_DELAY target=ASTTarget timeScope=ASTTimeScope delay=ASTDelayParameter assertions=ASTAssertions?
+: keyword=T_DELAY target=ASTTarget timeScope=ASTTimeScope delay=ASTDelayParameter assertions=ASTAssertions?
 ;
 
 ASTRotate
-: T_ROTATE target=ASTTarget timeScope=ASTTimeScope trigger=ASTTrigger? angle=ASTRotateParameter assertions=ASTAssertions?
+: keyword=T_ROTATE target=ASTTarget timeScope=ASTTimeScope trigger=ASTTrigger? angle=ASTRotateParameter assertions=ASTAssertions?
 ;
 
 ASTCut
-: T_CUT target=ASTTarget timeScope=ASTTimeScope trigger=ASTTrigger? assertions=ASTAssertions?
+: keyword=T_CUT target=ASTTarget timeScope=ASTTimeScope trigger=ASTTrigger? assertions=ASTAssertions?
 ;
 
 ASTAssertions
-: items+=ASTAssertion (T_AND items+=ASTAssertion)*
+: items+=ASTAssertion (keyword=T_AND items+=ASTAssertion)*
 ;
 
 ASTAssertion
-: T_ASSERT timeScope=ASTTimeScope T_GROOVY_FILE file=T_STRING_LITERAL (T_FILTER filter=T_STRING_LITERAL)?
+: keyword=T_ASSERT timeScope=ASTTimeScope keyword=T_GROOVY_FILE file=T_STRING_LITERAL (keyword=T_FILTER filter=T_STRING_LITERAL)?
 ;
 
 ASTTarget
@@ -109,11 +109,11 @@ ASTTarget
 ;
 
 ASTPlane
-: T_PLANE filters=ASTFilters
+: keyword=T_PLANE filters=ASTFilters
 ;
 
 ASTAllPlanes
-: T_ALL_PLANES (filters=ASTFilters)?
+: keyword=T_ALL_PLANES (filters=ASTFilters)?
 ;
 
 ASTReplayTarget:
@@ -122,35 +122,35 @@ ASTReplayTarget:
 ;
 
 ASTPlaneFrom:
-    T_PLANE filters=ASTFilters T_FROM_RECORDING recording=ASTValue
+    keyword=T_PLANE filters=ASTFilters keyword=T_FROM_RECORDING recording=ASTValue
 ;
 
 ASTAllPlaneFrom:
-    T_ALL_PLANES(filters=ASTFilters)? T_FROM_RECORDING recording=ASTValue
+    keyword=T_ALL_PLANES(filters=ASTFilters)? keyword=T_FROM_RECORDING recording=ASTValue
 ;
 
 ASTWayPoints
-: T_WITH_WAYPOINTS T_OPEN_SBRACE waypoints+=ASTWayPoint (T_COMMA waypoints+=ASTWayPoint)* T_CLOSE_SBRACE
+: keyword=T_WITH_WAYPOINTS keyword=T_OPEN_SBRACE waypoints+=ASTWayPoint (keyword=T_COMMA waypoints+=ASTWayPoint)* keyword=T_CLOSE_SBRACE
 ;
 
 ASTWayPoint
-: T_OPEN_PAR latitude=ASTValue T_COMMA longitude=ASTValue T_CLOSE_PAR T_WITH_ALTITUDE altitude=ASTValue T_AT time=ASTTime
+: keyword=T_OPEN_PAR latitude=ASTValue keyword=T_COMMA longitude=ASTValue keyword=T_CLOSE_PAR keyword=T_WITH_ALTITUDE altitude=ASTValue keyword=T_AT time=ASTTime
 ;
 
 ASTParameters
-: T_WITH_VALUES items+=ASTParameter (T_AND items+=ASTParameter)*
+: keyword=T_WITH_VALUES items+=ASTParameter (keyword=T_AND items+=ASTParameter)*
 ;
 
 ASTDelayParameter
-: T_WITH_DELAY value=ASTTime
+: keyword=T_WITH_DELAY value=ASTTime
 ;
 
 ASTHideParameter
-: T_WITH_FREQUENCY value=ASTValue
+: keyword=T_WITH_FREQUENCY value=ASTValue
 ;
 
 ASTRotateParameter
-: T_WITH_ANGLE value=ASTValue
+: keyword=T_WITH_ANGLE value=ASTValue
 ;
 
 ASTParameter
@@ -161,7 +161,7 @@ ASTParameter
 ;
 
 ASTParamEdit
-: name=ASTParameterType T_EQUAL value=ASTValue
+: name=ASTParameterType keyword=T_EQUAL value=ASTValue
 ;
 
 ASTParamOffset
@@ -169,7 +169,7 @@ ASTParamOffset
 ;
 
 ASTParamNoise
-: name=ASTParameterType T_MULEQUAL value=ASTValue
+: name=ASTParameterType keyword=T_MULEQUAL value=ASTValue
 ;
 
 ASTParamDrift
@@ -177,31 +177,31 @@ ASTParamDrift
 ;
 
 ASTSpeedParameters
-: T_WITH_VALUES items+=ASTSpeedParameter (T_AND items+=ASTSpeedParameter)?
+: keyword=T_WITH_VALUES items+=ASTSpeedParameter (keyword=T_AND items+=ASTSpeedParameter)?
 ;
 
 ASTSpeedParameter
-: name=ASTSpeedParameterType T_EQUAL value=ASTValue
+: name=ASTSpeedParameterType keyword=T_EQUAL value=ASTValue
 ;
 
 ASTSaturationParameters
-: T_WITH_VALUES items+=ASTSaturationParameter (T_AND items+=ASTSaturationParameter)*
+: keyword=T_WITH_VALUES items+=ASTSaturationParameter (keyword=T_AND items+=ASTSaturationParameter)*
 ;
 
 ASTSaturationParameter
-: name=ASTSaturationParameterType T_EQUAL value=ASTValue
+: name=ASTSaturationParameterType keyword=T_EQUAL value=ASTValue
 ;
 
 ASTCreationParameters
-: T_WITH_VALUES items+=ASTCreationParameter (T_AND items+=ASTCreationParameter)*
+: keyword=T_WITH_VALUES items+=ASTCreationParameter (keyword=T_AND items+=ASTCreationParameter)*
 ;
 
 ASTCreationParameter
-: name=ASTCreationParameterType T_EQUAL value=ASTValue
+: name=ASTCreationParameterType keyword=T_EQUAL value=ASTValue
 ;
 
 ASTTrigger
-: T_TRIGGERED_BY triggername=ASTValue
+: keyword=T_TRIGGERED_BY triggername=ASTValue
 ;
 
 ASTTimeScope
@@ -211,23 +211,23 @@ ASTTimeScope
 ;
 
 ASTAt
-: T_AT time=ASTTime
+: keyword=T_AT time=ASTTime
 ;
 
 ASTWindow
-: T_FROM start=ASTTime T_UNTIL end=ASTTime
+: keyword=T_FROM start=ASTTime keyword=T_UNTIL end=ASTTime
 ;
 
 ASTAtFor
-: T_AT time=ASTTime T_FOR for=ASTTime
+: keyword=T_AT time=ASTTime keyword=T_FOR for=ASTTime
 ;
 
 ASTTime
-: realTime=ASTValue T_SECONDS
+: realTime=ASTValue keyword=T_SECONDS
 ;
 
 ASTFilters
-:  T_SATISFYING filters+=ASTValue (T_AND filters+=ASTValue)*
+:  keyword=T_SATISFYING filters+=ASTValue (keyword=T_AND filters+=ASTValue)*
 ;
 
 ASTNumberOffset
@@ -237,11 +237,11 @@ ASTNumberOffset
 ;
 
 ASTLeftShift
-: T_LEFTSHIT content=ASTNumber
+: keyword=T_LEFTSHIT content=ASTNumber
 ;
 
 ASTRightShift
-: T_RIGHTSHIT content=ASTNumber
+: keyword=T_RIGHTSHIT content=ASTNumber
 ;
 
 ASTNumber:
@@ -259,7 +259,7 @@ ASTDoubleValue:
 ;
 
 ASTRecordingValue:
-    ratio=T_DOUBLE_LITERAL T_MUL content=ASTRecordingParameterType
+    ratio=T_DOUBLE_LITERAL keyword=T_MUL content=ASTRecordingParameterType
 ;
 
 ASTValue
@@ -312,72 +312,72 @@ ASTRecordingParameterType:
     ALT_DURATION = "ALT_DURATION"|
     REC_NBR_AIRCRAFT = "REC_NBR_AIRCRAFT";
 
-terminal T_AREA            : 'area';
-terminal T_ALL_PLANES      : 'all_planes';
-terminal T_PLANES          : 'planes';
-terminal T_ALTER_SPEED     : 'alter_speed';
-terminal T_ALTER           : 'alter';
-terminal T_ALTITUDE        : 'altitude';
-terminal T_AND             : 'and';
-terminal T_ASSERT          : 'assert';
-terminal T_AT              : 'at';
-terminal T_CIRCLE          : 'circle';
-terminal T_CUT             : 'cut';
-terminal T_DO              : 'do';
-terminal T_EACH            : 'each';
-terminal T_POLYGON         : 'polygon';
-terminal T_CENTERED        : 'centered';
-terminal T_COMMA           : ',';
-terminal T_CREATE          : 'create';
-terminal T_DOT             : '.';
-terminal T_DIFFERENT       : '<>';
-terminal T_EQUAL           : '=';
-terminal T_MULEQUAL        : '*=';
-terminal T_PLUSEQUAL       : '+=';
-terminal T_MINUSEQUAL      : '-=';
-terminal T_PLUSPLUSEQUAL   : '++=';
-terminal T_MINUSMINUSEQUAL : '--=';
-terminal T_LEFTSHIT        : '<<';
-terminal T_RIGHTSHIT       : '>>';
-terminal T_FOR             : 'for';
-terminal T_FROM_RECORDING  : 'from_recording';
-terminal T_FROM            : 'from';
-terminal T_GLOBAL          : 'global';
-terminal T_OPEN_PAR        : '(';
-terminal T_CLOSE_PAR       : ')';
-terminal T_OPEN_BRACE      : '{';
-terminal T_CLOSE_BRACE     : '}';
-terminal T_OPEN_SBRACE     : '[';
-terminal T_CLOSE_SBRACE    : ']';
-terminal T_LET             : 'let';
-terminal T_LT              : '<';
-terminal T_GT              : '>';
-terminal T_LTE             : '<=';
-terminal T_GTE             : '>=';
-terminal T_MUL             : '*';
-terminal T_IN              : 'in';
-terminal T_HIDE            : 'hide';
-terminal T_REPLAY          : 'replay';
-terminal T_DELAY           : 'delay';
-terminal T_ROTATE          : 'rotate';
-terminal T_WITH_DELAY      : 'with_delay';
-terminal T_WITH_FREQUENCY  : 'with_frequency';
-terminal T_WITH_ANGLE      : 'with_angle';
-terminal T_PLANE           : 'plane';
-terminal T_RADIUS          : 'radius';
-terminal T_SATURATE        : 'saturate';
-terminal T_SATISFYING      : 'satisfying';
-terminal T_TRIGGERED_BY    : 'triggered_by';
-terminal T_SECONDS         : 'seconds';
-terminal T_TO              : 'to';
-terminal T_UNTIL           : 'until';
-terminal T_VERTICES        : 'vertices';
-terminal T_WITH            : 'with';
-terminal T_WITH_VALUES     : 'with_values';
-terminal T_WITH_ALTITUDE   : 'with_altitude';
-terminal T_WITH_WAYPOINTS  : 'with_waypoints';
-terminal T_GROOVY_FILE     : 'groovy_file';
-terminal T_FILTER          : 'filter';
+T_AREA            returns string: 'area';
+T_ALL_PLANES      returns string: 'all_planes';
+T_PLANES          returns string: 'planes';
+T_ALTER_SPEED     returns string: 'alter_speed';
+T_ALTER           returns string: 'alter';
+T_ALTITUDE        returns string: 'altitude';
+T_AND             returns string: 'and';
+T_ASSERT          returns string: 'assert';
+T_AT              returns string: 'at';
+T_CIRCLE          returns string: 'circle';
+T_CUT             returns string: 'cut';
+T_DO              returns string: 'do';
+T_EACH            returns string: 'each';
+T_POLYGON         returns string: 'polygon';
+T_CENTERED        returns string: 'centered';
+T_COMMA           returns string: ',';
+T_CREATE          returns string: 'create';
+T_DOT             returns string: '.';
+T_DIFFERENT       returns string: '<>';
+T_EQUAL           returns string: '=';
+T_MULEQUAL        returns string: '*=';
+T_PLUSEQUAL       returns string: '+=';
+T_MINUSEQUAL      returns string: '-=';
+T_PLUSPLUSEQUAL   returns string: '++=';
+T_MINUSMINUSEQUAL returns string: '--=';
+T_LEFTSHIT        returns string: '<<';
+T_RIGHTSHIT       returns string: '>>';
+T_FOR             returns string: 'for';
+T_FROM_RECORDING  returns string: 'from_recording';
+T_FROM            returns string: 'from';
+T_GLOBAL          returns string: 'global';
+T_OPEN_PAR        returns string: '(';
+T_CLOSE_PAR       returns string: ')';
+T_OPEN_BRACE      returns string: '{';
+T_CLOSE_BRACE     returns string: '}';
+T_OPEN_SBRACE     returns string: '[';
+T_CLOSE_SBRACE    returns string: ']';
+T_LET             returns string: 'let';
+T_LT              returns string: '<';
+T_GT              returns string: '>';
+T_LTE             returns string: '<=';
+T_GTE             returns string: '>=';
+T_MUL             returns string: '*';
+T_IN              returns string: 'in';
+T_HIDE            returns string: 'hide';
+T_REPLAY          returns string: 'replay';
+T_DELAY           returns string: 'delay';
+T_ROTATE          returns string: 'rotate';
+T_WITH_DELAY      returns string: 'with_delay';
+T_WITH_FREQUENCY  returns string: 'with_frequency';
+T_WITH_ANGLE      returns string: 'with_angle';
+T_PLANE           returns string: 'plane';
+T_RADIUS          returns string: 'radius';
+T_SATURATE        returns string: 'saturate';
+T_SATISFYING      returns string: 'satisfying';
+T_TRIGGERED_BY    returns string: 'triggered_by';
+T_SECONDS         returns string: 'seconds';
+T_TO              returns string: 'to';
+T_UNTIL           returns string: 'until';
+T_VERTICES        returns string: 'vertices';
+T_WITH            returns string: 'with';
+T_WITH_VALUES     returns string: 'with_values';
+T_WITH_ALTITUDE   returns string: 'with_altitude';
+T_WITH_WAYPOINTS  returns string: 'with_waypoints';
+T_GROOVY_FILE     returns string: 'groovy_file';
+T_FILTER          returns string: 'filter';
 
 terminal fragment T_CONSTANT_BEGIN : '$';
 terminal fragment T_VARIABLE_BEGIN : '#';
