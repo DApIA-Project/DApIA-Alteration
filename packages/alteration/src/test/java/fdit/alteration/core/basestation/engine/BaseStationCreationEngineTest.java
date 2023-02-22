@@ -16,8 +16,7 @@ import static java.io.File.createTempFile;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.spy;
-import static org.powermock.api.mockito.PowerMockito.when;
-import static org.powermock.reflect.internal.WhiteboxImpl.invokeMethod;
+import static org.mockito.Mockito.when;
 
 public class BaseStationCreationEngineTest {
 
@@ -53,8 +52,8 @@ public class BaseStationCreationEngineTest {
                         parameter(CHARAC_CALLSIGN, "SAMU25")))),
                 new ActionLogger(),
                 engineParameters(label(false))));
-        when(engine, "getTimeOffset").thenReturn(500);
-        invokeMethod(engine, "preProcessing");
+        when(engine.getTimeOffset()).thenReturn(500);
+        engine.preProcessing();
         assertEquals(100, engine.getMessages().size());
     }
 }
