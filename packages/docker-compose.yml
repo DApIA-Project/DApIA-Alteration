@@ -13,30 +13,30 @@ services:
   #                           $$ |
   #                           \__|
 
+
+
   install-server-dependencies:
     image: node:16-alpine
     container_name: install-server-dependencies
     volumes:
-      - .:/app
-    working_dir: /app/server
+      - .:/app/packages
+    working_dir: /app/packages/server
     entrypoint: npm install
 
   install-client-dependencies:
     image: node:16-alpine
     container_name: install-client-dependencies
     volumes:
-      - .:/app
-    working_dir: /app/client
+      - .:/app/packages
+    working_dir: /app/packages/client
     entrypoint: npm install
-
-
 
   build-server:
     image: node:16-alpine
     container_name: build-server
     volumes:
-      - .:/app
-    working_dir: /app/server
+      - .:/app/packages
+    working_dir: /app/packages/server
     entrypoint: npm run build
     depends_on:
       install-server-dependencies:
@@ -48,8 +48,8 @@ services:
     profiles:
       - production
     volumes:
-      - .:/app
-    working_dir: /app/client
+      - .:/app/packages
+    working_dir: /app/packages/client
     entrypoint: npm run build
     depends_on:
       install-client-dependencies:
@@ -65,11 +65,11 @@ services:
     #       \__|      \__|       \______/  \_______|      \_______/  \_______|\__|         \_/    \__| \_______| \_______|\_______/
 
   prod-server:
-    image: node:16-alpine
+    build: .
     container_name: server-prod
     volumes:
-      - .:/app
-    working_dir: /app/server
+      - .:/app/packages
+    working_dir: /app/packages/server
     entrypoint: npm run start
     depends_on:
       build-server:
@@ -81,8 +81,8 @@ services:
     image: node:16-alpine
     container_name: client-prod
     volumes:
-      - .:/app
-    working_dir: /app/client
+      - .:/app/packages
+    working_dir: /app/packages/client
     entrypoint: npm run start
     depends_on:
       build-client:
