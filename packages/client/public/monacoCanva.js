@@ -10,13 +10,15 @@ const client = new MonacoEditorLanguageClientWrapper('42');
 const editorConfig = client.getEditorConfig();
 editorConfig.setMainLanguageId('fditscenario');
 
-let keywords = ['hide','create','alter','alter_speed','saturate','replay','delay','rotate', 'cut', 'at', 'from', 'until', 'for', 'with_values'];
+let keywords = ['hide','create','alter','alter_speed','saturate','replay','delay','rotate', 'cut', 'at', 'from', 'until', 'for', 'with_values',
+                'let','assert','to','with','with_altitude','with_waypoints', 'with_delay','with_frequency', 'with_angle','triggered_by',
+                'from_recording', 'do', 'each','satisfying'];
 
 editorConfig.setMonarchTokensProvider({
     //defaultToken: 'invalid',
     keywords,
     typeKeywords: [
-        'seconds', 'and'
+        'seconds', 'and', 'in','centered', 'polygon','circle','radius','filter','vertices', 'area','global'
     ],
     operators: [
         '=', '>', '<', '!', '~', '?', ':', '==', '<=', '>=', '!=',
