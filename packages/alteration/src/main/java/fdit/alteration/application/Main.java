@@ -1,6 +1,8 @@
 package fdit.alteration.application;
 
-import fdit.alteration.api.AlterationAPIJson;
+import com.fasterxml.jackson.databind.json.JsonMapper;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import fdit.alteration.api.AlterationAPI;
 import fdit.alteration.core.engine.EngineParameters;
 
 import java.io.File;
@@ -9,8 +11,13 @@ import java.io.File;
 class Main {
 
     public static void main(final String[] args) throws Exception {
+
         if (args.length > 0) {
             System.out.println("main");
+            if (args[0].contains(".xml"))
+                AlterationAPI.setMapper(new XmlMapper());
+            else
+                AlterationAPI.setMapper(new JsonMapper());
             alterRecording(args[0], args[1]);
         }
     }
@@ -31,7 +38,7 @@ class Main {
         if (incidentFile.exists() && incidentFile.isFile()) {
             System.out.println("alterRecording");
             //AlterationAPI.startAlteration(new File("."), new File(incidentFilePath));
-            AlterationAPIJson.startAlteration(new File(pathname), new File(incidentFilePath), logResults, new EngineParameters(), "modified", suffix);
+            AlterationAPI.startAlteration(new File(pathname), new File(incidentFilePath), logResults, new EngineParameters(), "modified", suffix);
         }
     }
 

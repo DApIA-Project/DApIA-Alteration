@@ -1,6 +1,6 @@
 package fdit.alteration.api;
 
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import fdit.alteration.core.engine.EngineManager;
 import fdit.alteration.core.engine.EngineParameters;
 import fdit.alteration.core.incident.IncidentDeserializer;
@@ -18,11 +18,14 @@ import static org.apache.commons.io.FilenameUtils.separatorsToSystem;
 
 public class AlterationAPI {
 
+    private static ObjectMapper mapper;
+
     private AlterationAPI() {
 
     }
 
     public static void startAlteration(final File destination, final File incidentFile) throws Exception {
+        System.out.println("startAlter2args");
         startAlteration(destination, incidentFile, false, new EngineParameters(), "modified", "");
     }
 
@@ -58,21 +61,27 @@ public class AlterationAPI {
         startAlteration(destination, incidentFile, logResults, new EngineParameters(commandLine), prefix, suffix);
     }
 
+    public static void setMapper(ObjectMapper mapperInstance){
+        mapper=mapperInstance;
+    }
     public static void startAlteration(final File destination,
                                        final File incidentFile,
                                        final boolean logResults,
                                        final EngineParameters parameters,
                                        final String prefix,
                                        final String suffix) throws Exception {
-        for (final Sensor sensor : new IncidentDeserializer(incidentFile).deserialize(new XmlMapper()).getSensors()) {
+        System.out.println("startAlteration6args");
+        for (final Sensor sensor : new IncidentDeserializer(incidentFile).deserialize(mapper).getSensors()) {
             final File recordingFile = new File(incidentFile.getParent() +
                     separatorsToSystem("/") +
                     sensor.getRecord());
             if (!recordingFile.exists() || !recordingFile.isFile()) {
+                System.out.println("FileNotFound");
                 throw new FileNotFoundException(recordingFile.getAbsolutePath());
             }
             final Recording recording = new Recording(recordingFile, sensor.getFirstDate());
             final ActionLogger logger = new ActionLogger();
+            System.out.println("Nombre action : " + sensor.getActions().size());
             final EngineManager engineManager = new EngineManager(recording, sensor.getActions(), logger, parameters);
             recording.setFile(engineManager.run());
             copy(recording.getFile(), new File(
@@ -84,6 +93,8 @@ public class AlterationAPI {
             if (logResults) {
                 logger.print(new File(recordingFile.getParent(), "metrics.csv"));
             }
+            System.out.println("in for");
         }
+        System.out.println("For finish");
     }
 }
