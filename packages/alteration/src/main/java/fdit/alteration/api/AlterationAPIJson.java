@@ -1,9 +1,9 @@
 package fdit.alteration.api;
 
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import fdit.alteration.core.engine.EngineManager;
 import fdit.alteration.core.engine.EngineParameters;
 import fdit.alteration.core.incident.IncidentDeserializer;
-import fdit.alteration.core.incident.IncidentDeserializerJson;
 import fdit.alteration.core.incident.Recording;
 import fdit.alteration.core.incident.Sensor;
 import fdit.alteration.core.logging.ActionLogger;
@@ -66,7 +66,7 @@ public class AlterationAPIJson {
                                        final String prefix,
                                        final String suffix) throws Exception {
         System.out.println("startAlteration6args");
-        for (final Sensor sensor : new IncidentDeserializerJson(incidentFile).deserialize().getSensors()) {
+        for (final Sensor sensor : new IncidentDeserializer(incidentFile).deserialize(new JsonMapper()).getSensors()) {
             final File recordingFile = new File(incidentFile.getParent() +
                     separatorsToSystem("/") +
                     sensor.getRecord());

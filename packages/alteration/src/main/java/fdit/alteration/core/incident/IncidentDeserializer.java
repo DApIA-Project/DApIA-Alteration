@@ -1,11 +1,11 @@
 package fdit.alteration.core.incident;
 
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import fdit.alteration.core.utils.StreamUtils;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
+import java.nio.file.Files;
 
 public class IncidentDeserializer {
 
@@ -15,9 +15,8 @@ public class IncidentDeserializer {
         this.incidentFile = incidentFile;
     }
 
-    public Incident deserialize() throws IOException {
-        final XmlMapper mapper = new XmlMapper();
-        final String content = StreamUtils.inputStreamToString(new FileInputStream(incidentFile));
+    public Incident deserialize(ObjectMapper mapper) throws IOException {
+        final String content = StreamUtils.inputStreamToString(Files.newInputStream(incidentFile.toPath()));
         return mapper.readValue(content, Incident.class);
     }
 }
