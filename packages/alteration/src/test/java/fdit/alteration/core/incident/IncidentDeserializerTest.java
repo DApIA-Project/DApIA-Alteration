@@ -1,5 +1,6 @@
 package fdit.alteration.core.incident;
 
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import org.junit.Test;
 
 import java.io.File;
@@ -54,7 +55,7 @@ public class IncidentDeserializerTest {
                 "</parameters>", incidentFile, UTF_8);
 
         final IncidentDeserializer deserializer = new IncidentDeserializer(incidentFile);
-        assertThat(deserializer.deserialize(),
+        assertThat(deserializer.deserialize(new XmlMapper()),
                 anIncident(withSensors(
                         aSensor("SBS", "ALL", "../recordings/.VwHQorPfkuiBCN6l_ywV_g__/sbs_1305686021.json", "",
                                 withActions(
@@ -137,7 +138,7 @@ public class IncidentDeserializerTest {
                 "</parameters>", incidentFile, UTF_8);
 
         final IncidentDeserializer deserializer = new IncidentDeserializer(incidentFile);
-        assertThat(deserializer.deserialize(),
+        assertThat(deserializer.deserialize(new XmlMapper()),
                 anIncident(withSensors(
                         aSensor("BEAST", "ALL", "../recordings/.rxxyTBxKvc53k_Sf3rJ94w__/sbs_758628764.json", "",
                                 withActions(
@@ -200,7 +201,7 @@ public class IncidentDeserializerTest {
                 "</parameters>", incidentFile, UTF_8);
 
         final IncidentDeserializer deserializer = new IncidentDeserializer(incidentFile);
-        assertThat(deserializer.deserialize(),
+        assertThat(deserializer.deserialize(new XmlMapper()),
                 anIncident(withSensors(
                         aSensor("BEAST", "d1728431-5a08-43b9-8f79-3017cd8550fa,d27f2fa5-9c9f-43af-a499-c3c038b191ae,ee4d8ad6-8e13-4028-94e4-4ecde89aa941", "../recordings/.rxxyTBxKvc53k_Sf3rJ94w__/sbs_758628764.json", "",
                                 withActions(
@@ -342,7 +343,7 @@ public class IncidentDeserializerTest {
                 "</parameters>\n", incidentFile, UTF_8);
 
         final IncidentDeserializer deserializer = new IncidentDeserializer(incidentFile);
-        assertThat(deserializer.deserialize(),
+        assertThat(deserializer.deserialize(new XmlMapper()),
                 anIncident(withSensors(
                         aSensor("SBS", "ALL", "../recordings/.aPSf6iTuPZXsc1UrjhRkgQ__/sbs_2080211301.json", "",
                                 withActions(
@@ -465,7 +466,7 @@ public class IncidentDeserializerTest {
                 "</parameters>\n", incidentFile, UTF_8);
 
         final IncidentDeserializer deserializer = new IncidentDeserializer(incidentFile);
-        assertThat(deserializer.deserialize(),
+        assertThat(deserializer.deserialize(new XmlMapper()),
                 anIncident(withSensors(
                         aSensor("PSR", "ALL", ".dJXRXAw4EmGUCCdLZd_Xrw__/sbs_2.json", "", withActions()),
                         aSensor("SBS", "ALL", ".dJXRXAw4EmGUCCdLZd_Xrw__/sbs_1.json", "",

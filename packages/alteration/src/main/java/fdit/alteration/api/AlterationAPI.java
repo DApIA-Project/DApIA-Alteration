@@ -1,5 +1,6 @@
 package fdit.alteration.api;
 
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import fdit.alteration.core.engine.EngineManager;
 import fdit.alteration.core.engine.EngineParameters;
 import fdit.alteration.core.incident.IncidentDeserializer;
@@ -63,7 +64,7 @@ public class AlterationAPI {
                                        final EngineParameters parameters,
                                        final String prefix,
                                        final String suffix) throws Exception {
-        for (final Sensor sensor : new IncidentDeserializer(incidentFile).deserialize().getSensors()) {
+        for (final Sensor sensor : new IncidentDeserializer(incidentFile).deserialize(new XmlMapper()).getSensors()) {
             final File recordingFile = new File(incidentFile.getParent() +
                     separatorsToSystem("/") +
                     sensor.getRecord());

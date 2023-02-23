@@ -1,13 +1,13 @@
 package fdit.alteration.core.incident;
 
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
 
 import static com.google.common.io.Files.write;
-import static fdit.alteration.core.incident.IncidentJsonHelper.*;
-import static fdit.alteration.core.incident.Parameter.MODE_OFFSET;
+import static fdit.alteration.core.incident.IncidentHelper.*;
 import static fdit.alteration.core.incident.Parameter.MODE_SIMPLE;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static fdit.testTools.PredicateAssert.assertThat;
@@ -62,10 +62,10 @@ public class IncidentDeserializerJsonTest {
 
                 "}\n", incidentFile, UTF_8);
 
-        final IncidentDeserializerJson deserializer = new IncidentDeserializerJson(incidentFile);
-        System.out.println(deserializer.deserialize().getSensors().size());
-        assertThat(deserializer.deserialize(),
-                anIncident(withSensors(
+        final IncidentDeserializer deserializer = new IncidentDeserializer(incidentFile);
+        System.out.println(deserializer.deserialize(new JsonMapper()).getSensors().size());
+        assertThat(deserializer.deserialize(new JsonMapper()),
+                IncidentHelper.anIncident(IncidentHelper.withSensors(
                         aSensor("SBS", "ALL", "", "",
                                 withActions(
                                         anAction("ALTERATION",
@@ -127,10 +127,10 @@ public class IncidentDeserializerJsonTest {
 
                 "}\n", incidentFile, UTF_8);
 
-        final IncidentDeserializerJson deserializer = new IncidentDeserializerJson(incidentFile);
-        System.out.println(deserializer.deserialize().getSensors().size());
-        assertThat(deserializer.deserialize(),
-                anIncident(withSensors(
+        final IncidentDeserializer deserializer = new IncidentDeserializer(incidentFile);
+        System.out.println(deserializer.deserialize(new JsonMapper()).getSensors().size());
+        assertThat(deserializer.deserialize(new JsonMapper()),
+                anIncident(IncidentHelper.withSensors(
                         aSensor("SBS", "ALL", "../../../server/src/zigzag.sbs", "",
                                 withActions(
                                         anAction("ALTERATION",

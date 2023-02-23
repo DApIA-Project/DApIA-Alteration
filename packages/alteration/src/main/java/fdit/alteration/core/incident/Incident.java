@@ -7,6 +7,8 @@ import java.util.Collection;
 import static com.google.common.collect.Lists.newArrayList;
 
 public class Incident {
+
+    @JsonProperty("sensors")
     private Sensors sensors;
 
     public Collection<Sensor> getSensors() {
