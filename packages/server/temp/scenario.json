@@ -8,21 +8,43 @@
         "filter": "",
         "action": [
           {
-            "alterationType": "ALTERATIONTIMESTAMP",
+            "alterationType": "CREATION",
             "scope": {
               "type": "timeWindow",
-              "lowerBound": "89000",
-              "upperBound": "111000"
+              "lowerBound": "8000",
+              "upperBound": "30000"
             },
             "parameters": {
               "target": {
                 "identifier": "hexIdent",
-                "value": "ALL"
+                "value": ""
+              },
+              "trajectory": {
+                "waypoint": [
+                  {
+                    "vertex": {
+                      "lat": {
+                        "value": 45,
+                        "offset": false
+                      },
+                      "lon": {
+                        "value": 78,
+                        "offset": false
+                      }
+                    },
+                    "altitude": {
+                      "value": 90000,
+                      "offset": false
+                    },
+                    "time": 6000
+                  }
+                ]
               },
               "parameter": [
                 {
                   "mode": "simple",
-                  "value": "67000"
+                  "key": "callsign",
+                  "value": "SAMU25"
                 }
               ]
             }

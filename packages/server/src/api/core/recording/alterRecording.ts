@@ -18,6 +18,7 @@ export default async function alterRecording(scenario: string, fileContent: stri
     }
 }
 
+
 export const generateJsonAndAlterate = (async (scenario : string, fileContent : string, fileName : string) : Promise<{} | undefined> => {
     console.info('generating & running current code...');
     const scenarioJson = await parseAndGenerate(scenario,fileName);
@@ -38,7 +39,8 @@ export const generateJsonAndAlterate = (async (scenario : string, fileContent : 
 
 
 function executeAlterationJar(fileContent : string, fileName : string) : void {
-    exec("java -jar ..\\alteration\\out\\artifacts\\alteration_atc_jar\\alteration-atc.jar temp\\scenario.json " + fileName, (error, stdout, stderr) => {
+    exec("java -version");
+    exec("java -jar ../alteration/out/artifacts/alteration_atc_jar/alteration-atc.jar temp/scenario.json " + fileName, (error, stdout, stderr) => {
     if (error) {
         console.error(`L'exécution a échoué : ${error}`);
         return;

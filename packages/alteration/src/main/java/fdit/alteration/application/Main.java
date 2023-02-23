@@ -28,7 +28,7 @@ class Main {
 
     private static void alterRecording(final String incidentFilePath, final String file_name) throws Exception {
         String file_name_without_ext = file_name.replaceFirst("[.][^.]+$", "");
-        extracted(incidentFilePath, ".\\temp", true, file_name_without_ext);
+        extracted(incidentFilePath, "./temp", true, file_name_without_ext);
     }
 
     private static void extracted(String incidentFilePath, String pathname, boolean logResults, String suffix) throws Exception {
