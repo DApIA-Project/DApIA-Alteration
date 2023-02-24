@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<parameters>
+  <sensors>
+    <sensor sensorType="SBS">
+      <sID>ALL</sID>
+      <record>..\recordings\.lCU6wMYoVjyHYIoYFh3i5g__\sbs_2080211301.json</record>
+      <filter />
+      <action alterationType="ALTERATION">
+        <scope type="timeWindow">
+          <lowerBound>10000</lowerBound>
+          <upperBound>1086372</upperBound>
+        </scope>
+        <parameters>
+          <target identifier="hexIdent">392AF4</target>
+          <parameter offset="false">
+            <key>callsign</key>
+            <value>SAMU25</value>
+          </parameter>
+          <parameter offset="false">
+            <key>altitude</key>
+            <value>1000</value>
+          </parameter>
+          <parameter offset="false">
+            <key>hexIdent</key>
+            <value>39AC47</value>
+          </parameter>
+          <parameter offset="false">
+            <key>groundSpeed</key>
+            <value>154.2</value>
+          </parameter>
+        </parameters>
+      </action>
+    </sensor>
+  </sensors>
+</parameters>

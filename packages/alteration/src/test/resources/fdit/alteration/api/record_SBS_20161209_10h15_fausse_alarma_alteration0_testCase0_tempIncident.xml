@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<parameters>
+  <sensors>
+    <sensor sensorType="SBS">
+      <sID>ALL</sID>
+      <record>.2iC_5ucWQq4p2cKol8OLVQ__/sbs_789893836.json</record>
+      <filter />
+      <action alterationType="ALTERATION">
+        <scope type="timeWindow">
+          <lowerBound>5000</lowerBound>
+          <upperBound>1094465</upperBound>
+        </scope>
+        <parameters>
+          <target identifier="hexIdent">ALL</target>
+          <parameter offset="false">
+            <key>squawk</key>
+            <value>7700</value>
+          </parameter>
+          <parameter offset="false">
+            <key>squawk</key>
+            <value>7700</value>
+          </parameter>
+        </parameters>
+      </action>
+    </sensor>
+  </sensors>
+</parameters>
