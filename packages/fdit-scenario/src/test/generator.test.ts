@@ -11,38 +11,47 @@ describe('generatorTest', () => {
   test('callGenerateCommandsEmpty', async () => {
       const services = createFditscenarioServices(EmptyFileSystem).Fditscenario;
       const scenario = extractAstNodeFromString<ASTScenario>("", services);
-      expect(generateCommands(await scenario,"")).toStrictEqual([{ "instructions" : [],},])
+      expect(generateCommands(await scenario,"")).toStrictEqual({"sensors": {"sensor": [{"action": [], "filter": "", "record": "", "sID": "", "sensorType": "SBS"}]}})
   })
 
   test('callGenerateCommandsHideAllPlanes', async () => {
       const services = createFditscenarioServices(EmptyFileSystem).Fditscenario;
       const scenario = extractAstNodeFromString<ASTScenario>("hide all_planes from 56 seconds until 90 seconds", services);
       expect(generateCommands(await scenario,"")).toStrictEqual(
-          [
-              {
-                  "instructions": [
+          {
+              "sensors": {
+                  "sensor": [
                       {
-                      "action": "DELETION",
-                      "target": [
-                        {
-                          "identifier" : "ALL",
-                          "filters" : []
-                        }
-                      ],
-                      "scope": [
-                          {
-                          "type": "timeWindow",
-                          "lowerBound": 56,
-                          "upperBound": 90
-                          }
-                      ],
-                      "trigger": [],
-                      "frequency" : undefined,
-                      "assertions" : []
+                          "sensorType": "SBS",
+                          "sID": "",
+                          "record": "",
+                          "filter": "",
+                          "action": [
+                              {
+                                  "alterationType": "DELETION",
+                                  "scope": {
+                                      "type": "timeWindow",
+                                      "lowerBound": "56000",
+                                      "upperBound": "90000"
+                                  },
+                                  "parameters": {
+                                      "target": {
+                                          "identifier": "hexIdent",
+                                          "value": "ALL"
+                                      },
+                                      "parameter": [
+                                          {
+                                              "mode": "simple",
+                                              "frequency": ""
+                                          }
+                                      ]
+                                  }
+                              }
+                          ]
                       }
                   ]
               }
-        ]
+          }
       )
   })
 
@@ -51,64 +60,56 @@ describe('generatorTest', () => {
       const services = createFditscenarioServices(EmptyFileSystem).Fditscenario;
       const scenario = extractAstNodeFromString<ASTScenario>("alter all_planes from 56 seconds until 90 seconds with_values ALTITUDE = 90000 and LATITUDE -= 456 and ICAO *= 900 and TRACK ++= 800", services);
       expect(generateCommands(await scenario,"")).toStrictEqual(
-          [
-              {
-                "instructions": [
-                  {
-                    "action": "ALTERATION",
-                    "target": [
+          {
+              "sensors": {
+                  "sensor": [
                       {
-                        "identifier" : "ALL",
-                        "filters" : []
+                          "sensorType": "SBS",
+                          "sID": "",
+                          "record": "",
+                          "filter": "",
+                          "action": [
+                              {
+                                  "alterationType": "ALTERATION",
+                                  "scope": {
+                                      "type": "timeWindow",
+                                      "lowerBound": "56000",
+                                      "upperBound": "90000"
+                                  },
+                                  "parameters": {
+                                      "target": {
+                                          "identifier": "hexIdent",
+                                          "value": "ALL"
+                                      },
+                                      "parameter": [
+                                          {
+                                              "mode": "simple",
+                                              "key": "altitude",
+                                              "value": "90000"
+                                          },
+                                          {
+                                              "mode": "offset",
+                                              "key": "latitude",
+                                              "value": "456"
+                                          },
+                                          {
+                                              "mode": "noise",
+                                              "key": "icao",
+                                              "value": "900"
+                                          },
+                                          {
+                                              "mode": "drift",
+                                              "key": "track",
+                                              "value": "800"
+                                          }
+                                      ]
+                                  }
+                              }
+                          ]
                       }
-                    ],
-                    "scope": [
-                      {
-                        "type": "timeWindow",
-                        "lowerBound": 56,
-                        "upperBound": 90
-                      }
-                    ],
-                    "trigger": [],
-                    "parameters": [
-                      {
-                        "parameter": {
-                          "name": "ALTITUDE",
-                          "value": 90000
-                        }
-                      },
-                      [
-                        {
-                          "parameter": {
-                            "name": "LATITUDE",
-                            "operation": "-=",
-                            "value": 456
-                          }
-                        }
-                      ],
-                      [
-                        {
-                          "parameter": {
-                            "name": "ICAO",
-                            "value": 900
-                          }
-                        }
-                      ],
-                      [
-                        {
-                          "parameter": {
-                            "name": "TRACK",
-                            "operation": "++=",
-                            "value": 800
-                          }
-                        }
-                      ]
-                    ],
-                    "assertions" : []
-                  }
-                ]
+                  ]
               }
-            ]
+          }
       )
   })
 
@@ -117,122 +118,164 @@ describe('generatorTest', () => {
     const services = createFditscenarioServices(EmptyFileSystem).Fditscenario;
     const scenario = extractAstNodeFromString<ASTScenario>("alter all_planes from 56 seconds until 90 seconds with_values CALLSIGN = 90000 and EMERGENCY -= 456 and GROUNDSPEED *= 900 and LONGITUDE ++= 800 and SPI = 67 and SQUAWK = 78", services);
     expect(generateCommands(await scenario,"")).toStrictEqual(
-        [
-            {
-              "instructions": [
-                {
-                  "action": "ALTERATION",
-                  "target": [
+        {
+            "sensors": {
+                "sensor": [
                     {
-                      "identifier" : "ALL",
-                      "filters" : []
+                        "sensorType": "SBS",
+                        "sID": "",
+                        "record": "",
+                        "filter": "",
+                        "action": [
+                            {
+                                "alterationType": "ALTERATION",
+                                "scope": {
+                                    "type": "timeWindow",
+                                    "lowerBound": "56000",
+                                    "upperBound": "90000"
+                                },
+                                "parameters": {
+                                    "target": {
+                                        "identifier": "hexIdent",
+                                        "value": "ALL"
+                                    },
+                                    "parameter": [
+                                        {
+                                            "mode": "simple",
+                                            "key": "callsign",
+                                            "value": "90000"
+                                        },
+                                        {
+                                            "mode": "offset",
+                                            "key": "emergency",
+                                            "value": "456"
+                                        },
+                                        {
+                                            "mode": "noise",
+                                            "key": "groundSpeed",
+                                            "value": "900"
+                                        },
+                                        {
+                                            "mode": "drift",
+                                            "key": "longitude",
+                                            "value": "800"
+                                        },
+                                        {
+                                            "mode": "simple",
+                                            "key": "SPI",
+                                            "value": "67"
+                                        },
+                                        {
+                                            "mode": "simple",
+                                            "key": "squawk",
+                                            "value": "78"
+                                        }
+                                    ]
+                                }
+                            }
+                        ]
                     }
-                  ],
-                  "scope": [
-                    {
-                      "type": "timeWindow",
-                      "lowerBound": 56,
-                      "upperBound": 90
-                    }
-                  ],
-                  "trigger": [],
-                  "parameters": [
-                    {
-                      "parameter": {
-                        "name": "CALLSIGN",
-                        "value": 90000
-                      }
-                    },
-                    [
-                      {
-                        "parameter": {
-                          "name": "EMERGENCY",
-                          "operation": "-=",
-                          "value": 456
-                        }
-                      }
-                    ],
-                    [
-                      {
-                        "parameter": {
-                          "name": "GROUNDSPEED",
-                          "value": 900
-                        }
-                      }
-                    ],
-                    [
-                      {
-                        "parameter": {
-                          "name": "LONGITUDE",
-                          "operation": "++=",
-                          "value": 800
-                        }
-                      }
-                    ],
-                    [
-                      {
-                        "parameter": {
-                          "name": "SPI",
-                          "value": 67
-                        }
-                      }
-                    ],
-                    [
-                      {
-                        "parameter": {
-                          "name": "SQUAWK",
-                          "value": 78
-                        }
-                      }
-                    ]
-                  ],
-                  "assertions" : []
-                }
-              ]
+                ]
             }
-          ]
+        }
     )
 })
 
 
   test('callGenerateCommandsCreateAllPlanes', async () => {
       const services = createFditscenarioServices(EmptyFileSystem).Fditscenario;
-      const scenario = extractAstNodeFromString<ASTScenario>("create from 56 seconds until 89 seconds with_waypoints [(45,78) with_altitude 90000 at 78 seconds, (12,70) with_altitude 7000 at 99 seconds]", services);
+      const scenario = extractAstNodeFromString<ASTScenario>("create from 56 seconds until 89 seconds with_waypoints [(45,78) with_altitude 90000 at 78 seconds, (12,70) with_altitude 7000 at 99 seconds, (45,78) with_altitude 90000 at 78 seconds] with_values ICAO=6777", services);
       expect(generateCommands(await scenario,"")).toStrictEqual(
-          [
-              {
-                "instructions": [
-                  {
-                    "action": "CREATION",
-                    "scope": [
+          {
+              "sensors": {
+                  "sensor": [
                       {
-                        "type": "timeWindow",
-                        "lowerBound": 56,
-                        "upperBound": 89
+                          "sensorType": "SBS",
+                          "sID": "",
+                          "record": "",
+                          "filter": "",
+                          "action": [
+                              {
+                                  "alterationType": "CREATION",
+                                  "scope": {
+                                      "type": "timeWindow",
+                                      "lowerBound": "56000",
+                                      "upperBound": "89000"
+                                  },
+                                  "parameters": {
+                                      "target": {
+                                          "identifier": "hexIdent",
+                                          "value": ""
+                                      },
+                                      "trajectory": {
+                                          "waypoint": [
+                                              {
+                                                  "vertex": {
+                                                      "lat": {
+                                                          "value": 45,
+                                                          "offset": false
+                                                      },
+                                                      "lon": {
+                                                          "value": 78,
+                                                          "offset": false
+                                                      }
+                                                  },
+                                                  "altitude": {
+                                                      "value": 90000,
+                                                      "offset": false
+                                                  },
+                                                  "time": 78000
+                                              },
+                                              {
+                                                  "vertex": {
+                                                      "lat": {
+                                                          "value": 12,
+                                                          "offset": false
+                                                      },
+                                                      "lon": {
+                                                          "value": 70,
+                                                          "offset": false
+                                                      }
+                                                  },
+                                                  "altitude": {
+                                                      "value": 7000,
+                                                      "offset": false
+                                                  },
+                                                  "time": 99000
+                                              },
+                                              {
+                                                  "vertex": {
+                                                      "lat": {
+                                                          "value": 45,
+                                                          "offset": false
+                                                      },
+                                                      "lon": {
+                                                          "value": 78,
+                                                          "offset": false
+                                                      }
+                                                  },
+                                                  "altitude": {
+                                                      "value": 90000,
+                                                      "offset": false
+                                                  },
+                                                  "time": 78000
+                                              }
+                                          ]
+                                      },
+                                      "parameter": [
+                                          {
+                                              "mode": "simple",
+                                              "key": "icao",
+                                              "value": "6777"
+                                          }
+                                      ]
+                                  }
+                              }
+                          ]
                       }
-                    ],
-                    "trajectory": [
-                      {
-                        "latitude": 45,
-                        "longitude": 78,
-                        "altitude": 90000,
-                        "time": 78
-                      },
-                      [
-                        {
-                          "latitude": 12,
-                          "longitude": 70,
-                          "altitude": 7000,
-                          "time": 99
-                        }
-                      ]
-                    ],
-                    "parameters" : [],
-                    "assertions" : []
-                  }
-                ]
+                  ]
               }
-            ]
+          }
       )
   })
 
@@ -240,47 +283,72 @@ describe('generatorTest', () => {
       const services = createFditscenarioServices(EmptyFileSystem).Fditscenario;
       const scenario = extractAstNodeFromString<ASTScenario>("alter all_planes from 56 seconds until 90 seconds with_waypoints [(45,78) with_altitude 90000 at 78 seconds, (12,70) with_altitude 7000 at 99 seconds]", services);
       expect(generateCommands(await scenario,"")).toStrictEqual(
-          [
-              {
-                  "instructions": [
-                    {
-                      "action": "TRAJECTORY_MODIFICATION",
-                      "target": [
-                        {
-                          "identifier" : "ALL",
-                          "filters" : []
-                        }
-                      ],
-                      "scope": [
-                        {
-                          "type": "timeWindow",
-                          "lowerBound": 56,
-                          "upperBound": 90
-                        }
-                      ],
-                      "trajectory": [
-                          {
-                              "latitude" : 45,
-                              "longitude" : 78,
-                              "altitude" : 90000,
-                              "time": 78 
-                              
-                          },
-                          [
+          {
+              "sensors": {
+                  "sensor": [
+                      {
+                          "sensorType": "SBS",
+                          "sID": "",
+                          "record": "",
+                          "filter": "",
+                          "action": [
                               {
-                                  "latitude" : 12,
-                                  "longitude" : 70,
-                                  "altitude" : 7000,
-                                  "time": 99  
+                                  "alterationType": "TRAJECTORY",
+                                  "scope": {
+                                      "type": "timeWindow",
+                                      "lowerBound": "56000",
+                                      "upperBound": "90000"
+                                  },
+                                  "parameters": {
+                                      "target": {
+                                          "identifier": "hexIdent",
+                                          "value": "ALL"
+                                      },
+                                      "trajectory": {
+                                          "waypoint": [
+                                              {
+                                                  "vertex": {
+                                                      "lat": {
+                                                          "value": 45,
+                                                          "offset": false
+                                                      },
+                                                      "lon": {
+                                                          "value": 78,
+                                                          "offset": false
+                                                      }
+                                                  },
+                                                  "altitude": {
+                                                      "value": 90000,
+                                                      "offset": false
+                                                  },
+                                                  "time": 78000
+                                              },
+                                              {
+                                                  "vertex": {
+                                                      "lat": {
+                                                          "value": 12,
+                                                          "offset": false
+                                                      },
+                                                      "lon": {
+                                                          "value": 70,
+                                                          "offset": false
+                                                      }
+                                                  },
+                                                  "altitude": {
+                                                      "value": 7000,
+                                                      "offset": false
+                                                  },
+                                                  "time": 99000
+                                              }
+                                          ]
+                                      }
+                                  }
                               }
                           ]
-                      ],
-                      "trigger": [],
-                      "assertions" : []
-                    }
+                      }
                   ]
-                }
-          ]
+              }
+          }
       )
   })
 
@@ -288,48 +356,46 @@ describe('generatorTest', () => {
       const services = createFditscenarioServices(EmptyFileSystem).Fditscenario;
       const scenario = extractAstNodeFromString<ASTScenario>("alter_speed all_planes from 56 seconds until 90 seconds with_values EAST_WEST_VELOCITY = 78 and NORTH_SOUTH_VELOCITY = 45", services);
       expect(generateCommands(await scenario,"")).toStrictEqual(
-        [
           {
-              "instructions": [
-                {
-                  "action": "SPEED_ALTERATION",
-                  "target": [
-                    {
-                      "identifier" : "ALL",
-                      "filters" : []
-                    }
-                  ],
-                  "scope": [
-                    {
-                      "type": "timeWindow",
-                      "lowerBound": 56,
-                      "upperBound": 90
-                    }
-                  ],
-                  "parameters": [
+              "sensors": {
+                  "sensor": [
                       {
-                        "parameter" : 
-                            {
-                              "name" : "EAST_WEST_VELOCITY",
-                              "value" : 78
-                            }
-                        
-                      },
-                      [{
-                        "parameter" : 
-                          {
-                            "name" : "NORTH_SOUTH_VELOCITY",
-                            "value" : 45
-                          }
-                        
-                      }]
-                  ],
-                  "trigger": [],
-                  "assertions" : []
-                }
-              ]
-            }
-      ]
+                          "sensorType": "SBS",
+                          "sID": "",
+                          "record": "",
+                          "filter": "",
+                          "action": [
+                              {
+                                  "alterationType": "ALTERATIONSPEED",
+                                  "scope": {
+                                      "type": "timeWindow",
+                                      "lowerBound": "56000",
+                                      "upperBound": "90000"
+                                  },
+                                  "parameters": {
+                                      "target": {
+                                          "identifier": "hexIdent",
+                                          "value": "ALL"
+                                      },
+                                      "parameter": [
+                                          {
+                                              "mode": "simple",
+                                              "key": "EAST_WEST_VELOCITY",
+                                              "value": "78"
+                                          },
+                                          {
+                                              "mode": "simple",
+                                              "key": "NORTH_SOUTH_VELOCITY",
+                                              "value": "45"
+                                          }
+                                      ]
+                                  }
+                              }
+                          ]
+                      }
+                  ]
+              }
+          }
       )
   })
 
@@ -337,136 +403,83 @@ describe('generatorTest', () => {
       const services = createFditscenarioServices(EmptyFileSystem).Fditscenario;
       const scenario = extractAstNodeFromString<ASTScenario>("saturate all_planes from 56 seconds until 90 seconds with_values ICAO = 78 and NUMBER = 45", services);
       expect(generateCommands(await scenario,"")).toStrictEqual(
-        [
           {
-              "instructions": [
-                {
-                  "action": "SATURATION",
-                  "target": [
-                    {
-                      "identifier" : "ALL",
-                      "filters" : []
-                    }
-                  ],
-                  "scope": [
-                    {
-                      "type": "timeWindow",
-                      "lowerBound": 56,
-                      "upperBound": 90
-                    }
-                  ],
-                  "parameters": [
+              "sensors": {
+                  "sensor": [
                       {
-                        "parameter" : 
-                            {
-                              "name" : "ICAO",
-                              "value" : 78
-                            }
-                        
-                      },
-                      [{
-                        "parameter" : 
-                          {
-                            "name" : "NUMBER",
-                            "value" : 45
-                          }
-                        
-                      }]
-                  ],
-                  "trigger": [],
-                  "assertions" : []
-                }
-              ]
-            }
-      ]
-      )
-  })
-
-  test('callGenerateCommandsReplayPlane', async () => {
-      const services = createFditscenarioServices(EmptyFileSystem).Fditscenario;
-      const scenario = extractAstNodeFromString<ASTScenario>("replay plane satisfying 6 and 78 from_recording 34 from 56 seconds until 90 seconds", services);
-      expect(generateCommands(await scenario,"")).toStrictEqual(
-        [
-          {
-              "instructions": [
-                {
-                  "action": "REPLAY",
-                  "target": [{
-                    "filters" : [6, 78],
-                    "recording" : 34
-                  }],
-                  "scope": [
-                    {
-                      "type": "timeWindow",
-                      "lowerBound": 56,
-                      "upperBound": 90
-                    }
-                  ],
-                  "parameters" : [],
-                  "assertions" : []
-                }
-              ]
-            }
-      ]
-      )
-  })
-
-
-  test('callGenerateCommandsReplayAllPlaneWithFilter', async () => {
-    const services = createFditscenarioServices(EmptyFileSystem).Fditscenario;
-    const scenario = extractAstNodeFromString<ASTScenario>("replay all_planes satisfying 6 and 78 from_recording 34 from 56 seconds until 90 seconds", services);
-    expect(generateCommands(await scenario,"")).toStrictEqual(
-      [
-        {
-            "instructions": [
-              {
-                "action": "REPLAY",
-                "target": [{
-                  "filters" : [6, 78],
-                  "recording" : 34
-                }],
-                "scope": [
-                  {
-                    "type": "timeWindow",
-                    "lowerBound": 56,
-                    "upperBound": 90
-                  }
-                ],
-                "parameters" : [],
-                "assertions" : []
+                          "sensorType": "SBS",
+                          "sID": "",
+                          "record": "",
+                          "filter": "",
+                          "action": [
+                              {
+                                  "alterationType": "SATURATION",
+                                  "scope": {
+                                      "type": "timeWindow",
+                                      "lowerBound": "56000",
+                                      "upperBound": "90000"
+                                  },
+                                  "parameters": {
+                                      "target": {
+                                          "identifier": "hexIdent",
+                                          "value": "ALL"
+                                      },
+                                      "parameter": [
+                                          {
+                                              "mode": "simple",
+                                              "number": "ICAO",
+                                              "value": "78"
+                                          },
+                                          {
+                                              "mode": "simple",
+                                              "number": "AIRCRAFT_NUMBER",
+                                              "value": "45"
+                                          }
+                                      ]
+                                  }
+                              }
+                          ]
+                      }
+                  ]
               }
-            ]
           }
-    ]
-    )
-})
+      )
+  })
+
 
 
 test('callGenerateCommandsReplayAllPlaneWithoutFilter', async () => {
   const services = createFditscenarioServices(EmptyFileSystem).Fditscenario;
   const scenario = extractAstNodeFromString<ASTScenario>("replay all_planes from_recording 34 from 56 seconds until 90 seconds", services);
   expect(generateCommands(await scenario,"")).toStrictEqual(
-    [
       {
-          "instructions": [
-            {
-              "action": "REPLAY",
-              "target": [{
-                "recording" : 34
-              }],
-              "scope": [
-                {
-                  "type": "timeWindow",
-                  "lowerBound": 56,
-                  "upperBound": 90
-                }
-              ],
-              "parameters" : [],
-              "assertions" : []
-            }
-          ]
-        }
-  ]
+          "sensors": {
+              "sensor": [
+                  {
+                      "sensorType": "SBS",
+                      "sID": "",
+                      "record": "",
+                      "filter": "",
+                      "action": [
+                          {
+                              "alterationType": "REPLAY",
+                              "scope": {
+                                  "type": "timeWindow",
+                                  "lowerBound": "56000",
+                                  "upperBound": "90000"
+                              },
+                              "parameters": {
+                                  "target": {
+                                      "identifier": "hexIdent",
+                                      "value": "ALL"
+                                  }
+                              }
+                          }
+                      ]
+                  }
+              ]
+          }
+      }
   )
 })
 
@@ -475,35 +488,40 @@ test('callGenerateCommandsReplayAllPlaneWithoutFilter', async () => {
       const services = createFditscenarioServices(EmptyFileSystem).Fditscenario;
       const scenario = extractAstNodeFromString<ASTScenario>("delay all_planes from 56 seconds until 90 seconds with_delay 55 seconds", services);
       expect(generateCommands(await scenario,"")).toStrictEqual(
-        [
           {
-              "instructions": [
-                {
-                  "action": "TIMESTAMP",
-                  "target": [
-                    {
-                      "identifier" : "ALL",
-                      "filters" : []
-                    }
-                  ],
-                  "scope": [
-                    {
-                      "type": "timeWindow",
-                      "lowerBound": 56,
-                      "upperBound": 90
-                    }
-                  ],
-                  "delay": [
+              "sensors": {
+                  "sensor": [
                       {
-                        "value" : 55
-                        
+                          "sensorType": "SBS",
+                          "sID": "",
+                          "record": "",
+                          "filter": "",
+                          "action": [
+                              {
+                                  "alterationType": "ALTERATIONTIMESTAMP",
+                                  "scope": {
+                                      "type": "timeWindow",
+                                      "lowerBound": "56000",
+                                      "upperBound": "90000"
+                                  },
+                                  "parameters": {
+                                      "target": {
+                                          "identifier": "hexIdent",
+                                          "value": "ALL"
+                                      },
+                                      "parameter": [
+                                          {
+                                              "mode": "simple",
+                                              "value": "55000"
+                                          }
+                                      ]
+                                  }
+                              }
+                          ]
                       }
-                  ],
-                  "assertions" : []
-                }
-              ]
-            }
-      ]
+                  ]
+              }
+          }
       )
   })
 
@@ -511,36 +529,41 @@ test('callGenerateCommandsReplayAllPlaneWithoutFilter', async () => {
       const services = createFditscenarioServices(EmptyFileSystem).Fditscenario;
       const scenario = extractAstNodeFromString<ASTScenario>("rotate all_planes from 67 seconds until 99 seconds with_angle 90", services);
       expect(generateCommands(await scenario,"")).toStrictEqual(
-        [
           {
-              "instructions": [
-                {
-                  "action": "ROTATION",
-                  "target": [
-                    {
-                      "identifier" : "ALL",
-                      "filters" : []
-                    }
-                  ],
-                  "scope": [
-                    {
-                      "type": "timeWindow",
-                      "lowerBound": 67,
-                      "upperBound": 99
-                    }
-                  ],
-                  "angle": [
+              "sensors": {
+                  "sensor": [
                       {
-                        "value" : 90
-                            
+                          "sensorType": "SBS",
+                          "sID": "",
+                          "record": "",
+                          "filter": "",
+                          "action": [
+                              {
+                                  "alterationType": "ROTATION",
+                                  "scope": {
+                                      "type": "timeWindow",
+                                      "lowerBound": "67000",
+                                      "upperBound": "99000"
+                                  },
+                                  "parameters": {
+                                      "target": {
+                                          "identifier": "hexIdent",
+                                          "value": "ALL"
+                                      },
+                                      "parameter": [
+                                          {
+                                              "mode": "simple",
+                                              "angle": "angle",
+                                              "value": "90"
+                                          }
+                                      ]
+                                  }
+                              }
+                          ]
                       }
-                  ],
-                  "trigger": [],
-                  "assertions" : []
-                }
-              ]
-            }
-      ]
+                  ]
+              }
+          }
       )
   })
 
@@ -549,30 +572,34 @@ test('callGenerateCommandsReplayAllPlaneWithoutFilter', async () => {
       const services = createFditscenarioServices(EmptyFileSystem).Fditscenario;
       const scenario = extractAstNodeFromString<ASTScenario>("cut all_planes from 13 seconds until 88 seconds", services);
       expect(generateCommands(await scenario,"")).toStrictEqual(
-        [
           {
-              "instructions": [
-                {
-                  "action": "CUT",
-                  "target": [
-                    {
-                      "identifier" : "ALL",
-                      "filters" : []
-                    }
-                  ],
-                  "scope": [
-                    {
-                      "type": "timeWindow",
-                      "lowerBound": 13,
-                      "upperBound": 88
-                    }
-                  ],
-                  "trigger": [],
-                  "assertions" : []
-                }
-              ]
-            }
-      ]
+              "sensors": {
+                  "sensor": [
+                      {
+                          "sensorType": "SBS",
+                          "sID": "",
+                          "record": "",
+                          "filter": "",
+                          "action": [
+                              {
+                                  "alterationType": "CUT",
+                                  "scope": {
+                                      "type": "timeWindow",
+                                      "lowerBound": "13000",
+                                      "upperBound": "88000"
+                                  },
+                                  "parameters": {
+                                      "target": {
+                                          "identifier": "hexIdent",
+                                          "value": "ALL"
+                                      }
+                                  }
+                              }
+                          ]
+                      }
+                  ]
+              }
+          }
       )
   })
 
@@ -581,39 +608,34 @@ test('callGenerateCommandsReplayAllPlaneWithoutFilter', async () => {
     const services = createFditscenarioServices(EmptyFileSystem).Fditscenario;
     const scenario = extractAstNodeFromString<ASTScenario>("let $test = [2,8], cut all_planes from 13 seconds until 88 seconds", services);
     expect(generateCommands(await scenario,"")).toStrictEqual(
-      [
         {
-            "declarations": [{
-              "constant" : "$test",
-              "rangeDeclaration" : [
-                {
-                  "start" : 2,
-                  "end" : 8
-                }
-              ]
-            }],
-            "instructions": [
-              {
-                "action": "CUT",
-                "target": [
-                  {
-                    "identifier" : "ALL",
-                    "filters" : []
-                  }
-                ],
-                "scope": [
-                  {
-                    "type": "timeWindow",
-                    "lowerBound": 13,
-                    "upperBound": 88
-                  }
-                ],
-                "trigger": [],
-                "assertions" : []
-              }
-            ]
-          }
-    ]
+            "sensors": {
+                "sensor": [
+                    {
+                        "sensorType": "SBS",
+                        "sID": "",
+                        "record": "",
+                        "filter": "",
+                        "action": [
+                            {
+                                "alterationType": "CUT",
+                                "scope": {
+                                    "type": "timeWindow",
+                                    "lowerBound": "13000",
+                                    "upperBound": "88000"
+                                },
+                                "parameters": {
+                                    "target": {
+                                        "identifier": "hexIdent",
+                                        "value": "ALL"
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                ]
+            }
+        }
     )
 })
 
@@ -621,41 +643,34 @@ test('callGenerateCommandsDeclarationList', async () => {
   const services = createFditscenarioServices(EmptyFileSystem).Fditscenario;
   const scenario = extractAstNodeFromString<ASTScenario>("let $test = {\"salut\",\"ola\"}, cut all_planes from 13 seconds until 88 seconds", services);
   expect(generateCommands(await scenario,"")).toStrictEqual(
-    [
       {
-          "declarations": [{
-            "constant" : "$test",
-            "listDeclaration" : [
-              {
-                "items" : [
-                  "\"salut\"",
-                  "\"ola\""
-                ]
-              }
-            ]
-          }],
-          "instructions": [
-            {
-              "action": "CUT",
-              "target": [
-                {
-                  "identifier" : "ALL",
-                  "filters" : []
-                }
-              ],
-              "scope": [
-                {
-                  "type": "timeWindow",
-                  "lowerBound": 13,
-                  "upperBound": 88
-                }
-              ],
-              "trigger": [],
-              "assertions" : []
-            }
-          ]
-        }
-  ]
+          "sensors": {
+              "sensor": [
+                  {
+                      "sensorType": "SBS",
+                      "sID": "",
+                      "record": "",
+                      "filter": "",
+                      "action": [
+                          {
+                              "alterationType": "CUT",
+                              "scope": {
+                                  "type": "timeWindow",
+                                  "lowerBound": "13000",
+                                  "upperBound": "88000"
+                              },
+                              "parameters": {
+                                  "target": {
+                                      "identifier": "hexIdent",
+                                      "value": "ALL"
+                                  }
+                              }
+                          }
+                      ]
+                  }
+              ]
+          }
+      }
   )
 })
 
@@ -664,30 +679,34 @@ test('callGenerateCommandsTimescopeAt', async () => {
   const services = createFditscenarioServices(EmptyFileSystem).Fditscenario;
   const scenario = extractAstNodeFromString<ASTScenario>("hide all_planes at 67 seconds", services);
   expect(generateCommands(await scenario,"")).toStrictEqual(
-    [
       {
-          "instructions": [
-              {
-              "action": "DELETION",
-              "target": [
-                {
-                  "identifier" : "ALL",
-                  "filters" : []
-                }
-              ],
-              "scope": [
+          "sensors": {
+              "sensor": [
                   {
-                  "type": "timeAt",
-                  "time": 67
+                      "sensorType": "SBS",
+                      "sID": "",
+                      "record": "",
+                      "filter": "",
+                      "action": [
+                          {
+                              "alterationType": "DELETION",
+                              "scope": {
+                                  "type": "timeWindow",
+                                  "lowerBound": "67000",
+                                  "upperBound": "89000"
+                              },
+                              "parameters": {
+                                  "target": {
+                                      "identifier": "hexIdent",
+                                      "value": "ALL"
+                                  }
+                              }
+                          }
+                      ]
                   }
-              ],
-              "trigger": [],
-              "frequency" : undefined,
-              "assertions" : []
-              }
-          ]
+              ]
+          }
       }
-]
   )
 })
 
@@ -696,97 +715,34 @@ test('callGenerateCommandsTimescopeAtFor', async () => {
   const services = createFditscenarioServices(EmptyFileSystem).Fditscenario;
   const scenario = extractAstNodeFromString<ASTScenario>("hide all_planes at 67 seconds for 89 seconds", services);
   expect(generateCommands(await scenario,"")).toStrictEqual(
-    [
       {
-          "instructions": [
-              {
-              "action": "DELETION",
-              "target": [
-                {
-                  "identifier" : "ALL",
-                  "filters" : []
-                }
-              ],
-              "scope": [
+          "sensors": {
+              "sensor": [
                   {
-                  "type": "timeAtFor",
-                  "time": 67,
-                  "for" : 89
+                      "sensorType": "SBS",
+                      "sID": "",
+                      "record": "zigzag.sbs",
+                      "filter": "",
+                      "action": [
+                          {
+                              "alterationType": "DELETION",
+                              "scope": {
+                                  "type": "timeWindow",
+                                  "lowerBound": "67000",
+                                  "upperBound": "156000"
+                              },
+                              "parameters": {
+                                  "target": {
+                                      "identifier": "hexIdent",
+                                      "value": "ALL"
+                                  }
+                              }
+                          }
+                      ]
                   }
-              ],
-              "trigger": [],
-              "frequency" : undefined,
-              "assertions" : []
-              }
-          ]
+              ]
+          }
       }
-]
-  )
-})
-
-test('callGenerateCommandsTargetPlane', async () => {
-  const services = createFditscenarioServices(EmptyFileSystem).Fditscenario;
-  const scenario = extractAstNodeFromString<ASTScenario>("hide plane at 67 seconds for 89 seconds", services);
-  expect(generateCommands(await scenario,"")).toStrictEqual(
-    [
-      {
-          "instructions": [
-              {
-              "action": "DELETION",
-              "target": [
-                {
-                  "identifier" : "PLANE",
-                  "filters" : []
-                }
-              ],
-              "scope": [
-                  {
-                  "type": "timeAtFor",
-                  "time": 67,
-                  "for" : 89
-                  }
-              ],
-              "trigger": [],
-              "frequency" : undefined,
-              "assertions" : []
-              }
-          ]
-      }
-  ]
-  )
-})
-
-test('callGenerateCommandsTrigger', async () => {
-  const services = createFditscenarioServices(EmptyFileSystem).Fditscenario;
-  const scenario = extractAstNodeFromString<ASTScenario>("hide all_planes at 67 seconds for 89 seconds triggered_by 78", services);
-  expect(generateCommands(await scenario,"")).toStrictEqual(
-    [
-      {
-          "instructions": [
-              {
-              "action": "DELETION",
-              "target": [
-                {
-                  "identifier" : "ALL",
-                  "filters" : []
-                }
-              ],
-              "scope": [
-                  {
-                  "type": "timeAtFor",
-                  "time": 67,
-                  "for" : 89
-                  }
-              ],
-              "trigger": [
-                78
-              ],
-              "frequency" : undefined,
-              "assertions" : []
-              }
-          ]
-      }
-  ]
   )
 })
 
@@ -794,31 +750,40 @@ test('callGenerateCommandsHideWithFrequency', async () => {
   const services = createFditscenarioServices(EmptyFileSystem).Fditscenario;
   const scenario = extractAstNodeFromString<ASTScenario>("hide all_planes from 56 seconds until 89 seconds with_frequency 89", services);
   expect(generateCommands(await scenario,"")).toStrictEqual(
-    [
       {
-          "instructions": [
-              {
-              "action": "DELETION",
-              "target": [
-                {
-                  "identifier" : "ALL",
-                  "filters" : []
-                }
-              ],
-              "scope": [
+          "sensors": {
+              "sensor": [
                   {
-                  "type": "timeWindow",
-                  "lowerBound": 56,
-                  "upperBound" : 89
+                      "sensorType": "SBS",
+                      "sID": "",
+                      "record": "",
+                      "filter": "",
+                      "action": [
+                          {
+                              "alterationType": "DELETION",
+                              "scope": {
+                                  "type": "timeWindow",
+                                  "lowerBound": "56000",
+                                  "upperBound": "89000"
+                              },
+                              "parameters": {
+                                  "target": {
+                                      "identifier": "hexIdent",
+                                      "value": "ALL"
+                                  },
+                                  "parameter": [
+                                      {
+                                          "mode": "simple",
+                                          "frequency": "89"
+                                      }
+                                  ]
+                              }
+                          }
+                      ]
                   }
-              ],
-              "trigger": [],
-              "frequency" : 89,
-              "assertions" : []
-              }
-          ]
+              ]
+          }
       }
-  ]
   )
 })
 
@@ -826,826 +791,193 @@ test('callGenerateCommandsCreateWithParameters', async () => {
   const services = createFditscenarioServices(EmptyFileSystem).Fditscenario;
   const scenario = extractAstNodeFromString<ASTScenario>("create from 56 seconds until 89 seconds with_waypoints [(45,78) with_altitude 90000 at 78 seconds, (12,70) with_altitude 7000 at 99 seconds] with_values ICAO = 8 and CALLSIGN = 44 and SQUAWK = 900 and EMERGENCY = 786 and ALERT = 56 and SPI = 1234", services);
   expect(generateCommands(await scenario,"")).toStrictEqual(
-      [
-          {
-            "instructions": [
-              {
-                "action": "CREATION",
-                "scope": [
+      {
+          "sensors": {
+              "sensor": [
                   {
-                    "type": "timeWindow",
-                    "lowerBound": 56,
-                    "upperBound": 89
+                      "sensorType": "SBS",
+                      "sID": "",
+                      "record": "",
+                      "filter": "",
+                      "action": [
+                          {
+                              "alterationType": "CREATION",
+                              "scope": {
+                                  "type": "timeWindow",
+                                  "lowerBound": "56000",
+                                  "upperBound": "89000"
+                              },
+                              "parameters": {
+                                  "target": {
+                                      "identifier": "hexIdent",
+                                      "value": ""
+                                  },
+                                  "trajectory": {
+                                      "waypoint": [
+                                          {
+                                              "vertex": {
+                                                  "lat": {
+                                                      "value": 45,
+                                                      "offset": false
+                                                  },
+                                                  "lon": {
+                                                      "value": 78,
+                                                      "offset": false
+                                                  }
+                                              },
+                                              "altitude": {
+                                                  "value": 90000,
+                                                  "offset": false
+                                              },
+                                              "time": 78000
+                                          },
+                                          {
+                                              "vertex": {
+                                                  "lat": {
+                                                      "value": 12,
+                                                      "offset": false
+                                                  },
+                                                  "lon": {
+                                                      "value": 70,
+                                                      "offset": false
+                                                  }
+                                              },
+                                              "altitude": {
+                                                  "value": 7000,
+                                                  "offset": false
+                                              },
+                                              "time": 99000
+                                          }
+                                      ]
+                                  },
+                                  "parameter": [
+                                      {
+                                          "mode": "simple",
+                                          "key": "icao",
+                                          "value": "8"
+                                      },
+                                      {
+                                          "mode": "simple",
+                                          "key": "callsign",
+                                          "value": "44"
+                                      },
+                                      {
+                                          "mode": "simple",
+                                          "key": "squawk",
+                                          "value": "900"
+                                      },
+                                      {
+                                          "mode": "simple",
+                                          "key": "emergency",
+                                          "value": "786"
+                                      },
+                                      {
+                                          "mode": "simple",
+                                          "key": "alert",
+                                          "value": "56"
+                                      },
+                                      {
+                                          "mode": "simple",
+                                          "key": "SPI",
+                                          "value": "1234"
+                                      }
+                                  ]
+                              }
+                          }
+                      ]
                   }
-                ],
-                "trajectory": [
-                  {
-                    "latitude": 45,
-                    "longitude": 78,
-                    "altitude": 90000,
-                    "time": 78
-                  },
-                  [
-                    {
-                      "latitude": 12,
-                      "longitude": 70,
-                      "altitude": 7000,
-                      "time": 99
-                    }
-                  ]
-                ],
-                "parameters" : [
-                  {
-                    "parameter" : {
-                      "name" : "ICAO",
-                      "value" : 8
-                    }
-                  },
-                  [{
-                    "parameter" : {
-                      "name" : "CALLSIGN",
-                      "value" : 44
-                    }
-                  }],
-                  [{
-                    "parameter" : {
-                      "name" : "SQUAWK",
-                      "value" : 900
-                    }
-                  }],
-                  [{
-                    "parameter" : {
-                      "name" : "EMERGENCY",
-                      "value" : 786
-                    }
-                  }],
-                  [{
-                    "parameter" : {
-                      "name" : "ALERT",
-                      "value" : 56
-                    }
-                  }],
-                  [{
-                    "parameter" : {
-                      "name" : "SPI",
-                      "value" : 1234
-                    }
-                  }],
-                ],
-                "assertions" : []
-              }
-            ]
+              ]
           }
-        ]
+      }
   )
 })
 
 test('callGenerateCommandsReplayPlaneWithParameters', async () => {
   const services = createFditscenarioServices(EmptyFileSystem).Fditscenario;
-  const scenario = extractAstNodeFromString<ASTScenario>("replay plane satisfying 6 and 78 from_recording 34 from 56 seconds until 90 seconds with_values ALTITUDE = 90000 and LATITUDE -= 456 and ICAO *= 900 and TRACK ++= 800 and CALLSIGN = 90000 and EMERGENCY -= 456 and GROUNDSPEED *= 900 and LONGITUDE ++= 800 and SPI = 67 and SQUAWK = 78", services);
+  const scenario = extractAstNodeFromString<ASTScenario>("replay all_planes from_recording 34 from 56 seconds until 90 seconds with_values ALTITUDE = 90000 and LATITUDE -= 456 and ICAO *= 900 and TRACK ++= 800 and CALLSIGN --= 90000 and EMERGENCY += 456 and GROUNDSPEED *= 900 and LONGITUDE ++= 800 and SPI = 67 and SQUAWK = 78", services);
   expect(generateCommands(await scenario,"")).toStrictEqual(
-    [
       {
-          "instructions": [
-            {
-              "action": "REPLAY",
-              "target": [{
-                "filters" : [6, 78],
-                "recording" : 34
-              }],
-              "scope": [
-                {
-                  "type": "timeWindow",
-                  "lowerBound": 56,
-                  "upperBound": 90
-                }
-              ],
-              "parameters" : [
-                {
-                  "parameter": {
-                    "name": "ALTITUDE",
-                    "value": 90000
-                  }
-                },
-                [
+          "sensors": {
+              "sensor": [
                   {
-                    "parameter": {
-                      "name": "LATITUDE",
-                      "operation": "-=",
-                      "value": 456
-                    }
-                  }
-                ],
-                [
-                  {
-                    "parameter": {
-                      "name": "ICAO",
-                      "value": 900
-                    }
-                  }
-                ],
-                [
-                  {
-                    "parameter": {
-                      "name": "TRACK",
-                      "operation": "++=",
-                      "value": 800
-                    }
-                  }
-                ],
-                [
-                  {
-                    "parameter": {
-                      "name": "CALLSIGN",
-                      "value": 90000
-                    }
-                  }
-                ],
-                [
-                  {
-                    "parameter": {
-                      "name": "EMERGENCY",
-                      "operation": "-=",
-                      "value": 456
-                    }
-                  }
-                ],
-                [
-                  {
-                    "parameter": {
-                      "name": "GROUNDSPEED",
-                      "value": 900
-                    }
-                  }
-                ],
-                [
-                  {
-                    "parameter": {
-                      "name": "LONGITUDE",
-                      "operation": "++=",
-                      "value": 800
-                    }
-                  }
-                ],
-                [
-                  {
-                    "parameter": {
-                      "name": "SPI",
-                      "value": 67
-                    }
-                  }
-                ],
-                [
-                  {
-                    "parameter": {
-                      "name": "SQUAWK",
-                      "value": 78
-                    }
-                  }
-                ]
-              ],
-              "assertions" : []
-            }
-          ]
-        }
-  ]
-  )
-})
-
-test('callGenerateCommandsHideWithAssert', async () => {
-  const services = createFditscenarioServices(EmptyFileSystem).Fditscenario;
-  const scenario = extractAstNodeFromString<ASTScenario>("hide all_planes from 56 seconds until 89 seconds assert from 78 seconds until 90 seconds groovy_file \"test\" filter \"monFiltre\" and assert at 67 seconds groovy_file \"test2\"", services);
-  expect(generateCommands(await scenario,"")).toStrictEqual(
-    [
-      {
-          "instructions": [
-              {
-              "action": "DELETION",
-              "target": [
-                {
-                  "identifier" : "ALL",
-                  "filters" : []
-                }
-              ],
-              "scope": [
-                  {
-                  "type": "timeWindow",
-                  "lowerBound": 56,
-                  "upperBound" : 89
-                  }
-              ],
-              "trigger": [],
-              "frequency" : undefined,
-              "assertions" : [
-                {
-                  "scope" : [
-                    {
-                      "type" : "timeWindow",
-                      "lowerBound": 78,
-                      "upperBound" : 90
-                    }
-                  ],
-                  "file" : "\"test\"",
-                  "filter" : "\"monFiltre\""
-                },
-                [
-                  {
-                    "scope" : [
-                      {
-                        "type" : "timeAt",
-                        "time": 67
-                      }
-                    ],
-                    "file" : "\"test2\"",
-                    "filter" : undefined
-                  },
-                ]
-              ]
-              }
-          ]
-      }
-  ]
-  )
-})
-
-test('callGenerateCommandsAlterAllPlanesValuesWithAssert', async () => {
-  const services = createFditscenarioServices(EmptyFileSystem).Fditscenario;
-  const scenario = extractAstNodeFromString<ASTScenario>("alter all_planes from 56 seconds until 90 seconds with_values ALTITUDE = 90000 assert from 78 seconds until 90 seconds groovy_file \"test\" filter \"monFiltre\" and assert at 67 seconds groovy_file \"test2\"", services);
-  expect(generateCommands(await scenario,"")).toStrictEqual(
-      [
-          {
-            "instructions": [
-              {
-                "action": "ALTERATION",
-                "target": [
-                  {
-                    "identifier" : "ALL",
-                    "filters" : []
-                  }
-                ],
-                "scope": [
-                  {
-                    "type": "timeWindow",
-                    "lowerBound": 56,
-                    "upperBound": 90
-                  }
-                ],
-                "trigger": [],
-                "parameters": [
-                  {
-                    "parameter": {
-                      "name": "ALTITUDE",
-                      "value": 90000
-                    }
-                  },
-                ],
-                "assertions" : [
-                  {
-                    "scope" : [
-                      {
-                        "type" : "timeWindow",
-                        "lowerBound": 78,
-                        "upperBound" : 90
-                      }
-                    ],
-                    "file" : "\"test\"",
-                    "filter" : "\"monFiltre\""
-                  },
-                  [
-                    {
-                      "scope" : [
-                        {
-                          "type" : "timeAt",
-                          "time": 67
-                        }
-                      ],
-                      "file" : "\"test2\"",
-                      "filter" : undefined
-                    },
-                  ]
-                ]
-              }
-            ]
-          }
-        ]
-  )
-})
-
-test('callGenerateCommandsCreateAllPlanesWithAssert', async () => {
-  const services = createFditscenarioServices(EmptyFileSystem).Fditscenario;
-  const scenario = extractAstNodeFromString<ASTScenario>("create from 56 seconds until 89 seconds with_waypoints [(45,78) with_altitude 90000 at 78 seconds, (12,70) with_altitude 7000 at 99 seconds] assert from 78 seconds until 90 seconds groovy_file \"test\" filter \"monFiltre\" and assert at 67 seconds groovy_file \"test2\"", services);
-  expect(generateCommands(await scenario,"")).toStrictEqual(
-      [
-          {
-            "instructions": [
-              {
-                "action": "CREATION",
-                "scope": [
-                  {
-                    "type": "timeWindow",
-                    "lowerBound": 56,
-                    "upperBound": 89
-                  }
-                ],
-                "trajectory": [
-                  {
-                    "latitude": 45,
-                    "longitude": 78,
-                    "altitude": 90000,
-                    "time": 78
-                  },
-                  [
-                    {
-                      "latitude": 12,
-                      "longitude": 70,
-                      "altitude": 7000,
-                      "time": 99
-                    }
-                  ]
-                ],
-                "parameters" : [],
-                "assertions" : [
-                  {
-                    "scope" : [
-                      {
-                        "type" : "timeWindow",
-                        "lowerBound": 78,
-                        "upperBound" : 90
-                      }
-                    ],
-                    "file" : "\"test\"",
-                    "filter" : "\"monFiltre\""
-                  },
-                  [
-                    {
-                      "scope" : [
-                        {
-                          "type" : "timeAt",
-                          "time": 67
-                        }
-                      ],
-                      "file" : "\"test2\"",
-                      "filter" : undefined
-                    },
-                  ]
-                ]
-              }
-            ]
-          }
-        ]
-  )
-})
-
-
-test('callGenerateCommandsAlterAllPlanesWaypointsWithAssert', async () => {
-  const services = createFditscenarioServices(EmptyFileSystem).Fditscenario;
-  const scenario = extractAstNodeFromString<ASTScenario>("alter all_planes from 56 seconds until 90 seconds with_waypoints [(45,78) with_altitude 90000 at 78 seconds, (12,70) with_altitude 7000 at 99 seconds] assert from 78 seconds until 90 seconds groovy_file \"test\" filter \"monFiltre\" and assert at 67 seconds groovy_file \"test2\"", services);
-  expect(generateCommands(await scenario,"")).toStrictEqual(
-      [
-          {
-              "instructions": [
-                {
-                  "action": "TRAJECTORY_MODIFICATION",
-                  "target": [
-                    {
-                      "identifier" : "ALL",
-                      "filters" : []
-                    }
-                  ],
-                  "scope": [
-                    {
-                      "type": "timeWindow",
-                      "lowerBound": 56,
-                      "upperBound": 90
-                    }
-                  ],
-                  "trajectory": [
-                      {
-                          "latitude" : 45,
-                          "longitude" : 78,
-                          "altitude" : 90000,
-                          "time": 78 
-                          
-                      },
-                      [
+                      "sensorType": "SBS",
+                      "sID": "",
+                      "record": "",
+                      "filter": "",
+                      "action": [
                           {
-                              "latitude" : 12,
-                              "longitude" : 70,
-                              "altitude" : 7000,
-                              "time": 99  
+                              "alterationType": "REPLAY",
+                              "scope": {
+                                  "type": "timeWindow",
+                                  "lowerBound": "56000",
+                                  "upperBound": "90000"
+                              },
+                              "parameters": {
+                                  "target": {
+                                      "identifier": "hexIdent",
+                                      "value": "ALL"
+                                  },
+                                  "parameter": [
+                                      {
+                                          "mode": "simple",
+                                          "key": "altitude",
+                                          "value": "90000"
+                                      },
+                                      {
+                                          "mode": "offset",
+                                          "key": "latitude",
+                                          "value": "-456"
+                                      },
+                                      {
+                                          "mode": "noise",
+                                          "key": "icao",
+                                          "value": "900"
+                                      },
+                                      {
+                                          "mode": "drift",
+                                          "key": "track",
+                                          "value": "+800"
+                                      },
+                                      {
+                                          "mode": "drift",
+                                          "key": "callsign",
+                                          "value": "-90000"
+                                      },
+                                      {
+                                          "mode": "offset",
+                                          "key": "emergency",
+                                          "value": "+456"
+                                      },
+                                      {
+                                          "mode": "noise",
+                                          "key": "groundspeed",
+                                          "value": "900"
+                                      },
+                                      {
+                                          "mode": "drift",
+                                          "key": "longitude",
+                                          "value": "+800"
+                                      },
+                                      {
+                                          "mode": "simple",
+                                          "key": "spi",
+                                          "value": "67"
+                                      },
+                                      {
+                                          "mode": "simple",
+                                          "key": "squawk",
+                                          "value": "78"
+                                      }
+                                  ]
+                              }
                           }
                       ]
-                  ],
-                  "trigger": [],
-                  "assertions" : [
-                    {
-                      "scope" : [
-                        {
-                          "type" : "timeWindow",
-                          "lowerBound": 78,
-                          "upperBound" : 90
-                        }
-                      ],
-                      "file" : "\"test\"",
-                      "filter" : "\"monFiltre\""
-                    },
-                    [
-                      {
-                        "scope" : [
-                          {
-                            "type" : "timeAt",
-                            "time": 67
-                          }
-                        ],
-                        "file" : "\"test2\"",
-                        "filter" : undefined
-                      },
-                    ]
-                  ]
-                }
-              ]
-            }
-      ]
-  )
-})
-
-test('callGenerateCommandsAlterSpeedAllPlanesWithAssert', async () => {
-  const services = createFditscenarioServices(EmptyFileSystem).Fditscenario;
-  const scenario = extractAstNodeFromString<ASTScenario>("alter_speed all_planes from 56 seconds until 90 seconds with_values EAST_WEST_VELOCITY = 78 and NORTH_SOUTH_VELOCITY = 45 assert from 78 seconds until 90 seconds groovy_file \"test\" filter \"monFiltre\" and assert at 67 seconds groovy_file \"test2\"", services);
-  expect(generateCommands(await scenario,"")).toStrictEqual(
-    [
-      {
-          "instructions": [
-            {
-              "action": "SPEED_ALTERATION",
-              "target": [
-                {
-                  "identifier" : "ALL",
-                  "filters" : []
-                }
-              ],
-              "scope": [
-                {
-                  "type": "timeWindow",
-                  "lowerBound": 56,
-                  "upperBound": 90
-                }
-              ],
-              "parameters": [
-                  {
-                    "parameter" : 
-                        {
-                          "name" : "EAST_WEST_VELOCITY",
-                          "value" : 78
-                        }
-                    
-                  },
-                  [{
-                    "parameter" : 
-                      {
-                        "name" : "NORTH_SOUTH_VELOCITY",
-                        "value" : 45
-                      }
-                    
-                  }]
-              ],
-              "trigger": [],
-              "assertions" : [
-                {
-                  "scope" : [
-                    {
-                      "type" : "timeWindow",
-                      "lowerBound": 78,
-                      "upperBound" : 90
-                    }
-                  ],
-                  "file" : "\"test\"",
-                  "filter" : "\"monFiltre\""
-                },
-                [
-                  {
-                    "scope" : [
-                      {
-                        "type" : "timeAt",
-                        "time": 67
-                      }
-                    ],
-                    "file" : "\"test2\"",
-                    "filter" : undefined
-                  },
-                ]
-              ]
-            }
-          ]
-        }
-  ]
-  )
-})
-
-test('callGenerateCommandsSaturateAllPlanesWithAssert', async () => {
-  const services = createFditscenarioServices(EmptyFileSystem).Fditscenario;
-  const scenario = extractAstNodeFromString<ASTScenario>("saturate all_planes from 56 seconds until 90 seconds with_values ICAO = 78 and NUMBER = 45 assert from 78 seconds until 90 seconds groovy_file \"test\" filter \"monFiltre\" and assert at 67 seconds groovy_file \"test2\"", services);
-  expect(generateCommands(await scenario,"")).toStrictEqual(
-    [
-      {
-          "instructions": [
-            {
-              "action": "SATURATION",
-              "target": [
-                {
-                  "identifier" : "ALL",
-                  "filters" : []
-                }
-              ],
-              "scope": [
-                {
-                  "type": "timeWindow",
-                  "lowerBound": 56,
-                  "upperBound": 90
-                }
-              ],
-              "parameters": [
-                  {
-                    "parameter" : 
-                        {
-                          "name" : "ICAO",
-                          "value" : 78
-                        }
-                    
-                  },
-                  [{
-                    "parameter" : 
-                      {
-                        "name" : "NUMBER",
-                        "value" : 45
-                      }
-                    
-                  }]
-              ],
-              "trigger": [],
-              "assertions" : [
-                {
-                  "scope" : [
-                    {
-                      "type" : "timeWindow",
-                      "lowerBound": 78,
-                      "upperBound" : 90
-                    }
-                  ],
-                  "file" : "\"test\"",
-                  "filter" : "\"monFiltre\""
-                },
-                [
-                  {
-                    "scope" : [
-                      {
-                        "type" : "timeAt",
-                        "time": 67
-                      }
-                    ],
-                    "file" : "\"test2\"",
-                    "filter" : undefined
-                  },
-                ]
-              ]
-            }
-          ]
-        }
-  ]
-  )
-})
-
-test('callGenerateCommandsReplayPlaneWithAssert', async () => {
-  const services = createFditscenarioServices(EmptyFileSystem).Fditscenario;
-  const scenario = extractAstNodeFromString<ASTScenario>("replay plane satisfying 6 and 78 from_recording 34 from 56 seconds until 90 seconds assert from 78 seconds until 90 seconds groovy_file \"test\" filter \"monFiltre\" and assert at 67 seconds groovy_file \"test2\"", services);
-  expect(generateCommands(await scenario,"")).toStrictEqual(
-    [
-      {
-          "instructions": [
-            {
-              "action": "REPLAY",
-              "target": [{
-                "filters" : [6, 78],
-                "recording" : 34
-              }],
-              "scope": [
-                {
-                  "type": "timeWindow",
-                  "lowerBound": 56,
-                  "upperBound": 90
-                }
-              ],
-              "parameters" : [],
-              "assertions" : [
-                {
-                  "scope" : [
-                    {
-                      "type" : "timeWindow",
-                      "lowerBound": 78,
-                      "upperBound" : 90
-                    }
-                  ],
-                  "file" : "\"test\"",
-                  "filter" : "\"monFiltre\""
-                },
-                [
-                  {
-                    "scope" : [
-                      {
-                        "type" : "timeAt",
-                        "time": 67
-                      }
-                    ],
-                    "file" : "\"test2\"",
-                    "filter" : undefined
-                  },
-                ]
-              ]
-            }
-          ]
-        }
-  ]
-  )
-})
-
-test('callGenerateCommandsDelayAllPlanesWithAssert', async () => {
-  const services = createFditscenarioServices(EmptyFileSystem).Fditscenario;
-  const scenario = extractAstNodeFromString<ASTScenario>("delay all_planes from 56 seconds until 90 seconds with_delay 55 seconds assert from 78 seconds until 90 seconds groovy_file \"test\" filter \"monFiltre\" and assert at 67 seconds groovy_file \"test2\"", services);
-  expect(generateCommands(await scenario,"")).toStrictEqual(
-    [
-      {
-          "instructions": [
-            {
-              "action": "TIMESTAMP",
-              "target": [
-                {
-                  "identifier" : "ALL",
-                  "filters" : []
-                }
-              ],
-              "scope": [
-                {
-                  "type": "timeWindow",
-                  "lowerBound": 56,
-                  "upperBound": 90
-                }
-              ],
-              "delay": [
-                  {
-                    "value" : 55
-                    
                   }
-              ],
-              "assertions" : [
-                {
-                  "scope" : [
-                    {
-                      "type" : "timeWindow",
-                      "lowerBound": 78,
-                      "upperBound" : 90
-                    }
-                  ],
-                  "file" : "\"test\"",
-                  "filter" : "\"monFiltre\""
-                },
-                [
-                  {
-                    "scope" : [
-                      {
-                        "type" : "timeAt",
-                        "time": 67
-                      }
-                    ],
-                    "file" : "\"test2\"",
-                    "filter" : undefined
-                  },
-                ]
               ]
-            }
-          ]
-        }
-  ]
+          }
+      }
   )
 })
-
-test('callGenerateCommandsRotateAllPlanesWithAssert', async () => {
-  const services = createFditscenarioServices(EmptyFileSystem).Fditscenario;
-  const scenario = extractAstNodeFromString<ASTScenario>("rotate all_planes from 67 seconds until 99 seconds with_angle 90 assert from 78 seconds until 90 seconds groovy_file \"test\" filter \"monFiltre\" and assert at 67 seconds groovy_file \"test2\"", services);
-  expect(generateCommands(await scenario,"")).toStrictEqual(
-    [
-      {
-          "instructions": [
-            {
-              "action": "ROTATION",
-              "target": [
-                {
-                  "identifier" : "ALL",
-                  "filters" : []
-                }
-              ],
-              "scope": [
-                {
-                  "type": "timeWindow",
-                  "lowerBound": 67,
-                  "upperBound": 99
-                }
-              ],
-              "angle": [
-                  {
-                    "value" : 90
-                        
-                  }
-              ],
-              "trigger": [],
-              "assertions" : [
-                {
-                  "scope" : [
-                    {
-                      "type" : "timeWindow",
-                      "lowerBound": 78,
-                      "upperBound" : 90
-                    }
-                  ],
-                  "file" : "\"test\"",
-                  "filter" : "\"monFiltre\""
-                },
-                [
-                  {
-                    "scope" : [
-                      {
-                        "type" : "timeAt",
-                        "time": 67
-                      }
-                    ],
-                    "file" : "\"test2\"",
-                    "filter" : undefined
-                  },
-                ]
-              ]
-            }
-          ]
-        }
-  ]
-  )
-})
-
-test('callGenerateCommandsCutAllPlanesWithAssert', async () => {
-  const services = createFditscenarioServices(EmptyFileSystem).Fditscenario;
-  const scenario = extractAstNodeFromString<ASTScenario>("cut all_planes from 13 seconds until 88 seconds  assert from 78 seconds until 90 seconds groovy_file \"test\" filter \"monFiltre\" and assert at 67 seconds groovy_file \"test2\"", services);
-  expect(generateCommands(await scenario,"")).toStrictEqual(
-    [
-      {
-          "instructions": [
-            {
-              "action": "CUT",
-              "target": [
-                {
-                  "identifier" : "ALL",
-                  "filters" : []
-                }
-              ],
-              "scope": [
-                {
-                  "type": "timeWindow",
-                  "lowerBound": 13,
-                  "upperBound": 88
-                }
-              ],
-              "trigger": [],
-              "assertions" : [
-                {
-                  "scope" : [
-                    {
-                      "type" : "timeWindow",
-                      "lowerBound": 78,
-                      "upperBound" : 90
-                    }
-                  ],
-                  "file" : "\"test\"",
-                  "filter" : "\"monFiltre\""
-                },
-                [
-                  {
-                    "scope" : [
-                      {
-                        "type" : "timeAt",
-                        "time": 67
-                      }
-                    ],
-                    "file" : "\"test2\"",
-                    "filter" : undefined
-                  },
-                ]
-              ]
-            }
-          ]
-        }
-  ]
-  )
-})
-
-
-
 
 })
 
