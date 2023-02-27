@@ -1,0 +1,116 @@
+create from 56 seconds until 89 seconds with_waypoints
+[(45,78) with_altitude 90000 at 78 seconds,
+(12,70) with_altitude 7000 at 99 seconds]
+
+
+create at 8 seconds with_waypoints
+[(45,78) with_altitude 90000 at 6 seconds,
+(12,70) with_altitude 7000 at 99 seconds]
+with_values CALLSIGN="SAMU80"
+
+
+alter all_planes from 56 seconds until 90 seconds
+with_values ALTITUDE = 90000 and LATITUDE -= 456
+and ICAO *= 900 and TRACK ++= 800
+
+
+
+alter all_planes from 56 seconds until 90 seconds with_waypoints
+[(45,78) with_altitude 90000 at 78 seconds,
+(12,70) with_altitude 7000 at 99 seconds]
+
+
+
+
+alter_speed all_planes from 56 seconds until 90 seconds with_values
+EAST_WEST_VELOCITY = 78 and NORTH_SOUTH_VELOCITY = 45
+
+
+
+saturate all_planes from 56 seconds until 90 seconds with_values
+ICAO = 78 and NUMBER = 45
+
+
+
+replay plane satisfying 6 and 78 from_recording 34
+from 56 seconds until 90 seconds
+
+
+
+replay all_planes satisfying 6 and 78 from_recording 34
+from 56 seconds until 90 seconds
+
+
+
+delay all_planes from 56 seconds until 90 seconds with_delay 55 seconds
+
+
+
+rotate all_planes from 67 seconds until 99 seconds with_angle 90
+
+
+
+cut all_planes from 13 seconds until 88 seconds
+
+
+
+let $test = [2,8], cut all_planes from 13 seconds until 88 seconds
+
+
+
+let $test = {\"salut\",\"ola\"}, cut all_planes from 13 seconds until 88 seconds
+
+
+
+hide all_planes from 56 seconds until 90 seconds
+
+
+
+hide all_planes at 67 seconds
+
+
+hide all_planes at 67 seconds for 89 seconds
+
+
+hide all_planes at 67 seconds for 89 seconds triggered_by 78
+
+
+
+alter all_planes from 56 seconds until 90 seconds with_values CALLSIGN = 90000 and EMERGENCY -= 456 and GROUNDSPEED *= 900 and LONGITUDE ++= 800 and SPI = 67 and SQUAWK = 78
+
+---------------------------
+
+
+hide all_planes from 56 seconds until 89 seconds with_frequency 89
+
+
+create from 56 seconds until 89 seconds with_waypoints [(45,78) with_altitude 90000 at 78 seconds, (12,70) with_altitude 7000 at 99 seconds] with_values ICAO = 8 and CALLSIGN = 44 and SQUAWK = 900 and EMERGENCY = 786 and ALERT = 56 and SPI = 1234
+
+
+
+replay plane satisfying 6 and 78 from_recording 34 from 56 seconds until 90 seconds with_values ALTITUDE = 90000 and LATITUDE -= 456 and ICAO *= 900 and TRACK ++= 800 and CALLSIGN = 90000 and EMERGENCY -= 456 and GROUNDSPEED *= 900 and LONGITUDE ++= 800 and SPI = 67 and SQUAWK = 78
+
+
+hide all_planes from 56 seconds until 89 seconds assert from 78 seconds until 90 seconds groovy_file \"test\" filter \"monFiltre\" and assert at 67 seconds groovy_file \"test2\"
+
+alter all_planes from 56 seconds until 90 seconds with_values ALTITUDE = 90000 assert from 78 seconds until 90 seconds groovy_file \"test\" filter \"monFiltre\" and assert at 67 seconds groovy_file \"test2\"
+
+create from 56 seconds until 89 seconds with_waypoints [(45,78) with_altitude 90000 at 78 seconds, (12,70) with_altitude 7000 at 99 seconds] assert from 78 seconds until 90 seconds groovy_file \"test\" filter \"monFiltre\" and assert at 67 seconds groovy_file \"test2\"
+
+alter all_planes from 56 seconds until 90 seconds with_waypoints [(45,78) with_altitude 90000 at 78 seconds, (12,70) with_altitude 7000 at 99 seconds] assert from 78 seconds until 90 seconds groovy_file \"test\" filter \"monFiltre\" and assert at 67 seconds groovy_file \"test2\"
+
+
+alter_speed all_planes from 56 seconds until 90 seconds with_values EAST_WEST_VELOCITY = 78 and NORTH_SOUTH_VELOCITY = 45 assert from 78 seconds until 90 seconds groovy_file \"test\" filter \"monFiltre\" and assert at 67 seconds groovy_file \"test2\"
+
+
+saturate all_planes from 56 seconds until 90 seconds with_values ICAO = 78 and NUMBER = 45 assert from 78 seconds until 90 seconds groovy_file \"test\" filter \"monFiltre\" and assert at 67 seconds groovy_file \"test2\"
+
+replay plane satisfying 6 and 78 from_recording 34 from 56 seconds until 90 seconds assert from 78 seconds until 90 seconds groovy_file \"test\" filter \"monFiltre\" and assert at 67 seconds groovy_file \"test2\"
+
+
+delay all_planes from 56 seconds until 90 seconds with_delay 55 seconds assert from 78 seconds until 90 seconds groovy_file \"test\" filter \"monFiltre\" and assert at 67 seconds groovy_file \"test2\"
+
+rotate all_planes from 67 seconds until 99 seconds with_angle 90 assert from 78 seconds until 90 seconds groovy_file \"test\" filter \"monFiltre\" and assert at 67 seconds groovy_file \"test2\"
+
+
+cut all_planes from 13 seconds until 88 seconds  assert from 78 seconds until 90 seconds groovy_file \"test\" filter \"monFiltre\" and assert at 67 seconds groovy_file \"test2\"

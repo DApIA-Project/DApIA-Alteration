@@ -1,0 +1,28 @@
+{
+  "sensors": {
+    "sensor": [
+      {
+        "sensorType": "SBS",
+        "sID": "",
+        "record": "zigzag.sbs",
+        "filter": "",
+        "action": [
+          {
+            "alterationType": "CUT",
+            "scope": {
+              "type": "timeWindow",
+              "lowerBound": "88000",
+              "upperBound": "110000"
+            },
+            "parameters": {
+              "target": {
+                "identifier": "hexIdent",
+                "value": "ALL"
+              }
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

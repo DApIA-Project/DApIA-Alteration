@@ -1,0 +1,34 @@
+{
+  "sensors": {
+    "sensor": [
+      {
+        "sensorType": "SBS",
+        "sID": "",
+        "record": "zigzag.sbs",
+        "filter": "",
+        "action": [
+          {
+            "alterationType": "DELETION",
+            "scope": {
+              "type": "timeWindow",
+              "lowerBound": "67000",
+              "upperBound": "89000"
+            },
+            "parameters": {
+              "target": {
+                "identifier": "hexIdent",
+                "value": "ALL"
+              },
+              "parameter": [
+                {
+                  "mode": "simple",
+                  "frequency": ""
+                }
+              ]
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

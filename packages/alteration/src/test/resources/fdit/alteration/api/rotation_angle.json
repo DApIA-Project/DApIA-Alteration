@@ -1,0 +1,35 @@
+{
+  "sensors": {
+    "sensor": [
+      {
+        "sensorType": "SBS",
+        "sID": "",
+        "record": "zigzag.sbs",
+        "filter": "",
+        "action": [
+          {
+            "alterationType": "ROTATION",
+            "scope": {
+              "type": "timeWindow",
+              "lowerBound": "99000",
+              "upperBound": "121000"
+            },
+            "parameters": {
+              "target": {
+                "identifier": "hexIdent",
+                "value": "ALL"
+              },
+              "parameter": [
+                {
+                  "mode": "simple",
+                  "angle": "angle",
+                  "value": "90000"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    ]
+  }
+}
