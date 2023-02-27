@@ -88,5 +88,7 @@ services:
     depends_on:
       fdit-build-client:
         condition: service_completed_successfully
+      fdit-install-client-dependencies:
+        condition: service_completed_successfully
     ports:
       - '3000:3000'
