@@ -5,7 +5,7 @@ gradle/
 build/
 /target
 /out/
-!/out/artifacts/alteration_atc_jar/alteration-atc.jar
+!out/artifacts/alteration_atc_jar/alteration-atc.jar
 /test-tools/out/
 /test-workspace/
 /alteration-atc.iml
