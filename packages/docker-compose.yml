@@ -15,36 +15,36 @@ services:
 
 
 
-  install-server-dependencies:
+  fdit-install-server-dependencies:
     image: node:16-alpine
-    container_name: install-server-dependencies
+    container_name: fdit-install-server-dependencies
     volumes:
       - .:/app/packages
     working_dir: /app/packages/server
     entrypoint: npm install
 
-  install-client-dependencies:
+  fdit-install-client-dependencies:
     image: node:16-alpine
-    container_name: install-client-dependencies
+    container_name: fdit-install-client-dependencies
     volumes:
       - .:/app/packages
     working_dir: /app/packages/client
     entrypoint: npm install
 
-  build-server:
+  fdit-build-server:
     image: node:16-alpine
-    container_name: build-server
+    container_name: fdit-build-server
     volumes:
       - .:/app/packages
     working_dir: /app/packages/server
     entrypoint: npm run build
     depends_on:
-      install-server-dependencies:
+      fdit-install-server-dependencies:
         condition: service_completed_successfully
 
-  build-client:
+  fdit-build-client:
     image: node:16-alpine
-    container_name: build-client
+    container_name: fdit-build-client
     profiles:
       - production
     volumes:
@@ -52,7 +52,7 @@ services:
     working_dir: /app/packages/client
     entrypoint: npm run build
     depends_on:
-      install-client-dependencies:
+      fdit-install-client-dependencies:
         condition: service_completed_successfully
 
     #       $$$$$$$\                            $$\                                               $$\
@@ -65,28 +65,28 @@ services:
     #       \__|      \__|       \______/  \_______|      \_______/  \_______|\__|         \_/    \__| \_______| \_______|\_______/
 
 
-  prod-server:
+  fdit-prod-server:
     build: .
-    container_name: server-prod
+    container_name: fdit-server-prod
     volumes:
       - .:/app/packages
     working_dir: /app/packages/server
     entrypoint: npm run start
     depends_on:
-      build-server:
+      fdit-build-server:
         condition: service_completed_successfully
     ports:
       - '3001:3001'
 
-  prod-client:
+  fdit-prod-client:
     image: node:16-alpine
-    container_name: client-prod
+    container_name: fdit-client-prod
     volumes:
       - .:/app/packages
     working_dir: /app/packages/client
     entrypoint: npm run start
     depends_on:
-      build-client:
+      fdit-build-client:
         condition: service_completed_successfully
     ports:
       - '3000:3000'
