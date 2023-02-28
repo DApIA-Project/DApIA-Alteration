@@ -539,13 +539,9 @@ function evalRotateParameter(pm : ASTRotateParameter) : Parameter{
     }
 }
 function evalParameters(param : ASTParameters) : Parameter[]{
-  
-    
-    if(param != undefined){
-        return evalParameter(param.items);
-      }else{
-          return [];
-      }
+
+    return evalParameter(param.items);
+
 
 }
 
@@ -635,10 +631,8 @@ function evalParametreType(pm : ASTParameterType) : string | undefined{
 
     
 }
-function evalFrequency(hp : ASTHideParameter | undefined) : string {
-    if (hp != undefined) {
-        return hp.value.content.toString();
-    } else {
-        return "";
-    }
+function evalFrequency(hp : ASTHideParameter) : string {
+
+    return hp.value.content.toString();
+
 }
