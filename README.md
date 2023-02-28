@@ -1,5 +1,6 @@
 ![Server Tests workflow](https://github.com/DApIA-Project/FDI-T-Web/actions/workflows/node.js.yml/badge.svg)
 ![Java Tests workflow](https://github.com/DApIA-Project/FDI-T-Web/actions/workflows/java.yml/badge.svg)
+![FditScenario Tests workflow](https://github.com/DApIA-Project/FDI-T-Web/actions/workflows/fditscenario.yml/badge.svg)
 # FDI-T Web
 
 ## Generate FDI-T client using Langium

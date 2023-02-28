@@ -26,10 +26,10 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
-          cache-dependency-path: packages/fditscenario/package-lock.json
+          cache-dependency-path: packages/fdit-scenario/package-lock.json
       - name: Build
-        working-directory: packages/fditscenario
+        working-directory: packages/fdit-scenario
         run: npm i
       - name: Run test Server
-        working-directory: packages/fditscenario
+        working-directory: packages/fdit-scenario
         run : npm run test
