@@ -30,6 +30,6 @@ jobs:
       - name: Build
         working-directory: packages/fdit-scenario
         run: npm i
-      - name: Run test Server
+      - name: Run test Fditscenario
         working-directory: packages/fdit-scenario
         run : npm run test
