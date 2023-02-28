@@ -48,7 +48,7 @@ import {
     isASTDelay,
     ASTDelayParameter,
     isASTRotate,
-    ASTRotateParameter
+    ASTRotateParameter, isASTWindow, isASTParameter, isASTHideParameter, isASTParameters
 } from "../language-server/generated/ast";
 import {Action, Altitude, Parameter, Parameters, Scope, Sensors, Target, Trajectory, Vertex, Waypoint} from "../types";
 
@@ -147,20 +147,31 @@ function evalInstructions(instrs : ASTInstruction[]) : Action[]{
 }
 
 function evalInstr(instr : ASTInstruction) : Action{
-    if(isASTHide(instr)){
-        return {
-            alterationType : ActionType.deletion,
-            scope : evalTimeScope(instr.timeScope),
-            parameters: {
-                target : evalTarget(instr.target),
-                parameter : [
-                    {
-                        mode : "simple",
-                        frequency : evalFrequency(instr.frequency)
-                    }
-                ]
-            },
-            
+    if(isASTHide(instr)) {
+        if (!isASTHideParameter(instr.frequency)) {
+            return {
+                alterationType: ActionType.deletion,
+                scope: evalTimeScope(instr.timeScope),
+                parameters: {
+                    target: evalTarget(instr.target)
+                },
+
+            }
+        } else {
+            return {
+                alterationType: ActionType.deletion,
+                scope: evalTimeScope(instr.timeScope),
+                parameters: {
+                    target: evalTarget(instr.target),
+                    parameter: [
+                        {
+                            mode: "simple",
+                            frequency: evalFrequency(instr.frequency)
+                        }
+                    ]
+                },
+
+            }
         }
     } else if(isASTAlter(instr)) {
         return {
@@ -215,13 +226,26 @@ function evalInstr(instr : ASTInstruction) : Action{
             }
         }
     }else if(isASTReplay(instr)){
-            return {
-                alterationType : ActionType.replay,
-                scope : evalTimeScope(instr.timeScope),
-                parameters : {
-                    target : evalReplayTarget(instr.target),
+            if(!isASTParameters(instr.parameters)){
+                return {
+                    alterationType : ActionType.replay,
+                    scope : evalTimeScope(instr.timeScope),
+                    parameters : {
+                        target : evalReplayTarget(instr.target)
+                    }
+                }
+            }else{
+                return {
+                    alterationType : ActionType.replay,
+                    scope : evalTimeScope(instr.timeScope),
+                    parameters : {
+                        target : evalReplayTarget(instr.target),
+                        parameter : evalParameters(instr.parameters)
+                    }
                 }
             }
+
+
     }else if(isASTDelay(instr)){
         return {
             alterationType : ActionType.timestamp,
@@ -252,16 +276,25 @@ function evalInstr(instr : ASTInstruction) : Action{
 }
 
 function evalTimeScope(ts : ASTTimeScope) : Scope{
-    if(isASTAt(ts)){
+    if(isASTAt(ts)) {
         return {
             type: "timeWindow",
-            lowerBound : evalTime(ts.time),
-            upperBound : (parseInt(evalTime(ts.time))+VALEUR_TIME_DEFAULT).toString()
-            
+            lowerBound: (parseInt(evalTime(ts.time) )* 1000).toString(),
+            upperBound: (parseInt(evalTime(ts.time))*1000 + VALEUR_TIME_DEFAULT).toString()
+
         }
+    }else if(isASTWindow(ts)){
+        return {
+            type : "timeWindow",
+            lowerBound : (parseInt(evalTime(ts.start))*1000).toString(),
+            upperBound : (parseInt(evalTime(ts.end))*1000).toString()
+        }
+
     }else{
         return {
-            type : "timeWindow"
+            type : "timeWindow",
+            lowerBound : (parseInt(evalTime(ts.time))*1000).toString(),
+            upperBound : ((parseInt(evalTime(ts.time)) + parseInt(evalTime(ts.for))) * 1000).toString()
         }
     }
     
@@ -302,7 +335,7 @@ function evalNumberOffset(n : ASTNumberOffset) : string {
 
 function evalNumber(n : ASTNumber) : string {
     if(isASTIntegerValue(n)){
-        return (n.content*1000).toString();
+        return (n.content).toString();
     }
     return "0";
     
@@ -492,7 +525,7 @@ function evalSaturationParametreType(pm : ASTSaturationParameterType) : string |
 function evalDelayParameter(pm : ASTDelayParameter) : Parameter{
     return {
         mode : "simple",
-        value : evalTime(pm.value)
+        value : (parseInt(evalTime(pm.value))*1000).toString()
 
     }
 }
@@ -533,12 +566,23 @@ function evalOneParameter(pm : ASTParameter) : Parameter{
             
         }
     }else if(isASTParamOffset(pm)){
-        return {
-            mode : "offset",
-            key : evalParametreType(pm.name),
-            value : (pm.value.content.toString().replace('"','')).replace('"',''),
-            
+        if(pm.offset_op=="+="){
+            return {
+                mode : "offset",
+                key : evalParametreType(pm.name),
+                value : "+"+(pm.value.content.toString().replace('"','')).replace('"',''),
+
+            }
+        }else{
+            return {
+                mode : "offset",
+                key : evalParametreType(pm.name),
+                value : "-"+(pm.value.content.toString().replace('"','')).replace('"',''),
+
+            }
         }
+
+
     }else if(isASTParamNoise(pm)){
         return {
             mode : "noise",
@@ -547,12 +591,22 @@ function evalOneParameter(pm : ASTParameter) : Parameter{
             
         }
     }else {
-        return {
-            mode : "drift",
-            key : evalParametreType(pm.name),
-            value : (pm.value.content.toString().replace('"','')).replace('"',''),
-            
+        if(pm.drift_op=="++="){
+            return {
+                mode : "drift",
+                key : evalParametreType(pm.name),
+                value : "+"+(pm.value.content.toString().replace('"','')).replace('"',''),
+
+            }
+        }else{
+            return {
+                mode : "drift",
+                key : evalParametreType(pm.name),
+                value : "-"+(pm.value.content.toString().replace('"','')).replace('"',''),
+
+            }
         }
+
     }
 }
 
