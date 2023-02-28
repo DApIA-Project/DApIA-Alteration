@@ -50,7 +50,7 @@
         "lint": "eslint src --ext ts",
         "langium:generate": "langium generate",
         "langium:watch": "langium generate --watch",
-        "test": "jest --coverage",
+        "test": "ts-mocha -p tsconfig.json src/test/*.test.ts",
         "build:worker": "esbuild --minify ./dist/language-server/main-browser.js --bundle --format=iife --outfile=../client/public/monaco/fditscenario-server-worker.js",
         "prepare:public": "npx shx mkdir -p ../client/public/monaco; npx shx cp -fr ../client/public/monaco/* ../client/public/monaco/",
         "copy:monaco-editor-wrapper": "npx shx cp -fr ./node_modules/monaco-editor-wrapper/bundle ../client/public/monaco/monaco-editor-wrapper",
