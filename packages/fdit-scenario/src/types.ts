@@ -11,7 +11,7 @@ export type Sensors = {
 export type Sensor = {
     sID: string
     record: string
-    firstDate?: number
+    firstDate: number
     filter: string
     action?: Action[]
     sensorType: "BEAST" | "SBS" | "MODES" | "CAT21" | "SSR" | "PSR" | "SDPS"

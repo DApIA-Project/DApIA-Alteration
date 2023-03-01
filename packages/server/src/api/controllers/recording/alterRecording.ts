@@ -1,6 +1,7 @@
 import {RequestHandler} from "express";
 import {AlterRecordingError} from '@smartesting/shared/dist/responses'
 import alterRecordingCore from '../../core/recording/alterRecording'
+import * as fs from 'fs'
 
 const alterRecording: RequestHandler = async (req, res) => {
     const {scenario, fileContent, fileName} = req.body;
@@ -13,11 +14,14 @@ const alterRecording: RequestHandler = async (req, res) => {
     }
     const response = await alterRecordingCore(scenario, fileContent, fileName)
     if(response.error != null){
+        if(response.error == AlterRecordingError.fileNotCreated){
+            return res.status(422).json({error: AlterRecordingError.fileNotCreated})
+        }
         return res.status(422).json({error: AlterRecordingError.invalidSyntax})
     }
+    const data = await fs.promises.readFile('./temp/modified__'+fileName);
 
-
-    res.status(200).json(response.alteredRecording);
+    res.status(200).json({reponse: response.alteredRecording, name_file: fileName, altered_content : data.toString()});
 }
 
 function isBlank(str: string | undefined) {
@@ -30,5 +34,5 @@ function isValidExtension(str: string) {
 }
 
 
-
 export default alterRecording;
+

@@ -5,5 +5,6 @@ export type AlterRecordingResponse = {
 
 export enum AlterRecordingError {
     invalidFormat = 'invalid_format',
-    invalidSyntax = 'invalid_syntax'
+    invalidSyntax = 'invalid_syntax',
+    fileNotCreated = 'file_not_created'
 }

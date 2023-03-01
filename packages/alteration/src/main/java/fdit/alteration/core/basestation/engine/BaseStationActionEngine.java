@@ -5,11 +5,8 @@ import fdit.alteration.core.engine.ActionEngine;
 import fdit.alteration.core.engine.EngineParameters;
 import fdit.alteration.core.engine.Message;
 import fdit.alteration.core.engine.SuperAction;
-import fdit.alteration.core.incident.Action;
+import fdit.alteration.core.incident.*;
 import fdit.alteration.core.incident.Action.ActionTypeSwitch;
-import fdit.alteration.core.incident.Recording;
-import fdit.alteration.core.incident.Scope;
-import fdit.alteration.core.incident.UnknownScopeException;
 import fdit.alteration.core.logging.ActionLogger;
 
 import java.util.Collection;
@@ -113,6 +110,11 @@ public abstract class BaseStationActionEngine extends ActionEngine {
     @Override
     protected Optional<Message> parseMessage(final String message) {
         return createBstMessage(message);
+    }
+
+    @Override
+    protected String applyAction(Message message) throws UnknownScopeException, UnknownCharacteristicException {
+        return null;
     }
 
     @Override

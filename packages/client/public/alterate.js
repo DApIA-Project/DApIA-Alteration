@@ -26,11 +26,31 @@ async function sendData() {
 }
 
 window.sendData = sendData;
-function updateCanvas(cmds) {
-    const str_to_json = JSON.parse(cmds);
+function updateCanvas(data) {
+    const str_to_json = JSON.parse(data.reponse);
     const zone_json = document.getElementById("zoneJson");
-    if(cmds !== undefined){
+
+
+    removeButtonDownload();
+
+    if(data.reponse !== undefined){
+        //Zone json
         zone_json.innerHTML=JSON.stringify(str_to_json, null, 2);
+
+        //Bouton téléchargement recording
+        const {downloadButton, link, url} = createButtonDownload(data);
+
+        //Ecouteur bouton téléchargement recording
+        downloadButton.addEventListener('click', async () => {
+
+            link.click();
+            URL.revokeObjectURL(url);
+            document.body.removeChild(link);
+
+        //    window.location.href = `http://localhost:3001/recording/download?pathfile=${data.path_file}`;
+
+        })
+
     }else{
         zone_json.innerHTML="Erreur de syntaxe detecte !";
     }
@@ -43,6 +63,9 @@ function updateCanvasError(error) {
             break;
         case "invalid_format":
             zone_json.innerHTML="Le format est invalide";
+            break;
+        case "file_not_created":
+            zone_json.innerHTML="Le fichier n\'a pas été créé";
             break;
         default :
             zone_json.innerHTML="Une erreur est survenue!";
@@ -64,3 +87,36 @@ function handleFiles() {
     };
 }
 
+function removeButtonDownload(){
+    const buttons = document.querySelectorAll('button');
+
+    // Parcourt la liste des boutons
+    buttons.forEach(button => {
+        // Vérifie si le texte du bouton correspond à celui souhaité
+        if (button.innerText === 'Download Recording') {
+            // Supprime le bouton de la page
+            button.remove();
+        }
+    });
+}
+
+function createButtonDownload(data){
+    const buttons_zone = document.getElementById("buttons_zone");
+    const downloadButton = document.createElement('button');
+    downloadButton.innerHTML = '&#x2913; Download Recording &#x2913;';
+    downloadButton.className = 'build';
+
+    const fileAlteredContent = data.altered_content;
+    const fileBlob = new Blob([fileAlteredContent], {type : "text/plain"});
+    const fileUrl = URL.createObjectURL(fileBlob);
+
+    const link = document.createElement("a");
+    link.href = fileUrl;
+    link.download = "modified__"+data.name_file;
+    document.body.appendChild(link);
+
+
+
+    buttons_zone.appendChild(downloadButton);
+    return {downloadButton: downloadButton, link: link, url: fileUrl};
+}

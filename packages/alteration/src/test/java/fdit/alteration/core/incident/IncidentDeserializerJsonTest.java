@@ -50,7 +50,7 @@ public class IncidentDeserializerJsonTest {
                                                         "{\n" +
                                                             "\"mode\": \"simple\",\n" +
                                                                 "\"key\": \"CALLSIGN\",\n" +
-                                                                "\"value\": \"SAMU25\"\n" +
+                                                                "\"value\": \"SAMU39\"\n" +
                                                         "}\n" +
                                                     "]\n" +
                                                 "}\n" +
@@ -73,7 +73,7 @@ public class IncidentDeserializerJsonTest {
                                                 withParameters(
                                                         onTargetHexIdent("ALL"),
                                                         aParameter(MODE_SIMPLE, "ICAO", "39AC47"),
-                                                        aParameter(MODE_SIMPLE, "CALLSIGN", "SAMU25")))
+                                                        aParameter(MODE_SIMPLE, "CALLSIGN", "SAMU39")))
                                         )))));
 
     }

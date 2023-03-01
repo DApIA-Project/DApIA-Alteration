@@ -12,6 +12,13 @@ export default async function alterRecording(scenario: string, fileContent: stri
             error: AlterRecordingError.invalidSyntax
         }
     }
+
+    if(alteredScenario.error != undefined){
+        return {
+            alteredRecording : null,
+            error : AlterRecordingError.fileNotCreated
+        }
+    }
     return {
         alteredRecording: JSON.stringify(alteredScenario),
         error: null
@@ -19,7 +26,7 @@ export default async function alterRecording(scenario: string, fileContent: stri
 }
 
 
-export const generateJsonAndAlterate = (async (scenario : string, fileContent : string, fileName : string) : Promise<{} | undefined> => {
+export const generateJsonAndAlterate = (async (scenario : string, fileContent : string, fileName : string) : Promise<{error? : string} | undefined> => {
     console.info('generating & running current code...');
     const scenarioJson = await parseAndGenerate(scenario,fileName);
 
@@ -29,8 +36,14 @@ export const generateJsonAndAlterate = (async (scenario : string, fileContent : 
     }else{
         fs.writeFileSync("temp/scenario.json",JSON.stringify(scenarioJson, null, 2));
     }
-
-    fs.writeFileSync("temp/"+fileName,fileContent);
+    console.log("avant");
+    try {
+        fs.writeFileSync("temp/" + fileName, fileContent);
+        console.log("File saved successfully");
+    } catch (error) {
+        return Promise.resolve({error : "file_not_found"});
+    }
+    console.log("apres");
     executeAlterationJar(fileContent,fileName);
     return Promise.resolve(scenarioJson);
 

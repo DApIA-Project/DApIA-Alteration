@@ -51,6 +51,7 @@ import {
     ASTRotateParameter, isASTWindow, isASTParameter, isASTHideParameter, isASTParameters
 } from "../language-server/generated/ast";
 import {Action, Altitude, Parameter, Parameters, Scope, Sensors, Target, Trajectory, Vertex, Waypoint} from "../types";
+import * as fs from 'fs';
 
 
 
@@ -77,6 +78,7 @@ function evalScenario(scenar : ASTScenario, fileName : string) : Sensors{
                 sensorType: "SBS",
                 sID: '',
                 record: fileName,
+                firstDate : evalFirstDate(fileName,"SBS"),
                 filter: '',
                 action: evalInstructions(scenar.instructions),
                 
@@ -635,4 +637,23 @@ function evalFrequency(hp : ASTHideParameter) : string {
 
     return hp.value.content.toString();
 
+}
+
+function evalFirstDate(filename : string, extension : string){
+    // Lire le fichier .sbs
+    const lines = fs.readFileSync("C:/Users/morga/Documents/Programmation/FDI-T-WEB/packages/server/temp/"+filename, 'utf-8').split('\n');
+
+// Extraire la ligne contenant la date et l'heure
+    const firstLine = lines[0];
+    const parts = firstLine.split(',');
+
+// Convertir la date et l'heure en objet Date TypeScript
+    const dateParts = parts[6].split('/');
+    const timeParts = parts[7].split(':');
+    const date = new Date(parseInt(dateParts[0]), parseInt(dateParts[1]) - 1, parseInt(dateParts[2]), parseInt(timeParts[0]), parseInt(timeParts[1]), parseFloat(timeParts[2]));
+
+// Obtenir le timestamp à partir de l'objet Date
+    const timestamp = date.getTime();
+    console.log(timestamp);
+    return timestamp/1000;
 }
