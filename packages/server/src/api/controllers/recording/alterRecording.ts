@@ -14,9 +14,6 @@ const alterRecording: RequestHandler = async (req, res) => {
     }
     const response = await alterRecordingCore(scenario, fileContent, fileName)
     if(response.error != null){
-        if(response.error == AlterRecordingError.fileNotCreated){
-            return res.status(422).json({error: AlterRecordingError.fileNotCreated})
-        }
         return res.status(422).json({error: AlterRecordingError.invalidSyntax})
     }
     const data = await fs.promises.readFile('./temp/modified__'+fileName);

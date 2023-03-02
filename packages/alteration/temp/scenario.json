@@ -2,49 +2,34 @@
   "sensors": {
     "sensor": [
       {
+
         "sensorType": "SBS",
         "sID": "",
         "record": "zigzag.sbs",
         "filter": "",
         "action": [
           {
-            "alterationType": "CREATION",
+            "alterationType": "ALTERATION",
             "scope": {
               "type": "timeWindow",
-              "lowerBound": "8000",
-              "upperBound": "10000020"
+              "lowerBound": "0",
+              "upperBound": "400000"
             },
             "parameters": {
               "target": {
                 "identifier": "hexIdent",
-                "value": ""
-              },
-              "trajectory": {
-                "waypoint": [
-                  {
-                    "vertex": {
-                      "lat": {
-                        "value": 2,
-                        "offset": false
-                      },
-                      "lon": {
-                        "value": 8,
-                        "offset": false
-                      }
-                    },
-                    "altitude": {
-                      "value": 7000,
-                      "offset": false
-                    },
-                    "time": 6000
-                  }
-                ]
+                "value": "ALL"
               },
               "parameter": [
                 {
+                  "mode": "simple",
+                  "key": "icao",
+                  "value": "39AC47"
+                },
+                {
+                  "mode": "simple",
                   "key": "callsign",
-                  "value": "SAMU80",
-                  "mode": "simple"
+                  "value": "SAMU25"
                 }
               ]
             }

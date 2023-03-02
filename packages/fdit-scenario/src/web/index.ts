@@ -26,6 +26,7 @@ import chalk from "chalk";
  * @returns Generated output from this MiniLogo program
  */
 export async function parseAndGenerate (fditscenrioProgram: string, fileName : string): Promise<{} | undefined> {
+    console.log("creation services...");
     const services = createFditscenarioServices(EmptyFileSystem).Fditscenario;
     const scenario = await extractAstNodeFromString<ASTScenario>(fditscenrioProgram, services);
     // generate fditscenario commands from the model
@@ -35,8 +36,7 @@ export async function parseAndGenerate (fditscenrioProgram: string, fileName : s
     const parseResult = document.parseResult;
     // verify no lexer, parser, or general diagnostic errors show up
     if (parseResult.lexerErrors.length === 0 && 
-        parseResult.parserErrors.length === 0
-    ) {
+        parseResult.parserErrors.length === 0 ) {
         console.log(chalk.green(`Parsed and validated successfully!`));
     } else {
         console.log(chalk.red(`Failed to parse and validate !`));

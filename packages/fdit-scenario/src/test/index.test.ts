@@ -8,7 +8,7 @@ describe("indexTestMocha", () => {
             const value = "hide all_planes from seconds until 90 sconds";
             // parse & generate commands for drawing an image
             // execute custom LSP command, and receive the response
-            const cmds  = await parseAndGenerate(value,"");
+            const cmds  = await parseAndGenerate(value,"zigzag.sbs");
             assert.deepStrictEqual(cmds,undefined);
 
         })
@@ -20,7 +20,7 @@ describe("indexTestMocha", () => {
             const value = "hide all_planes from 56 seconds until 90 seconds";
             // parse & generate commands for drawing an image
             // execute custom LSP command, and receive the response
-            const cmds  = await parseAndGenerate(value,"");
+            const cmds  = await parseAndGenerate(value,"zigzag.sbs");
             const resJSONString = JSON.stringify(cmds, undefined, 2);
 
             const resJson = JSON.parse(resJSONString);
@@ -31,7 +31,8 @@ describe("indexTestMocha", () => {
                             {
                                 "sensorType": "SBS",
                                 "sID": "",
-                                "record": "",
+                                "record": "zigzag.sbs",
+                                "firstDate": 1543141848,
                                 "filter": "",
                                 "action": [
                                     {

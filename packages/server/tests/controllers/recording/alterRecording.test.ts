@@ -111,17 +111,4 @@ describe(`POST ${ApiRoutes.alteration()}`, () => {
         }
     })
 
-    context('when file altered is not creating', () => {
-        it('returns 422 if the file can\'t be create', async () => {
-            const response = await request(server)
-                .post(ApiRoutes.alteration())
-                .send({scenario: 'hide all_planes at 0 seconds', fileContent : "MSG,4,3,5022202,4CA1FA,5022202,2018/11/25,11:30:48.179,2018/11/25,11:30:48.179,,,474.53,295.86,,,0.0,,,,,",fileName : '/test/myfile.sbs'})
-                .expect(422)
-
-            const {error, alteredRecording} = response.body
-
-            assert(!alteredRecording, 'Altered recording is not existing')
-            assert.equal(error, AlterRecordingError.fileNotCreated)
-        })
-    })
 })

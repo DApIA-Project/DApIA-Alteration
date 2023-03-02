@@ -13,12 +13,6 @@ export default async function alterRecording(scenario: string, fileContent: stri
         }
     }
 
-    if(alteredScenario.error != undefined){
-        return {
-            alteredRecording : null,
-            error : AlterRecordingError.fileNotCreated
-        }
-    }
     return {
         alteredRecording: JSON.stringify(alteredScenario),
         error: null
@@ -29,20 +23,15 @@ export default async function alterRecording(scenario: string, fileContent: stri
 export const generateJsonAndAlterate = (async (scenario : string, fileContent : string, fileName : string) : Promise<{error? : string} | undefined> => {
     console.info('generating & running current code...');
     const scenarioJson = await parseAndGenerate(scenario,fileName);
-
+    console.log("avant");
     /** Créé un fichier JSON du scenario envoyé **/
     if(scenarioJson == undefined){
         fs.writeFileSync("temp/scenario.json",JSON.stringify({}, null, 2));
     }else{
         fs.writeFileSync("temp/scenario.json",JSON.stringify(scenarioJson, null, 2));
     }
-    console.log("avant");
-    try {
-        fs.writeFileSync("temp/" + fileName, fileContent);
-        console.log("File saved successfully");
-    } catch (error) {
-        return Promise.resolve({error : "file_not_found"});
-    }
+    fs.writeFileSync("temp/" + fileName, fileContent);
+
     console.log("apres");
     executeAlterationJar(fileContent,fileName);
     return Promise.resolve(scenarioJson);
