@@ -105,8 +105,6 @@ editorConfig.useLanguageClient = true;
 editorConfig.useWebSocket = false;
 
 const workerURL = new URL('./monaco/fditscenario-server-worker.js', import.meta.url);
-console.log(workerURL.href);
-
 const lsWorker = new Worker(workerURL.href, {
     type: 'classic',
     name: 'Fditscenario Language Server'

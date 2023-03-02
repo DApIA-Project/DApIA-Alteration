@@ -26,12 +26,8 @@ import chalk from "chalk";
  * @returns Generated output from this MiniLogo program
  */
 export async function parseAndGenerate (fditscenrioProgram: string, fileName : string, fileContent : string): Promise<{} | undefined> {
-    console.log("creation services...");
     const services = createFditscenarioServices(EmptyFileSystem).Fditscenario;
     const scenario = await extractAstNodeFromString<ASTScenario>(fditscenrioProgram, services);
-    // generate fditscenario commands from the model
-    console.log("fditscenarioProgram : " + fditscenrioProgram);
-    
     const document = services.shared.workspace.LangiumDocumentFactory.fromString(fditscenrioProgram, URI.parse('memory://fditscenario.document'));
     const parseResult = document.parseResult;
     // verify no lexer, parser, or general diagnostic errors show up

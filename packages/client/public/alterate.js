@@ -3,7 +3,6 @@
 let fileName="";
 let fileContent = "";
 let textButtonDownload = 'Download Recording';
-
 async function sendData() {
     const test = document.getElementsByClassName('view-lines monaco-mouse-cursor-text');
     const value = test[0].innerText;
@@ -31,27 +30,19 @@ function updateCanvas(data) {
     const str_to_json = JSON.parse(data.reponse);
     const zone_json = document.getElementById("zoneJson");
 
-
-    removeButtonDownload();
-
     if(data.reponse !== undefined){
         //Zone json
         zone_json.innerHTML=JSON.stringify(str_to_json, null, 2);
-
         //Bouton téléchargement recording
         const {downloadButton, link, url} = createButtonDownload(data);
 
         //Ecouteur bouton téléchargement recording
         downloadButton.addEventListener('click', async () => {
-
             link.click();
             URL.revokeObjectURL(url);
             document.body.removeChild(link);
-
-        //    window.location.href = `http://localhost:3001/recording/download?pathfile=${data.path_file}`;
-
+            removeButtonDownload();
         })
-
     }else{
         zone_json.innerHTML="Erreur de syntaxe detecte !";
     }
@@ -64,9 +55,6 @@ function updateCanvasError(error) {
             break;
         case "invalid_format":
             zone_json.innerHTML="Le format est invalide";
-            break;
-        case "file_not_created":
-            zone_json.innerHTML="Le fichier n\'a pas été créé";
             break;
         default :
             zone_json.innerHTML="Une erreur est survenue!";
@@ -107,18 +95,13 @@ function createButtonDownload(data){
     const downloadButton = document.createElement('button');
     downloadButton.innerText = textButtonDownload;
     downloadButton.className = 'build';
-
     const fileAlteredContent = data.altered_content;
     const fileBlob = new Blob([fileAlteredContent], {type : "text/plain"});
     const fileUrl = URL.createObjectURL(fileBlob);
-
     const link = document.createElement("a");
     link.href = fileUrl;
     link.download = "modified__"+data.name_file;
     document.body.appendChild(link);
-
-
-
     buttons_zone.appendChild(downloadButton);
     return {downloadButton: downloadButton, link: link, url: fileUrl};
 }
