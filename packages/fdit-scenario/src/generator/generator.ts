@@ -665,9 +665,8 @@ function evalLastDate(atSeconds : number, fileContent : string){
     const parts = lastLine.split(',');
 
 // Convertir la date et l'heure en objet Date TypeScript
-    const date = new Date(parts[6].replaceAll('/','-')+"T"+parts[7]);
+
     const timestamp = Date.parse(parts[6]+','+parts[7]+ ' GMT');
-    //const timestamp = date.getTime();
 
     const timeRecording = timestamp - evalFirstDate(fileContent);
     return timeRecording - (atSeconds*1000)

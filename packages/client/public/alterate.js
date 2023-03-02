@@ -2,6 +2,7 @@
 
 let fileName="";
 let fileContent = "";
+let textButtonDownload = 'Download Recording';
 
 async function sendData() {
     const test = document.getElementsByClassName('view-lines monaco-mouse-cursor-text');
@@ -92,8 +93,9 @@ function removeButtonDownload(){
 
     // Parcourt la liste des boutons
     buttons.forEach(button => {
+
         // Vérifie si le texte du bouton correspond à celui souhaité
-        if (button.innerText === 'Download Recording') {
+        if (button.innerText === textButtonDownload) {
             // Supprime le bouton de la page
             button.remove();
         }
@@ -103,7 +105,7 @@ function removeButtonDownload(){
 function createButtonDownload(data){
     const buttons_zone = document.getElementById("buttons_zone");
     const downloadButton = document.createElement('button');
-    downloadButton.innerHTML = '&#x2913; Download Recording &#x2913;';
+    downloadButton.innerText = textButtonDownload;
     downloadButton.className = 'build';
 
     const fileAlteredContent = data.altered_content;
