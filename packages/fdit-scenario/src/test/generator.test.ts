@@ -9,7 +9,8 @@ describe("generatorTestMocha", () => {
     let services: LangiumServices | null=null;
     let fileContent = "";
     beforeEach(() => {
-        fileContent="MSG,4,3,5022202,4CA1FA,5022202,2018/11/25,11:30:48.179,2018/11/25,11:30:48.179,,,474.53,295.86,,,0.0,,,,,";
+        fileContent="MSG,4,3,5022202,4CA1FA,5022202,2018/11/25,11:30:48.179,2018/11/25,11:30:48.179,,,474.53,295.86,,,0.0,,,,,\n" +
+            "MSG,4,3,5022202,4CA1FA,5022202,2018/11/25,11:50:48.789,2018/11/25,11:50:48.789,,,474.53,295.86,,,0.0,,,,,";
         services = createFditscenarioServices(EmptyFileSystem).Fditscenario;
 
     })
@@ -107,7 +108,7 @@ describe("generatorTestMocha", () => {
                                         "scope": {
                                             "type": "timeWindow",
                                             "lowerBound": "67000",
-                                            "upperBound": "-67000"
+                                            "upperBound": "1133610"
                                         },
                                         "parameters": {
                                             "target": {
