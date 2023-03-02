@@ -24,7 +24,7 @@ describe("generatorTestMocha", () => {
                             {"action": [],
                                 "filter": "",
                                 "record": "zigzag.sbs",
-                                "firstDate": 1543141848179,
+                                "firstDate": 1543145448179,
                                 "sID": "",
                                 "sensorType": "SBS"
                             }
@@ -43,7 +43,7 @@ describe("generatorTestMocha", () => {
                             {"action": [],
                                 "filter": "",
                                 "record": "zigzag.sbs",
-                                "firstDate": 1543141848179,
+                                "firstDate": 1543145448179,
                                 "sID": "",
                                 "sensorType": "SBS"
                             }
@@ -65,7 +65,7 @@ describe("generatorTestMocha", () => {
                                 "sensorType": "SBS",
                                 "sID": "",
                                 "record": "zigzag.sbs",
-                                "firstDate": 1543141848179,
+                                "firstDate": 1543145448179,
                                 "filter": "",
                                 "action": [
                                     {
@@ -100,7 +100,7 @@ describe("generatorTestMocha", () => {
                                 "sensorType": "SBS",
                                 "sID": "",
                                 "record": "zigzag.sbs",
-                                "firstDate": 1543141848179,
+                                "firstDate": 1543145448179,
                                 "filter": "",
                                 "action": [
                                     {
@@ -135,7 +135,7 @@ describe("generatorTestMocha", () => {
                                 "sensorType": "SBS",
                                 "sID": "",
                                 "record": "zigzag.sbs",
-                                "firstDate": 1543141848179,
+                                "firstDate": 1543145448179,
                                 "filter": "",
                                 "action": [
                                     {
@@ -170,7 +170,7 @@ describe("generatorTestMocha", () => {
                                 "sensorType": "SBS",
                                 "sID": "",
                                 "record": "zigzag.sbs",
-                                "firstDate": 1543141848179,
+                                "firstDate": 1543145448179,
                                 "filter": "",
                                 "action": [
                                     {
@@ -227,7 +227,7 @@ describe("generatorTestMocha", () => {
                                 "sensorType": "SBS",
                                 "sID": "",
                                 "record": "zigzag.sbs",
-                                "firstDate": 1543141848179,
+                                "firstDate": 1543145448179,
                                 "filter": "",
                                 "action": [
                                     {
@@ -294,7 +294,7 @@ describe("generatorTestMocha", () => {
                                 "sensorType": "SBS",
                                 "sID": "",
                                 "record": "zigzag.sbs",
-                                "firstDate": 1543141848179,
+                                "firstDate": 1543145448179,
                                 "filter": "",
                                 "action": [
                                     {
@@ -391,7 +391,7 @@ describe("generatorTestMocha", () => {
                                 "sensorType": "SBS",
                                 "sID": "",
                                 "record": "zigzag.sbs",
-                                "firstDate": 1543141848179,
+                                "firstDate": 1543145448179,
                                 "filter": "",
                                 "action": [
                                     {
@@ -496,7 +496,7 @@ describe("generatorTestMocha", () => {
                                 "sensorType": "SBS",
                                 "sID": "",
                                 "record": "zigzag.sbs",
-                                "firstDate": 1543141848179,
+                                "firstDate": 1543145448179,
                                 "filter": "",
                                 "action": [
                                     {
@@ -569,7 +569,7 @@ describe("generatorTestMocha", () => {
                                 "sensorType": "SBS",
                                 "sID": "",
                                 "record": "zigzag.sbs",
-                                "firstDate": 1543141848179,
+                                "firstDate": 1543145448179,
                                 "filter": "",
                                 "action": [
                                     {
@@ -616,7 +616,7 @@ describe("generatorTestMocha", () => {
                                 "sensorType": "SBS",
                                 "sID": "",
                                 "record": "zigzag.sbs",
-                                "firstDate": 1543141848179,
+                                "firstDate": 1543145448179,
                                 "filter": "",
                                 "action": [
                                     {
@@ -663,7 +663,7 @@ describe("generatorTestMocha", () => {
                                 "sensorType": "SBS",
                                 "sID": "",
                                 "record": "zigzag.sbs",
-                                "firstDate": 1543141848179,
+                                "firstDate": 1543145448179,
                                 "filter": "",
                                 "action": [
                                     {
@@ -698,7 +698,7 @@ describe("generatorTestMocha", () => {
                                 "sensorType": "SBS",
                                 "sID": "",
                                 "record": "zigzag.sbs",
-                                "firstDate": 1543141848179,
+                                "firstDate": 1543145448179,
                                 "filter": "",
                                 "action": [
                                     {
@@ -739,7 +739,7 @@ describe("generatorTestMocha", () => {
                                 "sensorType": "SBS",
                                 "sID": "",
                                 "record": "zigzag.sbs",
-                                "firstDate": 1543141848179,
+                                "firstDate": 1543145448179,
                                 "filter": "",
                                 "action": [
                                     {
@@ -781,7 +781,7 @@ describe("generatorTestMocha", () => {
                                 "sensorType": "SBS",
                                 "sID": "",
                                 "record": "zigzag.sbs",
-                                "firstDate": 1543141848179,
+                                "firstDate": 1543145448179,
                                 "filter": "",
                                 "action": [
                                     {
@@ -816,7 +816,7 @@ describe("generatorTestMocha", () => {
                                 "sensorType": "SBS",
                                 "sID": "",
                                 "record": "zigzag.sbs",
-                                "firstDate": 1543141848179,
+                                "firstDate": 1543145448179,
                                 "filter": "",
                                 "action": [
                                     {
@@ -851,7 +851,7 @@ describe("generatorTestMocha", () => {
                                 "sensorType": "SBS",
                                 "sID": "",
                                 "record": "zigzag.sbs",
-                                "firstDate": 1543141848179,
+                                "firstDate": 1543145448179,
                                 "filter": "",
                                 "action": [
                                     {
@@ -892,7 +892,7 @@ describe("generatorTestMocha", () => {
                                 "sensorType": "SBS",
                                 "sID": "",
                                 "record": "zigzag.sbs",
-                                "firstDate": 1543141848179,
+                                "firstDate": 1543145448179,
                                 "filter": "",
                                 "action": [
                                     {

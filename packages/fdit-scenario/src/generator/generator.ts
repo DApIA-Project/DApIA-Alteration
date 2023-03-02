@@ -645,14 +645,14 @@ function evalFirstDate(fileContent : string){
 // Convertir la date et l'heure en objet Date TypeScript
 
     const date = new Date(parts[6].replaceAll('/','-')+"T"+parts[7]);
-
+    const timestamp = Date.parse(parts[6]+','+parts[7]+ ' GMT');
     /*
     const dateParts = parts[6].split('/');
     const timeParts = parts[7].split(':');
     const date = new Date(parseInt(dateParts[0]), parseInt(dateParts[1]) - 1, parseInt(dateParts[2]), parseInt(timeParts[0]), parseInt(timeParts[1]), parseFloat(timeParts[2]));
     */
 // Obtenir le timestamp à partir de l'objet Date
-    const timestamp = Date.UTC(date.getUTCFullYear(),date.getUTCMonth(),date.getUTCDate(),date.getUTCHours(),date.getUTCMinutes(),date.getUTCSeconds(),date.getUTCMilliseconds());
+  //  const timestamp = date.getTime();
     return timestamp;
 }
 
@@ -666,7 +666,8 @@ function evalLastDate(atSeconds : number, fileContent : string){
 
 // Convertir la date et l'heure en objet Date TypeScript
     const date = new Date(parts[6].replaceAll('/','-')+"T"+parts[7]);
-    const timestamp = Date.UTC(date.getUTCFullYear(),date.getUTCMonth(),date.getUTCDate(),date.getUTCHours(),date.getUTCMinutes(),date.getUTCSeconds(),date.getUTCMilliseconds());
+    const timestamp = Date.parse(parts[6]+','+parts[7]+ ' GMT');
+    //const timestamp = date.getTime();
 
     const timeRecording = timestamp - evalFirstDate(fileContent);
     return timeRecording - (atSeconds*1000)
