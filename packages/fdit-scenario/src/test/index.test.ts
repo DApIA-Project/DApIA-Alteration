@@ -40,7 +40,7 @@ describe("indexTestMocha", () => {
                                 "sensorType": "SBS",
                                 "sID": "",
                                 "record": "zigzag.sbs",
-                                "firstDate": 1543141848179,
+                                "firstDate": 1543145448179,
                                 "filter": "",
                                 "action": [
                                     {
