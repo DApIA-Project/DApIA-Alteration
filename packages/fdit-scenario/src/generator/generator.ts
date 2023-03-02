@@ -1,7 +1,4 @@
 
-//import { CompositeGeneratorNode, NL, toString } from 'langium';
-
-
 import {
     ASTCreationParameter,
     ASTCreationParameters,
@@ -51,36 +48,34 @@ import {
     ASTRotateParameter, isASTWindow, isASTParameter, isASTHideParameter, isASTParameters
 } from "../language-server/generated/ast";
 import {Action, Altitude, Parameter, Parameters, Scope, Sensors, Target, Trajectory, Vertex, Waypoint} from "../types";
-import * as fs from 'fs';
 
 
 
-const VALEUR_TIME_DEFAULT = 22000;
 const CHEMIN_TEMP_DIRECTORY_SERVER = "temp/";
 
 
-export function generateCommands(scenario: ASTScenario, fileName : string): Parameters | undefined {
-    return generateStatements(scenario, fileName);
+export function generateCommands(scenario: ASTScenario, fileName : string, fileContent : string): Parameters | undefined {
+    return generateStatements(scenario, fileName, fileContent);
 }
 
 
-function generateStatements(scenar: ASTScenario, fileName : string):  Parameters | undefined {
+function generateStatements(scenar: ASTScenario, fileName : string, fileContent : string):  Parameters | undefined {
     //let env : DslGenEnv = new Map<string,number>();
     
-    return {sensors : evalScenario(scenar, fileName)};
+    return {sensors : evalScenario(scenar, fileName, fileContent)};
     
 }
 
-function evalScenario(scenar : ASTScenario, fileName : string) : Sensors{
+function evalScenario(scenar : ASTScenario, fileName : string, fileContent : string) : Sensors{
         
         return {
             sensor: [{
                 sensorType: "SBS",
                 sID: '',
                 record: fileName,
-                firstDate : evalFirstDate(fileName,"SBS"),
+                firstDate : evalFirstDate(fileContent),
                 filter: '',
-                action: evalInstructions(scenar.instructions),
+                action: evalInstructions(scenar.instructions, fileContent),
                 
                 
                 
@@ -139,21 +134,21 @@ enum SaturationParametreType {
     aircraft_number = 'AIRCRAFT_NUMBER'
 }
 
-function evalInstructions(instrs : ASTInstruction[]) : Action[]{
+function evalInstructions(instrs : ASTInstruction[], fileContent : string) : Action[]{
     
-    return (instrs.flatMap(i => evalInstr(i)).filter(i => i !== undefined) as Action[])
+    return (instrs.flatMap(i => evalInstr(i, fileContent)).filter(i => i !== undefined) as Action[])
 
     
     
 
 }
 
-function evalInstr(instr : ASTInstruction) : Action{
+function evalInstr(instr : ASTInstruction, fileContent : string) : Action{
     if(isASTHide(instr)) {
         if (!isASTHideParameter(instr.frequency)) {
             return {
                 alterationType: ActionType.deletion,
-                scope: evalTimeScope(instr.timeScope),
+                scope: evalTimeScope(instr.timeScope, fileContent),
                 parameters: {
                     target: evalTarget(instr.target)
                 },
@@ -162,7 +157,7 @@ function evalInstr(instr : ASTInstruction) : Action{
         } else {
             return {
                 alterationType: ActionType.deletion,
-                scope: evalTimeScope(instr.timeScope),
+                scope: evalTimeScope(instr.timeScope, fileContent),
                 parameters: {
                     target: evalTarget(instr.target),
                     parameter: [
@@ -178,7 +173,7 @@ function evalInstr(instr : ASTInstruction) : Action{
     } else if(isASTAlter(instr)) {
         return {
             alterationType : ActionType.alteration,
-            scope : evalTimeScope(instr.timeScope),
+            scope : evalTimeScope(instr.timeScope, fileContent),
             parameters: {
                 target : evalTarget(instr.target),
                 parameter : evalParameters(instr.parameters)
@@ -189,7 +184,7 @@ function evalInstr(instr : ASTInstruction) : Action{
     }else if(isASTCreate(instr)){
         return {
             alterationType : ActionType.creation,
-            scope : evalTimeScope(instr.timeScope),
+            scope : evalTimeScope(instr.timeScope, fileContent),
             parameters: {
                 target : {
                     identifier : "hexIdent",
@@ -202,7 +197,7 @@ function evalInstr(instr : ASTInstruction) : Action{
     }else if(isASTTrajectory(instr)){
         return {
             alterationType : ActionType.trajectory,
-            scope : evalTimeScope(instr.timeScope),
+            scope : evalTimeScope(instr.timeScope, fileContent),
             parameters : {
                 target : evalTarget(instr.target),
                 trajectory : evalTrajectory(instr.trajectory),
@@ -212,7 +207,7 @@ function evalInstr(instr : ASTInstruction) : Action{
     }else if(isASTAlterSpeed(instr)){
         return {
             alterationType : ActionType.speedAltaration,
-            scope : evalTimeScope(instr.timeScope),
+            scope : evalTimeScope(instr.timeScope, fileContent),
             parameters : {
                 target : evalTarget(instr.target),
                 parameter : evalSpeedParameters(instr.parameters)
@@ -221,7 +216,7 @@ function evalInstr(instr : ASTInstruction) : Action{
     }else if(isASTSaturate(instr)) {
         return {
             alterationType: ActionType.saturation,
-            scope: evalTimeScope(instr.timeScope),
+            scope: evalTimeScope(instr.timeScope, fileContent),
             parameters: {
                 target: evalTarget(instr.target),
                 parameter: evalSaturationParameters(instr.parameters)
@@ -231,7 +226,7 @@ function evalInstr(instr : ASTInstruction) : Action{
             if(!isASTParameters(instr.parameters)){
                 return {
                     alterationType : ActionType.replay,
-                    scope : evalTimeScope(instr.timeScope),
+                    scope : evalTimeScope(instr.timeScope, fileContent),
                     parameters : {
                         target : evalReplayTarget(instr.target)
                     }
@@ -239,7 +234,7 @@ function evalInstr(instr : ASTInstruction) : Action{
             }else{
                 return {
                     alterationType : ActionType.replay,
-                    scope : evalTimeScope(instr.timeScope),
+                    scope : evalTimeScope(instr.timeScope, fileContent),
                     parameters : {
                         target : evalReplayTarget(instr.target),
                         parameter : evalParameters(instr.parameters)
@@ -251,7 +246,7 @@ function evalInstr(instr : ASTInstruction) : Action{
     }else if(isASTDelay(instr)){
         return {
             alterationType : ActionType.timestamp,
-            scope : evalTimeScope(instr.timeScope),
+            scope : evalTimeScope(instr.timeScope, fileContent),
             parameters : {
                 target : evalTarget(instr.target),
                 parameter : [ evalDelayParameter(instr.delay) ]
@@ -260,7 +255,7 @@ function evalInstr(instr : ASTInstruction) : Action{
     }else if(isASTRotate(instr)){
         return {
             alterationType : ActionType.rotation,
-            scope : evalTimeScope(instr.timeScope),
+            scope : evalTimeScope(instr.timeScope, fileContent),
             parameters : {
                 target : evalTarget(instr.target),
                 parameter : [ evalRotateParameter(instr.angle) ]
@@ -269,7 +264,7 @@ function evalInstr(instr : ASTInstruction) : Action{
     }else {
         return {
             alterationType : ActionType.cut,
-            scope : evalTimeScope(instr.timeScope),
+            scope : evalTimeScope(instr.timeScope, fileContent),
             parameters : {
                 target : evalTarget(instr.target)
             }
@@ -277,12 +272,12 @@ function evalInstr(instr : ASTInstruction) : Action{
     }
 }
 
-function evalTimeScope(ts : ASTTimeScope) : Scope{
+function evalTimeScope(ts : ASTTimeScope,fileContent : string) : Scope{
     if(isASTAt(ts)) {
         return {
             type: "timeWindow",
             lowerBound: (parseInt(evalTime(ts.time) )* 1000).toString(),
-            upperBound: (parseInt(evalTime(ts.time))*1000 + VALEUR_TIME_DEFAULT).toString()
+            upperBound: (evalLastDate(parseInt(evalTime(ts.time)),fileContent)).toString()
 
         }
     }else if(isASTWindow(ts)){
@@ -639,21 +634,40 @@ function evalFrequency(hp : ASTHideParameter) : string {
 
 }
 
-function evalFirstDate(filename : string, extension : string){
+function evalFirstDate(fileContent : string){
     // Lire le fichier .sbs
-    const lines = fs.readFileSync("C:/Users/morga/Documents/Programmation/FDI-T-WEB/packages/server/temp/"+filename, 'utf-8').split('\n');
+    const lines = fileContent.split('\n');
 
 // Extraire la ligne contenant la date et l'heure
     const firstLine = lines[0];
     const parts = firstLine.split(',');
 
 // Convertir la date et l'heure en objet Date TypeScript
+
+    const date = new Date(parts[6].replaceAll('/','-')+"T"+parts[7]);
+
+    /*
     const dateParts = parts[6].split('/');
     const timeParts = parts[7].split(':');
     const date = new Date(parseInt(dateParts[0]), parseInt(dateParts[1]) - 1, parseInt(dateParts[2]), parseInt(timeParts[0]), parseInt(timeParts[1]), parseFloat(timeParts[2]));
-
+    */
 // Obtenir le timestamp à partir de l'objet Date
     const timestamp = date.getTime();
-    console.log(timestamp);
-    return timestamp/1000;
+    return timestamp;
+}
+
+function evalLastDate(atSeconds : number, fileContent : string){
+    // Lire le fichier .sbs
+    const lines = fileContent.split('\n');
+
+// Extraire la ligne contenant la date et l'heure
+    const lastLine = lines[lines.length-1];
+    const parts = lastLine.split(',');
+
+// Convertir la date et l'heure en objet Date TypeScript
+    const date = new Date(parts[6].replaceAll('/','-')+"T"+parts[7]);
+    const timestamp = date.getTime();
+
+    const timeRecording = timestamp - evalFirstDate(fileContent);
+    return timeRecording - (atSeconds*1000)
 }

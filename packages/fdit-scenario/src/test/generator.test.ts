@@ -7,20 +7,23 @@ import assert from "assert";
 
 describe("generatorTestMocha", () => {
     let services: LangiumServices | null=null;
+    let fileContent = "";
     beforeEach(() => {
+        fileContent="MSG,4,3,5022202,4CA1FA,5022202,2018/11/25,11:30:48.179,2018/11/25,11:30:48.179,,,474.53,295.86,,,0.0,,,,,";
         services = createFditscenarioServices(EmptyFileSystem).Fditscenario;
+
     })
     context('when scenario is no valid', () => {
         it('returns json with no action when content is empty', async () => {
             const scenario = extractAstNodeFromString<ASTScenario>("", services!);
-            assert.deepStrictEqual(generateCommands(await scenario,"zigzag.sbs"),
+            assert.deepStrictEqual(generateCommands(await scenario,"zigzag.sbs",fileContent),
                 {
                     "sensors": {
                         "sensor": [
                             {"action": [],
                                 "filter": "",
                                 "record": "zigzag.sbs",
-                                "firstDate": 1543141848,
+                                "firstDate": 1543141848179,
                                 "sID": "",
                                 "sensorType": "SBS"
                             }
@@ -32,14 +35,14 @@ describe("generatorTestMocha", () => {
 
         it('returns json with no action when content is false', async () => {
             const scenario = extractAstNodeFromString<ASTScenario>("edzvffd", services!);
-            assert.deepStrictEqual(generateCommands(await scenario,"zigzag.sbs"),
+            assert.deepStrictEqual(generateCommands(await scenario,"zigzag.sbs",fileContent),
                 {
                     "sensors": {
                         "sensor": [
                             {"action": [],
                                 "filter": "",
                                 "record": "zigzag.sbs",
-                                "firstDate": 1543141848,
+                                "firstDate": 1543141848179,
                                 "sID": "",
                                 "sensorType": "SBS"
                             }
@@ -53,7 +56,7 @@ describe("generatorTestMocha", () => {
     context('when scenario is valid', () => {
         it('returns json with action when content is hide all_planes from until', async () => {
             const scenario = extractAstNodeFromString<ASTScenario>("hide all_planes from 56 seconds until 90 seconds", services!);
-            assert.deepStrictEqual(generateCommands(await scenario,"zigzag.sbs"),
+            assert.deepStrictEqual(generateCommands(await scenario,"zigzag.sbs",fileContent),
                 {
                     "sensors": {
                         "sensor": [
@@ -61,7 +64,7 @@ describe("generatorTestMocha", () => {
                                 "sensorType": "SBS",
                                 "sID": "",
                                 "record": "zigzag.sbs",
-                                "firstDate": 1543141848,
+                                "firstDate": 1543141848179,
                                 "filter": "",
                                 "action": [
                                     {
@@ -88,7 +91,7 @@ describe("generatorTestMocha", () => {
 
         it('returns json with action when content is hide all_planes at ', async () => {
             const scenario = extractAstNodeFromString<ASTScenario>("hide all_planes at 67 seconds", services!);
-            assert.deepStrictEqual(generateCommands(await scenario,"zigzag.sbs"),
+            assert.deepStrictEqual(generateCommands(await scenario,"zigzag.sbs",fileContent),
                 {
                     "sensors": {
                         "sensor": [
@@ -96,7 +99,7 @@ describe("generatorTestMocha", () => {
                                 "sensorType": "SBS",
                                 "sID": "",
                                 "record": "zigzag.sbs",
-                                "firstDate": 1543141848,
+                                "firstDate": 1543141848179,
                                 "filter": "",
                                 "action": [
                                     {
@@ -104,7 +107,7 @@ describe("generatorTestMocha", () => {
                                         "scope": {
                                             "type": "timeWindow",
                                             "lowerBound": "67000",
-                                            "upperBound": "89000"
+                                            "upperBound": "-67000"
                                         },
                                         "parameters": {
                                             "target": {
@@ -123,7 +126,7 @@ describe("generatorTestMocha", () => {
 
         it('returns json with action when content is hide all_planes at for ', async () => {
             const scenario = extractAstNodeFromString<ASTScenario>("hide all_planes at 67 seconds for 89 seconds", services!);
-            assert.deepStrictEqual(generateCommands(await scenario,"zigzag.sbs"),
+            assert.deepStrictEqual(generateCommands(await scenario,"zigzag.sbs",fileContent),
                 {
                     "sensors": {
                         "sensor": [
@@ -131,7 +134,7 @@ describe("generatorTestMocha", () => {
                                 "sensorType": "SBS",
                                 "sID": "",
                                 "record": "zigzag.sbs",
-                                "firstDate": 1543141848,
+                                "firstDate": 1543141848179,
                                 "filter": "",
                                 "action": [
                                     {
@@ -158,7 +161,7 @@ describe("generatorTestMocha", () => {
 
         it('returns json with action when content is alter all_planes with_values 1', async () => {
             const scenario = extractAstNodeFromString<ASTScenario>("alter all_planes from 56 seconds until 90 seconds with_values ALTITUDE = 90000 and LATITUDE -= 456 and ICAO *= 900 and TRACK ++= 800", services!);
-            assert.deepStrictEqual(generateCommands(await scenario,"zigzag.sbs"),
+            assert.deepStrictEqual(generateCommands(await scenario,"zigzag.sbs",fileContent),
                 {
                     "sensors": {
                         "sensor": [
@@ -166,7 +169,7 @@ describe("generatorTestMocha", () => {
                                 "sensorType": "SBS",
                                 "sID": "",
                                 "record": "zigzag.sbs",
-                                "firstDate": 1543141848,
+                                "firstDate": 1543141848179,
                                 "filter": "",
                                 "action": [
                                     {
@@ -215,7 +218,7 @@ describe("generatorTestMocha", () => {
 
         it('returns json with action when content is alter all_planes with_values 2', async () => {
             const scenario = extractAstNodeFromString<ASTScenario>("alter all_planes from 56 seconds until 90 seconds with_values CALLSIGN = 90000 and EMERGENCY -= 456 and GROUNDSPEED *= 900 and LONGITUDE ++= 800 and SPI = 67 and SQUAWK = 78", services!);
-            assert.deepStrictEqual(generateCommands(await scenario,"zigzag.sbs"),
+            assert.deepStrictEqual(generateCommands(await scenario,"zigzag.sbs",fileContent),
                 {
                     "sensors": {
                         "sensor": [
@@ -223,7 +226,7 @@ describe("generatorTestMocha", () => {
                                 "sensorType": "SBS",
                                 "sID": "",
                                 "record": "zigzag.sbs",
-                                "firstDate": 1543141848,
+                                "firstDate": 1543141848179,
                                 "filter": "",
                                 "action": [
                                     {
@@ -282,7 +285,7 @@ describe("generatorTestMocha", () => {
 
         it('returns json with action when content is create with_waypoints with_values 1', async () => {
             const scenario = extractAstNodeFromString<ASTScenario>("create from 56 seconds until 89 seconds with_waypoints [(45,78) with_altitude 90000 at 78 seconds, (12,70) with_altitude 7000 at 99 seconds, (45,78) with_altitude 90000 at 78 seconds] with_values ICAO=6777", services!);
-            assert.deepStrictEqual(generateCommands(await scenario,"zigzag.sbs"),
+            assert.deepStrictEqual(generateCommands(await scenario,"zigzag.sbs",fileContent),
                 {
                     "sensors": {
                         "sensor": [
@@ -290,7 +293,7 @@ describe("generatorTestMocha", () => {
                                 "sensorType": "SBS",
                                 "sID": "",
                                 "record": "zigzag.sbs",
-                                "firstDate": 1543141848,
+                                "firstDate": 1543141848179,
                                 "filter": "",
                                 "action": [
                                     {
@@ -379,7 +382,7 @@ describe("generatorTestMocha", () => {
 
         it('returns json with action when content is create with_waypoints with_values 2 ', async () => {
             const scenario = extractAstNodeFromString<ASTScenario>("create from 56 seconds until 89 seconds with_waypoints [(45,78) with_altitude 90000 at 78 seconds, (12,70) with_altitude 7000 at 99 seconds] with_values ICAO = 8 and CALLSIGN = 44 and SQUAWK = 900 and EMERGENCY = 786 and ALERT = 56 and SPI = 1234", services!);
-            assert.deepStrictEqual(generateCommands(await scenario,"zigzag.sbs"),
+            assert.deepStrictEqual(generateCommands(await scenario,"zigzag.sbs",fileContent),
                 {
                     "sensors": {
                         "sensor": [
@@ -387,7 +390,7 @@ describe("generatorTestMocha", () => {
                                 "sensorType": "SBS",
                                 "sID": "",
                                 "record": "zigzag.sbs",
-                                "firstDate": 1543141848,
+                                "firstDate": 1543141848179,
                                 "filter": "",
                                 "action": [
                                     {
@@ -484,7 +487,7 @@ describe("generatorTestMocha", () => {
 
         it('returns json with action when content is alter all_planes with_waypoints with_values ', async () => {
             const scenario = extractAstNodeFromString<ASTScenario>("alter all_planes from 56 seconds until 90 seconds with_waypoints [(45,78) with_altitude 90000 at 78 seconds, (12,70) with_altitude 7000 at 99 seconds]", services!);
-            assert.deepStrictEqual(generateCommands(await scenario,"zigzag.sbs"),
+            assert.deepStrictEqual(generateCommands(await scenario,"zigzag.sbs",fileContent),
                 {
                     "sensors": {
                         "sensor": [
@@ -492,7 +495,7 @@ describe("generatorTestMocha", () => {
                                 "sensorType": "SBS",
                                 "sID": "",
                                 "record": "zigzag.sbs",
-                                "firstDate": 1543141848,
+                                "firstDate": 1543141848179,
                                 "filter": "",
                                 "action": [
                                     {
@@ -557,7 +560,7 @@ describe("generatorTestMocha", () => {
 
         it('returns json with action when content is alter_speed all_planes with_values ', async () => {
             const scenario = extractAstNodeFromString<ASTScenario>("alter_speed all_planes from 56 seconds until 90 seconds with_values EAST_WEST_VELOCITY = 78 and NORTH_SOUTH_VELOCITY = 45", services!);
-            assert.deepStrictEqual(generateCommands(await scenario,"zigzag.sbs"),
+            assert.deepStrictEqual(generateCommands(await scenario,"zigzag.sbs",fileContent),
                 {
                     "sensors": {
                         "sensor": [
@@ -565,7 +568,7 @@ describe("generatorTestMocha", () => {
                                 "sensorType": "SBS",
                                 "sID": "",
                                 "record": "zigzag.sbs",
-                                "firstDate": 1543141848,
+                                "firstDate": 1543141848179,
                                 "filter": "",
                                 "action": [
                                     {
@@ -604,7 +607,7 @@ describe("generatorTestMocha", () => {
 
         it('returns json with action when content is saturate all_planes with_values ', async () => {
             const scenario = extractAstNodeFromString<ASTScenario>("saturate all_planes from 56 seconds until 90 seconds with_values ICAO = 78 and NUMBER = 45", services!);
-            assert.deepStrictEqual(generateCommands(await scenario,"zigzag.sbs"),
+            assert.deepStrictEqual(generateCommands(await scenario,"zigzag.sbs",fileContent),
                 {
                     "sensors": {
                         "sensor": [
@@ -612,7 +615,7 @@ describe("generatorTestMocha", () => {
                                 "sensorType": "SBS",
                                 "sID": "",
                                 "record": "zigzag.sbs",
-                                "firstDate": 1543141848,
+                                "firstDate": 1543141848179,
                                 "filter": "",
                                 "action": [
                                     {
@@ -651,7 +654,7 @@ describe("generatorTestMocha", () => {
 
         it('returns json with action when content is replay all_planes from until ', async () => {
             const scenario = extractAstNodeFromString<ASTScenario>("replay all_planes from_recording 34 from 56 seconds until 90 seconds", services!);
-            assert.deepStrictEqual(generateCommands(await scenario,"zigzag.sbs"),
+            assert.deepStrictEqual(generateCommands(await scenario,"zigzag.sbs",fileContent),
                 {
                     "sensors": {
                         "sensor": [
@@ -659,7 +662,7 @@ describe("generatorTestMocha", () => {
                                 "sensorType": "SBS",
                                 "sID": "",
                                 "record": "zigzag.sbs",
-                                "firstDate": 1543141848,
+                                "firstDate": 1543141848179,
                                 "filter": "",
                                 "action": [
                                     {
@@ -686,7 +689,7 @@ describe("generatorTestMocha", () => {
 
         it('returns json with action when content is delay all_planes from until with_delay ', async () => {
             const scenario = extractAstNodeFromString<ASTScenario>("delay all_planes from 56 seconds until 90 seconds with_delay 55 seconds", services!);
-            assert.deepStrictEqual(generateCommands(await scenario,"zigzag.sbs"),
+            assert.deepStrictEqual(generateCommands(await scenario,"zigzag.sbs",fileContent),
                 {
                     "sensors": {
                         "sensor": [
@@ -694,7 +697,7 @@ describe("generatorTestMocha", () => {
                                 "sensorType": "SBS",
                                 "sID": "",
                                 "record": "zigzag.sbs",
-                                "firstDate": 1543141848,
+                                "firstDate": 1543141848179,
                                 "filter": "",
                                 "action": [
                                     {
@@ -727,7 +730,7 @@ describe("generatorTestMocha", () => {
 
         it('returns json with action when content is rotate all_planes from until with_angle ', async () => {
             const scenario = extractAstNodeFromString<ASTScenario>("rotate all_planes from 67 seconds until 99 seconds with_angle 90", services!);
-            assert.deepStrictEqual(generateCommands(await scenario,"zigzag.sbs"),
+            assert.deepStrictEqual(generateCommands(await scenario,"zigzag.sbs",fileContent),
                 {
                     "sensors": {
                         "sensor": [
@@ -735,7 +738,7 @@ describe("generatorTestMocha", () => {
                                 "sensorType": "SBS",
                                 "sID": "",
                                 "record": "zigzag.sbs",
-                                "firstDate": 1543141848,
+                                "firstDate": 1543141848179,
                                 "filter": "",
                                 "action": [
                                     {
@@ -769,7 +772,7 @@ describe("generatorTestMocha", () => {
 
         it('returns json with action when content is cut all_planes from until ', async () => {
             const scenario = extractAstNodeFromString<ASTScenario>("cut all_planes from 13 seconds until 88 seconds", services!);
-            assert.deepStrictEqual(generateCommands(await scenario,"zigzag.sbs"),
+            assert.deepStrictEqual(generateCommands(await scenario,"zigzag.sbs",fileContent),
                 {
                     "sensors": {
                         "sensor": [
@@ -777,7 +780,7 @@ describe("generatorTestMocha", () => {
                                 "sensorType": "SBS",
                                 "sID": "",
                                 "record": "zigzag.sbs",
-                                "firstDate": 1543141848,
+                                "firstDate": 1543141848179,
                                 "filter": "",
                                 "action": [
                                     {
@@ -804,7 +807,7 @@ describe("generatorTestMocha", () => {
 
         it('returns json with action when content is with declaration and cut all_planes from until ', async () => {
             const scenario = extractAstNodeFromString<ASTScenario>("let $test = [2,8], cut all_planes from 13 seconds until 88 seconds", services!);
-            assert.deepStrictEqual(generateCommands(await scenario,"zigzag.sbs"),
+            assert.deepStrictEqual(generateCommands(await scenario,"zigzag.sbs",fileContent),
                 {
                     "sensors": {
                         "sensor": [
@@ -812,7 +815,7 @@ describe("generatorTestMocha", () => {
                                 "sensorType": "SBS",
                                 "sID": "",
                                 "record": "zigzag.sbs",
-                                "firstDate": 1543141848,
+                                "firstDate": 1543141848179,
                                 "filter": "",
                                 "action": [
                                     {
@@ -839,7 +842,7 @@ describe("generatorTestMocha", () => {
 
         it('returns json with action when content is hide all_planes from until with_frequency ', async () => {
             const scenario = extractAstNodeFromString<ASTScenario>("hide all_planes from 56 seconds until 89 seconds with_frequency 89", services!);
-            assert.deepStrictEqual(generateCommands(await scenario,"zigzag.sbs"),
+            assert.deepStrictEqual(generateCommands(await scenario,"zigzag.sbs",fileContent),
                 {
                     "sensors": {
                         "sensor": [
@@ -847,7 +850,7 @@ describe("generatorTestMocha", () => {
                                 "sensorType": "SBS",
                                 "sID": "",
                                 "record": "zigzag.sbs",
-                                "firstDate": 1543141848,
+                                "firstDate": 1543141848179,
                                 "filter": "",
                                 "action": [
                                     {
@@ -880,7 +883,7 @@ describe("generatorTestMocha", () => {
 
         it('returns json with action when content is replay with_values offset, simple, noise and drift ', async () => {
             const scenario = extractAstNodeFromString<ASTScenario>("replay all_planes from_recording 34 from 56 seconds until 90 seconds with_values ALTITUDE = 90000 and LATITUDE -= 456 and ICAO *= 900 and TRACK ++= 800 and CALLSIGN --= 90000 and EMERGENCY += 456 and GROUNDSPEED *= 900 and LONGITUDE ++= 800 and SPI = 67 and SQUAWK = 78", services!);
-            assert.deepStrictEqual(generateCommands(await scenario,"zigzag.sbs"),
+            assert.deepStrictEqual(generateCommands(await scenario,"zigzag.sbs",fileContent),
                 {
                     "sensors": {
                         "sensor": [
@@ -888,7 +891,7 @@ describe("generatorTestMocha", () => {
                                 "sensorType": "SBS",
                                 "sID": "",
                                 "record": "zigzag.sbs",
-                                "firstDate": 1543141848,
+                                "firstDate": 1543141848179,
                                 "filter": "",
                                 "action": [
                                     {

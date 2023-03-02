@@ -17,7 +17,7 @@ export const generateAction = async (fileName: string, opts: GenerateOptions): P
     const scenario = await extractAstNode<ASTScenario>(fileName, services);
 
     // invoke generator to get commands
-    const cmds = generateCommands(scenario,"");
+    const cmds = generateCommands(scenario,"","");
 
     // handle file related functionality here now
     const data = extractDestinationAndName(fileName, opts.destination);

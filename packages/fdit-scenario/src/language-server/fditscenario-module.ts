@@ -72,7 +72,7 @@ class FditscenarioCommandHandler extends AbstractExecuteCommandHandler {
         // accept a single command called 'parseAndGenerate'
         acceptor('parseAndGenerate', args => {
             // invoke generator on this data, and return the response
-            return parseAndGenerate(args[0],args[1]);
+            return parseAndGenerate(args[0],args[1],args[2]);
         });
     }
 }

@@ -21,8 +21,10 @@ export default async function alterRecording(scenario: string, fileContent: stri
 
 
 export const generateJsonAndAlterate = (async (scenario : string, fileContent : string, fileName : string) : Promise<{error? : string} | undefined> => {
+
+    //fs.writeFileSync("temp/" + fileName, fileContent);
     console.info('generating & running current code...');
-    const scenarioJson = await parseAndGenerate(scenario,fileName);
+    const scenarioJson = await parseAndGenerate(scenario,fileName,fileContent);
     console.log("avant");
     /** Créé un fichier JSON du scenario envoyé **/
     if(scenarioJson == undefined){
@@ -30,7 +32,7 @@ export const generateJsonAndAlterate = (async (scenario : string, fileContent : 
     }else{
         fs.writeFileSync("temp/scenario.json",JSON.stringify(scenarioJson, null, 2));
     }
-    fs.writeFileSync("temp/" + fileName, fileContent);
+
 
     console.log("apres");
     executeAlterationJar(fileContent,fileName);
