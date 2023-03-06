@@ -104,7 +104,7 @@ enum ActionType {
 enum ParametreType {
     altitude = 'altitude',
     latitude = 'latitude',
-    icao = 'icao',
+    icao = 'hexIdent', // A
     track = 'track',
     callsign = 'callsign',
     emergency = 'emergency',
@@ -115,7 +115,7 @@ enum ParametreType {
 
 }
 enum CreationParametreType {
-    icao = 'icao',
+    icao = 'hexIdent',
     callsign = 'callsign',
     emergency = 'emergency',
     spi = 'SPI',

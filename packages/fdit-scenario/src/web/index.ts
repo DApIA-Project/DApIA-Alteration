@@ -36,12 +36,9 @@ export async function parseAndGenerate (fditscenrioProgram: string, fileName : s
         console.log(chalk.green(`Parsed and validated successfully!`));
     } else {
         console.log(chalk.red(`Failed to parse and validate !`));
-        return Promise.resolve(undefined);
+        return
     }
-
-
-    const cmds = generateCommands(scenario,fileName, fileContent);
-    return Promise.resolve(cmds);
+    return generateCommands(scenario,fileName, fileContent);
 }
 
  

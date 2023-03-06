@@ -198,7 +198,7 @@ describe("generatorTestMocha", () => {
                                                 },
                                                 {
                                                     "mode": "noise",
-                                                    "key": "icao",
+                                                    "key": "hexIdent",
                                                     "value": "900"
                                                 },
                                                 {
@@ -367,7 +367,7 @@ describe("generatorTestMocha", () => {
                                             "parameter": [
                                                 {
                                                     "mode": "simple",
-                                                    "key": "icao",
+                                                    "key": "hexIdent",
                                                     "value": "6777"
                                                 }
                                             ]
@@ -447,7 +447,7 @@ describe("generatorTestMocha", () => {
                                             "parameter": [
                                                 {
                                                     "mode": "simple",
-                                                    "key": "icao",
+                                                    "key": "hexIdent",
                                                     "value": "8"
                                                 },
                                                 {
@@ -920,7 +920,7 @@ describe("generatorTestMocha", () => {
                                                 },
                                                 {
                                                     "mode": "noise",
-                                                    "key": "icao",
+                                                    "key": "hexIdent",
                                                     "value": "900"
                                                 },
                                                 {
