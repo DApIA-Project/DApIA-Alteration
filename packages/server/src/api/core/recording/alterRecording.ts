@@ -26,6 +26,7 @@ export const generateJsonAndAlterate = (async (scenario: string, fileContent: st
     /** Créé un fichier JSON du scenario envoyé **/
     if (scenarioJson == undefined) {
         await fs.promises.writeFile("temp/scenario.json", JSON.stringify({}, null, 2));
+        return scenarioJson;
     } else {
         await fs.promises.writeFile("temp/scenario.json", JSON.stringify(scenarioJson, null, 2));
     }
