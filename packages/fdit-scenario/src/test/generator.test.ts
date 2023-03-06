@@ -307,18 +307,18 @@ describe("generatorTestMocha", () => {
                                         "parameters": {
                                             "target": {
                                                 "identifier": "hexIdent",
-                                                "value": ""
+                                                "value": "ALL"
                                             },
                                             "trajectory": {
                                                 "waypoint": [
                                                     {
                                                         "vertex": {
                                                             "lat": {
-                                                                "value": 45,
+                                                                "value": '45',
                                                                 "offset": false
                                                             },
                                                             "lon": {
-                                                                "value": 78,
+                                                                "value": '78',
                                                                 "offset": false
                                                             }
                                                         },
@@ -331,11 +331,11 @@ describe("generatorTestMocha", () => {
                                                     {
                                                         "vertex": {
                                                             "lat": {
-                                                                "value": 12,
+                                                                "value": '12',
                                                                 "offset": false
                                                             },
                                                             "lon": {
-                                                                "value": 70,
+                                                                "value": '70',
                                                                 "offset": false
                                                             }
                                                         },
@@ -348,11 +348,11 @@ describe("generatorTestMocha", () => {
                                                     {
                                                         "vertex": {
                                                             "lat": {
-                                                                "value": 45,
+                                                                "value": '45',
                                                                 "offset": false
                                                             },
                                                             "lon": {
-                                                                "value": 78,
+                                                                "value": '78',
                                                                 "offset": false
                                                             }
                                                         },
@@ -404,18 +404,18 @@ describe("generatorTestMocha", () => {
                                         "parameters": {
                                             "target": {
                                                 "identifier": "hexIdent",
-                                                "value": ""
+                                                "value": "ALL"
                                             },
                                             "trajectory": {
                                                 "waypoint": [
                                                     {
                                                         "vertex": {
                                                             "lat": {
-                                                                "value": 45,
+                                                                "value": '45',
                                                                 "offset": false
                                                             },
                                                             "lon": {
-                                                                "value": 78,
+                                                                "value": '78',
                                                                 "offset": false
                                                             }
                                                         },
@@ -428,11 +428,11 @@ describe("generatorTestMocha", () => {
                                                     {
                                                         "vertex": {
                                                             "lat": {
-                                                                "value": 12,
+                                                                "value": '12',
                                                                 "offset": false
                                                             },
                                                             "lon": {
-                                                                "value": 70,
+                                                                "value": '70',
                                                                 "offset": false
                                                             }
                                                         },
@@ -516,11 +516,11 @@ describe("generatorTestMocha", () => {
                                                     {
                                                         "vertex": {
                                                             "lat": {
-                                                                "value": 45,
+                                                                "value": '45',
                                                                 "offset": false
                                                             },
                                                             "lon": {
-                                                                "value": 78,
+                                                                "value": '78',
                                                                 "offset": false
                                                             }
                                                         },
@@ -533,11 +533,11 @@ describe("generatorTestMocha", () => {
                                                     {
                                                         "vertex": {
                                                             "lat": {
-                                                                "value": 12,
+                                                                "value": '12',
                                                                 "offset": false
                                                             },
                                                             "lon": {
-                                                                "value": 70,
+                                                                "value": '70',
                                                                 "offset": false
                                                             }
                                                         },

@@ -45,14 +45,21 @@ import {
     isASTDelay,
     ASTDelayParameter,
     isASTRotate,
-    ASTRotateParameter, isASTWindow, isASTParameter, isASTHideParameter, isASTParameters
+    ASTRotateParameter,
+    isASTWindow,
+    isASTParameter,
+    isASTHideParameter,
+    isASTParameters,
+    isASTCreationParameters,
+    isASTStringValue,
+    isASTVariableValue,
+    ASTStringValue,
+    ASTVariableValue,
+    ASTConstantValue,
+    isASTLeftShift,
+    ASTLeftShift, ASTRightShift, isASTDoubleValue, ASTRecordingParameterType
 } from "../language-server/generated/ast";
 import {Action, Altitude, Parameter, Parameters, Scope, Sensors, Target, Trajectory, Vertex, Waypoint} from "../types";
-
-
-
-const CHEMIN_TEMP_DIRECTORY_SERVER = "temp/";
-
 
 export function generateCommands(scenario: ASTScenario, fileName : string, fileContent : string): Parameters | undefined {
     return generateStatements(scenario, fileName, fileContent);
@@ -134,13 +141,14 @@ enum SaturationParametreType {
     aircraft_number = 'AIRCRAFT_NUMBER'
 }
 
+enum RecordingParametreType {
+    rec_duration = "REC_DURATION",
+    alt_duration = "ALT_DURATION",
+    rec_nbr_aircraft = "REC_NBR_AICRAFT"
+}
+
 function evalInstructions(instrs : ASTInstruction[], fileContent : string) : Action[]{
-    
-    return (instrs.flatMap(i => evalInstr(i, fileContent)).filter(i => i !== undefined) as Action[])
-
-    
-    
-
+    return (instrs.flatMap(i => evalInstr(i, fileContent)).filter(i => i !== undefined) as Action[]);
 }
 
 function evalInstr(instr : ASTInstruction, fileContent : string) : Action{
@@ -152,7 +160,6 @@ function evalInstr(instr : ASTInstruction, fileContent : string) : Action{
                 parameters: {
                     target: evalTarget(instr.target)
                 },
-
             }
         } else {
             return {
@@ -167,7 +174,6 @@ function evalInstr(instr : ASTInstruction, fileContent : string) : Action{
                         }
                     ]
                 },
-
             }
         }
     } else if(isASTAlter(instr)) {
@@ -177,21 +183,33 @@ function evalInstr(instr : ASTInstruction, fileContent : string) : Action{
             parameters: {
                 target : evalTarget(instr.target),
                 parameter : evalParameters(instr.parameters)
-
             },
-            
         }
     }else if(isASTCreate(instr)){
-        return {
-            alterationType : ActionType.creation,
-            scope : evalTimeScope(instr.timeScope, fileContent),
-            parameters: {
-                target : {
-                    identifier : "hexIdent",
-                    value : ""
-                },
-                trajectory : evalTrajectory(instr.trajectory),
-                parameter : evalCreationParameters(instr.parameters!)
+        if(!isASTCreationParameters(instr.parameters)){
+            return {
+                alterationType : ActionType.creation,
+                scope : evalTimeScope(instr.timeScope, fileContent),
+                parameters: {
+                    target : {
+                        identifier : "hexIdent",
+                        value : "ALL"
+                    },
+                    trajectory : evalTrajectory(instr.trajectory),
+                }
+            }
+        }else{
+            return {
+                alterationType : ActionType.creation,
+                scope : evalTimeScope(instr.timeScope, fileContent),
+                parameters: {
+                    target : {
+                        identifier : "hexIdent",
+                        value : "ALL"
+                    },
+                    trajectory : evalTrajectory(instr.trajectory),
+                    parameter : evalCreationParameters(instr.parameters)
+                }
             }
         }
     }else if(isASTTrajectory(instr)){
@@ -201,7 +219,6 @@ function evalInstr(instr : ASTInstruction, fileContent : string) : Action{
             parameters : {
                 target : evalTarget(instr.target),
                 trajectory : evalTrajectory(instr.trajectory),
-
             }
         }
     }else if(isASTAlterSpeed(instr)){
@@ -241,15 +258,13 @@ function evalInstr(instr : ASTInstruction, fileContent : string) : Action{
                     }
                 }
             }
-
-
     }else if(isASTDelay(instr)){
         return {
             alterationType : ActionType.timestamp,
             scope : evalTimeScope(instr.timeScope, fileContent),
             parameters : {
                 target : evalTarget(instr.target),
-                parameter : [ evalDelayParameter(instr.delay) ]
+                parameter :  evalDelayParameter(instr.delay)
             }
         }
     }else if(isASTRotate(instr)){
@@ -258,7 +273,7 @@ function evalInstr(instr : ASTInstruction, fileContent : string) : Action{
             scope : evalTimeScope(instr.timeScope, fileContent),
             parameters : {
                 target : evalTarget(instr.target),
-                parameter : [ evalRotateParameter(instr.angle) ]
+                parameter : evalRotateParameter(instr.angle)
             }
         }
     }else {
@@ -278,7 +293,6 @@ function evalTimeScope(ts : ASTTimeScope,fileContent : string) : Scope{
             type: "timeWindow",
             lowerBound: (parseInt(evalTime(ts.time) )* 1000).toString(),
             upperBound: (evalLastDate(parseInt(evalTime(ts.time)),fileContent)).toString()
-
         }
     }else if(isASTWindow(ts)){
         return {
@@ -300,21 +314,19 @@ function evalTimeScope(ts : ASTTimeScope,fileContent : string) : Scope{
 }
 
 function evalTime(t : ASTTime) : string {
-    if(isASTTime(t)){
-        return evalValue(t.realTime);
-    }
-    
-    return "0";
-    
-        
-    
+    return evalValue(t.realTime);
 }
 
 function evalValue(v : ASTValue) : string {
     if(isASTNumberOffset(v)){
         return evalNumberOffset(v);
+    }else if(isASTStringValue(v)){
+        return evalStringValue(v);
+    }else if(isASTVariableValue(v)){
+        return evalVariableValue(v);
+    }else{
+        return evalConstantValue(v);
     }
-    return "0";
     
         
     
@@ -323,21 +335,55 @@ function evalValue(v : ASTValue) : string {
 function evalNumberOffset(n : ASTNumberOffset) : string {
     if(isASTNumber(n)){
         return evalNumber(n);
+    } else if(isASTLeftShift(n)) {
+        return evalLeftShift(n);
+    } else {
+        return evalRightShift(n);
     }
-    return "0";
-    
-        
-    
+
 }
+
+function evalStringValue(n : ASTStringValue) : string {
+    return n.content;
+
+}
+
+function evalVariableValue(n : ASTVariableValue) : string {
+    return n.content;
+
+}
+function evalConstantValue(n : ASTConstantValue) : string {
+    return n.content;
+
+}
+
 
 function evalNumber(n : ASTNumber) : string {
     if(isASTIntegerValue(n)){
         return (n.content).toString();
+    }else if(isASTDoubleValue(n)){
+        return (n.content).toString();
+    }else{
+        return evalRecordingParameterType(n.content);
     }
-    return "0";
-    
-        
-    
+}
+
+function evalLeftShift(n : ASTLeftShift) : string {
+    return evalNumber(n.content);
+}
+
+function evalRightShift(n : ASTRightShift) : string {
+    return evalNumber(n.content);
+}
+
+function evalRecordingParameterType(n : ASTRecordingParameterType) : string{
+    if(n.REC_DURATION != undefined){
+        return RecordingParametreType.rec_duration;
+    }else if(n.ALT_DURATION != undefined){
+        return RecordingParametreType.alt_duration;
+    }else {
+        return RecordingParametreType.rec_nbr_aircraft;
+    }
 }
 
 function evalTarget(t : ASTTarget) : Target{
@@ -351,7 +397,7 @@ function evalTarget(t : ASTTarget) : Target{
     }else{
         return {
                     identifier : "hexIdent",
-                    value : "TEST"
+                    value : "random"
                 }
         ;
     }
@@ -369,7 +415,7 @@ function evalReplayTarget(t : ASTReplayTarget) : Target{
     }else{
         return {
             identifier : "hexIdent",
-            value : "TEST"
+            value : "random"
         }
             ;
     }
@@ -396,18 +442,18 @@ function evalOneWaypoint(wp : ASTWayPoint) : Waypoint{
     return {
         vertex : evalVertex(wp.latitude,wp.longitude),
         altitude : evalAltitude(wp.altitude),
-        time :( (wp.time.realTime.content) as number)*1000
+        time : parseInt(evalTime(wp.time))*1000
     }
 }
 
 function evalVertex(lat : ASTValue, long : ASTValue) : Vertex {
     return {
         lat :{
-            value: lat.content as string,
+            value: evalValue(lat),
             offset : false
         },
         lon :{
-            value: long.content as string,
+            value: evalValue(long),
             offset : false
         }
     }
@@ -435,12 +481,12 @@ function evalCreationParameter(pm : ASTCreationParameter[]) : Parameter[]{
 function evalOneCreationParameter(pm : ASTCreationParameter) : Parameter{
     return {
         mode : "simple",
-        key : evalCreationParametreType(pm.name),
-        value : (pm.value.content.toString().replace('"','')).replace('"','')
+        key : evalCreationParameterType(pm.name),
+        value : evalValue(pm.value)
     }
 }
 
-function evalCreationParametreType(pm : ASTCreationParameterType) : string | undefined{
+function evalCreationParameterType(pm : ASTCreationParameterType) : string | undefined{
     if(pm.ICAO != undefined){
         return CreationParametreType.icao;
     }else if(pm.CALLSIGN != undefined){
@@ -474,7 +520,7 @@ function evalOneSpeedParameter(pm : ASTSpeedParameter) : Parameter{
     return {
         mode : "simple",
         key : evalSpeedParametreType(pm.name),
-        value : (pm.value.content.toString().replace('"','')).replace('"','')
+        value : evalValue(pm.value)
     }
 }
 
@@ -505,7 +551,7 @@ function evalOneSaturationParameter(pm : ASTSaturationParameter) : Parameter{
     return {
         mode : "simple",
         number : evalSaturationParametreType(pm.name),
-        value : (pm.value.content.toString().replace('"','')).replace('"','')
+        value : evalValue(pm.value)
     }
 }
 
@@ -519,21 +565,21 @@ function evalSaturationParametreType(pm : ASTSaturationParameterType) : string |
 
 }
 
-function evalDelayParameter(pm : ASTDelayParameter) : Parameter{
-    return {
+function evalDelayParameter(pm : ASTDelayParameter) : Parameter[]{
+    return [{
         mode : "simple",
         value : (parseInt(evalTime(pm.value))*1000).toString()
 
-    }
+    }]
 }
 
-function evalRotateParameter(pm : ASTRotateParameter) : Parameter{
-    return {
+function evalRotateParameter(pm : ASTRotateParameter) : Parameter[]{
+    return [{
         mode : "simple",
         angle : "angle",
         value : evalValue(pm.value)
 
-    }
+    }]
 }
 function evalParameters(param : ASTParameters) : Parameter[]{
 
@@ -555,7 +601,7 @@ function evalOneParameter(pm : ASTParameter) : Parameter{
         return {
             mode : "simple",
             key : evalParametreType(pm.name),
-            value : (pm.value.content.toString().replace('"','')).replace('"',''),
+            value : evalValue(pm.value),
             
         }
     }else if(isASTParamOffset(pm)){
@@ -563,14 +609,14 @@ function evalOneParameter(pm : ASTParameter) : Parameter{
             return {
                 mode : "offset",
                 key : evalParametreType(pm.name),
-                value : "+"+(pm.value.content.toString().replace('"','')).replace('"',''),
+                value : "+"+evalValue(pm.value),
 
             }
         }else{
             return {
                 mode : "offset",
                 key : evalParametreType(pm.name),
-                value : "-"+(pm.value.content.toString().replace('"','')).replace('"',''),
+                value : "-"+evalValue(pm.value),
 
             }
         }
@@ -580,7 +626,7 @@ function evalOneParameter(pm : ASTParameter) : Parameter{
         return {
             mode : "noise",
             key : evalParametreType(pm.name),
-            value : (pm.value.content.toString().replace('"','')).replace('"',''),
+            value : evalValue(pm.value),
             
         }
     }else {
@@ -588,14 +634,14 @@ function evalOneParameter(pm : ASTParameter) : Parameter{
             return {
                 mode : "drift",
                 key : evalParametreType(pm.name),
-                value : "+"+(pm.value.content.toString().replace('"','')).replace('"',''),
+                value : "+"+evalValue(pm.value),
 
             }
         }else{
             return {
                 mode : "drift",
                 key : evalParametreType(pm.name),
-                value : "-"+(pm.value.content.toString().replace('"','')).replace('"',''),
+                value : "-"+evalValue(pm.value),
 
             }
         }
@@ -629,9 +675,7 @@ function evalParametreType(pm : ASTParameterType) : string | undefined{
     
 }
 function evalFrequency(hp : ASTHideParameter) : string {
-
-    return hp.value.content.toString();
-
+    return evalValue(hp.value);
 }
 
 function evalFirstDate(fileContent : string){
