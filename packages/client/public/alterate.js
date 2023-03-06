@@ -4,6 +4,9 @@ let fileName="";
 let fileContent = "";
 let textButtonDownload = 'Download Recording';
 async function sendData() {
+    removeButtonDownload();
+
+
     const test = document.getElementsByClassName('view-lines monaco-mouse-cursor-text');
     const value = test[0].innerText;
     const response = await fetch('http://localhost:3001/recording/alteration', {

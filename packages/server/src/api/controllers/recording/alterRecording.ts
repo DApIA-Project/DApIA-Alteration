@@ -16,6 +16,8 @@ const alterRecording: RequestHandler = async (req, res) => {
     if(response.error != null){
         return res.status(422).json({error: AlterRecordingError.invalidSyntax})
     }
+
+    await new Promise(resolve => setTimeout(resolve, 1000)); // Permet que l'enregistrement altere soit fini d'etre modifier (attente de 1 seconde)
     const data = await fs.promises.readFile('./temp/modified__'+fileName);
 
     res.status(200).json({reponse: response.alteredRecording, name_file: fileName, altered_content : data.toString()});

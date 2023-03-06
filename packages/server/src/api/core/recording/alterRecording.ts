@@ -25,9 +25,9 @@ export const generateJsonAndAlterate = (async (scenario : string, fileContent : 
     const scenarioJson = await parseAndGenerate(scenario,fileName,fileContent);
     /** Créé un fichier JSON du scenario envoyé **/
     if(scenarioJson == undefined){
-        fs.writeFileSync("temp/scenario.json",JSON.stringify({}, null, 2));
+        await fs.writeFileSync("temp/scenario.json",JSON.stringify({}, null, 2));
     }else{
-        fs.writeFileSync("temp/scenario.json",JSON.stringify(scenarioJson, null, 2));
+        await fs.writeFileSync("temp/scenario.json",JSON.stringify(scenarioJson, null, 2));
     }
     executeAlterationJar(fileContent,fileName);
     return Promise.resolve(scenarioJson);
