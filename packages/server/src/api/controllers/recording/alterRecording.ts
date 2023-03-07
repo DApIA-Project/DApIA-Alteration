@@ -19,6 +19,20 @@ const alterRecording: RequestHandler = async (req, res) => {
 
     const data = await fs.promises.readFile('./temp/modified__'+fileName);
 
+    fs.unlink("temp/modified__"+fileName,(err) =>{
+        if(err){
+            console.error(err);
+        }else{
+            console.log("Le fichier modified__"+fileName+" a été supprimé.");
+        }
+    })
+    fs.unlink("temp/scenario.json",(err) =>{
+        if(err){
+            console.error(err);
+        }else{
+            console.log("Le fichier scenario.json a été supprimé.");
+        }
+    })
     res.status(200).json({reponse: response.alteredRecording, name_file: fileName, altered_content : data.toString()});
 }
 

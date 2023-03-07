@@ -30,7 +30,18 @@ export const generateJsonAndAlterate = (async (scenario: string, fileContent: st
     } else {
         await fs.promises.writeFile("temp/scenario.json", JSON.stringify(scenarioJson, null, 2));
     }
+
+    await fs.promises.writeFile("temp/"+fileName,fileContent);
     executeAlterationJar(fileContent, fileName);
+
+    fs.unlink("temp/"+fileName,(err) =>{
+        if(err){
+            console.error(err);
+        }else{
+            console.log("Le fichier "+fileName+" a été supprimé.");
+        }
+    })
+
     return scenarioJson;
 
 });

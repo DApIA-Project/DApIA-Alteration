@@ -319,13 +319,13 @@ function evalTime(t : ASTTime) : string {
 
 function evalValue(v : ASTValue) : string {
     if(isASTNumberOffset(v)){
-        return evalNumberOffset(v);
+        return (evalNumberOffset(v).replace('"','')).replace('"','');
     }else if(isASTStringValue(v)){
-        return evalStringValue(v);
+        return (evalStringValue(v).replace('"','')).replace('"','');
     }else if(isASTVariableValue(v)){
-        return evalVariableValue(v);
+        return (evalVariableValue(v).replace('"','')).replace('"','');
     }else{
-        return evalConstantValue(v);
+        return (evalConstantValue(v).replace('"','')).replace('"','');
     }
     
         
