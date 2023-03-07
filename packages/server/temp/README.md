@@ -1,0 +1,1 @@
+Les fichiers temporaires sont mis ici et ensuite sont automatiquement supprimés.
