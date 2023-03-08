@@ -34,6 +34,7 @@ public class Parameter {
 
     private String value;
 
+    @JsonProperty("number")
     private int number = 0;
 
     private int frequency = 0;

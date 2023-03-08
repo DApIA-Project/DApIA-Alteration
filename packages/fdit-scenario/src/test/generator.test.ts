@@ -634,13 +634,13 @@ describe("generatorTestMocha", () => {
                                             "parameter": [
                                                 {
                                                     "mode": "simple",
-                                                    "number": "ICAO",
+                                                    "key": "ICAO",
                                                     "value": "78"
                                                 },
                                                 {
                                                     "mode": "simple",
-                                                    "number": "AIRCRAFT_NUMBER",
-                                                    "value": "45"
+                                                    "key": "AIRCRAFT_NUMBER",
+                                                    "number": "45"
                                                 }
                                             ]
                                         }
@@ -716,6 +716,7 @@ describe("generatorTestMocha", () => {
                                             "parameter": [
                                                 {
                                                     "mode": "simple",
+                                                    "key": "timestamp",
                                                     "value": "55000"
                                                 }
                                             ]
@@ -757,8 +758,8 @@ describe("generatorTestMocha", () => {
                                             "parameter": [
                                                 {
                                                     "mode": "simple",
-                                                    "angle": "angle",
-                                                    "value": "90"
+                                                    "key": "angle",
+                                                    "angle": "90"
                                                 }
                                             ]
                                         }

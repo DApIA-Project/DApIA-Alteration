@@ -7,6 +7,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlText;
 public class Lat {
 
     @JacksonXmlProperty(isAttribute = true)
+    @JsonProperty("offset")
     private Boolean offset;
 
     @JacksonXmlText()

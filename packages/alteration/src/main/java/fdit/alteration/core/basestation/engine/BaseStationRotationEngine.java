@@ -62,7 +62,8 @@ public class BaseStationRotationEngine extends BaseStationActionEngine {
 
     private void processAlteration(final BaseStationMessage message, final Action action) {
         final Collection<String> characteristics = newArrayList();
-        if (message instanceof LatitudeParameter && message instanceof LongitudeParameter) {
+        if (message instanceof LatitudeParameter && message instanceof LongitudeParameter &&
+                ((LatitudeParameter) message).getLatitude().isPresent() && ((LongitudeParameter) message).getLongitude().isPresent()) {
             final LatLon currentPos = fromDegrees(
                     ((LatitudeParameter) message).getLatitude().get(),
                     ((LongitudeParameter) message).getLongitude().get());

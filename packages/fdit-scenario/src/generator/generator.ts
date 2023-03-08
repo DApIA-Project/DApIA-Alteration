@@ -548,11 +548,20 @@ function evalSaturationParameter(pm : ASTSaturationParameter[]) : Parameter[]{
 }
 
 function evalOneSaturationParameter(pm : ASTSaturationParameter) : Parameter{
-    return {
-        mode : "simple",
-        number : evalSaturationParametreType(pm.name),
-        value : evalValue(pm.value)
+    if(evalSaturationParametreType(pm.name)=="ICAO"){
+        return {
+            mode : "simple",
+            key: evalSaturationParametreType(pm.name),
+            value : evalValue(pm.value)
+        }
+    }else{
+        return {
+            mode : "simple",
+            key: evalSaturationParametreType(pm.name),
+            number : evalValue(pm.value)
+        }
     }
+
 }
 
 function evalSaturationParametreType(pm : ASTSaturationParameterType) : string | undefined{
@@ -568,6 +577,7 @@ function evalSaturationParametreType(pm : ASTSaturationParameterType) : string |
 function evalDelayParameter(pm : ASTDelayParameter) : Parameter[]{
     return [{
         mode : "simple",
+        key : "timestamp",
         value : (parseInt(evalTime(pm.value))*1000).toString()
 
     }]
@@ -576,8 +586,8 @@ function evalDelayParameter(pm : ASTDelayParameter) : Parameter[]{
 function evalRotateParameter(pm : ASTRotateParameter) : Parameter[]{
     return [{
         mode : "simple",
-        angle : "angle",
-        value : evalValue(pm.value)
+        key : "angle",
+        angle : evalValue(pm.value)
 
     }]
 }
