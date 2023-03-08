@@ -28,7 +28,7 @@ h1 {
     display: flex;
     width: 40vw;
 }
-
+/*
 .build {
     display: block;
     margin: 8px auto;
@@ -49,7 +49,7 @@ h1 {
 .build:active {
     color: #fff;
     border-color: #fff;
-}
+}*/
 footer {
     text-align: center;
     color: #444;
@@ -89,3 +89,44 @@ footer {
     display: block;
     margin: 10px 45%;
 }
+
+.build {
+    all: unset;
+    display: block;
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 1%;
+    height: max-content;
+    width: 20%;
+    padding: 8px 10px 8px 12px;
+    gap: 20px;
+    border-radius: 8px;
+    color: rgba(255, 255, 255, 1);
+    background-color: rgba(255, 255, 255, 0.1);
+    box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
+    cursor: pointer;
+    transition-duration: 200ms;
+    text-align: center;
+
+}
+
+.build:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+input[type="file"]::file-selector-button {
+    /* Personnaliser le texte */
+    color: white;
+    border-radius: 6px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.1);
+    cursor: pointer;
+    transition-duration: 200ms;
+    width: 50%;
+
+}
+
+input[type="file"]::file-selector-button:hover {
+     /* Réutiliser les styles de survol de votre bouton */
+     background-color: rgba(255, 255, 255, 0.2);
+ }
