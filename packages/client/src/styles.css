@@ -130,3 +130,11 @@ input[type="file"]::file-selector-button:hover {
      /* Réutiliser les styles de survol de votre bouton */
      background-color: rgba(255, 255, 255, 0.2);
  }
+
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
