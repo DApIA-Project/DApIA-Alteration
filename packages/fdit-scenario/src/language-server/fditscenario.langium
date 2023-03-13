@@ -6,47 +6,44 @@ entry ASTScenario
 ;
 
 ASTList
-: ASTStringList
-    | ASTOffsetList
+: keyword=T_OPEN_BRACE (ASTStringList | ASTOffsetList)
 ;
 
 ASTStringList
-: keyword=T_OPEN_BRACE items+=T_STRING_LITERAL (keyword=T_COMMA items+=T_STRING_LITERAL)* keyword=T_CLOSE_BRACE
+: items+=T_STRING_LITERAL (keyword=T_COMMA items+=T_STRING_LITERAL)* keyword=T_CLOSE_BRACE
 ;
 
 ASTOffsetList
-: keyword=T_OPEN_BRACE items+=ASTNumberOffset (keyword=T_COMMA items+=ASTNumberOffset)* keyword=T_CLOSE_BRACE
+: items+=ASTNumberOffset (keyword=T_COMMA items+=ASTNumberOffset)* keyword=T_CLOSE_BRACE
 ;
 
 ASTRange
-: ASTIntegerRange |
-    ASTDoubleRange
+: keyword=T_OPEN_SBRACE (ASTIntegerRange | ASTDoubleRange)
 ;
 ASTIntegerRange
-: keyword=T_OPEN_SBRACE start=T_INTEGER_LITERAL keyword=T_COMMA end=T_INTEGER_LITERAL keyword=T_CLOSE_SBRACE
+: start=T_INTEGER_LITERAL keyword=T_COMMA end=T_INTEGER_LITERAL keyword=T_CLOSE_SBRACE
 ;
 ASTDoubleRange
-:  keyword=T_OPEN_SBRACE start=T_DOUBLE_LITERAL keyword=T_COMMA end=T_DOUBLE_LITERAL keyword=T_CLOSE_SBRACE
+: start=T_DOUBLE_LITERAL keyword=T_COMMA end=T_DOUBLE_LITERAL keyword=T_CLOSE_SBRACE
 ;
 
 ASTDeclaration
-: (ASTListDeclaration  | ASTRangeDeclaration) keyword=T_COMMA
+: keyword=T_LET constant=T_CONSTANT keyword=T_EQUAL (ASTListDeclaration  | ASTRangeDeclaration) keyword=T_COMMA
 ;
 
 ASTListDeclaration
-: keyword=T_LET constant=T_CONSTANT keyword=T_EQUAL list=ASTList
+: list=ASTList
 ;
 
 ASTRangeDeclaration
-: keyword=T_LET constant=T_CONSTANT keyword=T_EQUAL range=ASTRange
+: range=ASTRange
 
 ;
 
 ASTInstruction
 : ASTHide
     | ASTCreate
-    | ASTAlter 
-    | ASTTrajectory
+    | ASTAlterAndTrajectory
     | ASTAlterSpeed
     | ASTSaturate
     | ASTReplay
@@ -59,16 +56,20 @@ ASTHide
 : keyword=T_HIDE target=ASTTarget timeScope=ASTTimeScope trigger=ASTTrigger? frequency=ASTHideParameter? assertions=ASTAssertions?
 ;
 
+ASTAlterAndTrajectory
+: keyword=T_ALTER target=ASTTarget timeScope=ASTTimeScope trigger=ASTTrigger? (ASTAlter | ASTTrajectory)
+;
+
 ASTCreate
 : keyword=T_CREATE timeScope=ASTTimeScope trajectory=ASTWayPoints parameters=ASTCreationParameters? assertions=ASTAssertions?
 ;
 
 ASTAlter
-: keyword=T_ALTER target=ASTTarget timeScope=ASTTimeScope trigger=ASTTrigger? parameters=ASTParameters assertions=ASTAssertions?
+: parameters=ASTParameters assertions=ASTAssertions?
 ;
 
 ASTTrajectory
-: keyword=T_ALTER target=ASTTarget timeScope=ASTTimeScope trigger=ASTTrigger? trajectory=ASTWayPoints assertions=ASTAssertions?
+: trajectory=ASTWayPoints assertions=ASTAssertions?
 ;
 
 ASTAlterSpeed
@@ -154,26 +155,23 @@ ASTRotateParameter
 ;
 
 ASTParameter
-: ASTParamEdit
-    | ASTParamOffset
-    | ASTParamNoise
-    | ASTParamDrift
+: name=ASTParameterType (ASTParamEdit | ASTParamOffset | ASTParamNoise | ASTParamDrift) value=ASTValue
 ;
 
 ASTParamEdit
-: name=ASTParameterType keyword=T_EQUAL value=ASTValue
+:  keyword=T_EQUAL
 ;
 
 ASTParamOffset
-: name=ASTParameterType offset_op=(T_PLUSEQUAL|T_MINUSEQUAL) value=ASTValue
+:  offset_op=(T_PLUSEQUAL|T_MINUSEQUAL)
 ;
 
 ASTParamNoise
-: name=ASTParameterType keyword=T_MULEQUAL value=ASTValue
+:  keyword=T_MULEQUAL
 ;
 
 ASTParamDrift
-: name=ASTParameterType drift_op=(T_PLUSPLUSEQUAL|T_MINUSMINUSEQUAL) value=ASTValue
+:  drift_op=(T_PLUSPLUSEQUAL|T_MINUSMINUSEQUAL)
 ;
 
 ASTSpeedParameters
@@ -207,11 +205,11 @@ ASTTrigger
 ASTTimeScope
 : ASTAt
     | ASTWindow
-    | ASTAtFor
 ;
 
+
 ASTAt
-: keyword=T_AT time=ASTTime
+: keyword=T_AT time=ASTTime (for=ASTAtFor)?
 ;
 
 ASTWindow
@@ -219,7 +217,7 @@ ASTWindow
 ;
 
 ASTAtFor
-: keyword=T_AT time=ASTTime keyword=T_FOR for=ASTTime
+: keyword=T_FOR for=ASTTime
 ;
 
 ASTTime
@@ -247,7 +245,6 @@ ASTRightShift
 ASTNumber:
     ASTIntegerValue
     | ASTDoubleValue
-    | ASTRecordingValue
 ;
 
 ASTIntegerValue:
@@ -255,11 +252,11 @@ ASTIntegerValue:
 ;
 
 ASTDoubleValue:
-    content=T_DOUBLE_LITERAL
+    content=T_DOUBLE_LITERAL (record=ASTRecordingValue)?
 ;
 
 ASTRecordingValue:
-    ratio=T_DOUBLE_LITERAL keyword=T_MUL content=ASTRecordingParameterType
+    keyword=T_MUL content=ASTRecordingParameterType
 ;
 
 ASTValue

@@ -3,7 +3,7 @@
  * DO NOT EDIT MANUALLY!
  ******************************************************************************/
 
-import { LangiumGeneratedServices, LangiumGeneratedSharedServices, LangiumSharedServices, LangiumServices, LanguageMetaData, Module } from 'langium';
+import { LangiumGeneratedServices, LangiumGeneratedSharedServices, LangiumSharedServices, LangiumServices, LanguageMetaData, Module, IParserConfig } from 'langium';
 import { FditscenarioAstReflection } from './ast';
 import { AttackScenarioGrammarGrammar } from './grammar';
 
@@ -13,6 +13,10 @@ export const AttackScenarioGrammarLanguageMetaData: LanguageMetaData = {
     caseInsensitive: false
 };
 
+export const AttackScenarioGrammarParserConfig: IParserConfig = {
+    maxLookahead: 1,
+};
+
 export const FditscenarioGeneratedSharedModule: Module<LangiumSharedServices, LangiumGeneratedSharedServices> = {
     AstReflection: () => new FditscenarioAstReflection()
 };
@@ -20,5 +24,7 @@ export const FditscenarioGeneratedSharedModule: Module<LangiumSharedServices, La
 export const AttackScenarioGrammarGeneratedModule: Module<LangiumServices, LangiumGeneratedServices> = {
     Grammar: () => AttackScenarioGrammarGrammar(),
     LanguageMetaData: () => AttackScenarioGrammarLanguageMetaData,
-    parser: {}
+    parser: {
+        ParserConfig: () => AttackScenarioGrammarParserConfig
+    }
 };

@@ -57,7 +57,7 @@
         "copy:monaco-editor-wrapper": "npx shx cp -fr ./node_modules/monaco-editor-wrapper/bundle ../client/public/monaco/monaco-editor-wrapper",
         "copy:monaco-workers": "npx shx cp -fr ./node_modules/monaco-editor-workers/dist/ ../client/public/monaco/monaco-editor-workers",
         "copy:monaco-editor": "npx shx cp -fr ./node_modules/monaco-editor/ ../client/public/monaco/monaco-editor",
-        "build:web": "npm run build && npm run prepare:public && npm run build:worker && npm run copy:monaco-editor-wrapper && npm run copy:monaco-workers"
+        "build:web": "npm run build  && npm run build:worker && npm run copy:monaco-editor-wrapper && npm run copy:monaco-workers"
     },
     "dependencies": {
         "browser-fs-access": "^0.31.2",
@@ -68,7 +68,7 @@
         "esbuild": "0.16.14",
         "express": "^4.18.2",
         "fs": "^0.0.1-security",
-        "langium": "^1.0.1",
+        "langium": "^1.1.0",
         "monaco-editor-workers": "^0.34.2",
         "monaco-editor-wrapper": "^1.6.0",
         "monaco-languageclient": "^4.0.3",

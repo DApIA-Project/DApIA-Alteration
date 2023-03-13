@@ -4,6 +4,9 @@
         "id": "fditscenario",
         "grammar": "src/language-server/fditscenario.langium",
         "fileExtensions": [".fditscenario"],
+        "chevrotainParserConfig": {
+            "maxLookahead": 1
+        },
         "textMate": {
             "out": "syntaxes/fditscenario.tmLanguage.json"
         },

@@ -57,7 +57,13 @@ import {
     ASTVariableValue,
     ASTConstantValue,
     isASTLeftShift,
-    ASTLeftShift, ASTRightShift, isASTDoubleValue, ASTRecordingParameterType
+    ASTLeftShift,
+    ASTRightShift,
+    isASTDoubleValue,
+    ASTRecordingParameterType,
+    isASTAtFor,
+    isASTParamDrift,
+    isASTRecordingValue
 } from "../language-server/generated/ast";
 import {Action, Altitude, Parameter, Parameters, Scope, Sensors, Target, Trajectory, Vertex, Waypoint} from "../types";
 
@@ -289,24 +295,27 @@ function evalInstr(instr : ASTInstruction, fileContent : string) : Action{
 
 function evalTimeScope(ts : ASTTimeScope,fileContent : string) : Scope{
     if(isASTAt(ts)) {
-        return {
-            type: "timeWindow",
-            lowerBound: (parseInt(evalTime(ts.time) )* 1000).toString(),
-            upperBound: (evalLastDate(parseInt(evalTime(ts.time)),fileContent)).toString()
+        if(isASTAtFor(ts.for)){
+            return {
+                type : "timeWindow",
+                lowerBound : (parseInt(evalTime(ts.time))*1000).toString(),
+                upperBound : ((parseInt(evalTime(ts.time)) + parseInt(evalTime(ts.for.for))) * 1000).toString()
+            }
+        }else{
+            return {
+                type: "timeWindow",
+                lowerBound: (parseInt(evalTime(ts.time) )* 1000).toString(),
+                upperBound: (evalLastDate(parseInt(evalTime(ts.time)),fileContent)).toString()
+            }
         }
-    }else if(isASTWindow(ts)){
+
+    }else{
         return {
             type : "timeWindow",
             lowerBound : (parseInt(evalTime(ts.start))*1000).toString(),
             upperBound : (parseInt(evalTime(ts.end))*1000).toString()
         }
 
-    }else{
-        return {
-            type : "timeWindow",
-            lowerBound : (parseInt(evalTime(ts.time))*1000).toString(),
-            upperBound : ((parseInt(evalTime(ts.time)) + parseInt(evalTime(ts.for))) * 1000).toString()
-        }
     }
     
         
@@ -361,11 +370,14 @@ function evalConstantValue(n : ASTConstantValue) : string {
 function evalNumber(n : ASTNumber) : string {
     if(isASTIntegerValue(n)){
         return (n.content).toString();
-    }else if(isASTDoubleValue(n)){
-        return (n.content).toString();
-    }else{
-        return evalRecordingParameterType(n.content);
+    }else {
+        if (isASTRecordingValue(n.record)) {
+            return evalRecordingParameterType(n.record.content);
+        } else {
+            return (n.content).toString();
+        }
     }
+
 }
 
 function evalLeftShift(n : ASTLeftShift) : string {
@@ -640,21 +652,23 @@ function evalOneParameter(pm : ASTParameter) : Parameter{
             
         }
     }else {
-        if(pm.drift_op=="++="){
-            return {
-                mode : "drift",
-                key : evalParametreType(pm.name),
-                value : "+"+evalValue(pm.value),
+        if(isASTParamDrift(pm)){
+            if(pm.drift_op=="++="){
+                return {
+                    mode : "drift",
+                    key : evalParametreType(pm.name),
+                    value : "+"+evalValue(pm.value),
 
-            }
-        }else{
-            return {
-                mode : "drift",
-                key : evalParametreType(pm.name),
-                value : "-"+evalValue(pm.value),
-
+                }
             }
         }
+        return {
+            mode : "drift",
+            key : evalParametreType(pm.name),
+            value : "-"+evalValue(pm.value),
+
+        }
+
 
     }
 }
