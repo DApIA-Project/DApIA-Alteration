@@ -1,12 +1,12 @@
 // Monarch syntax highlighting for the fditscenario language.
 export default {
     keywords: [
-        'ALERT','all_planes','ALT_DURATION','alter','alter_speed','ALTITUDE','and','assert','at','CALLSIGN','create','cut','delay','EAST_WEST_VELOCITY','EMERGENCY','filter','for','from','from_recording','groovy_file','GROUNDSPEED','hide','ICAO','LATITUDE','let','LONGITUDE','NORTH_SOUTH_VELOCITY','NUMBER','plane','REC_DURATION','REC_NBR_AIRCRAFT','replay','rotate','satisfying','saturate','seconds','SPI','SQUAWK','TRACK','triggered_by','until','with_altitude','with_angle','with_delay','with_frequency','with_values','with_waypoints'
+        'ALERT','ALTITUDE','ALT_DURATION','CALLSIGN','EAST_WEST_VELOCITY','EMERGENCY','GROUNDSPEED','ICAO','LATITUDE','LONGITUDE','NORTH_SOUTH_VELOCITY','NUMBER','REC_DURATION','REC_NBR_AIRCRAFT','SPI','SQUAWK','TRACK','all_planes','alter','alter_speed','and','assert','at','create','cut','delay','filter','for','from','from_recording','groovy_file','hide','let','plane','replay','rotate','satisfying','saturate','seconds','triggered_by','until','with_altitude','with_angle','with_delay','with_frequency','with_values','with_waypoints'
     ],
     operators: [
-        '--=','-=',',','*','*=','++=','+=','<<','=','>>'
+        '*','*=','++=','+=',',','--=','-=','<<','=','>>'
     ],
-    symbols:  /--=|-=|,|\(|\)|\[|\]|\{|\}|\*|\*=|\+\+=|\+=|<<|=|>>/,
+    symbols:  /\(|\)|\*|\*=|\+\+=|\+=|,|--=|-=|<<|=|>>|\[|\]|\{|\}/,
 
     tokenizer: {
         initial: [

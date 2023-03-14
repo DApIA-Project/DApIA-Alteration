@@ -6,7 +6,7 @@ entry ASTScenario
 ;
 
 ASTList
-: keyword=T_OPEN_BRACE (ASTStringList | ASTOffsetList)
+: keyword=T_OPEN_BRACE list=(ASTStringList | ASTOffsetList)
 ;
 
 ASTStringList
@@ -18,7 +18,7 @@ ASTOffsetList
 ;
 
 ASTRange
-: keyword=T_OPEN_SBRACE (ASTIntegerRange | ASTDoubleRange)
+: keyword=T_OPEN_SBRACE range=(ASTIntegerRange | ASTDoubleRange)
 ;
 ASTIntegerRange
 : start=T_INTEGER_LITERAL keyword=T_COMMA end=T_INTEGER_LITERAL keyword=T_CLOSE_SBRACE

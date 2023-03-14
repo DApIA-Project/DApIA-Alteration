@@ -5,7 +5,9 @@
         "grammar": "src/language-server/fditscenario.langium",
         "fileExtensions": [".fditscenario"],
         "chevrotainParserConfig": {
-            "maxLookahead": 1
+            "maxLookahead": 1,
+            "recoveryEnabled": true,
+            "nodeLocationTracking": "full"
         },
         "textMate": {
             "out": "syntaxes/fditscenario.tmLanguage.json"
