@@ -2,6 +2,8 @@
 
 let fileName="";
 let fileContent = "";
+let fileName2="";
+let fileContent2 = "";
 let textButtonDownload = 'Download Recording';
 async function sendData() {
     removeButtonDownload();
@@ -18,6 +20,8 @@ async function sendData() {
         scenario: value,
         fileContent : fileContent,
         fileName : fileName,
+        fileContent2 : fileContent2,
+        fileName2 : fileName2,
       })
     });
     const data = await response.json();
@@ -67,6 +71,9 @@ function updateCanvasError(error) {
 
 const inputElement = document.getElementById("myfile");
 inputElement.addEventListener("change", handleFiles, false);
+
+const inputElement2 = document.getElementById("myfile2");
+inputElement2.addEventListener("change", handleFiles2, false);
 function handleFiles() {
     const fileList = this.files;
     const file = fileList[0];
@@ -76,6 +83,18 @@ function handleFiles() {
         console.log(reader.result);
         fileName=file.name;
         fileContent= reader.result;
+    };
+}
+
+function handleFiles2() {
+    const fileList = this.files;
+    const file = fileList[0];
+    const reader = new FileReader();
+    reader.readAsText(file);
+    reader.onload = function() {
+        console.log(reader.result);
+        fileName2=file.name;
+        fileContent2= reader.result;
     };
 }
 

@@ -28,7 +28,7 @@ describe(`POST ${ApiRoutes.alteration()}`, () => {
         async function assertBlankScenario(scenario?: string) {
             const response = await request(server)
                 .post(ApiRoutes.alteration())
-                .send({scenario, fileContent: 'MSG,4,3,5022202,4CA1FA,5022202,2018/11/25,11:30:48.179,2018/11/25,11:30:48.179,,,474.53,295.86,,,0.0,,,,,',fileName : 'myfile.sbs'})
+                .send({scenario, fileContent: 'MSG,4,3,5022202,4CA1FA,5022202,2018/11/25,11:30:48.179,2018/11/25,11:30:48.179,,,474.53,295.86,,,0.0,,,,,',fileName : 'myfile.sbs',fileContent2 : '', fileName2 :''})
                 .expect(422)
 
             const {error, alteredRecording} = response.body
@@ -55,7 +55,7 @@ describe(`POST ${ApiRoutes.alteration()}`, () => {
         async function assertBlankFileContent(fileContent?: string) {
             const response = await request(server)
                 .post(ApiRoutes.alteration())
-                .send({scenario: 'hide all_planes at 0 seconds', fileContent,fileName : 'myfile.sbs'})
+                .send({scenario: 'hide all_planes at 0 seconds', fileContent,fileName : 'myfile.sbs',fileContent2 : '', fileName2 :''})
                 .expect(422)
 
             const {error, alteredRecording} = response.body
@@ -89,7 +89,7 @@ describe(`POST ${ApiRoutes.alteration()}`, () => {
         async function assertBlankFileName(fileName?: string) {
             const response = await request(server)
                 .post(ApiRoutes.alteration())
-                .send({scenario: 'hide all_planes at 0 seconds', fileContent: 'MSG,4,3,5022202,4CA1FA,5022202,2018/11/25,11:30:48.179,2018/11/25,11:30:48.179,,,474.53,295.86,,,0.0,,,,,',fileName})
+                .send({scenario: 'hide all_planes at 0 seconds', fileContent: 'MSG,4,3,5022202,4CA1FA,5022202,2018/11/25,11:30:48.179,2018/11/25,11:30:48.179,,,474.53,295.86,,,0.0,,,,,',fileName,fileContent2 : '', fileName2 :''})
                 .expect(422)
 
             const {error, alteredRecording} = response.body
@@ -101,7 +101,7 @@ describe(`POST ${ApiRoutes.alteration()}`, () => {
         async function assertNoValidExtensionFile(fileName: string) {
             const response = await request(server)
                 .post(ApiRoutes.alteration())
-                .send({scenario: 'hide all_planes at 0 seconds', fileContent: 'MSG,4,3,5022202,4CA1FA,5022202,2018/11/25,11:30:48.179,2018/11/25,11:30:48.179,,,474.53,295.86,,,0.0,,,,,',fileName})
+                .send({scenario: 'hide all_planes at 0 seconds', fileContent: 'MSG,4,3,5022202,4CA1FA,5022202,2018/11/25,11:30:48.179,2018/11/25,11:30:48.179,,,474.53,295.86,,,0.0,,,,,',fileName,fileContent2 : '', fileName2 :''})
                 .expect(422)
 
             const {error, alteredRecording} = response.body

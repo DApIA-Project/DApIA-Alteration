@@ -18,6 +18,7 @@ public class Parameters {
     @JsonProperty("parameter")
     private Collection<Parameter> parameterList = newArrayList();
 
+    @JsonProperty("recordPath")
     private String recordPath;
 
     @JsonProperty("trajectory")

@@ -247,19 +247,24 @@ function evalInstr(instr : ASTInstruction, fileContent : string) : Action{
         }
     }else if(isASTReplay(instr)){
             if(!isASTParameters(instr.parameters)){
-                return {
-                    alterationType : ActionType.replay,
-                    scope : evalTimeScope(instr.timeScope, fileContent),
-                    parameters : {
-                        target : evalReplayTarget(instr.target)
+
+                    return {
+                        alterationType : ActionType.replay,
+                        scope : evalTimeScope(instr.timeScope, fileContent),
+                        parameters : {
+                            target : evalReplayTarget(instr.target),
+                            recordPath : "temp/"+evalValue(instr.target.recording)
+                        }
                     }
-                }
+
+
             }else{
                 return {
                     alterationType : ActionType.replay,
                     scope : evalTimeScope(instr.timeScope, fileContent),
                     parameters : {
                         target : evalReplayTarget(instr.target),
+                        recordPath : "temp/"+evalValue(instr.target.recording),
                         parameter : evalParameters(instr.parameters)
                     }
                 }
@@ -729,7 +734,10 @@ function evalLastDate(atSeconds : number, fileContent : string){
     const lines = fileContent.split('\n');
 
 // Extraire la ligne contenant la date et l'heure
-    const lastLine = lines[lines.length-1];
+    let lastLine = lines[lines.length - 1];
+    if(lastLine==''){
+        lastLine = lines[lines.length-2];
+    }
     const parts = lastLine.split(',');
 
 // Convertir la date et l'heure en objet Date TypeScript
@@ -737,5 +745,7 @@ function evalLastDate(atSeconds : number, fileContent : string){
     const timestamp = Date.parse(parts[6]+','+parts[7]+ ' GMT');
 
     const timeRecording = timestamp - evalFirstDate(fileContent);
+
     return timeRecording - (atSeconds*1000)
 }
+

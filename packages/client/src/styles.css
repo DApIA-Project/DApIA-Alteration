@@ -87,7 +87,12 @@ footer {
 
 #myfile {
     display: block;
-    margin: 10px 45%;
+    margin: 10px;
+}
+
+#myfile2 {
+    display: block;
+    margin: 10px;
 }
 
 .build {
@@ -136,5 +141,15 @@ input[type="file"]::file-selector-button:hover {
     display: flex;
     align-items: center;
     justify-content: center;
+    text-align: center;
+}
+
+#input_files_record {
+    display: block ruby;
+    text-align: center;
+}
+
+#input_files_record2 {
+    display: block ruby;
     text-align: center;
 }

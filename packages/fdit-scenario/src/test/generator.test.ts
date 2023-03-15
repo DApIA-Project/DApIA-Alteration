@@ -654,7 +654,7 @@ describe("generatorTestMocha", () => {
         })
 
         it('returns json with action when content is replay all_planes from until ', async () => {
-            const scenario = extractAstNodeFromString<ASTScenario>("replay all_planes from_recording 34 from 56 seconds until 90 seconds", services!);
+            const scenario = extractAstNodeFromString<ASTScenario>("replay all_planes from_recording \"34.sbs\" from 56 seconds until 90 seconds", services!);
             assert.deepStrictEqual(generateCommands(await scenario,"zigzag.sbs",fileContent),
                 {
                     "sensors": {
@@ -677,7 +677,8 @@ describe("generatorTestMocha", () => {
                                             "target": {
                                                 "identifier": "hexIdent",
                                                 "value": "ALL"
-                                            }
+                                            },
+                                            "recordPath": "temp/34.sbs"
                                         }
                                     }
                                 ]
@@ -884,7 +885,7 @@ describe("generatorTestMocha", () => {
         })
 
         it('returns json with action when content is replay with_values offset, simple, noise and drift ', async () => {
-            const scenario = extractAstNodeFromString<ASTScenario>("replay all_planes from_recording 34 from 56 seconds until 90 seconds with_values ALTITUDE = 90000 and LATITUDE -= 456 and ICAO *= 900 and TRACK ++= 800 and CALLSIGN --= 90000 and EMERGENCY += 456 and GROUNDSPEED *= 900 and LONGITUDE ++= 800 and SPI = 67 and SQUAWK = 78", services!);
+            const scenario = extractAstNodeFromString<ASTScenario>("replay all_planes from_recording \"34.sbs\" from 56 seconds until 90 seconds with_values ALTITUDE = 90000 and LATITUDE -= 456 and ICAO *= 900 and TRACK ++= 800 and CALLSIGN --= 90000 and EMERGENCY += 456 and GROUNDSPEED *= 900 and LONGITUDE ++= 800 and SPI = 67 and SQUAWK = 78", services!);
             assert.deepStrictEqual(generateCommands(await scenario,"zigzag.sbs",fileContent),
                 {
                     "sensors": {
@@ -908,6 +909,7 @@ describe("generatorTestMocha", () => {
                                                 "identifier": "hexIdent",
                                                 "value": "ALL"
                                             },
+                                            "recordPath": "temp/34.sbs",
                                             "parameter": [
                                                 {
                                                     "mode": "simple",
