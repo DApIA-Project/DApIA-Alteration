@@ -5,6 +5,8 @@ import { createFditscenarioServices } from '../language-server/fditscenario-modu
 import { ASTScenario } from "../language-server/generated/ast";
 import { generateCommands } from '../generator/generator';
 import chalk from "chalk";
+import {generateVariables} from "../generator/generator_variables";
+import {Declaration, Declarations} from "../types_variables";
 /**
  * Extracts an AST node from a virtual document, represented as a string
  * @param content Content to create virtual document from
@@ -28,18 +30,75 @@ import chalk from "chalk";
 export async function parseAndGenerate (fditscenrioProgram: string, fileName : string, fileContent : string): Promise<{} | undefined> {
     const services = createFditscenarioServices(EmptyFileSystem).Fditscenario;
     const scenario = await extractAstNodeFromString<ASTScenario>(fditscenrioProgram, services);
+    console.log(scenario);
     const document = services.shared.workspace.LangiumDocumentFactory.fromString(fditscenrioProgram, URI.parse('memory://fditscenario.document'));
     const parseResult = document.parseResult;
     // verify no lexer, parser, or general diagnostic errors show up
-    if (parseResult.lexerErrors.length === 0 && 
+    if (parseResult.lexerErrors.length === 0 &&
+        parseResult.parserErrors.length === 0) {
+        console.log(chalk.green(`Parsed and validated successfully!`));
+    } else {
+        console.log(chalk.red(`Failed to parse and validate !`));
+        return
+    }
+
+    return generateCommands(scenario, fileName, fileContent);
+
+}
+
+export async function get_variables (fditscenrioProgram: string): Promise<Declarations | undefined> {
+    const services = createFditscenarioServices(EmptyFileSystem).Fditscenario;
+    const scenario = await extractAstNodeFromString<ASTScenario>(fditscenrioProgram, services);
+    console.log(scenario);
+    const document = services.shared.workspace.LangiumDocumentFactory.fromString(fditscenrioProgram, URI.parse('memory://fditscenario.document'));
+    const parseResult = document.parseResult;
+    // verify no lexer, parser, or general diagnostic errors show up
+    if (parseResult.lexerErrors.length === 0 &&
         parseResult.parserErrors.length === 0 ) {
         console.log(chalk.green(`Parsed and validated successfully!`));
     } else {
         console.log(chalk.red(`Failed to parse and validate !`));
         return
     }
-    return generateCommands(scenario,fileName, fileContent);
+
+    const variables : Declarations |undefined = generateVariables(scenario);
+    if(variables != undefined){
+        return variables;
+    }else{
+        return undefined
+    }
 }
 
- 
-  
+
+export function countScenarioNumber(fditscenrioProgram: string, declaration : Declaration): number  {
+
+    const regex = new RegExp(`${declaration.variable.toString().replace('$', '\\$')}\\b`, 'g');
+
+    const matches = fditscenrioProgram.match(regex);
+    console.log(matches);
+    if(declaration.values_range != undefined){
+        return matches ? (matches.length-1)*4 : 0;
+    } else if (declaration.values_list != undefined){
+        return matches ? (matches.length-1)*declaration.values_list.length : 0;
+    }
+    return 0;
+
+}
+
+export function createAllScenario(scenario : string, declarations : Declarations) : string[] {
+    //En fonction des variables utilisés (le nombre de fois quelles sont utilisés, le nombre de valeurs possibles par variable
+    return [];
+}
+
+
+function replaceNthOccurrence(text: string, searchWord: string, replaceWord: string, n: number): string {
+    let count = 0;
+    return text.replace(new RegExp(searchWord, 'g'), (match: string) => {
+        count++;
+        if (count === n) {
+            return replaceWord;
+        } else {
+            return match;
+        }
+    });
+}
