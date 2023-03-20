@@ -39,7 +39,41 @@ export const generateJsonAndAlterate = (async (scenario: string, fileContent: st
             nb_scenario = nb_scenario * await countScenarioNumber(scenario, variablesJson.declarations[i]);
         }
         console.log("NOMBRE DE SCENARIO : "+ nb_scenario);
-        const liste_scenario : string[] = createAllScenario(scenario,variablesJson);
+        const liste_scenario : string[] = createAllScenario(scenario,variablesJson,nb_scenario);
+        console.log(liste_scenario);
+
+        for(let i=0; i< liste_scenario.length;i++){
+            let index_filename = fileName.indexOf(".");
+            let newfileName = fileName.substring(0,index_filename)+"_"+i+fileName.substring(index_filename);
+            const scenarioJson = await parseAndGenerate(liste_scenario[i], newfileName, fileContent);
+            /** Créé un fichier JSON du scenario envoyé **/
+            if (scenarioJson == undefined) {
+                await fs.promises.writeFile("temp/scenario_"+i+".json", JSON.stringify({}, null, 2));
+                return scenarioJson;
+            } else {
+                await fs.promises.writeFile("temp/scenario_"+i+".json", JSON.stringify(scenarioJson, null, 2));
+            }
+
+            await fs.promises.writeFile("temp/"+newfileName,fileContent);
+            if(fileName2 != ''){
+                let index_filename2 = fileName2.indexOf(".");
+                let newfileName2 = fileName2.substring(0,index_filename2)+"_"+i+fileName2.substring(index_filename2);
+                await fs.promises.writeFile("temp/"+newfileName2,fileContent2);
+            }
+            console.log(scenarioJson);
+
+            executeAlterationJar(fileContent, newfileName,"temp/scenario_"+i+".json");
+
+            /*fs.unlink("temp/"+fileName+"_"+i,(err) =>{
+                if(err){
+                    console.error(err);
+                }else{
+                    console.log("Le fichier "+fileName+"_"+i+" a été supprimé.");
+                }
+            })*/
+        }
+
+        return undefined;
     }
 
 
@@ -57,7 +91,7 @@ export const generateJsonAndAlterate = (async (scenario: string, fileContent: st
         await fs.promises.writeFile("temp/"+fileName2,fileContent2);
     }
 
-    executeAlterationJar(fileContent, fileName);
+    executeAlterationJar(fileContent, fileName,"temp/scenario.json");
 
     fs.unlink("temp/"+fileName,(err) =>{
         if(err){
@@ -71,8 +105,8 @@ export const generateJsonAndAlterate = (async (scenario: string, fileContent: st
 });
 
 
-function executeAlterationJar(fileContent: string, fileName: string): void {
+function executeAlterationJar(fileContent: string, fileName: string, path_scenario : string): void {
 
-    execSync("java -jar ../alteration/out/artifacts/alteration_atc_jar/alteration-atc.jar temp/scenario.json " + fileName);
+    execSync("java -jar ../alteration/out/artifacts/alteration_atc_jar/alteration-atc.jar " +path_scenario+ " " + fileName);
 
 }

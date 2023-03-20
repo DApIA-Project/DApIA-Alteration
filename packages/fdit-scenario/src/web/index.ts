@@ -77,18 +77,89 @@ export function countScenarioNumber(fditscenrioProgram: string, declaration : De
     const matches = fditscenrioProgram.match(regex);
     console.log(matches);
     if(declaration.values_range != undefined){
-        return matches ? (matches.length-1)*4 : 0;
+        return matches ? (matches.length-1)*4 : 0;//SUREMENT A REMODIFIER
     } else if (declaration.values_list != undefined){
-        return matches ? (matches.length-1)*declaration.values_list.length : 0;
+        return matches ? Math.pow(declaration.values_list.length,matches.length-1) : 0;
     }
     return 0;
 
 }
 
-export function createAllScenario(scenario : string, declarations : Declarations) : string[] {
+export function createAllScenario(scenario : string, declarations : Declarations, nb_scenario : number) : string[] {
+    let list_scenarios : string[] = [];
     //En fonction des variables utilisés (le nombre de fois quelles sont utilisés, le nombre de valeurs possibles par variable
-    return [];
+    let variables = new Map<string,(number|string)[]>([]);
+    for(let i=0; i<declarations.declarations.length;i++){
+        variables.set(declarations.declarations[i].variable,declarations.declarations[i].values_list!)
+    }
+    let number_use_variable = 0;
+
+
+    let scenario_without_decls = scenario.replace(/^(let\s.*,\s*)*/,"");
+    console.log(scenario_without_decls);
+
+    let regex_var_str="";
+    let index = 0;
+    for(let one_var of variables.keys()){
+        if(index==0){
+            regex_var_str=regex_var_str+one_var;
+            index++;
+        }else{
+            regex_var_str=regex_var_str+"|"+one_var;
+        }
+    }
+    console.log(regex_var_str);
+    const regex_var = new RegExp(`${regex_var_str.toString().replaceAll('$', '\\$')}`, 'g');
+    console.log(regex_var);
+    const matches_var = scenario_without_decls.match(regex_var);
+    console.log(matches_var);
+
+    let variables_uses = new Map<string,(number|string)[]>([]);
+    for(let i=0;i<matches_var!.length;i++){
+            variables_uses.set(matches_var![i]+"_"+i,variables.get(matches_var![i])!);
+
+    }
+
+    console.log(variables_uses);
+
+    let map_to_tab = [];
+    for(let value of variables_uses.values()){
+        map_to_tab.push(value);
+    }
+
+    let tab_combinaison = recursePermutation(map_to_tab);
+    let one_scenario = ""
+    for(let i=0 ; i<nb_scenario;i++){
+        one_scenario = scenario_without_decls;
+        for(let j=0; j<matches_var!.length;j++){
+            one_scenario = one_scenario.replace(matches_var![j],tab_combinaison[i][j].toString())
+        }
+        list_scenarios.push(one_scenario);
+    }
+
+    console.log(tab_combinaison);
+    console.log(list_scenarios);
+    console.log("Nombre var utilise : "+number_use_variable);
+
+    return list_scenarios;
 }
+
+function recursePermutation(arr: (string| number)[][]): (string| number)[][] {
+    // si le tableau ne contient qu'un seul sous-tableau, renvoyer simplement ce sous-tableau
+    if (arr.length === 1) {
+        return arr[0].map(val => [val]);
+    }
+
+    // sinon, prendre le premier sous-tableau et calculer toutes les permutations du reste du tableau
+    const subperms : (string| number)[][] = recursePermutation(arr.slice(1));
+
+    // itérer sur les valeurs du premier sous-tableau et les combiner avec toutes les permutations du reste du tableau
+    return arr[0].reduce((acc: (string| number)[][], val: (string|number)) => {
+        return acc.concat(subperms.map(subarr => [val, ...subarr]));
+    }, []);
+}
+
+
 
 
 function replaceNthOccurrence(text: string, searchWord: string, replaceWord: string, n: number): string {
