@@ -4,7 +4,7 @@ let fileName="";
 let fileContent = "";
 let fileName2="";
 let fileContent2 = "";
-let textButtonDownload = 'Download Recording';
+let textSendData = 'Show JSON';
 async function sendData() {
     removeButtonDownload();
 
@@ -41,15 +41,31 @@ function updateCanvas(data) {
         //Zone json
         zone_json.innerHTML=JSON.stringify(str_to_json, null, 2);
         //Bouton téléchargement recording
-        const {downloadButton, link, url} = createButtonDownload(data);
+        if(data.name_file.length == 1){
+            const {downloadButton, link, url} = createButtonDownload(data);
 
-        //Ecouteur bouton téléchargement recording
-        downloadButton.addEventListener('click', async () => {
-            link.click();
-            URL.revokeObjectURL(url);
-            document.body.removeChild(link);
-            removeButtonDownload();
-        })
+            //Ecouteur bouton téléchargement recording
+            downloadButton.addEventListener('click', async () => {
+                link.click();
+                URL.revokeObjectURL(url);
+                document.body.removeChild(link);
+                removeButtonDownload();
+            })
+        }else{
+            for(let i=0;i<data.name_file.length;i++){
+                const {downloadButton, link, url} = createButtonDownloadMany(data.name_file[i],data.altered_content[i]);
+
+                //Ecouteur bouton téléchargement recording
+                downloadButton.addEventListener('click', async () => {
+                    link.click();
+                    URL.revokeObjectURL(url);
+                    document.body.removeChild(link);
+                    removeButtonDownload();
+                })
+            }
+
+        }
+
     }else{
         zone_json.innerHTML="Erreur de syntaxe detecte !";
     }
@@ -105,7 +121,7 @@ function removeButtonDownload(){
     buttons.forEach(button => {
 
         // Vérifie si le texte du bouton correspond à celui souhaité
-        if (button.innerText === textButtonDownload) {
+        if (button.innerText !== textSendData) {
             // Supprime le bouton de la page
             button.remove();
         }
@@ -115,7 +131,7 @@ function removeButtonDownload(){
 function createButtonDownload(data) {
     const buttons_zone = document.getElementById("buttons_zone");
     const downloadButton = document.createElement('button');
-    downloadButton.innerText = textButtonDownload;
+    downloadButton.innerText = data.name_file[0];
     downloadButton.className = 'build';
     console.log(data.altered_content[0]);
     const fileAlteredContent = data.altered_content[0];
@@ -124,6 +140,23 @@ function createButtonDownload(data) {
     const link = document.createElement("a");
     link.href = fileUrl;
     link.download = data.name_file[0];
+    document.body.appendChild(link);
+    buttons_zone.appendChild(downloadButton);
+    return {downloadButton: downloadButton, link: link, url: fileUrl};
+}
+
+function createButtonDownloadMany(fileName, fileContent) {
+    const buttons_zone = document.getElementById("download_zone");
+    const downloadButton = document.createElement('button');
+    downloadButton.innerText = fileName;
+    downloadButton.className = 'build';
+    console.log(fileContent);
+    const fileAlteredContent = fileContent;
+    const fileBlob = new Blob([fileAlteredContent], {type : "text/plain"});
+    const fileUrl = URL.createObjectURL(fileBlob);
+    const link = document.createElement("a");
+    link.href = fileUrl;
+    link.download = fileName;
     document.body.appendChild(link);
     buttons_zone.appendChild(downloadButton);
     return {downloadButton: downloadButton, link: link, url: fileUrl};
