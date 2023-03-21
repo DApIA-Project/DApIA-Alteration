@@ -28,13 +28,30 @@ const alterRecording: RequestHandler = async (req, res) => {
         return res.status(422).json({error: AlterRecordingError.invalidSyntax})
     }
 
-    const data = await fs.promises.readFile('./temp/modified__'+fileName);
+    let modified_file_name : string[] = response.filesToRemove!.filter((str: string) => str.startsWith("modified__"));
+    let list_content_modified  = [];
+    for(let i=0;i<modified_file_name.length;i++){
+        const data = await fs.promises.readFile('./temp/'+modified_file_name[i]);
+        list_content_modified.push( data.toString());
+    }
 
-    fs.unlink("temp/modified__"+fileName,(err) =>{
+
+
+    for(let i=0; i<response.filesToRemove!.length;i++){
+        fs.unlink("temp/"+response.filesToRemove![i],(err) => {
+            if(err){
+                console.error(err);
+            }else{
+                console.log("Le fichier "+response.filesToRemove![i]+" a été supprimé.");
+            }
+        })
+    }
+    /**
+    fs.unlink("temp/modified__"+response.newfileName,(err) =>{
         if(err){
             console.error(err);
         }else{
-            console.log("Le fichier modified__"+fileName+" a été supprimé.");
+            console.log("Le fichier modified__"+response.newfileName+" a été supprimé.");
         }
     })
     fs.unlink("temp/scenario.json",(err) =>{
@@ -53,9 +70,9 @@ const alterRecording: RequestHandler = async (req, res) => {
                 console.log("Le fichier "+ fileName2 +" a été supprimé.");
             }
         })
-    }
-
-    res.status(200).json({reponse: response.alteredRecording, name_file: fileName, altered_content : data.toString()});
+    }**/
+    console.log(list_content_modified);
+    res.status(200).json({reponse: response.alteredRecording, name_file: modified_file_name, altered_content : list_content_modified});
 }
 
 function isBlank(str: string | undefined) {

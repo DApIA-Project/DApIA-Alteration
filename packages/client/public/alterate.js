@@ -25,7 +25,7 @@ async function sendData() {
       })
     });
     const data = await response.json();
-    if(data.error != undefined){
+    if(data.error !== undefined){
         updateCanvasError(data.error);
     }else{
         updateCanvas(data);
@@ -112,18 +112,20 @@ function removeButtonDownload(){
     });
 }
 
-function createButtonDownload(data){
+function createButtonDownload(data) {
     const buttons_zone = document.getElementById("buttons_zone");
     const downloadButton = document.createElement('button');
     downloadButton.innerText = textButtonDownload;
     downloadButton.className = 'build';
-    const fileAlteredContent = data.altered_content;
+    console.log(data.altered_content[0]);
+    const fileAlteredContent = data.altered_content[0];
     const fileBlob = new Blob([fileAlteredContent], {type : "text/plain"});
     const fileUrl = URL.createObjectURL(fileBlob);
     const link = document.createElement("a");
     link.href = fileUrl;
-    link.download = "modified__"+data.name_file;
+    link.download = data.name_file[0];
     document.body.appendChild(link);
     buttons_zone.appendChild(downloadButton);
     return {downloadButton: downloadButton, link: link, url: fileUrl};
 }
+

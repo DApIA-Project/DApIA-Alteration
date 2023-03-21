@@ -25,12 +25,11 @@ import {Declaration, Declarations} from "../types_variables";
 /**
  * Parses a MiniLogo program & generates output as a list of Objects
  * @param fditscenarioProgram fditscenario program to parse
- * @returns Generated output from this MiniLogo program
+ * @returns Generated output from this FDIT program
  */
 export async function parseAndGenerate (fditscenrioProgram: string, fileName : string, fileContent : string): Promise<{} | undefined> {
     const services = createFditscenarioServices(EmptyFileSystem).Fditscenario;
     const scenario = await extractAstNodeFromString<ASTScenario>(fditscenrioProgram, services);
-    console.log(scenario);
     const document = services.shared.workspace.LangiumDocumentFactory.fromString(fditscenrioProgram, URI.parse('memory://fditscenario.document'));
     const parseResult = document.parseResult;
     // verify no lexer, parser, or general diagnostic errors show up
@@ -46,10 +45,15 @@ export async function parseAndGenerate (fditscenrioProgram: string, fileName : s
 
 }
 
+/**
+ * Get variables from Scenario
+ * @param fditscenarioProgram fditscenario program to parse
+ * @returns Generated output from this FDIT program
+ */
 export async function get_variables (fditscenrioProgram: string): Promise<Declarations | undefined> {
     const services = createFditscenarioServices(EmptyFileSystem).Fditscenario;
     const scenario = await extractAstNodeFromString<ASTScenario>(fditscenrioProgram, services);
-    console.log(scenario);
+
     const document = services.shared.workspace.LangiumDocumentFactory.fromString(fditscenrioProgram, URI.parse('memory://fditscenario.document'));
     const parseResult = document.parseResult;
     // verify no lexer, parser, or general diagnostic errors show up
@@ -69,15 +73,24 @@ export async function get_variables (fditscenrioProgram: string): Promise<Declar
     }
 }
 
-
-export function countScenarioNumber(fditscenrioProgram: string, declaration : Declaration): number  {
+/**
+ * Count the number of scenario
+ * @param fditscenarioProgram fditscenario program to parse
+ * @param declaration Declaration type of variables
+ * @returns number of possible scenario
+ */
+export function countScenarioNumber(fditscenarioProgram: string, declaration : Declaration): number  {
 
     const regex = new RegExp(`${declaration.variable.toString().replace('$', '\\$')}\\b`, 'g');
+    const matches = fditscenarioProgram.match(regex);
 
-    const matches = fditscenrioProgram.match(regex);
-    console.log(matches);
+    /** Calcul du nombre de scénario pour une variable déclarée
+     *  Si range alors on prend les deux valeurs donc on retourne 2^(nb_utilisation_var)
+     *  Si liste alors on prend le nombre de valeurs qu'il y a donc on retourne nb_values^(nb_utilisation_var)
+     *  Sinon on retourne 0 (cas impossible) //Remodifier le code
+     **/
     if(declaration.values_range != undefined){
-        return matches ? (matches.length-1)*4 : 0;//SUREMENT A REMODIFIER
+        return matches ? Math.pow(2,matches.length-1) : 0;
     } else if (declaration.values_list != undefined){
         return matches ? Math.pow(declaration.values_list.length,matches.length-1) : 0;
     }
@@ -85,19 +98,28 @@ export function countScenarioNumber(fditscenrioProgram: string, declaration : De
 
 }
 
+/**
+ * Creation of all scenario
+ * @param scenario fditscenario program to parse
+ * @param declaration Declaration type of variables
+ * @param nb_scenario Number of scnenario
+ * @returns Array of string (all scenario)
+ */
 export function createAllScenario(scenario : string, declarations : Declarations, nb_scenario : number) : string[] {
     let list_scenarios : string[] = [];
-    //En fonction des variables utilisés (le nombre de fois quelles sont utilisés, le nombre de valeurs possibles par variable
+
+    /** Copie des variables dans une map de variable "nom_variable -> [values]" **/
     let variables = new Map<string,(number|string)[]>([]);
     for(let i=0; i<declarations.declarations.length;i++){
-        variables.set(declarations.declarations[i].variable,declarations.declarations[i].values_list!)
+        if(declarations.declarations[i].values_range != undefined){
+            variables.set(declarations.declarations[i].variable,declarations.declarations[i].values_range!)
+        }else if (declarations.declarations[i].values_list != undefined){
+            variables.set(declarations.declarations[i].variable,declarations.declarations[i].values_list!)
+        }
     }
-    let number_use_variable = 0;
 
-
+    /** Recuperation des utilisations des variables dans le scenario avec ordre exact des utilisations **/
     let scenario_without_decls = scenario.replace(/^(let\s.*,\s*)*/,"");
-    console.log(scenario_without_decls);
-
     let regex_var_str="";
     let index = 0;
     for(let one_var of variables.keys()){
@@ -108,26 +130,23 @@ export function createAllScenario(scenario : string, declarations : Declarations
             regex_var_str=regex_var_str+"|"+one_var;
         }
     }
-    console.log(regex_var_str);
     const regex_var = new RegExp(`${regex_var_str.toString().replaceAll('$', '\\$')}`, 'g');
-    console.log(regex_var);
     const matches_var = scenario_without_decls.match(regex_var);
-    console.log(matches_var);
 
+    /** Creation des variables en doublons qui sont utilisés plusieurs fois. Renommage nomvariable_i **/
     let variables_uses = new Map<string,(number|string)[]>([]);
     for(let i=0;i<matches_var!.length;i++){
             variables_uses.set(matches_var![i]+"_"+i,variables.get(matches_var![i])!);
-
     }
 
-    console.log(variables_uses);
-
+    /** Creation de tous les melanges de variables possibles **/
     let map_to_tab = [];
     for(let value of variables_uses.values()){
         map_to_tab.push(value);
     }
-
     let tab_combinaison = recursePermutation(map_to_tab);
+
+    /** Creation de tous les scenarios en focntion des mélanges de variables **/
     let one_scenario = ""
     for(let i=0 ; i<nb_scenario;i++){
         one_scenario = scenario_without_decls;
@@ -137,39 +156,25 @@ export function createAllScenario(scenario : string, declarations : Declarations
         list_scenarios.push(one_scenario);
     }
 
-    console.log(tab_combinaison);
-    console.log(list_scenarios);
-    console.log("Nombre var utilise : "+number_use_variable);
-
     return list_scenarios;
 }
 
+/**
+ * Recursive function who create all combinaison of array possible with many array
+ * @param arr Array of array of string or number (variables values possibles)
+ * @returns Array of array of string or number with values mixed
+ */
 function recursePermutation(arr: (string| number)[][]): (string| number)[][] {
-    // si le tableau ne contient qu'un seul sous-tableau, renvoyer simplement ce sous-tableau
+    /** Si le tableau ne contient qu'un seul sous-tableau, renvoyer simplement ce sous-tableau **/
     if (arr.length === 1) {
         return arr[0].map(val => [val]);
     }
 
-    // sinon, prendre le premier sous-tableau et calculer toutes les permutations du reste du tableau
+    /** Sinon, prendre le premier sous-tableau et calculer toutes les permutations du reste du tableau **/
     const subperms : (string| number)[][] = recursePermutation(arr.slice(1));
 
-    // itérer sur les valeurs du premier sous-tableau et les combiner avec toutes les permutations du reste du tableau
+    /** Itérer sur les valeurs du premier sous-tableau et les combiner avec toutes les permutations du reste du tableau **/
     return arr[0].reduce((acc: (string| number)[][], val: (string|number)) => {
         return acc.concat(subperms.map(subarr => [val, ...subarr]));
     }, []);
-}
-
-
-
-
-function replaceNthOccurrence(text: string, searchWord: string, replaceWord: string, n: number): string {
-    let count = 0;
-    return text.replace(new RegExp(searchWord, 'g'), (match: string) => {
-        count++;
-        if (count === n) {
-            return replaceWord;
-        } else {
-            return match;
-        }
-    });
 }

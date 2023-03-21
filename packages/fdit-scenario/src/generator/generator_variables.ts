@@ -29,8 +29,7 @@ enum RecordingParametreType {
 }
 
 export function generateVariables(scenario: ASTScenario): Declarations | undefined {
-    console.log(scenario);
-    console.log(scenario.declarations.length);
+
     return generateStatements(scenario);
 }
 
@@ -49,7 +48,6 @@ function evalDeclarations(decls : ASTDeclaration[]) : Declaration[] {
 function evalDecl(decl : ASTDeclaration) : Declaration | undefined {
 
     if(isASTRangeDeclaration(decl)){
-        console.log(decl.constant);
         return {
             variable : decl.constant,
             values_range : evalRangeDeclaration(decl),
