@@ -381,10 +381,10 @@ terminal fragment T_VARIABLE_BEGIN : '#';
 
 terminal T_CONSTANT : T_CONSTANT_BEGIN IDENTIFIER;
 terminal T_VARIABLE : T_VARIABLE_BEGIN IDENTIFIER;
-
+terminal T_DOUBLE_LITERAL returns number : (('-'? '1'..'9' '0'..'9'*) | '0') '.' '0'..'9' '0'..'9'*;
 terminal T_INTEGER_LITERAL returns number : (('-'?) '1'..'9' '0'..'9'*) | '0';
 
-terminal T_DOUBLE_LITERAL returns number : (('-'? '1'..'9' '0'..'9'*) | '0') '.' '0'..'9' '0'..'9'*;
+
 
 terminal T_STRING_LITERAL
 :  '"' ( ESCAPE_SEQUENCE | !('\\'|'"') )* '"'

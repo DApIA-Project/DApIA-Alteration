@@ -305,7 +305,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar => loadedAttackScenarioG
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@140"
+                "$ref": "#/rules@141"
               },
               "arguments": []
             }
@@ -329,7 +329,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar => loadedAttackScenarioG
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@140"
+                "$ref": "#/rules@141"
               },
               "arguments": []
             }
@@ -368,7 +368,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar => loadedAttackScenarioG
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@141"
+                "$ref": "#/rules@140"
               },
               "arguments": []
             }
@@ -392,7 +392,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar => loadedAttackScenarioG
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@141"
+                "$ref": "#/rules@140"
               },
               "arguments": []
             }
@@ -3292,7 +3292,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar => loadedAttackScenarioG
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@140"
+            "$ref": "#/rules@141"
           },
           "arguments": []
         }
@@ -3317,7 +3317,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar => loadedAttackScenarioG
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@141"
+                "$ref": "#/rules@140"
               },
               "arguments": []
             }
@@ -4838,64 +4838,6 @@ export const AttackScenarioGrammarGrammar = (): Grammar => loadedAttackScenarioG
     },
     {
       "$type": "TerminalRule",
-      "name": "T_INTEGER_LITERAL",
-      "type": {
-        "$type": "ReturnType",
-        "name": "number"
-      },
-      "definition": {
-        "$type": "TerminalAlternatives",
-        "elements": [
-          {
-            "$type": "TerminalGroup",
-            "elements": [
-              {
-                "$type": "CharacterRange",
-                "left": {
-                  "$type": "Keyword",
-                  "value": "-"
-                },
-                "cardinality": "?"
-              },
-              {
-                "$type": "CharacterRange",
-                "left": {
-                  "$type": "Keyword",
-                  "value": "1"
-                },
-                "right": {
-                  "$type": "Keyword",
-                  "value": "9"
-                }
-              },
-              {
-                "$type": "CharacterRange",
-                "left": {
-                  "$type": "Keyword",
-                  "value": "0"
-                },
-                "right": {
-                  "$type": "Keyword",
-                  "value": "9"
-                },
-                "cardinality": "*"
-              }
-            ]
-          },
-          {
-            "$type": "CharacterRange",
-            "left": {
-              "$type": "Keyword",
-              "value": "0"
-            }
-          }
-        ]
-      },
-      "fragment": false,
-      "hidden": false
-    },
-    {
-      "$type": "TerminalRule",
       "name": "T_DOUBLE_LITERAL",
       "type": {
         "$type": "ReturnType",
@@ -4981,6 +4923,64 @@ export const AttackScenarioGrammarGrammar = (): Grammar => loadedAttackScenarioG
               "value": "9"
             },
             "cardinality": "*"
+          }
+        ]
+      },
+      "fragment": false,
+      "hidden": false
+    },
+    {
+      "$type": "TerminalRule",
+      "name": "T_INTEGER_LITERAL",
+      "type": {
+        "$type": "ReturnType",
+        "name": "number"
+      },
+      "definition": {
+        "$type": "TerminalAlternatives",
+        "elements": [
+          {
+            "$type": "TerminalGroup",
+            "elements": [
+              {
+                "$type": "CharacterRange",
+                "left": {
+                  "$type": "Keyword",
+                  "value": "-"
+                },
+                "cardinality": "?"
+              },
+              {
+                "$type": "CharacterRange",
+                "left": {
+                  "$type": "Keyword",
+                  "value": "1"
+                },
+                "right": {
+                  "$type": "Keyword",
+                  "value": "9"
+                }
+              },
+              {
+                "$type": "CharacterRange",
+                "left": {
+                  "$type": "Keyword",
+                  "value": "0"
+                },
+                "right": {
+                  "$type": "Keyword",
+                  "value": "9"
+                },
+                "cardinality": "*"
+              }
+            ]
+          },
+          {
+            "$type": "CharacterRange",
+            "left": {
+              "$type": "Keyword",
+              "value": "0"
+            }
           }
         ]
       },
