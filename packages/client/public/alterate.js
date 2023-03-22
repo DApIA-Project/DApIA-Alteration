@@ -7,6 +7,7 @@ let fileContent2 = "";
 let textSendData = 'Show JSON';
 async function sendData() {
     removeButtonDownload();
+    removeImageDownload()
 
 
     const test = document.getElementsByClassName('view-lines monaco-mouse-cursor-text');
@@ -40,32 +41,14 @@ function updateCanvas(data) {
     if(data.reponse !== undefined){
         //Zone json
         zone_json.innerHTML=JSON.stringify(str_to_json, null, 2);
-        //Bouton téléchargement recording
-        if(data.name_file.length == 1){
-            const {downloadButton, link, url} = createButtonDownload(data);
+        for(let i=0;i<data.name_file.length;i++){
+            const {figure, link, url} = createImageDownloadMany(data.name_file[i],data.altered_content[i]);
 
             //Ecouteur bouton téléchargement recording
-            downloadButton.addEventListener('click', async () => {
+            figure.addEventListener('click', async () => {
                 link.click();
-                URL.revokeObjectURL(url);
-                document.body.removeChild(link);
-                removeButtonDownload();
             })
-        }else{
-            for(let i=0;i<data.name_file.length;i++){
-                const {downloadButton, link, url} = createButtonDownloadMany(data.name_file[i],data.altered_content[i]);
-
-                //Ecouteur bouton téléchargement recording
-                downloadButton.addEventListener('click', async () => {
-                    link.click();
-                    URL.revokeObjectURL(url);
-                    document.body.removeChild(link);
-                    removeButtonDownload();
-                })
-            }
-
         }
-
     }else{
         zone_json.innerHTML="Erreur de syntaxe detecte !";
     }
@@ -128,6 +111,21 @@ function removeButtonDownload(){
     });
 }
 
+function removeImageDownload(){
+    const figures = document.querySelectorAll('figure');
+
+    // Parcourt la liste des figures
+    figures.forEach(figure => {
+            figure.remove();
+    });
+
+    const as = document.querySelectorAll('a');
+    as.forEach(a => {
+        a.remove();
+    });
+
+}
+
 function createButtonDownload(data) {
     const buttons_zone = document.getElementById("buttons_zone");
     const downloadButton = document.createElement('button');
@@ -145,11 +143,18 @@ function createButtonDownload(data) {
     return {downloadButton: downloadButton, link: link, url: fileUrl};
 }
 
-function createButtonDownloadMany(fileName, fileContent) {
-    const buttons_zone = document.getElementById("download_zone");
-    const downloadButton = document.createElement('button');
-    downloadButton.innerText = fileName;
-    downloadButton.className = 'build';
+function createImageDownloadMany(fileName, fileContent) {
+    const download_zone = document.getElementById("download_zone");
+    const downloadImage = document.createElement('img');
+    downloadImage.className = 'imageDownload';
+    downloadImage.src = './assets/logo_file.png';
+    const figcaption = document.createElement('figcaption');
+    figcaption.innerText = fileName;
+
+    const figure = document.createElement('figure');
+    figure.appendChild(downloadImage);
+    figure.appendChild(figcaption);
+
     console.log(fileContent);
     const fileAlteredContent = fileContent;
     const fileBlob = new Blob([fileAlteredContent], {type : "text/plain"});
@@ -158,7 +163,7 @@ function createButtonDownloadMany(fileName, fileContent) {
     link.href = fileUrl;
     link.download = fileName;
     document.body.appendChild(link);
-    buttons_zone.appendChild(downloadButton);
-    return {downloadButton: downloadButton, link: link, url: fileUrl};
+    download_zone.appendChild(figure);
+    return {figure: figure, link: link, url: fileUrl};
 }
 

@@ -153,3 +153,27 @@ input[type="file"]::file-selector-button:hover {
     display: block ruby;
     text-align: center;
 }
+
+#download_zone {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.imageDownload {
+    width: 50%;
+    height: 5%;
+
+
+}
+
+figcaption {
+    font-size: 70%;
+}
+
+figure {
+    width: 10%;
+    height: 15%;
+    text-align: center;
+    cursor: pointer ;
+}
