@@ -150,7 +150,7 @@ enum SaturationParametreType {
 enum RecordingParametreType {
     rec_duration = "REC_DURATION",
     alt_duration = "ALT_DURATION",
-    rec_nbr_aircraft = "REC_NBR_AICRAFT"
+    rec_nbr_aircraft = "REC_NBR_AIRCRAFT"
 }
 
 function evalInstructions(instrs : ASTInstruction[], fileContent : string) : Action[]{
@@ -377,7 +377,7 @@ function evalNumber(n : ASTNumber) : string {
         return (n.content).toString();
     }else {
         if (isASTRecordingValue(n.record)) {
-            return evalRecordingParameterType(n.record.content);
+            return n.content.toString()+evalRecordingParameterType(n.record.content);
         } else {
             return (n.content).toString();
         }
@@ -544,7 +544,7 @@ function evalOneSpeedParameter(pm : ASTSpeedParameter) : Parameter{
 function evalSpeedParametreType(pm : ASTSpeedParameterType) : string | undefined{
     if(pm.EAST_WEST_VELOCITY != undefined){
         return SpeedParametreType.east_west_velocity;
-    }else if(pm.NORTH_SOUTH_VELOCITY != undefined){
+    }else {
         return SpeedParametreType.north_south_velocity;
     }
 
@@ -584,7 +584,7 @@ function evalOneSaturationParameter(pm : ASTSaturationParameter) : Parameter{
 function evalSaturationParametreType(pm : ASTSaturationParameterType) : string | undefined{
     if(pm.ICAO != undefined){
         return SaturationParametreType.icao;
-    }else if(pm.AIRCRAFT_NUMBER != undefined){
+    }else {
         return SaturationParametreType.aircraft_number;
     }
 
@@ -735,9 +735,7 @@ function evalLastDate(atSeconds : number, fileContent : string){
 
 // Extraire la ligne contenant la date et l'heure
     let lastLine = lines[lines.length - 1];
-    if(lastLine==''){
-        lastLine = lines[lines.length-2];
-    }
+
     const parts = lastLine.split(',');
 
 // Convertir la date et l'heure en objet Date TypeScript
