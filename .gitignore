@@ -56,6 +56,8 @@ packages/server/public/monaco-editor-wrapper
 packages/alteration/temp
 packages/fdit-scenario/.nyc_output
 packages/server/temp
+packages/server/.nyc_output
+packages/server/coverage
 
 
 

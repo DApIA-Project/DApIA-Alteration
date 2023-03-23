@@ -42,7 +42,7 @@ export const generateJsonAndAlterate = (async (scenario: string, fileContent: st
     let file_to_remove : string[] = [];
     console.log(variablesJson?.declarations);
     /** Si variableJson est defini alors existence de variable **/
-    if(variablesJson!.declarations.length != 0 && variablesJson != undefined){
+    if( variablesJson != undefined && variablesJson!.declarations.length != 0){
         /** Compte le nombre de scénario possibles **/
         let nb_scenario : number = 1;
         for(let i=0; i< variablesJson.declarations.length;i++){
@@ -58,36 +58,25 @@ export const generateJsonAndAlterate = (async (scenario: string, fileContent: st
             let newfileName = fileName.substring(0,index_filename)+"_"+i+fileName.substring(index_filename);
             const scenarioJson = await parseAndGenerate(liste_scenario[i], newfileName, fileContent);
             /** Créé un fichier JSON du scenario envoyé **/
-            if (scenarioJson == undefined) {
-                await fs.promises.writeFile("temp/scenario_"+i+".json", JSON.stringify({}, null, 2));
-                file_to_remove.push("scenario_"+i+".json");
-                return scenarioJson;
-            } else {
-                if(i==0){
-                    scenarioOne=scenarioJson;
-                    fileNameToReturn=newfileName;
-                }
-                file_to_remove.push("modified__"+newfileName);
-                file_to_remove.push("scenario_"+i+".json");
-                await fs.promises.writeFile("temp/scenario_"+i+".json", JSON.stringify(scenarioJson, null, 2));
+            if(i==0){
+                scenarioOne=scenarioJson;
+                fileNameToReturn=newfileName;
             }
+            file_to_remove.push("modified__"+newfileName);
+            file_to_remove.push("scenario_"+i+".json");
+            await fs.promises.writeFile("temp/scenario_"+i+".json", JSON.stringify(scenarioJson, null, 2));
+
 
             await fs.promises.writeFile("temp/"+newfileName,fileContent);
             if(fileName2 != ''){
-                let index_filename2 = fileName2.indexOf(".");
-                let newfileName2 = fileName2.substring(0,index_filename2)+"_"+i+fileName2.substring(index_filename2);
-                await fs.promises.writeFile("temp/"+newfileName2,fileContent2);
-                file_to_remove.push(newfileName2);
+                await fs.promises.writeFile("temp/"+fileName2,fileContent2);
+                file_to_remove.push(fileName2);
             }
 
             executeAlterationJar(fileContent, newfileName,"temp/scenario_"+i+".json");
 
-            fs.unlink("temp/"+newfileName,(err) =>{
-                if(err){
-                    console.error(err);
-                }else{
+            fs.unlink("temp/"+newfileName,() =>{
                     console.log("Le fichier "+newfileName+" a été supprimé.");
-                }
             })
         }
 
@@ -115,12 +104,8 @@ export const generateJsonAndAlterate = (async (scenario: string, fileContent: st
 
         executeAlterationJar(fileContent, fileName,"temp/scenario.json");
 
-        fs.unlink("temp/"+fileName,(err) =>{
-            if(err){
-                console.error(err);
-            }else{
+        fs.unlink("temp/"+fileName,() =>{
                 console.log("Le fichier "+fileName+" a été supprimé.");
-            }
         })
         return {scenario : scenarioJson,newfileName : fileName, filesToRemove : file_to_remove};
     }

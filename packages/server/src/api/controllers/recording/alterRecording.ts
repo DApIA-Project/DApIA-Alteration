@@ -14,13 +14,18 @@ const alterRecording: RequestHandler = async (req, res) => {
         return res.status(422).json({error: AlterRecordingError.invalidFormat})
     }
 
-    if(fileContent2 != '' && fileName2 != ''){
+    if(!isBlank(fileName2)){
 
-        if(isBlank(fileName2) || isBlank(fileContent2)){
+        if(isBlank(fileContent2)){
             return res.status(422).json({error: AlterRecordingError.invalidFormat});
         }
         if(!isValidExtension(fileName2)){
-            return res.status(422).json({error: AlterRecordingError.invalidFormat})
+            return res.status(422).json({error: AlterRecordingError.invalidFormat});
+        }
+    }else{
+        const regex_replay = new RegExp(`\\breplay\\b`, 'g');
+        if(scenario.match(regex_replay) != null){
+            return res.status(422).json({error: AlterRecordingError.invalidFormat});
         }
     }
     const response = await alterRecordingCore(scenario, fileContent, fileName, fileContent2, fileName2)
@@ -38,39 +43,11 @@ const alterRecording: RequestHandler = async (req, res) => {
 
 
     for(let i=0; i<response.filesToRemove!.length;i++){
-        fs.unlink("temp/"+response.filesToRemove![i],(err) => {
-            if(err){
-                console.error(err);
-            }else{
-                console.log("Le fichier "+response.filesToRemove![i]+" a été supprimé.");
-            }
+        fs.unlink("temp/"+response.filesToRemove![i],() => {
+            console.log("Le fichier "+response.filesToRemove![i]+" a été supprimé.");
+
         })
     }
-    /**
-    fs.unlink("temp/modified__"+response.newfileName,(err) =>{
-        if(err){
-            console.error(err);
-        }else{
-            console.log("Le fichier modified__"+response.newfileName+" a été supprimé.");
-        }
-    })
-    fs.unlink("temp/scenario.json",(err) =>{
-        if(err){
-            console.error(err);
-        }else{
-            console.log("Le fichier scenario.json a été supprimé.");
-        }
-    })
-
-    if(fileName2 != ''){
-        fs.unlink("temp/"+fileName2,(err) =>{
-            if(err){
-                console.error(err);
-            }else{
-                console.log("Le fichier "+ fileName2 +" a été supprimé.");
-            }
-        })
-    }**/
     console.log(list_content_modified);
     res.status(200).json({reponse: response.alteredRecording, name_file: modified_file_name, altered_content : list_content_modified});
 }
