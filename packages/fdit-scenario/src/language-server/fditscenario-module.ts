@@ -61,13 +61,13 @@ export function createFditscenarioServices(context: DefaultSharedModuleContext):
         AttackScenarioGrammarGeneratedModule,
         FditscenarioModule
     );
-    shared.lsp.ExecuteCommandHandler = new FditscenarioCommandHandler();
+   // shared.lsp.ExecuteCommandHandler = new FditscenarioCommandHandler();
     shared.ServiceRegistry.register(Fditscenario);
     registerValidationChecks(Fditscenario);
     return { shared, Fditscenario };
 }
 
-class FditscenarioCommandHandler extends AbstractExecuteCommandHandler {
+/**class FditscenarioCommandHandler extends AbstractExecuteCommandHandler {
     registerCommands(acceptor: ExecuteCommandAcceptor): void {
         // accept a single command called 'parseAndGenerate'
         acceptor('parseAndGenerate', args => {
@@ -75,4 +75,4 @@ class FditscenarioCommandHandler extends AbstractExecuteCommandHandler {
             return parseAndGenerate(args[0],args[1],args[2]);
         });
     }
-}
+}**/

@@ -63,7 +63,7 @@ import {
     ASTRecordingParameterType,
     isASTAtFor,
     isASTParamDrift,
-    isASTRecordingValue
+    isASTRecordingValue, isASTAlterAndTrajectory, isASTInstruction, isASTReplayTarget
 } from "../language-server/generated/ast";
 import {Action, Altitude, Parameter, Parameters, Scope, Sensors, Target, Trajectory, Vertex, Waypoint} from "../types";
 
@@ -157,145 +157,155 @@ function evalInstructions(instrs : ASTInstruction[], fileContent : string) : Act
     return (instrs.flatMap(i => evalInstr(i, fileContent)).filter(i => i !== undefined) as Action[]);
 }
 
-function evalInstr(instr : ASTInstruction, fileContent : string) : Action{
-    if(isASTHide(instr)) {
-        if (!isASTHideParameter(instr.frequency)) {
-            return {
-                alterationType: ActionType.deletion,
-                scope: evalTimeScope(instr.timeScope, fileContent),
-                parameters: {
-                    target: evalTarget(instr.target)
-                },
+function evalInstr(instr : ASTInstruction, fileContent : string) : Action | undefined{
+
+
+
+        if (isASTHide(instr)) {
+            if (!isASTHideParameter(instr.frequency)) {
+                return {
+                    alterationType: ActionType.deletion,
+                    scope: evalTimeScope(instr.timeScope, fileContent),
+                    parameters: {
+                        target: evalTarget(instr.target)
+                    },
+                }
+            } else {
+                return {
+                    alterationType: ActionType.deletion,
+                    scope: evalTimeScope(instr.timeScope, fileContent),
+                    parameters: {
+                        target: evalTarget(instr.target),
+                        parameter: [
+                            {
+                                mode: "simple",
+                                frequency: evalFrequency(instr.frequency)
+                            }
+                        ]
+                    },
+                }
             }
-        } else {
+        } else if (isASTAlterAndTrajectory(instr)) {
+            if (isASTAlter(instr.mode)) {
+                return {
+                    alterationType: ActionType.alteration,
+                    scope: evalTimeScope(instr.timeScope, fileContent),
+                    parameters: {
+                        target: evalTarget(instr.target),
+                        parameter: evalParameters(instr.mode.parameters)
+                    },
+                }
+            } else {
+                return {
+                    alterationType: ActionType.trajectory,
+                    scope: evalTimeScope(instr.timeScope, fileContent),
+                    parameters: {
+                        target: evalTarget(instr.target),
+                        trajectory: evalTrajectory(instr.mode.trajectory),
+                    }
+                }
+            }
+
+        } else if (isASTCreate(instr)) {
+            if (!isASTCreationParameters(instr.parameters)) {
+                return {
+                    alterationType: ActionType.creation,
+                    scope: evalTimeScope(instr.timeScope, fileContent),
+                    parameters: {
+                        target: {
+                            identifier: "hexIdent",
+                            value: "ALL"
+                        },
+                        trajectory: evalTrajectory(instr.trajectory),
+                    }
+                }
+            } else {
+                return {
+                    alterationType: ActionType.creation,
+                    scope: evalTimeScope(instr.timeScope, fileContent),
+                    parameters: {
+                        target: {
+                            identifier: "hexIdent",
+                            value: "ALL"
+                        },
+                        trajectory: evalTrajectory(instr.trajectory),
+                        parameter: evalCreationParameters(instr.parameters)
+                    }
+                }
+            }
+        } else if (isASTAlterSpeed(instr)) {
             return {
-                alterationType: ActionType.deletion,
+                alterationType: ActionType.speedAltaration,
                 scope: evalTimeScope(instr.timeScope, fileContent),
                 parameters: {
                     target: evalTarget(instr.target),
-                    parameter: [
-                        {
-                            mode: "simple",
-                            frequency: evalFrequency(instr.frequency)
-                        }
-                    ]
-                },
-            }
-        }
-    } else if(isASTAlter(instr)) {
-        return {
-            alterationType : ActionType.alteration,
-            scope : evalTimeScope(instr.timeScope, fileContent),
-            parameters: {
-                target : evalTarget(instr.target),
-                parameter : evalParameters(instr.parameters)
-            },
-        }
-    }else if(isASTCreate(instr)){
-        if(!isASTCreationParameters(instr.parameters)){
-            return {
-                alterationType : ActionType.creation,
-                scope : evalTimeScope(instr.timeScope, fileContent),
-                parameters: {
-                    target : {
-                        identifier : "hexIdent",
-                        value : "ALL"
-                    },
-                    trajectory : evalTrajectory(instr.trajectory),
+                    parameter: evalSpeedParameters(instr.parameters)
                 }
             }
-        }else{
+        } else if (isASTSaturate(instr)) {
             return {
-                alterationType : ActionType.creation,
-                scope : evalTimeScope(instr.timeScope, fileContent),
+                alterationType: ActionType.saturation,
+                scope: evalTimeScope(instr.timeScope, fileContent),
                 parameters: {
-                    target : {
-                        identifier : "hexIdent",
-                        value : "ALL"
-                    },
-                    trajectory : evalTrajectory(instr.trajectory),
-                    parameter : evalCreationParameters(instr.parameters)
+                    target: evalTarget(instr.target),
+                    parameter: evalSaturationParameters(instr.parameters)
                 }
             }
-        }
-    }else if(isASTTrajectory(instr)){
-        return {
-            alterationType : ActionType.trajectory,
-            scope : evalTimeScope(instr.timeScope, fileContent),
-            parameters : {
-                target : evalTarget(instr.target),
-                trajectory : evalTrajectory(instr.trajectory),
-            }
-        }
-    }else if(isASTAlterSpeed(instr)){
-        return {
-            alterationType : ActionType.speedAltaration,
-            scope : evalTimeScope(instr.timeScope, fileContent),
-            parameters : {
-                target : evalTarget(instr.target),
-                parameter : evalSpeedParameters(instr.parameters)
-            }
-        }
-    }else if(isASTSaturate(instr)) {
-        return {
-            alterationType: ActionType.saturation,
-            scope: evalTimeScope(instr.timeScope, fileContent),
-            parameters: {
-                target: evalTarget(instr.target),
-                parameter: evalSaturationParameters(instr.parameters)
-            }
-        }
-    }else if(isASTReplay(instr)){
-            if(!isASTParameters(instr.parameters)){
-
+        } else if (isASTReplay(instr)) {
+            if (!isASTParameters(instr.parameters)) {
                     return {
-                        alterationType : ActionType.replay,
-                        scope : evalTimeScope(instr.timeScope, fileContent),
-                        parameters : {
-                            target : evalReplayTarget(instr.target),
-                            recordPath : "temp/"+evalValue(instr.target.recording)
+                        alterationType: ActionType.replay,
+                        scope: evalTimeScope(instr.timeScope, fileContent),
+                        parameters: {
+                            target: evalReplayTarget(instr.target),
+                            recordPath: "temp/" + evalValue(instr.target.recording)
                         }
                     }
 
 
-            }else{
+
+
+            } else {
                 return {
-                    alterationType : ActionType.replay,
-                    scope : evalTimeScope(instr.timeScope, fileContent),
-                    parameters : {
-                        target : evalReplayTarget(instr.target),
-                        recordPath : "temp/"+evalValue(instr.target.recording),
-                        parameter : evalParameters(instr.parameters)
+                    alterationType: ActionType.replay,
+                    scope: evalTimeScope(instr.timeScope, fileContent),
+                    parameters: {
+                        target: evalReplayTarget(instr.target),
+                        recordPath: "temp/" + evalValue(instr.target.recording),
+                        parameter: evalParameters(instr.parameters)
                     }
                 }
+
+
             }
-    }else if(isASTDelay(instr)){
-        return {
-            alterationType : ActionType.timestamp,
-            scope : evalTimeScope(instr.timeScope, fileContent),
-            parameters : {
-                target : evalTarget(instr.target),
-                parameter :  evalDelayParameter(instr.delay)
+        } else if (isASTDelay(instr)) {
+            return {
+                alterationType: ActionType.timestamp,
+                scope: evalTimeScope(instr.timeScope, fileContent),
+                parameters: {
+                    target: evalTarget(instr.target),
+                    parameter: evalDelayParameter(instr.delay)
+                }
+            }
+        } else if (isASTRotate(instr)) {
+            return {
+                alterationType: ActionType.rotation,
+                scope: evalTimeScope(instr.timeScope, fileContent),
+                parameters: {
+                    target: evalTarget(instr.target),
+                    parameter: evalRotateParameter(instr.angle)
+                }
+            }
+        } else {
+            return {
+                alterationType: ActionType.cut,
+                scope: evalTimeScope(instr.timeScope, fileContent),
+                parameters: {
+                    target: evalTarget(instr.target)
+                }
             }
         }
-    }else if(isASTRotate(instr)){
-        return {
-            alterationType : ActionType.rotation,
-            scope : evalTimeScope(instr.timeScope, fileContent),
-            parameters : {
-                target : evalTarget(instr.target),
-                parameter : evalRotateParameter(instr.angle)
-            }
-        }
-    }else {
-        return {
-            alterationType : ActionType.cut,
-            scope : evalTimeScope(instr.timeScope, fileContent),
-            parameters : {
-                target : evalTarget(instr.target)
-            }
-        }
-    }
+
 }
 
 function evalTimeScope(ts : ASTTimeScope,fileContent : string) : Scope{
@@ -404,7 +414,7 @@ function evalRecordingParameterType(n : ASTRecordingParameterType) : string{
 }
 
 function evalTarget(t : ASTTarget) : Target{
-    
+
     if(isASTAllPlanes(t)){
         return {
                     identifier : "hexIdent",
@@ -422,7 +432,6 @@ function evalTarget(t : ASTTarget) : Target{
 }
 
 function evalReplayTarget(t : ASTReplayTarget) : Target{
-
     if(isASTAllPlaneFrom(t)){
         return {
             identifier : "hexIdent",

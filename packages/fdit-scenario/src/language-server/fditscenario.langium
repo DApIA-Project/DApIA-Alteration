@@ -57,7 +57,7 @@ ASTHide
 ;
 
 ASTAlterAndTrajectory
-: keyword=T_ALTER target=ASTTarget timeScope=ASTTimeScope trigger=ASTTrigger? (ASTAlter | ASTTrajectory)
+: keyword=T_ALTER target=ASTTarget timeScope=ASTTimeScope trigger=ASTTrigger? mode=(ASTAlter | ASTTrajectory)
 ;
 
 ASTCreate

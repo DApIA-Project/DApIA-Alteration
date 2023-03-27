@@ -221,10 +221,24 @@ export function isASTAllPlanes(item: unknown): item is ASTAllPlanes {
     return reflection.isInstance(item, ASTAllPlanes);
 }
 
+export interface ASTAlter extends AstNode {
+    readonly $container: ASTAlterAndTrajectory;
+    readonly $type: 'ASTAlter';
+    assertions?: ASTAssertions
+    parameters: ASTParameters
+}
+
+export const ASTAlter = 'ASTAlter';
+
+export function isASTAlter(item: unknown): item is ASTAlter {
+    return reflection.isInstance(item, ASTAlter);
+}
+
 export interface ASTAlterAndTrajectory extends AstNode {
     readonly $container: ASTScenario;
-    readonly $type: 'ASTAlter' | 'ASTAlterAndTrajectory' | 'ASTTrajectory';
+    readonly $type: 'ASTAlterAndTrajectory';
     keyword: T_ALTER
+    mode: ASTAlter | ASTTrajectory
     target: ASTTarget
     timeScope: ASTTimeScope
     trigger?: ASTTrigger
@@ -893,6 +907,19 @@ export function isASTTime(item: unknown): item is ASTTime {
     return reflection.isInstance(item, ASTTime);
 }
 
+export interface ASTTrajectory extends AstNode {
+    readonly $container: ASTAlterAndTrajectory;
+    readonly $type: 'ASTTrajectory';
+    assertions?: ASTAssertions
+    trajectory: ASTWayPoints
+}
+
+export const ASTTrajectory = 'ASTTrajectory';
+
+export function isASTTrajectory(item: unknown): item is ASTTrajectory {
+    return reflection.isInstance(item, ASTTrajectory);
+}
+
 export interface ASTTrigger extends AstNode {
     readonly $container: ASTAlterAndTrajectory | ASTAlterSpeed | ASTCut | ASTHide | ASTRotate | ASTSaturate;
     readonly $type: 'ASTTrigger';
@@ -959,32 +986,6 @@ export const ASTWindow = 'ASTWindow';
 
 export function isASTWindow(item: unknown): item is ASTWindow {
     return reflection.isInstance(item, ASTWindow);
-}
-
-export interface ASTAlter extends ASTAlterAndTrajectory {
-    readonly $container: ASTScenario;
-    readonly $type: 'ASTAlter';
-    assertions?: ASTAssertions
-    parameters: ASTParameters
-}
-
-export const ASTAlter = 'ASTAlter';
-
-export function isASTAlter(item: unknown): item is ASTAlter {
-    return reflection.isInstance(item, ASTAlter);
-}
-
-export interface ASTTrajectory extends ASTAlterAndTrajectory {
-    readonly $container: ASTScenario;
-    readonly $type: 'ASTTrajectory';
-    assertions?: ASTAssertions
-    trajectory: ASTWayPoints
-}
-
-export const ASTTrajectory = 'ASTTrajectory';
-
-export function isASTTrajectory(item: unknown): item is ASTTrajectory {
-    return reflection.isInstance(item, ASTTrajectory);
 }
 
 export interface ASTListDeclaration extends ASTDeclaration {
@@ -1147,10 +1148,6 @@ export class FditscenarioAstReflection extends AbstractAstReflection {
             case ASTAllPlanes:
             case ASTPlane: {
                 return this.isSubtype(ASTTarget, supertype);
-            }
-            case ASTAlter:
-            case ASTTrajectory: {
-                return this.isSubtype(ASTAlterAndTrajectory, supertype);
             }
             case ASTAlterAndTrajectory:
             case ASTAlterSpeed:

@@ -62,15 +62,12 @@ export async function get_variables (fditscenrioProgram: string): Promise<Declar
         console.log(chalk.green(`Parsed and validated successfully!`));
     } else {
         console.log(chalk.red(`Failed to parse and validate !`));
-        return
+        return undefined;
     }
 
-    const variables : Declarations |undefined = generateVariables(scenario);
-    if(variables != undefined){
-        return variables;
-    }else{
-        return undefined
-    }
+    const variables : Declarations = generateVariables(scenario);
+    return variables;
+
 }
 
 /**
@@ -89,12 +86,23 @@ export function countScenarioNumber(fditscenarioProgram: string, declaration : D
      *  Si liste alors on prend le nombre de valeurs qu'il y a donc on retourne nb_values^(nb_utilisation_var)
      *  Sinon on retourne 0 (cas impossible) //Remodifier le code
      **/
+    let res = 0;
     if(declaration.values_range != undefined){
-        return matches ? Math.pow(2,matches.length-1) : 0;
-    } else if (declaration.values_list != undefined){
-        return matches ? Math.pow(declaration.values_list.length,matches.length-1) : 0;
+        if(matches!.length-1 == 0){
+            res = 0;
+        }else{
+            res = Math.pow(2,matches!.length-1);
+        }
+
+    } else {
+        if(matches!.length-1 == 0){
+            res = 0;
+        }else{
+            res = Math.pow(declaration.values_list!.length,matches!.length-1);
+        }
     }
-    return 0;
+
+    return res;
 
 }
 
@@ -113,7 +121,7 @@ export function createAllScenario(scenario : string, declarations : Declarations
     for(let i=0; i<declarations.declarations.length;i++){
         if(declarations.declarations[i].values_range != undefined){
             variables.set(declarations.declarations[i].variable,declarations.declarations[i].values_range!)
-        }else if (declarations.declarations[i].values_list != undefined){
+        }else {
             variables.set(declarations.declarations[i].variable,declarations.declarations[i].values_list!)
         }
     }

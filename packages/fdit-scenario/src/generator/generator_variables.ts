@@ -25,15 +25,15 @@ import {Declaration, Declarations} from "../types_variables";
 enum RecordingParametreType {
     rec_duration = "REC_DURATION",
     alt_duration = "ALT_DURATION",
-    rec_nbr_aircraft = "REC_NBR_AICRAFT"
+    rec_nbr_aircraft = "REC_NBR_AIRCRAFT"
 }
 
-export function generateVariables(scenario: ASTScenario): Declarations | undefined {
+export function generateVariables(scenario: ASTScenario): Declarations {
 
     return generateStatements(scenario);
 }
 
-function generateStatements(scenar: ASTScenario):  Declarations | undefined {
+function generateStatements(scenar: ASTScenario):  Declarations {
         return evalScenario(scenar);
 
 }
@@ -79,7 +79,7 @@ function evalOneValue(val : ASTNumberOffset | string) : number | string {
     if(isASTNumberOffset(val)){
         return evalNumberOffset(val)
     }else{
-        return val;
+        return (val.replace('"','')).replace('"','');
     }
 }
 
