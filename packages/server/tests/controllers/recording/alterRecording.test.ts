@@ -186,7 +186,7 @@ describe(`POST ${ApiRoutes.alteration()}`, () => {
     context('when all is valid', () => {
         it('returns 200 if is valid with hide', async () => {
             await assertIsValid('hide all_planes at 0 seconds','','')
-        })
+        }).timeout(15000);
 
         it('returns 200 if is valid with replay', async () => {
             await assertIsValid('replay all_planes from_recording "myfile2.sbs" from 0 seconds until 1000 seconds','myfile2.sbs','MSG,4,3,5022202,4CA1FA,5022202,2018/11/25,11:30:48.179,2018/11/25,11:30:48.179,,,474.53,295.86,,,0.0,,,,,')

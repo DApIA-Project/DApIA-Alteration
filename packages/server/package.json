@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "ts-mocha --timeout 10000 -p tsconfig.json tests/**/*.test.ts",
+    "test": "ts-mocha -p tsconfig.json tests/**/*.test.ts",
     "test:coverage": "nyc --reporter=html ts-mocha -p tsconfig.json 'tests/**/*.test.ts'",
     "serve": "node build/server.js",
     "start": "ts-node src/index.ts",
