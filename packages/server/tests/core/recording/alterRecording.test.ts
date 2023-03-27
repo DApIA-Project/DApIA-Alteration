@@ -57,13 +57,13 @@ describe(`POST ${ApiRoutes.alteration()}`, () => {
         it('returns 200 if the scenario syntax is valid with variables', async () => {
             const response = await request(server)
                 .post(ApiRoutes.alteration())
-                .send({scenario : 'let $call = {\"SAMU77\"}, alter all_planes at 0 seconds with_values CALLSIGN=$call', fileContent: 'MSG,4,3,5022202,4CA1FA,5022202,2018/11/25,11:30:48.179,2018/11/25,11:30:48.179,,,474.53,295.86,,,0.0,,,,,',fileName : 'myfile.sbs',fileContent2 : '', fileName2 :''})
+                .send({scenario : 'let $call = {"SAMU77", "SAMU90"}, alter all_planes at 0 seconds with_values CALLSIGN=$call', fileContent: 'MSG,4,3,5022202,4CA1FA,5022202,2018/11/25,11:30:48.179,2018/11/25,11:30:48.179,,,474.53,295.86,,,0.0,,,,,',fileName : 'myfile.sbs',fileContent2 : '', fileName2 :''})
                 .expect(200)
 
             const {reponse, name_file, altered_content} = response.body
             console.log(reponse)
             assert(name_file, 'modified__myfile.sbs');
-            assert.equal(altered_content.length, 1);
+            assert.equal(altered_content.length, 2);
         })
 
         it('returns 200 if the scenario syntax is valid with variables and replay', async () => {
