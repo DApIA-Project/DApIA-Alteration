@@ -64,7 +64,7 @@ describe(`POST ${ApiRoutes.alteration()}`, () => {
             console.log(reponse)
             assert(name_file, 'modified__myfile.sbs');
             assert.equal(altered_content.length, 1);
-        }).timeout(10000);
+        })
 
         it('returns 200 if the scenario syntax is valid with variables and replay', async () => {
             const response = await request(server)
