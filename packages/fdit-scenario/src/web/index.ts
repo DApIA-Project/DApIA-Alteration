@@ -159,7 +159,12 @@ export function createAllScenario(scenario : string, declarations : Declarations
     for(let i=0 ; i<nb_scenario;i++){
         one_scenario = scenario_without_decls;
         for(let j=0; j<matches_var!.length;j++){
-            one_scenario = one_scenario.replace(matches_var![j],tab_combinaison[i][j].toString())
+            if(typeof tab_combinaison[i][j] === "string"){
+                one_scenario = one_scenario.replace(matches_var![j],"\""+tab_combinaison[i][j].toString()+"\"");
+            }else{
+                one_scenario = one_scenario.replace(matches_var![j],tab_combinaison[i][j].toString());
+            }
+
         }
         list_scenarios.push(one_scenario);
     }
