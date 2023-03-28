@@ -9,46 +9,11 @@
 
     </head>
     <body>
-    <div id="root">
-
-
-    </div>
-
-        <!-- Add a button to update our canvas, will invoke a globally accessible function -->
-        <div id="buttons_zone">
-            <input class="build" type="button" value="Show JSON" onclick="window.sendData()">
-        </div>
-    <div id="input_files_record">
-        <div>
-            Recording 1 :
-        </div>
-        <div>
-            <input type="file" id="myfile" name="myfile" multiple/>
-        </div>
-    </div>
-
-
-
-
-    <div id="input_files_record2">
-        <div>
-            Recording 2 :
-        </div>
-        <div>
-            <input type="file" id="myfile2" name="myfile2" multiple/>
-        </div>
-    </div>
-
-    <div id="download_zone">
-
-    </div>
-
-
+        <div id="root"></div>
+        <div id="download_zone"></div>
         <br/>
-
         <!-- Monaco Configuration -->
         <script type="module" src="monacoCanva.js"></script>
-    <script type="module" src="alterate.js"></script>
-
+        <script type="module" src="alterate.js"></script>
     </body>
 </html>

@@ -68,11 +68,10 @@ function updateCanvasError(error) {
     }
 }
 
-const inputElement = document.getElementById("myfile");
-inputElement.addEventListener("change", handleFiles, false);
+const inputElement = document.getElementsByClassName("myfile");
+inputElement[0].addEventListener("change", handleFiles, false);
 
-const inputElement2 = document.getElementById("myfile2");
-inputElement2.addEventListener("change", handleFiles2, false);
+inputElement[1].addEventListener("change", handleFiles2, false);
 function handleFiles() {
     const fileList = this.files;
     const file = fileList[0];
