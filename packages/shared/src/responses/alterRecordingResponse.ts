@@ -1,9 +1,7 @@
+import {Recording} from "../models";
+
 export type AlterRecordingResponse = {
-    alteredRecording: string | null,
-
-    newfileName: string | undefined,
-
-    filesToRemove : string[] | undefined,
+    alteredRecordings: Recording[],
     error: AlterRecordingError | null
 }
 

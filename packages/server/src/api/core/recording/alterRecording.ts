@@ -1,4 +1,4 @@
-import {AlterRecordingError, AlterRecordingResponse} from '@smartesting/shared/dist/responses'
+import {AlterRecordingError, AlterRecordingResponse, Recording} from '@smartesting/shared/dist'
 import {
     countScenarioNumber,
     createAllScenario,
@@ -8,24 +8,41 @@ import {
 import {Declarations} from "@smartesting/fdit-scenario/dist/types_variables";
 import fs from "fs";
 import {execSync} from "child_process";
+import assert from "assert";
 
-export default async function alterRecording(scenario: string, fileContent: string, fileName: string, fileContent2: string, fileName2: string): Promise<AlterRecordingResponse> {
-    const alteredScenario = await generateJsonAndAlterate(scenario, fileContent, fileName, fileContent2, fileName2);
-    if (alteredScenario == undefined) {
-        return {
-            alteredRecording: null,
-            newfileName: undefined,
-            filesToRemove : undefined,
-            error: AlterRecordingError.invalidSyntax
-        }
+export default async function alterRecording(scenario: string, recording: Recording, recordingToReplay?: Recording): Promise<AlterRecordingResponse> {
+    const {
+        error,
+        filesToRemove,
+        newfileName,
+        scenarioJson
+    } = await generateJsonAndAlterate(scenario, recording, recordingToReplay);
+
+    // TODO: delete files if there is an error
+    if (error) return {
+        error: AlterRecordingError.invalidSyntax,
+        alteredRecordings: []
     }
+
+    assert(filesToRemove)
+    assert(newfileName)
+    assert(scenarioJson)
+
+    const alteredRecordings: Recording[] = [];
+    for (const fileToRemoveName of filesToRemove) {
+        if (fileToRemoveName.startsWith("modified__")) {
+            const data = await fs.promises.readFile('./temp/' + fileToRemoveName)
+            alteredRecordings.push({content: data.toString(), name: fileToRemoveName})
+        }
+        fs.unlink(`temp/${fileToRemoveName}`, () => null)
+    }
+
     return {
-        alteredRecording: JSON.stringify(alteredScenario.scenario),
-        newfileName : alteredScenario.newfileName,
-        filesToRemove : alteredScenario.filesToRemove,
+        alteredRecordings,
         error: null
     }
 }
+
 
 /**
  * Generation of Json scenario and creation of altered recording
@@ -36,78 +53,77 @@ export default async function alterRecording(scenario: string, fileContent: stri
  * @param fileName2 Name of file 2 will be use for alteration (OPTIONAL)
  * @returns Generated output from this FDIT program
  */
-export const generateJsonAndAlterate = (async (scenario: string, fileContent: string, fileName: string, fileContent2: string, fileName2: string): Promise<{ scenario?: {}, newfileName? : string, filesToRemove? : string[],error?: string } | undefined> => {
+export const generateJsonAndAlterate = (async (scenario: string, recording: Recording, recordingToReplay?: Recording): Promise<{ scenarioJson?: {}, newfileName?: string, filesToRemove?: string[], error?: string }> => {
     /** Recuperation de variables sous format JSON **/
-    const variablesJson : Declarations | undefined = await get_variables(scenario);
-    let file_to_remove : string[] = [];
-    console.log(variablesJson?.declarations);
+    const variablesJson: Declarations | undefined = await get_variables(scenario);
+    let filesToRemove: string[] = [];
     /** Si variableJson est defini alors existence de variable **/
-    if( variablesJson != undefined && variablesJson!.declarations.length != 0){
+    if (variablesJson != undefined && variablesJson!.declarations.length != 0) {
         /** Compte le nombre de scénario possibles **/
-        let nb_scenario : number = 1;
-        for(let i=0; i< variablesJson.declarations.length;i++){
-            nb_scenario = nb_scenario * await countScenarioNumber(scenario, variablesJson.declarations[i]);
+        let nb_scenario: number = 1;
+        for (let i = 0; i < variablesJson.declarations.length; i++) {
+            nb_scenario = nb_scenario * countScenarioNumber(scenario, variablesJson.declarations[i]);
         }
         /** Creation de tous les scenarios possibles (format scenario) **/
-        const liste_scenario : string[] = createAllScenario(scenario,variablesJson,nb_scenario);
+        const liste_scenario: string[] = createAllScenario(scenario, variablesJson, nb_scenario);
         let scenarioOne = undefined;
         let fileNameToReturn = "";
         /** Pour chaque scenario, parse du scenario, creation de fichier et alteration **/
-        for(let i=0; i< liste_scenario.length;i++){
-            let index_filename = fileName.indexOf(".");
-            let newfileName = fileName.substring(0,index_filename)+"_"+i+fileName.substring(index_filename);
-            const scenarioJson = await parseAndGenerate(liste_scenario[i], newfileName, fileContent);
+        for (let i = 0; i < liste_scenario.length; i++) {
+            let index_filename = recording.name.indexOf(".");
+            let newfileName = recording.name.substring(0, index_filename) + "_" + i + recording.name.substring(index_filename);
+            const scenarioJson = await parseAndGenerate(liste_scenario[i], newfileName, recording.content);
             /** Créé un fichier JSON du scenario envoyé **/
-            if(i==0){
-                scenarioOne=scenarioJson;
-                fileNameToReturn=newfileName;
+            if (i == 0) {
+                scenarioOne = scenarioJson;
+                fileNameToReturn = newfileName;
             }
-            file_to_remove.push("modified__"+newfileName);
-            file_to_remove.push("scenario_"+i+".json");
-            await fs.promises.writeFile("temp/scenario_"+i+".json", JSON.stringify(scenarioJson, null, 2));
+            filesToRemove.push("modified__" + newfileName);
+            filesToRemove.push("scenario_" + i + ".json");
+            await fs.promises.writeFile("temp/scenario_" + i + ".json", JSON.stringify(scenarioJson, null, 2));
 
 
-            await fs.promises.writeFile("temp/"+newfileName,fileContent);
-            if(fileName2 != ''){
-                await fs.promises.writeFile("temp/"+fileName2,fileContent2);
-                file_to_remove.push(fileName2);
+            await fs.promises.writeFile("temp/" + newfileName, recording.content);
+            if (recordingToReplay) {
+                await fs.promises.writeFile("temp/" + recordingToReplay.name, recording.content);
+                filesToRemove.push(recordingToReplay.name);
             }
 
-            executeAlterationJar(fileContent, newfileName,"temp/scenario_"+i+".json");
+            executeAlterationJar(recording.content, newfileName, "temp/scenario_" + i + ".json");
 
-            fs.unlink("temp/"+newfileName,() =>{
-                    console.log("Le fichier "+newfileName+" a été supprimé.");
+            fs.unlink("temp/" + newfileName, () => {
+                console.log("Le fichier " + newfileName + " a été supprimé.");
             })
         }
 
-        return { scenario : scenarioOne, newfileName : fileNameToReturn, filesToRemove : file_to_remove};
-    }else{
+        return {scenarioJson: scenarioOne, newfileName: fileNameToReturn, filesToRemove};
+    } else {
         /** Pas de variables donc parse du scenario, creation des fichiers et altération **/
-        const scenarioJson = await parseAndGenerate(scenario, fileName, fileContent);
+        const scenarioJson = await parseAndGenerate(scenario, recording.name, recording.content);
         /** Créé un fichier JSON du scenario envoyé **/
         if (scenarioJson == undefined) {
             await fs.promises.writeFile("temp/scenario.json", JSON.stringify({}, null, 2));
-            file_to_remove.push("scenario.json");
-            return scenarioJson;
+            filesToRemove.push("scenario.json");
+            return {error: 'error while parsing', filesToRemove};
         } else {
             await fs.promises.writeFile("temp/scenario.json", JSON.stringify(scenarioJson, null, 2));
-            file_to_remove.push("scenario.json");
+            filesToRemove.push("scenario.json");
         }
 
-        await fs.promises.writeFile("temp/"+fileName,fileContent);
-        if(fileName2 != ''){
-            await fs.promises.writeFile("temp/"+fileName2,fileContent2);
-            file_to_remove.push(fileName2);
+        await fs.promises.writeFile("temp/" + recording.name, recording.content);
+        if (recordingToReplay) {
+            await fs.promises.writeFile("temp/" + recordingToReplay.name, recording.content);
+            filesToRemove.push(recordingToReplay.name);
         }
 
-        file_to_remove.push("modified__"+fileName);
+        filesToRemove.push("modified__" + recording.name);
 
-        executeAlterationJar(fileContent, fileName,"temp/scenario.json");
+        executeAlterationJar(recording.content, recording.name, "temp/scenario.json");
 
-        fs.unlink("temp/"+fileName,() =>{
-                console.log("Le fichier "+fileName+" a été supprimé.");
+        fs.unlink("temp/" + recording.name, () => {
+            console.log("Le fichier " + recording.name + " a été supprimé.");
         })
-        return {scenario : scenarioJson,newfileName : fileName, filesToRemove : file_to_remove};
+        return {scenarioJson, newfileName: recording.name, filesToRemove};
     }
 });
 
@@ -118,6 +134,6 @@ export const generateJsonAndAlterate = (async (scenario: string, fileContent: st
  * @param path_scenario Path of scenario which will be applied on recording
  * @returns void
  */
-function executeAlterationJar(fileContent: string, fileName: string, path_scenario : string): void {
-    execSync("java -jar ../alteration/out/artifacts/alteration_atc_jar/alteration-atc.jar " +path_scenario+ " " + fileName);
+function executeAlterationJar(fileContent: string, fileName: string, path_scenario: string): void {
+    execSync("java -jar ../alteration/out/artifacts/alteration_atc_jar/alteration-atc.jar " + path_scenario + " " + fileName);
 }

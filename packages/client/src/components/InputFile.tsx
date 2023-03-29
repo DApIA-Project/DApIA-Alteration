@@ -2,17 +2,19 @@ import React from "react";
 import "../styles/InputFile.css";
 
 interface InputFileProps {
-    name : string;
-    className : string;
-
+    name: string
+    onChange: (fileList: FileList) => void
 }
 
-function InputFile(props : InputFileProps){
+function InputFile({name, onChange, ...props}: InputFileProps) {
     return (
         <div>
-            <input type="file" className={props.className} name={props.name} multiple/>
+            <input type="file" {...props} name={name} onChange={(event) => {
+                if (event.target.files) onChange(event.target.files)
+            }
+            } multiple/>
         </div>
-);
+    );
 }
 
 export default InputFile;

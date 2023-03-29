@@ -1,4 +1,4 @@
-declare interface Window{
+declare interface Window {
     sendData(): Promise<void>;
 
 }

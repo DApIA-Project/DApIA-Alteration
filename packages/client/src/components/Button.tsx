@@ -3,22 +3,13 @@ import "../styles/Button.css";
 
 
 interface ButtonProps {
-    text : string;
+    text: string
+    onClick: () => void
 }
 
-function Button(props : ButtonProps){
-    const { text} = props;
-
-    const handleClick = () => {
-        if(window.sendData){
-            window.sendData();
-        }else{
-            console.log("La fonction sendData n'est pas définie.");
-        }
-    };
-
+function Button({text, onClick, ...props}: ButtonProps) {
     return (
-        <button className="build" onClick={handleClick}> {text} </button>
+        <button {...props} className="build" onClick={onClick}> {text} </button>
     );
 }
 

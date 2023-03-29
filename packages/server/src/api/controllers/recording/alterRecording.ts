@@ -1,55 +1,34 @@
 import {RequestHandler} from "express";
-import {AlterRecordingError} from '@smartesting/shared/dist/responses'
+import {AlterRecordingError} from '@smartesting/shared/dist'
 import alterRecordingCore from '../../core/recording/alterRecording'
-import * as fs from 'fs'
 
 const alterRecording: RequestHandler = async (req, res) => {
 
-    const {scenario, fileContent, fileName, fileContent2, fileName2} = req.body;
-    console.log(req.body);
-    if (isBlank(scenario) || isBlank(fileContent) || isBlank(fileName)) {
-        return res.status(422).json({error: AlterRecordingError.invalidFormat})
+    const {scenario, recording, recordingToReplay} = req.body;
+    if (isBlank(scenario) || !recording || isBlank(recording.content) || isBlank(recording.name)) {
+        return res.status(422).json({error: AlterRecordingError.invalidFormat, alteredRecordings: []})
     }
-    if(!isValidExtension(fileName)){
-        return res.status(422).json({error: AlterRecordingError.invalidFormat})
+    if (!isValidExtension(recording.name)) {
+        return res.status(422).json({error: AlterRecordingError.invalidFormat, alteredRecordings: []})
     }
 
-    if(!isBlank(fileName2)){
+    if (recordingToReplay) {
+        if (isBlank(scenario) || !recordingToReplay || isBlank(recordingToReplay.content) || isBlank(recordingToReplay.name)) {
+            return res.status(422).json({error: AlterRecordingError.invalidFormat, alteredRecordings: []})
+        }
+        if (!isValidExtension(recordingToReplay.name)) {
+            return res.status(422).json({error: AlterRecordingError.invalidFormat, alteredRecordings: []})
+        }
 
-        if(isBlank(fileContent2)){
-            return res.status(422).json({error: AlterRecordingError.invalidFormat});
-        }
-        if(!isValidExtension(fileName2)){
-            return res.status(422).json({error: AlterRecordingError.invalidFormat});
-        }
-    }else{
         const regex_replay = new RegExp(`\\breplay\\b`, 'g');
-        if(scenario.match(regex_replay) != null){
-            return res.status(422).json({error: AlterRecordingError.invalidFormat});
+        if (scenario.match(regex_replay) != null) {
+            return res.status(422).json({error: AlterRecordingError.invalidFormat, alteredRecordings: []});
         }
     }
-    const response = await alterRecordingCore(scenario, fileContent, fileName, fileContent2, fileName2)
-    if(response.error != null){
-        return res.status(422).json({error: AlterRecordingError.invalidSyntax})
-    }
+    const response = await alterRecordingCore(scenario, recording, recordingToReplay)
 
-    let modified_file_name : string[] = response.filesToRemove!.filter((str: string) => str.startsWith("modified__"));
-    let list_content_modified  = [];
-    for(let i=0;i<modified_file_name.length;i++){
-        const data = await fs.promises.readFile('./temp/'+modified_file_name[i]);
-        list_content_modified.push( data.toString());
-    }
-
-
-
-    for(let i=0; i<response.filesToRemove!.length;i++){
-        fs.unlink("temp/"+response.filesToRemove![i],() => {
-            console.log("Le fichier "+response.filesToRemove![i]+" a été supprimé.");
-
-        })
-    }
-    console.log(list_content_modified);
-    res.status(200).json({reponse: response.alteredRecording, name_file: modified_file_name, altered_content : list_content_modified});
+    if (response.error != null) return res.status(422).json(response)
+    return res.status(200).json(response)
 }
 
 function isBlank(str: string | undefined) {
