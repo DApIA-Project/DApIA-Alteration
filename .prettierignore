@@ -1,0 +1,16 @@
+packages/client/build
+packages/client/node_modules
+packages/client/public
+
+packages/server/build
+packages/server/node_modules
+packages/server/temp
+
+packages/shared/dist
+
+packages/fdit-scenario/.vscode
+packages/fdit-scenario/bin
+packages/fdit-scenario/dist
+packages/fdit-scenario/node_modules
+
+packages/alteration

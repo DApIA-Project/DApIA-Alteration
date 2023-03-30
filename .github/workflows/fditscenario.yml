@@ -5,13 +5,12 @@ name: Langage FDITSCENARIO Tests
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ['main']
   pull_request:
-    branches: [ "main" ]
+    branches: ['main']
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     strategy:
@@ -32,4 +31,4 @@ jobs:
         run: npm i
       - name: Run test Fditscenario
         working-directory: packages/fdit-scenario
-        run : npm run test
+        run: npm run test

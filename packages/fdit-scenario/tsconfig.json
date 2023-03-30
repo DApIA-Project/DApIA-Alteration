@@ -15,14 +15,8 @@
     "isolatedModules": true,
     "outDir": "dist",
     "declaration": true
-  }
+  },
 
-  ,
-  "include": [
-     "src/**/*.ts",
-     "src/test/*.test.ts"
-  ],
-  "exclude": [
-     "build"
-  ]
+  "include": ["src/**/*.ts", "src/test/*.test.ts"],
+  "exclude": ["build"]
 }

@@ -1,9 +1,9 @@
 export type Declarations = {
-    declarations : Declaration[]
+  declarations: Declaration[]
 }
 
 export type Declaration = {
-    variable : string
-    values_range? : number[]
-    values_list? : (string | number)[]
+  variable: string
+  values_range?: number[]
+  values_list?: (string | number)[]
 }

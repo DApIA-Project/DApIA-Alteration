@@ -1,5 +1,5 @@
 export class ApiRoutes {
-    static alteration(){
-        return '/recording/alteration';
-    }
+  static alteration() {
+    return '/recording/alteration'
+  }
 }

@@ -3,30 +3,44 @@
  * DO NOT EDIT MANUALLY!
  ******************************************************************************/
 
-import { LangiumGeneratedServices, LangiumGeneratedSharedServices, LangiumSharedServices, LangiumServices, LanguageMetaData, Module, IParserConfig } from 'langium';
-import { FditscenarioAstReflection } from './ast';
-import { AttackScenarioGrammarGrammar } from './grammar';
+import {
+  LangiumGeneratedServices,
+  LangiumGeneratedSharedServices,
+  LangiumSharedServices,
+  LangiumServices,
+  LanguageMetaData,
+  Module,
+  IParserConfig,
+} from 'langium'
+import { FditscenarioAstReflection } from './ast'
+import { AttackScenarioGrammarGrammar } from './grammar'
 
 export const AttackScenarioGrammarLanguageMetaData: LanguageMetaData = {
-    languageId: 'fditscenario',
-    fileExtensions: ['.fditscenario'],
-    caseInsensitive: false
-};
+  languageId: 'fditscenario',
+  fileExtensions: ['.fditscenario'],
+  caseInsensitive: false,
+}
 
 export const AttackScenarioGrammarParserConfig: IParserConfig = {
-    maxLookahead: 1,
-    recoveryEnabled: true,
-    nodeLocationTracking: 'full',
-};
+  maxLookahead: 1,
+  recoveryEnabled: true,
+  nodeLocationTracking: 'full',
+}
 
-export const FditscenarioGeneratedSharedModule: Module<LangiumSharedServices, LangiumGeneratedSharedServices> = {
-    AstReflection: () => new FditscenarioAstReflection()
-};
+export const FditscenarioGeneratedSharedModule: Module<
+  LangiumSharedServices,
+  LangiumGeneratedSharedServices
+> = {
+  AstReflection: () => new FditscenarioAstReflection(),
+}
 
-export const AttackScenarioGrammarGeneratedModule: Module<LangiumServices, LangiumGeneratedServices> = {
-    Grammar: () => AttackScenarioGrammarGrammar(),
-    LanguageMetaData: () => AttackScenarioGrammarLanguageMetaData,
-    parser: {
-        ParserConfig: () => AttackScenarioGrammarParserConfig
-    }
-};
+export const AttackScenarioGrammarGeneratedModule: Module<
+  LangiumServices,
+  LangiumGeneratedServices
+> = {
+  Grammar: () => AttackScenarioGrammarGrammar(),
+  LanguageMetaData: () => AttackScenarioGrammarLanguageMetaData,
+  parser: {
+    ParserConfig: () => AttackScenarioGrammarParserConfig,
+  },
+}

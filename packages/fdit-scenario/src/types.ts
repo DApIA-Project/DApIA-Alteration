@@ -1,210 +1,227 @@
-
-
 export type Parameters = {
-    sensors: Sensors
+  sensors: Sensors
 }
 
 export type Sensors = {
-    sensor? : Sensor[]
+  sensor?: Sensor[]
 }
 
 export type Sensor = {
-    sID: string
-    record: string
-    firstDate: number
-    filter: string
-    action?: Action[]
-    sensorType: "BEAST" | "SBS" | "MODES" | "CAT21" | "SSR" | "PSR" | "SDPS"
+  sID: string
+  record: string
+  firstDate: number
+  filter: string
+  action?: Action[]
+  sensorType: 'BEAST' | 'SBS' | 'MODES' | 'CAT21' | 'SSR' | 'PSR' | 'SDPS'
 }
 
 export type Action = {
-    scope: Scope
-    parameters: {
-        target: Target
-        trajectory?: Trajectory
-        recordPath?: string
-        parameter?: Parameter[]
-    },
-    alterationType: "ALTERATION" | "ALTERATIONSPEED" | "ALTERATIONTIMESTAMP" | "DELETION" | "ROTATION" | "REPLAY" | "CUSTOM" | "SATURATION" | "REDUCTIONDF" | "TRAJECTORY" | "CREATION" | "CUT"
+  scope: Scope
+  parameters: {
+    target: Target
+    trajectory?: Trajectory
+    recordPath?: string
+    parameter?: Parameter[]
+  }
+  alterationType:
+    | 'ALTERATION'
+    | 'ALTERATIONSPEED'
+    | 'ALTERATIONTIMESTAMP'
+    | 'DELETION'
+    | 'ROTATION'
+    | 'REPLAY'
+    | 'CUSTOM'
+    | 'SATURATION'
+    | 'REDUCTIONDF'
+    | 'TRAJECTORY'
+    | 'CREATION'
+    | 'CUT'
 }
 
 export type Scope = {
-    lowerAlt?: string
-    upperAlt?: string
-    lowerBound?: string
-    upperBound?: string
-    threshold?: string
-    thresholdType?: string
-    boundType?: string
-    polygon?: Polygon
-    time?: string
-    type: "trigger" | "timeWindow" | "geoArea" | "geoThreshold" | "geoTime" | "geoTimeWindow"
+  lowerAlt?: string
+  upperAlt?: string
+  lowerBound?: string
+  upperBound?: string
+  threshold?: string
+  thresholdType?: string
+  boundType?: string
+  polygon?: Polygon
+  time?: string
+  type:
+    | 'trigger'
+    | 'timeWindow'
+    | 'geoArea'
+    | 'geoThreshold'
+    | 'geoTime'
+    | 'geoTimeWindow'
 }
 export type Parameter = {
-    key?: string
-    value?: string
-    number?: string
-    frequency?: string
-    angle?: string
-    mode: "simple" | "offset" | "noise" | "drift"
+  key?: string
+  value?: string
+  number?: string
+  frequency?: string
+  angle?: string
+  mode: 'simple' | 'offset' | 'noise' | 'drift'
 }
 
 export type Icao = {
-    icao : string
+  icao: string
 }
 
 export type Callsign = {
-    callsign : string
+  callsign: string
 }
 
 export type Squawk = {
-    squawk : string
+  squawk: string
 }
 
 export type IcaoRoute = {
-    icaoRoute : string
+  icaoRoute: string
 }
 
 export type FlightId = {
-    flightId : string
+  flightId: string
 }
 
 export type Aerodep = {
-    aerodep : string
+  aerodep: string
 }
 
 export type Aerodest = {
-    aerodest : string
+  aerodest: string
 }
 
 export type AircraftType = {
-    aircraftType : string
+  aircraftType: string
 }
 
 export type EstimatedOffBlockTime = {
-    estimatedOffBlockTime : string
+  estimatedOffBlockTime: string
 }
 
 export type NonIcaoAerodep = {
-    nonIcaoAerodep : string
+  nonIcaoAerodep: string
 }
 
 export type NonIcaoAerodest = {
-    nonIcaoAerodest : string
+  nonIcaoAerodest: string
 }
 
 export type RouteLength = {
-    routeLength : number
+  routeLength: number
 }
 
 export type Wef = {
-    wef : string
+  wef: string
 }
 
 export type Unt = {
-    unt : string
+  unt: string
 }
 
 export type SearchkKey = {
-    searchkKey : string
+  searchkKey: string
 }
 
 export type ActionDB = {
-    actionDB : string
+  actionDB: string
 }
 
 export type Target = {
-    identifier: "icao" | 
-    "hexIdent" | 
-    "callsign" | 
-    "squawk" |
-    "altitude" | 
-    "groundSpeed" | 
-    "track" | 
-    "latitude" | 
-    "longitude" | 
-    "verticalRate" | 
-    "alert" | 
-    "emergency" | 
-    "SPI" | 
-    "isOnGround" | 
-    "flightId" | 
-    "aerodep" | 
-    "aerodest" | 
-    "aircraftType" | 
-    "estimatedOffBlockTime" | 
-    "nonIcaoAerodep" | 
-    "nonIcaoAerodest" | 
-    "route" | 
-    "routeLength" | 
-    "wef" | 
-    "unt" | 
-    "searchkKey" | 
-    "actionDB",
-    value : string
+  identifier:
+    | 'icao'
+    | 'hexIdent'
+    | 'callsign'
+    | 'squawk'
+    | 'altitude'
+    | 'groundSpeed'
+    | 'track'
+    | 'latitude'
+    | 'longitude'
+    | 'verticalRate'
+    | 'alert'
+    | 'emergency'
+    | 'SPI'
+    | 'isOnGround'
+    | 'flightId'
+    | 'aerodep'
+    | 'aerodest'
+    | 'aircraftType'
+    | 'estimatedOffBlockTime'
+    | 'nonIcaoAerodep'
+    | 'nonIcaoAerodest'
+    | 'route'
+    | 'routeLength'
+    | 'wef'
+    | 'unt'
+    | 'searchkKey'
+    | 'actionDB'
+  value: string
 }
 
 export type Time = {
-    time : string
+  time: string
 }
 
 export type Trigger = {
-    time : Time
+  time: Time
 }
 
 export type TimeWindows = {
-    lowerBound : string
-    upperBound : string
+  lowerBound: string
+  upperBound: string
 }
 
 export type GeoThreshold = {
-    thresholdType : string
-    threshold : string
-    boundType : string
+  thresholdType: string
+  threshold: string
+  boundType: string
 }
 
 export type GeoArea = {
-    polygon : Polygon
+  polygon: Polygon
 }
 
 export type Polygon = {
-    id : string
-    name : string
-    vertices : Vertices
-    lowerAlt : string
-    upperAlt : string
+  id: string
+  name: string
+  vertices: Vertices
+  lowerAlt: string
+  upperAlt: string
 }
 
 export type Vertices = {
-    vertex : Vertex[]
+  vertex: Vertex[]
 }
 
 export type Vertex = {
-    lat : Lat
-    lon : Lon
+  lat: Lat
+  lon: Lon
 }
 
 export type Lat = {
-    value : string
-    offset : boolean
+  value: string
+  offset: boolean
 }
 
 export type Lon = {
-    value : string
-    offset : boolean
+  value: string
+  offset: boolean
 }
 
 export type Altitude = {
-    value : number
-    offset : boolean
+  value: number
+  offset: boolean
 }
 
 export type Trajectory = {
-    waypoint : Waypoint[]
+  waypoint: Waypoint[]
 }
 
 export type Waypoint = {
-    vertex : Vertex
-    altitude : Altitude
-    time : number
+  vertex: Vertex
+  altitude: Altitude
+  time: number
 }

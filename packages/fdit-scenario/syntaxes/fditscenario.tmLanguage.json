@@ -1,9 +1,7 @@
 {
   "name": "fditscenario",
   "scopeName": "source.fditscenario",
-  "fileTypes": [
-    ".fditscenario"
-  ],
+  "fileTypes": [".fditscenario"],
   "patterns": [
     {
       "include": "#comments"

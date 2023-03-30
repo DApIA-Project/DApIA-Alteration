@@ -1,16 +1,18 @@
-import React from "react";
-import "../styles/Button.css";
-
+import React from 'react'
+import '../styles/Button.css'
 
 interface ButtonProps {
-    text: string
-    onClick: () => void
+  text: string
+  onClick: () => void
 }
 
-function Button({text, onClick, ...props}: ButtonProps) {
-    return (
-        <button {...props} className="build" onClick={onClick}> {text} </button>
-    );
+function Button({ text, onClick, ...props }: ButtonProps) {
+  return (
+    <button {...props} className='build' onClick={onClick}>
+      {' '}
+      {text}{' '}
+    </button>
+  )
 }
 
-export default Button;
+export default Button

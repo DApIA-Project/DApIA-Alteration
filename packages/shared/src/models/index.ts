@@ -1,4 +1,4 @@
 export type Recording = {
-    name: string,
-    content: string
+  name: string
+  content: string
 }

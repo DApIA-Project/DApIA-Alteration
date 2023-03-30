@@ -1,20 +1,25 @@
-import React from "react";
-import "../styles/InputFile.css";
+import React from 'react'
+import '../styles/InputFile.css'
 
 interface InputFileProps {
-    name: string
-    onChange: (fileList: FileList) => void
+  name: string
+  onChange: (fileList: FileList) => void
 }
 
-function InputFile({name, onChange, ...props}: InputFileProps) {
-    return (
-        <div>
-            <input type="file" {...props} name={name} onChange={(event) => {
-                if (event.target.files) onChange(event.target.files)
-            }
-            } multiple/>
-        </div>
-    );
+function InputFile({ name, onChange, ...props }: InputFileProps) {
+  return (
+    <div>
+      <input
+        type='file'
+        {...props}
+        name={name}
+        onChange={(event) => {
+          if (event.target.files) onChange(event.target.files)
+        }}
+        multiple
+      />
+    </div>
+  )
 }
 
-export default InputFile;
+export default InputFile

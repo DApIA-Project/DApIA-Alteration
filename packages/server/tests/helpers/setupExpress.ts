@@ -4,9 +4,6 @@ import setRoutes from '../../src/appRoute'
 export function setupExpress() {
   const app = express()
   app.use(json())
-  app.use(
-    '/',
-    setRoutes()
-  )
+  app.use('/', setRoutes())
   return app
 }

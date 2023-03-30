@@ -3,10 +3,12 @@
  * DO NOT EDIT MANUALLY!
  ******************************************************************************/
 
-import { loadGrammarFromJson, Grammar } from 'langium';
+import { loadGrammarFromJson, Grammar } from 'langium'
 
-let loadedAttackScenarioGrammarGrammar: Grammar | undefined;
-export const AttackScenarioGrammarGrammar = (): Grammar => loadedAttackScenarioGrammarGrammar ?? (loadedAttackScenarioGrammarGrammar = loadGrammarFromJson(`{
+let loadedAttackScenarioGrammarGrammar: Grammar | undefined
+export const AttackScenarioGrammarGrammar = (): Grammar =>
+  loadedAttackScenarioGrammarGrammar ??
+  (loadedAttackScenarioGrammarGrammar = loadGrammarFromJson(`{
   "$type": "Grammar",
   "isDeclared": true,
   "name": "AttackScenarioGrammar",
@@ -5593,4 +5595,4 @@ export const AttackScenarioGrammarGrammar = (): Grammar => loadedAttackScenarioG
   "interfaces": [],
   "types": [],
   "usedGrammars": []
-}`));
+}`))

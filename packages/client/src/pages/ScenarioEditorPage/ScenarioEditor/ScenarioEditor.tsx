@@ -1,90 +1,110 @@
-import React, {useState} from 'react'
-import Button from "../../../components/Button";
-import {Alert, AlertTitle} from "@mui/material";
-import MonacoEditor from "../CodeArea/MonacoEditor";
-import InputFile from "../../../components/InputFile";
+import React, { useState } from 'react'
+import Button from '../../../components/Button'
+import { Alert, AlertTitle } from '@mui/material'
+import MonacoEditor from '../CodeArea/MonacoEditor'
+import InputFile from '../../../components/InputFile'
+import { Recording } from '@smartesting/shared/dist/models'
 
 export enum ScenarioEditorTestIds {
-    COMPONENT = 'ScenarioEditor',
-    GENERATE_BUTTON = 'ScenarioEditor.action.generateButton'
+  COMPONENT = 'ScenarioEditor',
+  GENERATE_BUTTON = 'ScenarioEditor.action.generateButton',
 }
 
 type OnGenerateOptions = {
-    scenario: string,
-    recording: string,
-    recordingName: string,
-    recordingToReplay?: string,
-    recordingToReplayName?: string
+  scenario: string
+  recording: Recording
+  recordingToReplay?: Recording
 }
 
 type ScenarioEditorProps = {
-    onGenerate: (options: OnGenerateOptions) => void
+  onGenerate: (options: OnGenerateOptions) => void
 }
 
-const ScenarioEditor: React.FunctionComponent<ScenarioEditorProps> = ({onGenerate}) => {
+const ScenarioEditor: React.FunctionComponent<ScenarioEditorProps> = ({
+  onGenerate,
+}) => {
+  const [error, setError] = useState<string | null>(null)
+  const [recordingName, setRecordingName] = useState<string>('')
+  const [recordingContent, setRecordingContent] = useState<string>('')
+  const [recordingToReplayName, setRecordingToReplayName] = useState<string>('')
+  const [recordingToReplayContent, setRecordingToReplayContent] =
+    useState<string>('')
 
-    const [error, setError] = useState<string | null>(null)
-    const [recording, setRecording] = useState<string>("")
-    const [recordingToReplay, setRecordingToReplay] = useState<string>("")
-    const [recordingName, setRecordingName] = useState<string>("")
-    const [recordingToReplayName, setRecordingToReplayName] = useState<string>("")
+  function onGenerateClicked() {
+    const elements = document.getElementsByClassName(
+      'view-lines monaco-mouse-cursor-text'
+    ) as HTMLCollectionOf<HTMLElement>
+    if (!elements[0]) return setError('Unable to initialize Monaco Editor')
+    const scenario = elements[0]?.textContent
 
-    function onGenerateClicked() {
-        const elements = document.getElementsByClassName('view-lines monaco-mouse-cursor-text') as HTMLCollectionOf<HTMLElement>
-        if (!elements[0]) return setError("Unable to initialize Monaco Editor");
-        const scenario = elements[0]?.textContent
-        if (scenario !== null) {
-            onGenerate({
-                scenario,
-                recording,
-                recordingName,
-                recordingToReplay: recordingToReplay ? recordingToReplay : undefined,
-                recordingToReplayName: recordingToReplayName ? recordingToReplayName : undefined
-            })
-            setError(null);
-        }
+    if (!scenario || !recordingToReplayContent || !recordingName) return
+
+    const options: OnGenerateOptions = {
+      scenario,
+      recording: {
+        content: recordingContent,
+        name: recordingName,
+      },
     }
-
-    function onRecordingSelected(files: FileList) {
-        readFiles(files, setRecording, setRecordingName)
+    if (recordingToReplayName && recordingToReplayContent) {
+      options.recordingToReplay = {
+        name: recordingToReplayName,
+        content: recordingToReplayContent,
+      }
     }
+    onGenerate(options)
+    setError(null)
+  }
 
-    function onRecordingToReplaySelected(files: FileList) {
-        readFiles(files, setRecordingToReplay, setRecordingToReplayName)
+  function onRecordingSelected(files: FileList) {
+    readFiles(files, setRecordingContent, setRecordingName)
+  }
+
+  function onRecordingToReplaySelected(files: FileList) {
+    readFiles(files, setRecordingToReplayContent, setRecordingToReplayName)
+  }
+
+  function readFiles(
+    files: FileList,
+    setContent: React.Dispatch<string>,
+    setName: React.Dispatch<string>
+  ) {
+    const file = files.item(0)
+    if (!file) {
+      return
+    } else {
+      const reader = new FileReader()
+      reader.readAsText(file)
+      reader.onload = function () {
+        setName(file.name)
+        setContent(String(reader.result))
+      }
     }
+  }
 
-    function readFiles(files: FileList, setContent: React.Dispatch<string>, setName: React.Dispatch<string>) {
-        const file = files.item(0);
-        if (!file) {
-            return
-        } else {
-            const reader = new FileReader()
-            reader.readAsText(file)
-            reader.onload = function () {
-                setName(file.name)
-                setContent(String(reader.result))
-            }
-        }
-    }
-
-    if (error) return (
-        <Alert severity="error">
-            <AlertTitle>Unable to initialize Monaco editor</AlertTitle>
-            {error}
-        </Alert>
-    )
-
+  if (error)
     return (
-        <div>
-            <MonacoEditor/>
-            <Button data-testid={ScenarioEditorTestIds.GENERATE_BUTTON}
-                    text="Generate alteration"
-                    onClick={onGenerateClicked}/>
-            <InputFile name={"recording"} onChange={onRecordingSelected}/>
-            <InputFile name={"recordingToReplay"} onChange={onRecordingToReplaySelected}/>
-        </div>
-
+      <Alert severity='error'>
+        <AlertTitle>Error</AlertTitle>
+        {error}
+      </Alert>
     )
+
+  return (
+    <div>
+      <MonacoEditor />
+      <Button
+        data-testid={ScenarioEditorTestIds.GENERATE_BUTTON}
+        text='Generate alteration'
+        onClick={onGenerateClicked}
+      />
+      <InputFile name={'recording'} onChange={onRecordingSelected} />
+      <InputFile
+        name={'recordingToReplay'}
+        onChange={onRecordingToReplaySelected}
+      />
+    </div>
+  )
 }
 
 export default ScenarioEditor

@@ -1,4 +1,3 @@
 declare interface Window {
-    sendData(): Promise<void>;
-
+  sendData(): Promise<void>
 }
