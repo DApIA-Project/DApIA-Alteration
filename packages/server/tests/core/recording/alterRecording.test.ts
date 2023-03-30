@@ -5,14 +5,17 @@ import { ApiRoutes } from '@smartesting/shared/src/routes'
 import assert from 'assert'
 import { AlterRecordingError } from '@smartesting/shared/dist'
 import alterRecording from '../../../src/api/core/recording/alterRecording'
+import { TestAlterationManager } from '../../../src/api/adapters/TestAlterationManager'
 
-describe(`POST ${ApiRoutes.alteration()}`, () => {
+describe(`core/alterRecording`, () => {
   let server: express.Express
+  let alterationManager = new TestAlterationManager()
 
   beforeEach(() => {
     server = setupExpress()
   })
 
+  // TODO: turn into core tests
   context('when syntax scenario is invalid', () => {
     it('returns 422 if the scenario syntax is invalid', async () => {
       const response = await request(server)
@@ -62,7 +65,9 @@ describe(`POST ${ApiRoutes.alteration()}`, () => {
           content:
             'MSG,4,3,5022202,4CA1FA,5022202,2018/11/25,11:30:48.179,2018/11/25,11:30:48.179,,,474.53,295.86,,,0.0,,,,,',
           name: 'myfile.sbs',
-        }
+        },
+        undefined,
+        alterationManager
       )
 
       assert(!error, 'Error is defined')
@@ -76,7 +81,9 @@ describe(`POST ${ApiRoutes.alteration()}`, () => {
           content:
             'MSG,4,3,5022202,4CA1FA,5022202,2018/11/25,11:30:48.179,2018/11/25,11:30:48.179,,,474.53,295.86,,,0.0,,,,,',
           name: 'myfile.sbs',
-        }
+        },
+        undefined,
+        alterationManager
       )
 
       assert(!error, 'Error is defined')
@@ -95,7 +102,8 @@ describe(`POST ${ApiRoutes.alteration()}`, () => {
           content:
             'MSG,4,3,5022202,4CA1FA,5022202,2018/11/25,11:30:48.179,2018/11/25,11:30:48.179,,,474.53,295.86,,,0.0,,,,,',
           name: 'myfile2.sbs',
-        }
+        },
+        alterationManager
       )
 
       assert(!error, 'Error is defined')

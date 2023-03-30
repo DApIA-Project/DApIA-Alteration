@@ -1,15 +1,21 @@
 import {
+  ASTConstantValue,
   ASTCreationParameter,
   ASTCreationParameters,
   ASTCreationParameterType,
+  ASTDelayParameter,
   ASTHideParameter,
   ASTInstruction,
+  ASTLeftShift,
   ASTNumber,
   ASTNumberOffset,
   ASTParameter,
   ASTParameters,
   ASTParameterType,
+  ASTRecordingParameterType,
   ASTReplayTarget,
+  ASTRightShift,
+  ASTRotateParameter,
   ASTSaturationParameter,
   ASTSaturationParameters,
   ASTSaturationParameterType,
@@ -17,55 +23,41 @@ import {
   ASTSpeedParameter,
   ASTSpeedParameters,
   ASTSpeedParameterType,
+  ASTStringValue,
   ASTTarget,
   ASTTime,
   ASTTimeScope,
-  ASTTrajectory,
   ASTValue,
+  ASTVariableValue,
   ASTWayPoint,
   ASTWayPoints,
+  isASTAllPlaneFrom,
   isASTAllPlanes,
   isASTAlter,
+  isASTAlterAndTrajectory,
   isASTAlterSpeed,
   isASTAt,
+  isASTAtFor,
   isASTCreate,
+  isASTCreationParameters,
+  isASTDelay,
   isASTHide,
+  isASTHideParameter,
   isASTIntegerValue,
+  isASTLeftShift,
   isASTNumber,
   isASTNumberOffset,
+  isASTParamDrift,
   isASTParamEdit,
+  isASTParameters,
   isASTParamNoise,
   isASTParamOffset,
+  isASTRecordingValue,
   isASTReplay,
-  isASTSaturate,
-  isASTTime,
-  isASTTrajectory,
-  isASTAllPlaneFrom,
-  isASTDelay,
-  ASTDelayParameter,
   isASTRotate,
-  ASTRotateParameter,
-  isASTWindow,
-  isASTParameter,
-  isASTHideParameter,
-  isASTParameters,
-  isASTCreationParameters,
+  isASTSaturate,
   isASTStringValue,
   isASTVariableValue,
-  ASTStringValue,
-  ASTVariableValue,
-  ASTConstantValue,
-  isASTLeftShift,
-  ASTLeftShift,
-  ASTRightShift,
-  isASTDoubleValue,
-  ASTRecordingParameterType,
-  isASTAtFor,
-  isASTParamDrift,
-  isASTRecordingValue,
-  isASTAlterAndTrajectory,
-  isASTInstruction,
-  isASTReplayTarget,
 } from '../language-server/generated/ast'
 import {
   Action,
@@ -80,26 +72,16 @@ import {
   Waypoint,
 } from '../types'
 
-export function generateCommands(
-  scenario: ASTScenario,
+export function generateStatements(
+  astScenario: ASTScenario,
   fileName: string,
   fileContent: string
-): Parameters | undefined {
-  return generateStatements(scenario, fileName, fileContent)
-}
-
-function generateStatements(
-  scenar: ASTScenario,
-  fileName: string,
-  fileContent: string
-): Parameters | undefined {
-  //let env : DslGenEnv = new Map<string,number>();
-
-  return { sensors: evalScenario(scenar, fileName, fileContent) }
+): Parameters {
+  return { sensors: evalScenario(astScenario, fileName, fileContent) }
 }
 
 function evalScenario(
-  scenar: ASTScenario,
+  astScenario: ASTScenario,
   fileName: string,
   fileContent: string
 ): Sensors {
@@ -111,7 +93,7 @@ function evalScenario(
         record: fileName,
         firstDate: evalFirstDate(fileContent),
         filter: '',
-        action: evalInstructions(scenar.instructions, fileContent),
+        action: evalInstructions(astScenario.instructions, fileContent),
       },
     ],
   }
@@ -144,6 +126,7 @@ enum ParametreType {
   spi = 'SPI',
   squawk = 'squawk',
 }
+
 enum CreationParametreType {
   icao = 'hexIdent',
   callsign = 'callsign',
@@ -384,6 +367,7 @@ function evalStringValue(n: ASTStringValue): string {
 function evalVariableValue(n: ASTVariableValue): string {
   return n.content
 }
+
 function evalConstantValue(n: ASTConstantValue): string {
   return n.content
 }
@@ -451,6 +435,7 @@ function evalTrajectory(tr: ASTWayPoints): Trajectory {
     waypoint: evalWaypoint(tr.waypoints),
   }
 }
+
 function evalWaypoint(wp: ASTWayPoint[]): Waypoint[] {
   let waypoint: Waypoint[] = []
   for (let i = 0; i < wp.length; i++) {
@@ -610,6 +595,7 @@ function evalRotateParameter(pm: ASTRotateParameter): Parameter[] {
     },
   ]
 }
+
 function evalParameters(param: ASTParameters): Parameter[] {
   return evalParameter(param.items)
 }
@@ -690,30 +676,16 @@ function evalParametreType(pm: ASTParameterType): string | undefined {
     return ParametreType.track
   }
 }
+
 function evalFrequency(hp: ASTHideParameter): string {
   return evalValue(hp.value)
 }
 
 function evalFirstDate(fileContent: string) {
-  // Lire le fichier .sbs
   const lines = fileContent.split('\n')
-
-  // Extraire la ligne contenant la date et l'heure
   const firstLine = lines[0]
   const parts = firstLine.split(',')
-
-  // Convertir la date et l'heure en objet Date TypeScript
-
-  const date = new Date(parts[6].replaceAll('/', '-') + 'T' + parts[7])
-  const timestamp = Date.parse(parts[6] + ',' + parts[7] + ' GMT')
-  /*
-    const dateParts = parts[6].split('/');
-    const timeParts = parts[7].split(':');
-    const date = new Date(parseInt(dateParts[0]), parseInt(dateParts[1]) - 1, parseInt(dateParts[2]), parseInt(timeParts[0]), parseInt(timeParts[1]), parseFloat(timeParts[2]));
-    */
-  // Obtenir le timestamp à partir de l'objet Date
-  //  const timestamp = date.getTime();
-  return timestamp
+  return Date.parse(parts[6] + ',' + parts[7] + ' GMT')
 }
 
 function evalLastDate(atSeconds: number, fileContent: string) {

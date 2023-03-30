@@ -2,6 +2,12 @@
 import express from 'express'
 import cors from 'cors'
 import setRoutes from './appRoute'
+import { FditAdapters } from './api/FditAdapters'
+import { TestAlterationManager } from './api/adapters/TestAlterationManager'
+
+const adapters: FditAdapters = {
+  alterationManager: new TestAlterationManager(),
+}
 
 const app = express()
 

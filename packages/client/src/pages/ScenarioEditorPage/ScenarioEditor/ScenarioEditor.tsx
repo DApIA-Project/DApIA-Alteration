@@ -37,7 +37,7 @@ const ScenarioEditor: React.FunctionComponent<ScenarioEditorProps> = ({
     if (!elements[0]) return setError('Unable to initialize Monaco Editor')
     const scenario = elements[0]?.textContent
 
-    if (!scenario || !recordingToReplayContent || !recordingName) return
+    if (!scenario || !recordingContent || !recordingName) return
 
     const options: OnGenerateOptions = {
       scenario,

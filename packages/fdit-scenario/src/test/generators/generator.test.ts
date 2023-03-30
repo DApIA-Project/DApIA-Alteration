@@ -1,11 +1,9 @@
-import { generateCommands } from '../generator/generator'
-import { ASTScenario } from '../language-server/generated/ast'
 import { EmptyFileSystem, LangiumServices } from 'langium'
-import { createFditscenarioServices } from '../language-server/fditscenario-module'
-import { extractAstNodeFromString } from '../web'
+import { createFditscenarioServices } from '../../language-server/fditscenario-module'
+import { generateStatements, parseScenario } from '../../web'
 import assert from 'assert'
 
-describe('generatorTestMocha', () => {
+describe('generator', () => {
   let services: LangiumServices | null = null
   let fileContent = ''
   beforeEach(() => {
@@ -16,9 +14,9 @@ describe('generatorTestMocha', () => {
   })
   context('when scenario is no valid', () => {
     it('returns json with no action when content is empty', async () => {
-      const scenario = extractAstNodeFromString<ASTScenario>('', services!)
+      const scenario = await parseScenario('')
       assert.deepStrictEqual(
-        generateCommands(await scenario, 'zigzag.sbs', fileContent),
+        generateStatements(scenario.value, 'zigzag.sbs', fileContent),
         {
           sensors: {
             sensor: [
@@ -37,12 +35,9 @@ describe('generatorTestMocha', () => {
     })
 
     it('returns json with no action when content is false', async () => {
-      const scenario = extractAstNodeFromString<ASTScenario>(
-        'edzvffd',
-        services!
-      )
+      const scenario = await parseScenario('edzvffd')
       assert.deepStrictEqual(
-        generateCommands(await scenario, 'zigzag.sbs', fileContent),
+        generateStatements(scenario.value, 'zigzag.sbs', fileContent),
         {
           sensors: {
             sensor: [
@@ -63,12 +58,11 @@ describe('generatorTestMocha', () => {
 
   context('when scenario is valid', () => {
     it('returns json with action when content is hide all_planes from until', async () => {
-      const scenario = extractAstNodeFromString<ASTScenario>(
-        'hide all_planes from 56 seconds until 90 seconds',
-        services!
+      const scenario = await parseScenario(
+        'hide all_planes from 56 seconds until 90 seconds'
       )
       assert.deepStrictEqual(
-        generateCommands(await scenario, 'zigzag.sbs', fileContent),
+        generateStatements(scenario.value, 'zigzag.sbs', fileContent),
         {
           sensors: {
             sensor: [
@@ -102,12 +96,9 @@ describe('generatorTestMocha', () => {
     })
 
     it('returns json with action when content is hide all_planes at ', async () => {
-      const scenario = extractAstNodeFromString<ASTScenario>(
-        'hide all_planes at 67 seconds',
-        services!
-      )
+      const scenario = await parseScenario('hide all_planes at 67 seconds')
       assert.deepStrictEqual(
-        generateCommands(await scenario, 'zigzag.sbs', fileContent),
+        generateStatements(scenario.value, 'zigzag.sbs', fileContent),
         {
           sensors: {
             sensor: [
@@ -141,12 +132,11 @@ describe('generatorTestMocha', () => {
     })
 
     it('returns json with action when content is hide all_planes at for ', async () => {
-      const scenario = extractAstNodeFromString<ASTScenario>(
-        'hide all_planes at 67 seconds for 89 seconds',
-        services!
+      const scenario = await parseScenario(
+        'hide all_planes at 67 seconds for 89 seconds'
       )
       assert.deepStrictEqual(
-        generateCommands(await scenario, 'zigzag.sbs', fileContent),
+        generateStatements(scenario.value, 'zigzag.sbs', fileContent),
         {
           sensors: {
             sensor: [
@@ -180,12 +170,11 @@ describe('generatorTestMocha', () => {
     })
 
     it('returns json with action when content is alter all_planes with_values 1', async () => {
-      const scenario = extractAstNodeFromString<ASTScenario>(
-        'alter all_planes from 56 seconds until 90 seconds with_values ALTITUDE = 90000 and LATITUDE -= 456 and ICAO *= 900 and TRACK ++= 800',
-        services!
+      const scenario = await parseScenario(
+        'alter all_planes from 56 seconds until 90 seconds with_values ALTITUDE = 90000 and LATITUDE -= 456 and ICAO *= 900 and TRACK ++= 800'
       )
       assert.deepStrictEqual(
-        generateCommands(await scenario, 'zigzag.sbs', fileContent),
+        generateStatements(scenario.value, 'zigzag.sbs', fileContent),
         {
           sensors: {
             sensor: [
@@ -241,12 +230,11 @@ describe('generatorTestMocha', () => {
     })
 
     it('returns json with action when content is alter all_planes with_values 2', async () => {
-      const scenario = extractAstNodeFromString<ASTScenario>(
-        'alter all_planes from 56 seconds until 90 seconds with_values CALLSIGN = 90000 and EMERGENCY -= 456 and GROUNDSPEED *= 900 and LONGITUDE ++= 800 and SPI = 67 and SQUAWK = 78',
-        services!
+      const scenario = await parseScenario(
+        'alter all_planes from 56 seconds until 90 seconds with_values CALLSIGN = 90000 and EMERGENCY -= 456 and GROUNDSPEED *= 900 and LONGITUDE ++= 800 and SPI = 67 and SQUAWK = 78'
       )
       assert.deepStrictEqual(
-        generateCommands(await scenario, 'zigzag.sbs', fileContent),
+        generateStatements(scenario.value, 'zigzag.sbs', fileContent),
         {
           sensors: {
             sensor: [
@@ -312,12 +300,11 @@ describe('generatorTestMocha', () => {
     })
 
     it('returns json with action when content is create with_waypoints with_values 1', async () => {
-      const scenario = extractAstNodeFromString<ASTScenario>(
-        'create from 56 seconds until 89 seconds with_waypoints [(45,78) with_altitude 90000 at 78 seconds, (12,70) with_altitude 7000 at 99 seconds, (45,78) with_altitude 90000 at 78 seconds] with_values ICAO=6777',
-        services!
+      const scenario = await parseScenario(
+        'create from 56 seconds until 89 seconds with_waypoints [(45,78) with_altitude 90000 at 78 seconds, (12,70) with_altitude 7000 at 99 seconds, (45,78) with_altitude 90000 at 78 seconds] with_values ICAO=6777'
       )
       assert.deepStrictEqual(
-        generateCommands(await scenario, 'zigzag.sbs', fileContent),
+        generateStatements(scenario.value, 'zigzag.sbs', fileContent),
         {
           sensors: {
             sensor: [
@@ -413,12 +400,11 @@ describe('generatorTestMocha', () => {
     })
 
     it('returns json with action when content is create with_waypoints with_values 2 ', async () => {
-      const scenario = extractAstNodeFromString<ASTScenario>(
-        'create from 56 seconds until 89 seconds with_waypoints [(45,78) with_altitude 90000 at 78 seconds, (12,70) with_altitude 7000 at 99 seconds] with_values ICAO = 8 and CALLSIGN = 44 and SQUAWK = 900 and EMERGENCY = 786 and ALERT = 56 and SPI = 1234',
-        services!
+      const scenario = await parseScenario(
+        'create from 56 seconds until 89 seconds with_waypoints [(45,78) with_altitude 90000 at 78 seconds, (12,70) with_altitude 7000 at 99 seconds] with_values ICAO = 8 and CALLSIGN = 44 and SQUAWK = 900 and EMERGENCY = 786 and ALERT = 56 and SPI = 1234'
       )
       assert.deepStrictEqual(
-        generateCommands(await scenario, 'zigzag.sbs', fileContent),
+        generateStatements(scenario.value, 'zigzag.sbs', fileContent),
         {
           sensors: {
             sensor: [
@@ -522,12 +508,11 @@ describe('generatorTestMocha', () => {
     })
 
     it('returns json with action when content is alter all_planes with_waypoints with_values ', async () => {
-      const scenario = extractAstNodeFromString<ASTScenario>(
-        'alter all_planes from 56 seconds until 90 seconds with_waypoints [(45,78) with_altitude 90000 at 78 seconds, (12,70) with_altitude 7000 at 99 seconds]',
-        services!
+      const scenario = await parseScenario(
+        'alter all_planes from 56 seconds until 90 seconds with_waypoints [(45,78) with_altitude 90000 at 78 seconds, (12,70) with_altitude 7000 at 99 seconds]'
       )
       assert.deepStrictEqual(
-        generateCommands(await scenario, 'zigzag.sbs', fileContent),
+        generateStatements(scenario.value, 'zigzag.sbs', fileContent),
         {
           sensors: {
             sensor: [
@@ -599,12 +584,11 @@ describe('generatorTestMocha', () => {
     })
 
     it('returns json with action when content is alter_speed all_planes with_values ', async () => {
-      const scenario = extractAstNodeFromString<ASTScenario>(
-        'alter_speed all_planes from 56 seconds until 90 seconds with_values EAST_WEST_VELOCITY = 78 and NORTH_SOUTH_VELOCITY = 45',
-        services!
+      const scenario = await parseScenario(
+        'alter_speed all_planes from 56 seconds until 90 seconds with_values EAST_WEST_VELOCITY = 78 and NORTH_SOUTH_VELOCITY = 45'
       )
       assert.deepStrictEqual(
-        generateCommands(await scenario, 'zigzag.sbs', fileContent),
+        generateStatements(scenario.value, 'zigzag.sbs', fileContent),
         {
           sensors: {
             sensor: [
@@ -650,12 +634,11 @@ describe('generatorTestMocha', () => {
     })
 
     it('returns json with action when content is saturate all_planes with_values ', async () => {
-      const scenario = extractAstNodeFromString<ASTScenario>(
-        'saturate all_planes from 56 seconds until 90 seconds with_values ICAO = 78 and NUMBER = 45',
-        services!
+      const scenario = await parseScenario(
+        'saturate all_planes from 56 seconds until 90 seconds with_values ICAO = 78 and NUMBER = 45'
       )
       assert.deepStrictEqual(
-        generateCommands(await scenario, 'zigzag.sbs', fileContent),
+        generateStatements(scenario.value, 'zigzag.sbs', fileContent),
         {
           sensors: {
             sensor: [
@@ -701,12 +684,11 @@ describe('generatorTestMocha', () => {
     })
 
     it('returns json with action when content is replay all_planes from until ', async () => {
-      const scenario = extractAstNodeFromString<ASTScenario>(
-        'replay all_planes from_recording "34.sbs" from 56 seconds until 90 seconds',
-        services!
+      const scenario = await parseScenario(
+        'replay all_planes from_recording "34.sbs" from 56 seconds until 90 seconds'
       )
       assert.deepStrictEqual(
-        generateCommands(await scenario, 'zigzag.sbs', fileContent),
+        generateStatements(scenario.value, 'zigzag.sbs', fileContent),
         {
           sensors: {
             sensor: [
@@ -741,12 +723,11 @@ describe('generatorTestMocha', () => {
     })
 
     it('returns json with action when content is delay all_planes from until with_delay ', async () => {
-      const scenario = extractAstNodeFromString<ASTScenario>(
-        'delay all_planes from 56 seconds until 90 seconds with_delay 55 seconds',
-        services!
+      const scenario = await parseScenario(
+        'delay all_planes from 56 seconds until 90 seconds with_delay 55 seconds'
       )
       assert.deepStrictEqual(
-        generateCommands(await scenario, 'zigzag.sbs', fileContent),
+        generateStatements(scenario.value, 'zigzag.sbs', fileContent),
         {
           sensors: {
             sensor: [
@@ -787,12 +768,11 @@ describe('generatorTestMocha', () => {
     })
 
     it('returns json with action when content is rotate all_planes from until with_angle ', async () => {
-      const scenario = extractAstNodeFromString<ASTScenario>(
-        'rotate all_planes from 67 seconds until 99 seconds with_angle 90',
-        services!
+      const scenario = await parseScenario(
+        'rotate all_planes from 67 seconds until 99 seconds with_angle 90'
       )
       assert.deepStrictEqual(
-        generateCommands(await scenario, 'zigzag.sbs', fileContent),
+        generateStatements(scenario.value, 'zigzag.sbs', fileContent),
         {
           sensors: {
             sensor: [
@@ -833,12 +813,11 @@ describe('generatorTestMocha', () => {
     })
 
     it('returns json with action when content is cut all_planes from until ', async () => {
-      const scenario = extractAstNodeFromString<ASTScenario>(
-        'cut all_planes from 13 seconds until 88 seconds',
-        services!
+      const scenario = await parseScenario(
+        'cut all_planes from 13 seconds until 88 seconds'
       )
       assert.deepStrictEqual(
-        generateCommands(await scenario, 'zigzag.sbs', fileContent),
+        generateStatements(scenario.value, 'zigzag.sbs', fileContent),
         {
           sensors: {
             sensor: [
@@ -872,12 +851,11 @@ describe('generatorTestMocha', () => {
     })
 
     it('returns json with action when content is with declaration and cut all_planes from until ', async () => {
-      const scenario = extractAstNodeFromString<ASTScenario>(
-        'let $test = [2,8], cut all_planes from 13 seconds until 88 seconds',
-        services!
+      const scenario = await parseScenario(
+        'let $test = [2,8], cut all_planes from 13 seconds until 88 seconds'
       )
       assert.deepStrictEqual(
-        generateCommands(await scenario, 'zigzag.sbs', fileContent),
+        generateStatements(scenario.value, 'zigzag.sbs', fileContent),
         {
           sensors: {
             sensor: [
@@ -911,12 +889,11 @@ describe('generatorTestMocha', () => {
     })
 
     it('returns json with action when content is hide all_planes from until with_frequency ', async () => {
-      const scenario = extractAstNodeFromString<ASTScenario>(
-        'hide all_planes from 56 seconds until 89 seconds with_frequency 89',
-        services!
+      const scenario = await parseScenario(
+        'hide all_planes from 56 seconds until 89 seconds with_frequency 89'
       )
       assert.deepStrictEqual(
-        generateCommands(await scenario, 'zigzag.sbs', fileContent),
+        generateStatements(scenario.value, 'zigzag.sbs', fileContent),
         {
           sensors: {
             sensor: [
@@ -956,12 +933,11 @@ describe('generatorTestMocha', () => {
     })
 
     it('returns json with action when content is replay with_values offset, simple, noise and drift ', async () => {
-      const scenario = extractAstNodeFromString<ASTScenario>(
-        'replay all_planes from_recording "34.sbs" from 56 seconds until 90 seconds with_values ALTITUDE = 90000 and LATITUDE -= 456 and ICAO *= 900 and TRACK ++= 800 and CALLSIGN --= 90000 and EMERGENCY += 456 and GROUNDSPEED *= 900 and LONGITUDE ++= 800 and SPI = 67 and SQUAWK = 78',
-        services!
+      const scenario = await parseScenario(
+        'replay all_planes from_recording "34.sbs" from 56 seconds until 90 seconds with_values ALTITUDE = 90000 and LATITUDE -= 456 and ICAO *= 900 and TRACK ++= 800 and CALLSIGN --= 90000 and EMERGENCY += 456 and GROUNDSPEED *= 900 and LONGITUDE ++= 800 and SPI = 67 and SQUAWK = 78'
       )
       assert.deepStrictEqual(
-        generateCommands(await scenario, 'zigzag.sbs', fileContent),
+        generateStatements(scenario.value, 'zigzag.sbs', fileContent),
         {
           sensors: {
             sensor: [
@@ -1048,12 +1024,11 @@ describe('generatorTestMocha', () => {
     })
 
     it('returns json with action when content is create without parameter ', async () => {
-      const scenario = extractAstNodeFromString<ASTScenario>(
-        'create from 56 seconds until 89 seconds with_waypoints [(45,78) with_altitude 90000 at 78 seconds, (12,70) with_altitude 7000 at 99 seconds]',
-        services!
+      const scenario = await parseScenario(
+        'create from 56 seconds until 89 seconds with_waypoints [(45,78) with_altitude 90000 at 78 seconds, (12,70) with_altitude 7000 at 99 seconds]'
       )
       assert.deepStrictEqual(
-        generateCommands(await scenario, 'zigzag.sbs', fileContent),
+        generateStatements(scenario.value, 'zigzag.sbs', fileContent),
         {
           sensors: {
             sensor: [
@@ -1125,12 +1100,11 @@ describe('generatorTestMocha', () => {
     })
 
     it('returns json with action when content is with declaration and alter with_values constant ', async () => {
-      const scenario = extractAstNodeFromString<ASTScenario>(
-        'let $test = [2,8], alter all_planes from 13 seconds until 88 seconds with_values ALTITUDE = $test',
-        services!
+      const scenario = await parseScenario(
+        'let $test = [2,8], alter all_planes from 13 seconds until 88 seconds with_values ALTITUDE = $test'
       )
       assert.deepStrictEqual(
-        generateCommands(await scenario, 'zigzag.sbs', fileContent),
+        generateStatements(scenario.value, 'zigzag.sbs', fileContent),
         {
           sensors: {
             sensor: [
@@ -1171,12 +1145,11 @@ describe('generatorTestMocha', () => {
     })
 
     it('returns json with action when content is with declaration and alter with_values variable ', async () => {
-      const scenario = extractAstNodeFromString<ASTScenario>(
-        'let $test = [2,8], alter all_planes from 13 seconds until 88 seconds with_values ALTITUDE = #test',
-        services!
+      const scenario = await parseScenario(
+        'let $test = [2,8], alter all_planes from 13 seconds until 88 seconds with_values ALTITUDE = #test'
       )
       assert.deepStrictEqual(
-        generateCommands(await scenario, 'zigzag.sbs', fileContent),
+        generateStatements(scenario.value, 'zigzag.sbs', fileContent),
         {
           sensors: {
             sensor: [
@@ -1217,12 +1190,11 @@ describe('generatorTestMocha', () => {
     })
 
     it('returns json with action when content is create with_waypoints with_values and leftshift and rightshift ', async () => {
-      const scenario = extractAstNodeFromString<ASTScenario>(
-        'create from 56 seconds until 89 seconds with_waypoints [(45,78) with_altitude 90000 at 78 seconds, (12,70) with_altitude 7000 at 99 seconds] with_values ICAO = 8 and CALLSIGN = 44 and SQUAWK = << 900 and EMERGENCY = 786 and ALERT = 56 and SPI = >> 1234',
-        services!
+      const scenario = await parseScenario(
+        'create from 56 seconds until 89 seconds with_waypoints [(45,78) with_altitude 90000 at 78 seconds, (12,70) with_altitude 7000 at 99 seconds] with_values ICAO = 8 and CALLSIGN = 44 and SQUAWK = << 900 and EMERGENCY = 786 and ALERT = 56 and SPI = >> 1234'
       )
       assert.deepStrictEqual(
-        generateCommands(await scenario, 'zigzag.sbs', fileContent),
+        generateStatements(scenario.value, 'zigzag.sbs', fileContent),
         {
           sensors: {
             sensor: [
@@ -1326,12 +1298,11 @@ describe('generatorTestMocha', () => {
     })
 
     it('returns json with action when content is replay all_planes from until REC_DURATION ', async () => {
-      const scenario = extractAstNodeFromString<ASTScenario>(
-        'replay all_planes from_recording 56.8 * REC_DURATION from 56 seconds until 90 seconds',
-        services!
+      const scenario = await parseScenario(
+        'replay all_planes from_recording 56.8 * REC_DURATION from 56 seconds until 90 seconds'
       )
       assert.deepStrictEqual(
-        generateCommands(await scenario, 'zigzag.sbs', fileContent),
+        generateStatements(scenario.value, 'zigzag.sbs', fileContent),
         {
           sensors: {
             sensor: [
@@ -1366,12 +1337,11 @@ describe('generatorTestMocha', () => {
     })
 
     it('returns json with action when content is replay all_planes from until REC_NBR_AIRCRAFT ', async () => {
-      const scenario = extractAstNodeFromString<ASTScenario>(
-        'replay all_planes from_recording 56.8 * REC_NBR_AIRCRAFT from 56 seconds until 90 seconds',
-        services!
+      const scenario = await parseScenario(
+        'replay all_planes from_recording 56.8 * REC_NBR_AIRCRAFT from 56 seconds until 90 seconds'
       )
       assert.deepStrictEqual(
-        generateCommands(await scenario, 'zigzag.sbs', fileContent),
+        generateStatements(scenario.value, 'zigzag.sbs', fileContent),
         {
           sensors: {
             sensor: [
@@ -1406,12 +1376,11 @@ describe('generatorTestMocha', () => {
     })
 
     it('returns json with action when content is replay all_planes from until ALT_DURATION ', async () => {
-      const scenario = extractAstNodeFromString<ASTScenario>(
-        'replay all_planes from_recording 56.8 * ALT_DURATION from 56 seconds until 90 seconds',
-        services!
+      const scenario = await parseScenario(
+        'replay all_planes from_recording 56.8 * ALT_DURATION from 56 seconds until 90 seconds'
       )
       assert.deepStrictEqual(
-        generateCommands(await scenario, 'zigzag.sbs', fileContent),
+        generateStatements(scenario.value, 'zigzag.sbs', fileContent),
         {
           sensors: {
             sensor: [
@@ -1446,12 +1415,11 @@ describe('generatorTestMocha', () => {
     })
 
     it('returns json with action when content is replay all_planes from until double ', async () => {
-      const scenario = extractAstNodeFromString<ASTScenario>(
-        'replay all_planes from_recording 56.8 from 56 seconds until 90 seconds',
-        services!
+      const scenario = await parseScenario(
+        'replay all_planes from_recording 56.8 from 56 seconds until 90 seconds'
       )
       assert.deepStrictEqual(
-        generateCommands(await scenario, 'zigzag.sbs', fileContent),
+        generateStatements(scenario.value, 'zigzag.sbs', fileContent),
         {
           sensors: {
             sensor: [
@@ -1486,12 +1454,11 @@ describe('generatorTestMocha', () => {
     })
 
     it('returns json with action when content is hide planes from until', async () => {
-      const scenario = extractAstNodeFromString<ASTScenario>(
-        'hide plane satisfying "TESTES" from 56 seconds until 90 seconds',
-        services!
+      const scenario = await parseScenario(
+        'hide plane satisfying "TESTES" from 56 seconds until 90 seconds'
       )
       assert.deepStrictEqual(
-        generateCommands(await scenario, 'zigzag.sbs', fileContent),
+        generateStatements(scenario.value, 'zigzag.sbs', fileContent),
         {
           sensors: {
             sensor: [
@@ -1525,12 +1492,11 @@ describe('generatorTestMocha', () => {
     })
 
     it('returns json with action when content is replay planes from until ', async () => {
-      const scenario = extractAstNodeFromString<ASTScenario>(
-        'replay planes satisfying "TESTE" from_recording "34.sbs" from 56 seconds until 90 seconds',
-        services!
+      const scenario = await parseScenario(
+        'replay planes satisfying "TESTE" from_recording "34.sbs" from 56 seconds until 90 seconds'
       )
       assert.deepStrictEqual(
-        generateCommands(await scenario, 'zigzag.sbs', fileContent),
+        generateStatements(scenario.value, 'zigzag.sbs', fileContent),
         {
           sensors: {
             sensor: [

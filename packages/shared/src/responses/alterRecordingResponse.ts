@@ -2,7 +2,7 @@ import { Recording } from '../models'
 
 export type AlterRecordingResponse = {
   alteredRecordings: Recording[]
-  error: AlterRecordingError | null
+  error: AlterRecordingError | string | null
 }
 
 export enum AlterRecordingError {

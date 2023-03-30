@@ -9,15 +9,13 @@ import {
   PartialLangiumServices,
 } from 'langium'
 import {
-  FditscenarioGeneratedSharedModule,
   AttackScenarioGrammarGeneratedModule,
+  FditscenarioGeneratedSharedModule,
 } from './generated/module'
 import {
   FditscenarioValidator,
   registerValidationChecks,
 } from './fditscenario-validator'
-import { AbstractExecuteCommandHandler, ExecuteCommandAcceptor } from 'langium'
-import { parseAndGenerate } from '../web'
 
 /**
  * Declaration of custom services - add your own service classes here.
