@@ -1,4 +1,21 @@
-.myfile {
-  display: block;
-  margin: 10px;
+.zone_input_files {
+  text-align: center;
+  padding: 0.5%;
+  height: 5%;
+}
+
+input[type='file']::file-selector-button {
+  /* Personnaliser le texte */
+  color: white;
+  border-radius: 6px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.1);
+  cursor: pointer;
+  transition-duration: 200ms;
+  width: 50%;
+}
+
+input[type='file']::file-selector-button:hover {
+  /* Réutiliser les styles de survol de votre bouton */
+  background-color: rgba(255, 255, 255, 0.2);
 }

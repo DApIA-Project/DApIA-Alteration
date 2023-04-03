@@ -4,12 +4,12 @@ import ScenarioOutput from './ScenarioOutput/ScenarioOutput'
 import Client from '../../Client'
 import { AlterRecordingResponse, Recording } from '@smartesting/shared/dist'
 import '../../styles.css'
+import '../../styles/ScenarioEditorPage.css'
 
 const ScenarioEditorPage: React.FunctionComponent = () => {
   const [alteredRecordings, setAlteredRecordings] =
     useState<AlterRecordingResponse | null>(null)
 
-  // TODO: state on response
   return (
     <div className={'scenarioEditorPage'}>
       <ScenarioEditor

@@ -5,6 +5,7 @@ import MonacoEditor from '../CodeArea/MonacoEditor'
 import InputFile from '../../../components/InputFile'
 import { Recording } from '@smartesting/shared/dist/models'
 import '../../../styles.css'
+import '../../../styles/ScenarioEditor.css'
 
 export enum ScenarioEditorTestIds {
   COMPONENT = 'ScenarioEditor',

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import '../../../styles.css'
+import '../../../styles/MonacoEditor.css'
 
 const MonacoEditor: React.FunctionComponent = () => {
   useEffect(() => {

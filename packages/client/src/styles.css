@@ -13,152 +13,17 @@ body {
 
 h1 {
   text-align: center;
+  font-size: 250%;
 }
 
-#dsl-canvas {
-  display: block;
-  margin: 8px auto;
-  text-align: center;
-}
-
-#page-wrapper {
-  display: flex;
-  max-width: 2000px;
-  margin: 4px auto;
-  padding: 4px;
-  min-height: 80vh;
-  justify-content: center;
-}
-
-#page-wrapper .half {
-  display: flex;
-  width: 40vw;
-}
-
-/*
-.build {
-    display: block;
-    margin: 8px auto;
-    width: 300px;
-    height: 30px;
-    background: none;
-    border: 2px #fff solid;
-    color: #fff;
-    transition: 0.3s;
-    font-size: 1.2rem;
-    border-radius: 4px;
-}
-.build:hover {
-    border-color: #6cf;
-    color: #6cf;
-    cursor: pointer;
-}
-.build:active {
-    color: #fff;
-    border-color: #fff;
-}*/
-footer {
-  text-align: center;
-  color: #444;
-  font-size: 1.2rem;
-  margin-bottom: 16px;
-}
-
-@media (max-width: 1000px) {
-  #page-wrapper {
-    display: block;
-  }
-
-  #page-wrapper .half {
-    display: block;
-    width: auto;
-  }
-
-  #dsl-canvas {
-    margin-top: 32px;
-  }
-
-  #page-wrapper {
-    min-height: auto;
-  }
-}
-
-/* for monaco */
-.wrapper {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  width: 100%;
-}
-
-#monaco-editor-root {
-  flex-grow: 1;
-  height: 90%;
-}
-
-input[type='file']::file-selector-button {
-  /* Personnaliser le texte */
-  color: white;
-  border-radius: 6px;
-  background-color: rgba(255, 255, 255, 0.1);
-  border-color: rgba(255, 255, 255, 0.1);
-  cursor: pointer;
-  transition-duration: 200ms;
-  width: 50%;
-}
-
-input[type='file']::file-selector-button:hover {
-  /* Réutiliser les styles de survol de votre bouton */
-  background-color: rgba(255, 255, 255, 0.2);
-}
-
-.header {
+header {
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
 }
 
-#input_files_record {
-  display: block ruby;
-  text-align: center;
-}
-
-#input_files_record2 {
-  display: block ruby;
-  text-align: center;
-}
-
-#download_zone {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-.imageDownload {
-  width: 50%;
-  height: 5%;
-}
-
-figcaption {
-  font-size: 70%;
-}
-
-figure {
-  width: 10%;
-  height: 15%;
-  text-align: center;
-  cursor: pointer;
-}
-
 #root {
-  height: 90%;
-}
-
-.scenarioEditor {
-  height: 90%;
-}
-
-.scenarioEditorPage {
-  height: 90%;
+  height: 200%;
+  margin: 5%;
 }

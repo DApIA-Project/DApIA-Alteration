@@ -12,16 +12,18 @@ export async function parseScenario(
   content: string
 ): Promise<ParseResult<ASTScenario>> {
   const services = createFditscenarioServices(EmptyFileSystem).Fditscenario
+  console.log(services)
   // create a document from a string instead of a file
   const document = services.shared.workspace.LangiumDocumentFactory.fromString(
     content,
     URI.parse('memory://fditscenario.document')
   )
+
   // proceed with build & validation
   await services.shared.workspace.DocumentBuilder.build([document], {
     validationChecks: 'all',
   })
-
+  console.log(document.parseResult)
   return {
     ...document.parseResult,
     value: document.parseResult.value as ASTScenario,

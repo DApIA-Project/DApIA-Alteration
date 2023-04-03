@@ -690,7 +690,7 @@ function evalFirstDate(fileContent: string) {
 
 function evalLastDate(atSeconds: number, fileContent: string) {
   // Lire le fichier .sbs
-  const lines = fileContent.split('\n')
+  const lines = fileContent.trim().split('\n')
 
   // Extraire la ligne contenant la date et l'heure
   let lastLine = lines[lines.length - 1]

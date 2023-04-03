@@ -1,0 +1,14 @@
+.imageDownload {
+  width: 50%;
+}
+
+figcaption {
+  font-size: 70%;
+}
+
+figure {
+  width: 10%;
+  height: 15%;
+  text-align: center;
+  cursor: pointer;
+}

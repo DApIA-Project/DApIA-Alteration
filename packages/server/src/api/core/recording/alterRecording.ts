@@ -63,7 +63,7 @@ export const extractParameters = async (
     .concat(
       parserErrors.map(
         (parserError: any) =>
-          `${parserError.message}: near ${parserError.token.toString()}`
+          `${parserError.message}: near '${parserError.token.image}' -> l.${parserError.token.startLine}:${parserError.token.startColumn}`
       )
     )
 

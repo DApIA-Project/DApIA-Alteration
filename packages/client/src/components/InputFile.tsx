@@ -8,7 +8,7 @@ interface InputFileProps {
 
 function InputFile({ name, onChange, ...props }: InputFileProps) {
   return (
-    <div>
+    <div className={'zone_input_files'}>
       <input
         type='file'
         {...props}
