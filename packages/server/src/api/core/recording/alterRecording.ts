@@ -7,7 +7,6 @@ import {
   parseScenario,
 } from '@smartesting/fdit-scenario/dist/web'
 import { Parameters } from '@smartesting/fdit-scenario/dist/types'
-import { execSync } from 'child_process'
 import assert from 'assert'
 import IAlterationManager from '../../adapters/IAlterationManager'
 
@@ -18,6 +17,8 @@ export default async function alterRecording(
   alterationManager: IAlterationManager
 ): Promise<AlterRecordingResponse> {
   const { errors, parameters } = await extractParameters(scenario, recording)
+
+  console.log(JSON.stringify(parameters))
 
   if (errors.length > 0)
     return {
@@ -62,7 +63,7 @@ export const extractParameters = async (
     .concat(
       parserErrors.map(
         (parserError: any) =>
-          `${parserError.message}: near ${parserError.token}`
+          `${parserError.message}: near ${parserError.token.toString()}`
       )
     )
 

@@ -4,6 +4,7 @@ import { Alert, AlertTitle } from '@mui/material'
 import MonacoEditor from '../CodeArea/MonacoEditor'
 import InputFile from '../../../components/InputFile'
 import { Recording } from '@smartesting/shared/dist/models'
+import '../../../styles.css'
 
 export enum ScenarioEditorTestIds {
   COMPONENT = 'ScenarioEditor',
@@ -91,7 +92,7 @@ const ScenarioEditor: React.FunctionComponent<ScenarioEditorProps> = ({
     )
 
   return (
-    <div>
+    <div className={'scenarioEditor'}>
       <MonacoEditor />
       <Button
         data-testid={ScenarioEditorTestIds.GENERATE_BUTTON}

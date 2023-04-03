@@ -2,6 +2,7 @@ import { Parameters } from '@smartesting/fdit-scenario/dist/types'
 import { Recording } from '@smartesting/shared/dist'
 import IAlterationManager from './IAlterationManager'
 import { execSync } from 'child_process'
+import * as fs from 'fs'
 
 export class JavaAlterationManager implements IAlterationManager {
   async runAlterations(
@@ -9,7 +10,81 @@ export class JavaAlterationManager implements IAlterationManager {
     recording: Recording,
     recordingToReplay?: Recording
   ): Promise<Recording[]> {
-    throw new Error('Not implemented')
+    let recordingsAltered: Recording[] = []
+
+    let numeroFichier = 0
+    for (const parameter of parameters) {
+      let indexFileName = recording.name.indexOf('.')
+      let newFileName =
+        recording.name.substring(0, indexFileName) +
+        '_' +
+        numeroFichier +
+        recording.name.substring(indexFileName)
+      if (parameters[numeroFichier].sensors != undefined) {
+        parameters[numeroFichier].sensors.sensor![0].record = newFileName
+      }
+
+      await fs.promises.writeFile(
+        'temp/scenario_' + numeroFichier + '.json',
+        JSON.stringify(parameters[numeroFichier], null, 2)
+      )
+      await fs.promises.writeFile('temp/' + newFileName, recording.content)
+      if (recordingToReplay != undefined) {
+        await fs.promises.writeFile(
+          'temp/' + recordingToReplay.name,
+          recordingToReplay.content
+        )
+      }
+
+      await executeAlterationJar(
+        recording.content,
+        newFileName,
+        'temp/scenario_' + numeroFichier + '.json'
+      )
+
+      const contentFileAltered = await fs.promises.readFile(
+        'temp/modified__' + newFileName
+      )
+      recordingsAltered.push({
+        name: 'modified__' + newFileName,
+        content: contentFileAltered.toString(),
+      })
+
+      fs.unlink('temp/scenario_' + numeroFichier + '.json', () => {
+        console.log(
+          'Le fichier ' +
+            'temp/scenario_' +
+            numeroFichier +
+            '.json' +
+            ' a été supprimé.'
+        )
+      })
+
+      fs.unlink('temp/' + newFileName, () => {
+        console.log('Le fichier ' + 'temp/' + newFileName + ' a été supprimé.')
+      })
+
+      fs.unlink('temp/modified__' + newFileName, () => {
+        console.log(
+          'Le fichier ' + 'temp/modified__' + newFileName + ' a été supprimé.'
+        )
+      })
+
+      if (recordingToReplay != undefined) {
+        fs.unlink('temp/' + recordingToReplay.name, () => {
+          console.log(
+            'Le fichier ' +
+              'temp/' +
+              recordingToReplay.name +
+              ' a été supprimé.'
+          )
+        })
+      }
+
+      numeroFichier++
+    }
+
+    return recordingsAltered
   }
 }
 
@@ -25,6 +100,12 @@ function executeAlterationJar(
   fileName: string,
   scenarioPath: string
 ): void {
+  console.log(
+    'java -jar ../alteration/out/artifacts/alteration_atc_jar/alteration-atc.jar ' +
+      scenarioPath +
+      ' ' +
+      fileName
+  )
   execSync(
     'java -jar ../alteration/out/artifacts/alteration_atc_jar/alteration-atc.jar ' +
       scenarioPath +

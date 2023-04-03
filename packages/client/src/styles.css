@@ -93,6 +93,7 @@ footer {
 
 #monaco-editor-root {
   flex-grow: 1;
+  height: 90%;
 }
 
 input[type='file']::file-selector-button {
@@ -151,5 +152,13 @@ figure {
 }
 
 #root {
+  height: 90%;
+}
+
+.scenarioEditor {
+  height: 90%;
+}
+
+.scenarioEditorPage {
   height: 90%;
 }
