@@ -1,4 +1,8 @@
-import { AlterRecordingResponse, Recording } from '@smartesting/shared/dist'
+import {
+  AlterRecordingError,
+  AlterRecordingResponse,
+  Recording,
+} from '@smartesting/shared/dist'
 import {
   countScenarioNumber,
   createAllScenario,
@@ -17,8 +21,6 @@ export default async function alterRecording(
   alterationManager: IAlterationManager
 ): Promise<AlterRecordingResponse> {
   const { errors, parameters } = await extractParameters(scenario, recording)
-
-  console.log(JSON.stringify(parameters))
 
   if (errors.length > 0)
     return {
@@ -68,6 +70,7 @@ export const extractParameters = async (
     )
 
   if (errors.length > 0) {
+    errors.push(AlterRecordingError.invalidSyntax)
     return {
       errors,
       parameters: [],
@@ -108,48 +111,3 @@ export const extractParameters = async (
     errors: [],
   }
 }
-
-const alterRecordings = (scenario: string, recording: Recording): void => {}
-
-/*for (let i = 0; i < scenarios.length; i++) {
-  let index_filename = recording.name.indexOf('.')
-  let newfileName =
-    recording.name.substring(0, index_filename) +
-    '_' +
-    i +
-    recording.name.substring(index_filename)
-  const scenarioJson = await parseAndGenerate(
-    scenarios[i],
-    newfileName,
-    recording.content
-  )
-  if (i == 0) {
-    scenarioOne = scenarioJson
-    fileNameToReturn = newfileName
-  }
-  filesToRemove.push('modified__' + newfileName)
-  filesToRemove.push('scenario_' + i + '.json')
-  await fs.promises.writeFile(
-    'temp/scenario_' + i + '.json',
-    JSON.stringify(scenarioJson, null, 2)
-  )
-
-  await fs.promises.writeFile('temp/' + newfileName, recording.content)
-  if (recordingToReplay) {
-    await fs.promises.writeFile(
-      'temp/' + recordingToReplay.name,
-      recording.content
-    )
-    filesToRemove.push(recordingToReplay.name)
-  }
-
-  executeAlterationJar(
-    recording.content,
-    newfileName,
-    'temp/scenario_' + i + '.json'
-  )
-
-  fs.unlink('temp/' + newfileName, () => {
-    console.log('Le fichier ' + newfileName + ' a été supprimé.')
-  })
-} */

@@ -47,8 +47,6 @@ const alterRecording: RequestHandler = async (req, res) => {
       scenario.match(regex_replay) != null &&
       recordingToReplay == undefined
     ) {
-      console.log(scenario)
-      console.log(regex_replay)
       return res.status(422).json({
         error: AlterRecordingError.invalidFormat,
         alteredRecordings: [],

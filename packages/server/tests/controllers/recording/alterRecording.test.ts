@@ -4,6 +4,7 @@ import request from 'supertest'
 import { ApiRoutes } from '@smartesting/shared/src/routes'
 import assert from 'assert'
 import { AlterRecordingError } from '@smartesting/shared/dist'
+import { renderIntoDocument } from 'react-dom/test-utils'
 
 describe(`POST ${ApiRoutes.alteration()}`, () => {
   let server: express.Express
@@ -25,22 +26,46 @@ describe(`POST ${ApiRoutes.alteration()}`, () => {
       await assertBlankScenario()
     })
 
+    it('returns 422 if the scenario content is not a good scenario', async () => {
+      await assertNoValidScenario('hide all_planes 0 seconds')
+    })
+
     async function assertBlankScenario(scenario?: string) {
       const response = await request(server)
         .post(ApiRoutes.alteration())
         .send({
           scenario,
-          fileContent:
-            'MSG,4,3,5022202,4CA1FA,5022202,2018/11/25,11:30:48.179,2018/11/25,11:30:48.179,,,474.53,295.86,,,0.0,,,,,',
-          fileName: 'myfile.sbs',
-          fileContent2: '',
-          fileName2: '',
+          recording: {
+            name: 'myfile.sbs',
+            content:
+              'MSG,4,3,5022202,4CA1FA,5022202,2018/11/25,11:30:48.179,2018/11/25,11:30:48.179,,,474.53,295.86,,,0.0,,,,,',
+          },
+          recordingToReplay: undefined,
         })
         .expect(422)
 
       const { error, alteredRecordings } = response.body
       assert.deepStrictEqual(alteredRecordings, [])
       assert.equal(error, AlterRecordingError.invalidFormat)
+    }
+
+    async function assertNoValidScenario(scenario: string) {
+      const response = await request(server)
+        .post(ApiRoutes.alteration())
+        .send({
+          scenario: scenario,
+          recording: {
+            name: 'myfile.sbs',
+            content:
+              'MSG,4,3,5022202,4CA1FA,5022202,2018/11/25,11:30:48.179,2018/11/25,11:30:48.179,,,474.53,295.86,,,0.0,,,,,',
+          },
+          recordingToReplay: undefined,
+        })
+        .expect(422)
+
+      const { error, alteredRecordings } = response.body
+      assert.deepStrictEqual(alteredRecordings, [])
+      assert.equal(error.includes(AlterRecordingError.invalidSyntax), true)
     }
   })
 
@@ -62,10 +87,11 @@ describe(`POST ${ApiRoutes.alteration()}`, () => {
         .post(ApiRoutes.alteration())
         .send({
           scenario: 'hide all_planes at 0 seconds',
-          fileContent,
-          fileName: 'myfile.sbs',
-          fileContent2: '',
-          fileName2: '',
+          recording: {
+            name: 'myfile.sbs',
+            content: fileContent,
+          },
+          recordingToReplay: undefined,
         })
         .expect(422)
 
@@ -101,11 +127,12 @@ describe(`POST ${ApiRoutes.alteration()}`, () => {
         .post(ApiRoutes.alteration())
         .send({
           scenario: 'hide all_planes at 0 seconds',
-          fileContent:
-            'MSG,4,3,5022202,4CA1FA,5022202,2018/11/25,11:30:48.179,2018/11/25,11:30:48.179,,,474.53,295.86,,,0.0,,,,,',
-          fileName,
-          fileContent2: '',
-          fileName2: '',
+          recording: {
+            name: fileName,
+            content:
+              'MSG,4,3,5022202,4CA1FA,5022202,2018/11/25,11:30:48.179,2018/11/25,11:30:48.179,,,474.53,295.86,,,0.0,,,,,',
+          },
+          recordingToReplay: undefined,
         })
         .expect(422)
 
@@ -119,11 +146,12 @@ describe(`POST ${ApiRoutes.alteration()}`, () => {
         .post(ApiRoutes.alteration())
         .send({
           scenario: 'hide all_planes at 0 seconds',
-          fileContent:
-            'MSG,4,3,5022202,4CA1FA,5022202,2018/11/25,11:30:48.179,2018/11/25,11:30:48.179,,,474.53,295.86,,,0.0,,,,,',
-          fileName,
-          fileContent2: '',
-          fileName2: '',
+          recording: {
+            name: fileName,
+            content:
+              'MSG,4,3,5022202,4CA1FA,5022202,2018/11/25,11:30:48.179,2018/11/25,11:30:48.179,,,474.53,295.86,,,0.0,,,,,',
+          },
+          recordingToReplay: undefined,
         })
         .expect(422)
 
@@ -152,11 +180,15 @@ describe(`POST ${ApiRoutes.alteration()}`, () => {
         .send({
           scenario:
             'replay all_planes from_recording "record_AFR.sbs" from 0 seconds until 1000 seconds ',
-          fileContent:
-            'MSG,4,3,5022202,4CA1FA,5022202,2018/11/25,11:30:48.179,2018/11/25,11:30:48.179,,,474.53,295.86,,,0.0,,,,,',
-          fileName: 'myfile.sbs',
-          fileContent2,
-          fileName2: 'myfile2.sbs',
+          recording: {
+            name: 'myfile.sbs',
+            content:
+              'MSG,4,3,5022202,4CA1FA,5022202,2018/11/25,11:30:48.179,2018/11/25,11:30:48.179,,,474.53,295.86,,,0.0,,,,,',
+          },
+          recordingToReplay: {
+            name: 'myfile2.sbs',
+            content: fileContent2,
+          },
         })
         .expect(422)
 
@@ -193,12 +225,16 @@ describe(`POST ${ApiRoutes.alteration()}`, () => {
         .send({
           scenario:
             'replay all_planes from_recording "myfile2.sbs" from 0 seconds until 1000 seconds ',
-          fileContent:
-            'MSG,4,3,5022202,4CA1FA,5022202,2018/11/25,11:30:48.179,2018/11/25,11:30:48.179,,,474.53,295.86,,,0.0,,,,,',
-          fileName: 'myfile.sbs',
-          fileContent2:
-            'MSG,4,3,5022202,4CA1FA,5022202,2018/11/25,11:30:48.179,2018/11/25,11:30:48.179,,,474.53,295.86,,,0.0,,,,,',
-          fileName2,
+          recording: {
+            name: 'myfile.sbs',
+            content:
+              'MSG,4,3,5022202,4CA1FA,5022202,2018/11/25,11:30:48.179,2018/11/25,11:30:48.179,,,474.53,295.86,,,0.0,,,,,',
+          },
+          recordingToReplay: {
+            name: fileName2,
+            content:
+              'MSG,4,3,5022202,4CA1FA,5022202,2018/11/25,11:30:48.179,2018/11/25,11:30:48.179,,,474.53,295.86,,,0.0,,,,,',
+          },
         })
         .expect(422)
 
@@ -212,12 +248,16 @@ describe(`POST ${ApiRoutes.alteration()}`, () => {
         .post(ApiRoutes.alteration())
         .send({
           scenario: 'hide all_planes at 0 seconds',
-          fileContent:
-            'MSG,4,3,5022202,4CA1FA,5022202,2018/11/25,11:30:48.179,2018/11/25,11:30:48.179,,,474.53,295.86,,,0.0,,,,,',
-          fileName: 'myfile.sbs',
-          fileContent2:
-            'MSG,4,3,5022202,4CA1FA,5022202,2018/11/25,11:30:48.179,2018/11/25,11:30:48.179,,,474.53,295.86,,,0.0,,,,,',
-          fileName2,
+          recording: {
+            name: 'myfile.sbs',
+            content:
+              'MSG,4,3,5022202,4CA1FA,5022202,2018/11/25,11:30:48.179,2018/11/25,11:30:48.179,,,474.53,295.86,,,0.0,,,,,',
+          },
+          recordingToReplay: {
+            name: fileName2,
+            content:
+              'MSG,4,3,5022202,4CA1FA,5022202,2018/11/25,11:30:48.179,2018/11/25,11:30:48.179,,,474.53,295.86,,,0.0,,,,,',
+          },
         })
         .expect(422)
 
@@ -226,6 +266,30 @@ describe(`POST ${ApiRoutes.alteration()}`, () => {
       assert.equal(error, AlterRecordingError.invalidFormat)
     }
   })
+
+  //TODO modify langage for remove file2 when replay
+  /***
+    context('when scenario is replay and not have file2', () => {
+        it('returns 422 if its replay and not have file2', async () => {
+            const response = await request(server)
+                .post(ApiRoutes.alteration())
+                .send({
+                    scenario:
+                        'replay all_planes from_recording "myfile2.sbs" from 0 seconds until 1000 seconds',
+                    recording: {
+                        content:
+                            'MSG,4,3,5022202,4CA1FA,5022202,2018/11/25,11:30:48.179,2018/11/25,11:30:48.179,,,474.53,295.86,,,0.0,,,,,',
+                        name: 'myfile.sbs',
+                    },
+                })
+                .expect(422)
+
+            const {error, alteredRecordings} = response.body
+            assert.deepStrictEqual(alteredRecordings, [])
+            assert.equal(error, AlterRecordingError.invalidFormat)
+        })
+    })
+     ***/
 
   context('when all is valid', () => {
     it('returns 200 and altered recordings', async () => {
@@ -238,6 +302,31 @@ describe(`POST ${ApiRoutes.alteration()}`, () => {
             content:
               'MSG,4,3,5022202,4CA1FA,5022202,2018/11/25,11:30:48.179,2018/11/25,11:30:48.179,,,474.53,295.86,,,0.0,,,,,',
             name: 'myfile.sbs',
+          },
+        })
+        .expect(200)
+
+      const { alteredRecordings, error } = response.body
+
+      assert(!error, 'Error is defined')
+      assert.equal(alteredRecordings.length, 2)
+    })
+
+    it('returns 200 and altered recordings with replay', async () => {
+      const response = await request(server)
+        .post(ApiRoutes.alteration())
+        .send({
+          scenario:
+            'let $call = {0, 10}, replay all_planes from_recording "myfile2.sbs" from $call seconds until 1000 seconds ',
+          recording: {
+            content:
+              'MSG,4,3,5022202,4CA1FA,5022202,2018/11/25,11:30:48.179,2018/11/25,11:30:48.179,,,474.53,295.86,,,0.0,,,,,',
+            name: 'myfile.sbs',
+          },
+          recordingToReplay: {
+            content:
+              'MSG,4,3,5022202,4CA1FA,5022202,2018/11/25,11:30:48.179,2018/11/25,11:30:48.179,,,474.53,295.86,,,0.0,,,,,',
+            name: 'myfile2.sbs',
           },
         })
         .expect(200)

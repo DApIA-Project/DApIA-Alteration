@@ -3,7 +3,7 @@ module.exports = {
   include: ['src/**/*.ts'],
 
   // Exclut les fichiers et dossiers de la couverture
-  exclude: ['node_modules', 'dist', 'test'],
+  exclude: ['node_modules', 'dist', 'src/test/**/*'],
 
   // Spécifie comment les fichiers couverts sont instrumentés
   instrument: {

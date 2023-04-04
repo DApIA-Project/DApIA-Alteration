@@ -15,45 +15,37 @@ describe(`core/alterRecording`, () => {
     server = setupExpress()
   })
 
-  // TODO: turn into core tests
   context('when syntax scenario is invalid', () => {
-    it('returns 422 if the scenario syntax is invalid', async () => {
-      const response = await request(server)
-        .post(ApiRoutes.alteration())
-        .send({
-          scenario: 'hide all_planes 8 seconds',
-          fileContent:
+    it('return an error', async () => {
+      const { error, alteredRecordings } = await alterRecording(
+        'hide all_planes 8 seconds',
+        {
+          content:
             'MSG,4,3,5022202,4CA1FA,5022202,2018/11/25,11:30:48.179,2018/11/25,11:30:48.179,,,474.53,295.86,,,0.0,,,,,',
-          fileName: 'myfile.sbs',
-          fileContent2: '',
-          fileName2: '',
-        })
-        .expect(422)
+          name: 'myfile.sbs',
+        },
+        undefined,
+        alterationManager
+      )
 
-      const { error, alteredRecording } = response.body
-
-      assert(!alteredRecording, 'Altered recording is not returned')
-      assert.equal(error, AlterRecordingError.invalidSyntax)
+      assert.equal(alteredRecordings.length, 0)
+      assert.equal(!error, false)
     })
 
-    it('returns 422 if the scenario syntax is invalid with variables', async () => {
-      const response = await request(server)
-        .post(ApiRoutes.alteration())
-        .send({
-          scenario:
-            'let $alt = [12000, 30000], let $call = {"SAMU23","SAMU89"}, alter all_planes 0 seconds with_values ALTITUDE=$alt and CALLSIGN=$call',
-          fileContent:
+    it('returns an error when scenario have variables', async () => {
+      const { error, alteredRecordings } = await alterRecording(
+        'let $alt = [12000, 30000], let $call = {"SAMU23","SAMU89"}, alter all_planes 0 seconds with_values ALTITUDE=$alt and CALLSIGN=$call',
+        {
+          content:
             'MSG,4,3,5022202,4CA1FA,5022202,2018/11/25,11:30:48.179,2018/11/25,11:30:48.179,,,474.53,295.86,,,0.0,,,,,',
-          fileName: 'myfile.sbs',
-          fileContent2: '',
-          fileName2: '',
-        })
-        .expect(422)
+          name: 'myfile.sbs',
+        },
+        undefined,
+        alterationManager
+      )
 
-      const { error, alteredRecording } = response.body
-
-      assert(!alteredRecording, 'Altered recording is not returned')
-      assert.equal(error, AlterRecordingError.invalidSyntax)
+      assert.equal(alteredRecordings.length, 0)
+      assert.equal(!error, false)
     })
   })
 

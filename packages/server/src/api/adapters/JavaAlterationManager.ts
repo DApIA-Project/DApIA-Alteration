@@ -50,35 +50,14 @@ export class JavaAlterationManager implements IAlterationManager {
         content: contentFileAltered.toString(),
       })
 
-      fs.unlink('temp/scenario_' + numeroFichier + '.json', () => {
-        console.log(
-          'Le fichier ' +
-            'temp/scenario_' +
-            numeroFichier +
-            '.json' +
-            ' a été supprimé.'
-        )
-      })
+      fs.unlink('temp/scenario_' + numeroFichier + '.json', () => {})
 
-      fs.unlink('temp/' + newFileName, () => {
-        console.log('Le fichier ' + 'temp/' + newFileName + ' a été supprimé.')
-      })
+      fs.unlink('temp/' + newFileName, () => {})
 
-      fs.unlink('temp/modified__' + newFileName, () => {
-        console.log(
-          'Le fichier ' + 'temp/modified__' + newFileName + ' a été supprimé.'
-        )
-      })
+      fs.unlink('temp/modified__' + newFileName, () => {})
 
       if (recordingToReplay != undefined) {
-        fs.unlink('temp/' + recordingToReplay.name, () => {
-          console.log(
-            'Le fichier ' +
-              'temp/' +
-              recordingToReplay.name +
-              ' a été supprimé.'
-          )
-        })
+        fs.unlink('temp/' + recordingToReplay.name, () => {})
       }
 
       numeroFichier++
@@ -100,12 +79,6 @@ function executeAlterationJar(
   fileName: string,
   scenarioPath: string
 ): void {
-  console.log(
-    'java -jar ../alteration/out/artifacts/alteration_atc_jar/alteration-atc.jar ' +
-      scenarioPath +
-      ' ' +
-      fileName
-  )
   execSync(
     'java -jar ../alteration/out/artifacts/alteration_atc_jar/alteration-atc.jar ' +
       scenarioPath +

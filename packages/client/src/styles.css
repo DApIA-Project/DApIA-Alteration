@@ -11,16 +11,19 @@ body {
   height: 100%;
 }
 
-h1 {
-  text-align: center;
-  font-size: 250%;
+header {
+  height: 5%;
+  background-color: #2d3436;
+  justify-content: space-between;
+  align-items: center;
+  display: flex;
 }
 
-header {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
+header > span {
+  padding: 0 10px;
+  font-size: 4vh;
+  font-family: main-font, sans-serif;
+  color: #dfe6e9;
 }
 
 #root {
