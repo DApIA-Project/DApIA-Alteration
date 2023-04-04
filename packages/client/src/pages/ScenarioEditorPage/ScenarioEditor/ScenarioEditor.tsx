@@ -14,6 +14,8 @@ export enum ScenarioEditorTestIds {
   INPUT_FILE_RECORDING_REPLAY = 'ScenarioEditor.action.selectRecordingReplay',
   RECORDING_IS_PRESENT = 'ScenarioEditor.action.isSelectedRecording',
   RECORDING_IS_NOT_PRESENT = 'ScenarioEditor.action.isNotSelectedRecording',
+  RECORDING_REPLAY_IS_PRESENT = 'ScenarioEditor.action.isSelectedRecordingReplay',
+  RECORDING_REPLAY_IS_NOT_PRESENT = 'ScenarioEditor.action.isNotSelectedRecordingReplay',
 }
 
 type OnGenerateOptions = {
@@ -38,6 +40,7 @@ const ScenarioEditor: React.FunctionComponent<ScenarioEditorProps> = ({
   const [isRecordingPresent, setIsRecordingPresent] = useState<boolean>(false)
   const [isRecordingReplayPresent, setIsRecordingReplayPresent] =
     useState<boolean>(false)
+
   function onGenerateClicked() {
     const elements = document.getElementsByClassName(
       'view-lines monaco-mouse-cursor-text'
@@ -92,12 +95,16 @@ const ScenarioEditor: React.FunctionComponent<ScenarioEditorProps> = ({
     return colorImg
   }
 
-  function datatestSelection(state: boolean): string {
+  function datatestSelection(
+    state: boolean,
+    isPresentStr: string,
+    isNotPresentStr: string
+  ): string {
     let datatest: string = ''
     if (state) {
-      datatest = ScenarioEditorTestIds.RECORDING_IS_PRESENT
+      datatest = isPresentStr
     } else {
-      datatest = ScenarioEditorTestIds.RECORDING_IS_NOT_PRESENT
+      datatest = isNotPresentStr
     }
     return datatest
   }
@@ -111,11 +118,19 @@ const ScenarioEditor: React.FunctionComponent<ScenarioEditorProps> = ({
   }
 
   function datatestRecordingSelection(): string {
-    return datatestSelection(isRecordingPresent)
+    return datatestSelection(
+      isRecordingPresent,
+      ScenarioEditorTestIds.RECORDING_IS_PRESENT,
+      ScenarioEditorTestIds.RECORDING_IS_NOT_PRESENT
+    )
   }
 
   function datatestRecordingReplaySelection(): string {
-    return datatestSelection(isRecordingReplayPresent)
+    return datatestSelection(
+      isRecordingReplayPresent,
+      ScenarioEditorTestIds.RECORDING_REPLAY_IS_PRESENT,
+      ScenarioEditorTestIds.RECORDING_REPLAY_IS_NOT_PRESENT
+    )
   }
 
   function readFiles(
