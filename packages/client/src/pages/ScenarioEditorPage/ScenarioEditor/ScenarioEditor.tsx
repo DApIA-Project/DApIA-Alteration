@@ -10,6 +10,10 @@ import '../../../styles/ScenarioEditor.css'
 export enum ScenarioEditorTestIds {
   COMPONENT = 'ScenarioEditor',
   GENERATE_BUTTON = 'ScenarioEditor.action.generateButton',
+  INPUT_FILE_RECORDING = 'ScenarioEditor.action.selectRecording',
+  INPUT_FILE_RECORDING_REPLAY = 'ScenarioEditor.action.selectRecordingReplay',
+  RECORDING_IS_PRESENT = 'ScenarioEditor.action.isSelectedRecording',
+  RECORDING_IS_NOT_PRESENT = 'ScenarioEditor.action.isNotSelectedRecording',
 }
 
 type OnGenerateOptions = {
@@ -31,7 +35,9 @@ const ScenarioEditor: React.FunctionComponent<ScenarioEditorProps> = ({
   const [recordingToReplayName, setRecordingToReplayName] = useState<string>('')
   const [recordingToReplayContent, setRecordingToReplayContent] =
     useState<string>('')
-
+  const [isRecordingPresent, setIsRecordingPresent] = useState<boolean>(false)
+  const [isRecordingReplayPresent, setIsRecordingReplayPresent] =
+    useState<boolean>(false)
   function onGenerateClicked() {
     const elements = document.getElementsByClassName(
       'view-lines monaco-mouse-cursor-text'
@@ -59,28 +65,76 @@ const ScenarioEditor: React.FunctionComponent<ScenarioEditorProps> = ({
   }
 
   function onRecordingSelected(files: FileList) {
-    readFiles(files, setRecordingContent, setRecordingName)
+    readFiles(
+      files,
+      setRecordingContent,
+      setRecordingName,
+      setIsRecordingPresent
+    )
   }
 
   function onRecordingToReplaySelected(files: FileList) {
-    readFiles(files, setRecordingToReplayContent, setRecordingToReplayName)
+    readFiles(
+      files,
+      setRecordingToReplayContent,
+      setRecordingToReplayName,
+      setIsRecordingReplayPresent
+    )
+  }
+
+  function imageSelection(state: boolean): string {
+    let colorImg: string = ''
+    if (state) {
+      colorImg = '../../../assets/green_check.png'
+    } else {
+      colorImg = '../../../assets/red_cross.png'
+    }
+    return colorImg
+  }
+
+  function datatestSelection(state: boolean): string {
+    let datatest: string = ''
+    if (state) {
+      datatest = ScenarioEditorTestIds.RECORDING_IS_PRESENT
+    } else {
+      datatest = ScenarioEditorTestIds.RECORDING_IS_NOT_PRESENT
+    }
+    return datatest
+  }
+
+  function imageRecordingSelection(): string {
+    return imageSelection(isRecordingPresent)
+  }
+
+  function imageRecordingReplaySelection(): string {
+    return imageSelection(isRecordingReplayPresent)
+  }
+
+  function datatestRecordingSelection(): string {
+    return datatestSelection(isRecordingPresent)
+  }
+
+  function datatestRecordingReplaySelection(): string {
+    return datatestSelection(isRecordingReplayPresent)
   }
 
   function readFiles(
     files: FileList,
     setContent: React.Dispatch<string>,
-    setName: React.Dispatch<string>
+    setName: React.Dispatch<string>,
+    setIsPresent: React.Dispatch<boolean>
   ) {
     const file = files.item(0)
     if (!file) {
       return
     } else {
       const reader = new FileReader()
-      reader.readAsText(file)
-      reader.onload = function () {
+      reader.onload = () => {
         setName(file.name)
         setContent(String(reader.result))
+        setIsPresent(true)
       }
+      reader.readAsText(file)
     }
   }
 
@@ -100,11 +154,32 @@ const ScenarioEditor: React.FunctionComponent<ScenarioEditorProps> = ({
         text='Generate alteration'
         onClick={onGenerateClicked}
       />
-      <InputFile name={'recording'} onChange={onRecordingSelected} />
-      <InputFile
-        name={'recordingToReplay'}
-        onChange={onRecordingToReplaySelected}
-      />
+      <div className={'zone_input_files'}>
+        <InputFile
+          name={'recording'}
+          onChange={onRecordingSelected}
+          data-testid={ScenarioEditorTestIds.INPUT_FILE_RECORDING}
+        />
+        <img
+          data-testid={datatestRecordingSelection()}
+          src={imageRecordingSelection()}
+          alt={'recording_charged_or_not'}
+          title={'Enregistrement requis'}
+        />
+      </div>
+      <div className={'zone_input_files'}>
+        <InputFile
+          name={'recordingToReplay'}
+          onChange={onRecordingToReplaySelected}
+          data-testid={ScenarioEditorTestIds.INPUT_FILE_RECORDING_REPLAY}
+        />
+        <img
+          data-testid={datatestRecordingReplaySelection()}
+          src={imageRecordingReplaySelection()}
+          alt={'recording_replay_charged_or_not'}
+          title={'Enregistrement requis en cas de replay'}
+        />
+      </div>
     </div>
   )
 }

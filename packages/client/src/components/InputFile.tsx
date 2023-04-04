@@ -1,5 +1,6 @@
 import React from 'react'
 import '../styles/InputFile.css'
+import { ScenarioEditorTestIds } from '../pages/ScenarioEditorPage/ScenarioEditor/ScenarioEditor'
 
 interface InputFileProps {
   name: string
@@ -8,17 +9,14 @@ interface InputFileProps {
 
 function InputFile({ name, onChange, ...props }: InputFileProps) {
   return (
-    <div className={'zone_input_files'}>
-      <input
-        type='file'
-        {...props}
-        name={name}
-        onChange={(event) => {
-          if (event.target.files) onChange(event.target.files)
-        }}
-        multiple
-      />
-    </div>
+    <input
+      type='file'
+      {...props}
+      name={name}
+      onChange={(event) => {
+        if (event.target.files) onChange(event.target.files)
+      }}
+    />
   )
 }
 

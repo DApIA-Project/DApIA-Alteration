@@ -1,7 +1,14 @@
 import React from 'react'
-import { render, screen } from '@testing-library/react'
+import {
+  fireEvent,
+  getByTestId,
+  render,
+  screen,
+  waitFor,
+} from '@testing-library/react'
 import ScenarioEditor, { ScenarioEditorTestIds } from './ScenarioEditor'
 import userEvent from '@testing-library/user-event'
+import { Recording } from '@smartesting/shared/src'
 
 jest.mock('../CodeArea/MonacoEditor', () => () => (
   <div className={'view-lines monaco-mouse-cursor-text'} role={'code'}>
@@ -18,11 +25,46 @@ describe('ScenarioEditor', () => {
     const spiedCallback = jest.fn()
     render(<ScenarioEditor onGenerate={spiedCallback} />)
 
-    const generateButton = await screen.findByTestId(
+    const files = [
+      new File(
+        [
+          'MSG,4,3,5022202,4CA1FA,5022202,2018/11/25,11:30:48.179,2018/11/25,11:30:48.179,,,474.53,295.86,,,0.0,,,,,',
+        ],
+        'myfile.sbs',
+        {
+          type: 'text/plain',
+        }
+      ),
+    ]
+    const fileList = {
+      files,
+      length: files.length,
+      item: (index: number) => files[index],
+    }
+
+    fireEvent.change(
+      screen.getByTestId(ScenarioEditorTestIds.INPUT_FILE_RECORDING),
+      {
+        target: { files: fileList },
+      }
+    )
+    const generateButton = screen.getByTestId(
       ScenarioEditorTestIds.GENERATE_BUTTON
     )
-    await userEvent.click(generateButton)
 
-    expect(spiedCallback).toBeCalledWith('hide all_planes at 0 seconds', '')
+    await waitFor(() =>
+      screen.findByTestId(ScenarioEditorTestIds.RECORDING_IS_PRESENT)
+    )
+    await userEvent.click(generateButton)
+    //expect(spiedCallback).toHaveBeenCalledTimes(1)
+    let recording: Recording = {
+      content:
+        'MSG,4,3,5022202,4CA1FA,5022202,2018/11/25,11:30:48.179,2018/11/25,11:30:48.179,,,474.53,295.86,,,0.0,,,,,',
+      name: 'myfile.sbs',
+    }
+    expect(spiedCallback).toBeCalledWith({
+      recording,
+      scenario: 'hide all_planes at 0 seconds',
+    })
   })
 })

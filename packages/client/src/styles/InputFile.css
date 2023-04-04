@@ -1,9 +1,3 @@
-.zone_input_files {
-  text-align: center;
-  padding: 0.5%;
-  height: 5%;
-}
-
 input[type='file']::file-selector-button {
   /* Personnaliser le texte */
   color: white;
