@@ -7,6 +7,7 @@ import { Recording } from '@smartesting/shared/dist/models'
 import '../../../styles.css'
 import './ScenarioEditor.css'
 import { ScenarioOutputTestIds } from '../ScenarioOutput/ScenarioOutput'
+import { ScenarioEditorPageTestIds } from '../ScenarioEditorPage'
 
 export enum ScenarioEditorTestIds {
   COMPONENT = 'ScenarioEditor',
@@ -164,7 +165,10 @@ const ScenarioEditor: React.FunctionComponent<ScenarioEditorProps> = ({
     )
 
   return (
-    <div className={'scenarioEditor'}>
+    <div
+      className={'scenarioEditor'}
+      data-testid={ScenarioEditorPageTestIds.SCENARIO_EDITOR}
+    >
       <MonacoEditor />
       <Button
         data-testid={ScenarioEditorTestIds.GENERATE_BUTTON}

@@ -5,6 +5,7 @@ import '../../../styles.css'
 import DownloadAlteredRecording from './DownloadAlteredRecording/DownloadAlteredRecording'
 import './ScenarioOutput.css'
 import { Recording } from '@smartesting/shared/src'
+import { ScenarioEditorPageTestIds } from '../ScenarioEditorPage'
 
 export enum ScenarioOutputTestIds {
   COMPONENT = 'ScenarioOutput',
@@ -49,7 +50,7 @@ const ScenarioOutput: React.FunctionComponent<ScenarioOutputProps> = ({
       )
     } else {
       return (
-        <>
+        <div data-testid={ScenarioEditorPageTestIds.SCENARIO_OUTPUT}>
           <Alert
             data-testid={ScenarioOutputTestIds.DISPLAY_SUCCESS}
             severity='success'
@@ -69,12 +70,12 @@ const ScenarioOutput: React.FunctionComponent<ScenarioOutputProps> = ({
               />
             ))}
           </div>
-        </>
+        </div>
       )
     }
   }
 
-  return <div></div>
+  return <div data-testid={ScenarioEditorPageTestIds.SCENARIO_OUTPUT}></div>
 }
 
 export default ScenarioOutput
