@@ -1,8 +1,11 @@
 import React from 'react'
-import '../styles/DownloadAlteredRecording.css'
+import './DownloadAlteredRecording.css'
 import { Recording } from '@smartesting/shared/src'
-import downloadAlteredRecording from './DownloadAlteredRecording'
 
+export enum DownloadAlteredRecordingTestIds {
+  COMPONENT = 'DownloadAlteredRecording',
+  DOWNLOAD_RECORDING = 'DownloadAlteredRecording.action.downloadRecording',
+}
 interface DownloadAlteredRecordingProps {
   recording: Recording
 
@@ -15,7 +18,7 @@ function DownloadAlteredRecording({
   ...props
 }: DownloadAlteredRecordingProps) {
   return (
-    <figure onClick={() => onClick(recording)}>
+    <figure {...props} onClick={() => onClick(recording)}>
       <img className={'imageDownload'} src={'../assets/logo_file.png'} />
       <figcaption>{recording.name}</figcaption>
     </figure>

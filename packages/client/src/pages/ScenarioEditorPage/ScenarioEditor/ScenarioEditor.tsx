@@ -1,11 +1,12 @@
 import React, { useState } from 'react'
-import Button from '../../../components/Button'
+import Button from '../../../components/ui/Button/Button'
 import { Alert, AlertTitle } from '@mui/material'
-import MonacoEditor from '../CodeArea/MonacoEditor'
-import InputFile from '../../../components/InputFile'
+import MonacoEditor from './MonacoEditor/MonacoEditor'
+import InputFile from '../../../components/ui/InputFile/InputFile'
 import { Recording } from '@smartesting/shared/dist/models'
 import '../../../styles.css'
-import '../../../styles/ScenarioEditor.css'
+import './ScenarioEditor.css'
+import { ScenarioOutputTestIds } from '../ScenarioOutput/ScenarioOutput'
 
 export enum ScenarioEditorTestIds {
   COMPONENT = 'ScenarioEditor',
@@ -16,6 +17,7 @@ export enum ScenarioEditorTestIds {
   RECORDING_IS_NOT_PRESENT = 'ScenarioEditor.action.isNotSelectedRecording',
   RECORDING_REPLAY_IS_PRESENT = 'ScenarioEditor.action.isSelectedRecordingReplay',
   RECORDING_REPLAY_IS_NOT_PRESENT = 'ScenarioEditor.action.isNotSelectedRecordingReplay',
+  EDITOR_MONACO = 'ScenarioEditor.action.createMonacoEditor',
 }
 
 type OnGenerateOptions = {

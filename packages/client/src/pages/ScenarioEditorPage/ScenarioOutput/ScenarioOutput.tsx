@@ -2,9 +2,18 @@ import React from 'react'
 import { Alert, AlertTitle } from '@mui/material'
 import { AlterRecordingResponse } from '@smartesting/shared/dist/responses'
 import '../../../styles.css'
-import DownloadAlteredRecording from '../../../components/DownloadAlteredRecording'
-import '../../../styles/ScenarioOutput.css'
+import DownloadAlteredRecording from './DownloadAlteredRecording/DownloadAlteredRecording'
+import './ScenarioOutput.css'
 import { Recording } from '@smartesting/shared/src'
+
+export enum ScenarioOutputTestIds {
+  COMPONENT = 'ScenarioOutput',
+  DOWNLOAD_RECORDING = 'ScenarioOutput.action.downloadRecording',
+  DISPLAY_ERROR = 'ScenarioOutput.action.displayError',
+  DISPLAY_SUCCESS = 'ScenarioOutput.action.displaySuccess',
+  DISPLAY_DOWNLOAD_RECORDINGS = 'ScenarioOutput.action.displayDownloadRecordings',
+  DISPLAY_DOWNLOAD_RECORDING_ZONE = 'ScenarioOutput.action.displayDownloadRecordingZone',
+}
 
 type ScenarioOutputProps = {
   response: AlterRecordingResponse | null
@@ -30,25 +39,36 @@ const ScenarioOutput: React.FunctionComponent<ScenarioOutputProps> = ({
     const { alteredRecordings, error } = response
     if (error != null) {
       return (
-        <Alert severity='error'>
+        <Alert
+          data-testid={ScenarioOutputTestIds.DISPLAY_ERROR}
+          severity='error'
+        >
           <AlertTitle>Error while generating alteration</AlertTitle>
           {error}
         </Alert>
       )
     } else {
-      const alterRecordingsMap = alteredRecordings.map((element) => (
-        <DownloadAlteredRecording
-          recording={element}
-          onClick={onDownloadAlteredRecordingClicked}
-        />
-      ))
-
       return (
         <>
-          <Alert severity='success'>
+          <Alert
+            data-testid={ScenarioOutputTestIds.DISPLAY_SUCCESS}
+            severity='success'
+          >
             <AlertTitle>Success</AlertTitle>
           </Alert>
-          <div className={'downloadAlteredRecording'}>{alterRecordingsMap}</div>
+          <div
+            data-testid={ScenarioOutputTestIds.DISPLAY_DOWNLOAD_RECORDING_ZONE}
+            className={'downloadAlteredRecording'}
+          >
+            {alteredRecordings.map((element) => (
+              <DownloadAlteredRecording
+                data-testid={ScenarioOutputTestIds.DISPLAY_DOWNLOAD_RECORDINGS}
+                key={element.name}
+                recording={element}
+                onClick={onDownloadAlteredRecordingClicked}
+              />
+            ))}
+          </div>
         </>
       )
     }

@@ -10,7 +10,7 @@ import ScenarioEditor, { ScenarioEditorTestIds } from './ScenarioEditor'
 import userEvent from '@testing-library/user-event'
 import { Recording } from '@smartesting/shared/src'
 
-jest.mock('../CodeArea/MonacoEditor', () => () => (
+jest.mock('../MonacoEditor/MonacoEditor', () => () => (
   <div className={'view-lines monaco-mouse-cursor-text'} role={'code'}>
     hide all_planes at 0 seconds
   </div>

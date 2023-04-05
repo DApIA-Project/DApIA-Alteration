@@ -1,7 +1,7 @@
 import React from 'react'
 import { fireEvent, render, screen } from '@testing-library/react'
-import InputFile from '../InputFile'
-import { ScenarioEditorTestIds } from '../../pages/ScenarioEditorPage/ScenarioEditor/ScenarioEditor'
+import InputFile from './InputFile'
+import { ScenarioEditorTestIds } from '../../../pages/ScenarioEditorPage/ScenarioEditor/ScenarioEditor'
 
 describe('InputFile', () => {
   afterAll(() => {

@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
-import '../../../styles/MonacoEditor.css'
+import './MonacoEditor.css'
+import { ScenarioEditorTestIds } from '../ScenarioEditor'
 
 const MonacoEditor: React.FunctionComponent = () => {
   useEffect(() => {
@@ -11,6 +12,11 @@ const MonacoEditor: React.FunctionComponent = () => {
     document.body.appendChild(script)
   }, [])
 
-  return <div id='monaco-editor-root'></div>
+  return (
+    <div
+      data-testid={ScenarioEditorTestIds.EDITOR_MONACO}
+      id='monaco-editor-root'
+    ></div>
+  )
 }
 export default MonacoEditor

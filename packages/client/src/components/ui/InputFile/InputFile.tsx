@@ -1,6 +1,6 @@
 import React from 'react'
-import '../styles/InputFile.css'
-import { ScenarioEditorTestIds } from '../pages/ScenarioEditorPage/ScenarioEditor/ScenarioEditor'
+import './InputFile.css'
+import { ScenarioEditorTestIds } from '../../../pages/ScenarioEditorPage/ScenarioEditor/ScenarioEditor'
 
 interface InputFileProps {
   name: string
