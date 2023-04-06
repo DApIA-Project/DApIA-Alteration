@@ -30,8 +30,7 @@ paths:
                   description: Le nom du fichier à altérer
               required:
                 - scenario
-                - fileContent
-                - fileName
+                - recording
       responses:
         200:
           description: Enregistrement altéré avec succès
