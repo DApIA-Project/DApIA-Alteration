@@ -3,7 +3,7 @@ info:
   title: FDI-T-WEB API
   version: 2.0.0
 servers:
-  - url: /
+  - url: http://localhost:3001
 security:
   - ApiKeyAuth: []
 paths:
@@ -22,8 +22,7 @@ paths:
                 scenario:
                   type: string
                   description: Le scénario d'altération de l'enregistrement
-                  example:
-                    scenario: 'hide all_planes at 2 seconds'
+                  example: 'hide all_planes at 2 seconds'
                 recording:
                   type: object
                   $ref: '#/components/schemas/Recording'
