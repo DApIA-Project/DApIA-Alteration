@@ -30,4 +30,4 @@ jobs:
         run: npm ci
       - name: Run test Client
         working-directory: packages/client
-        run: jest
+        run: ./node_modules/jest
