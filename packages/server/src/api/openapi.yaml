@@ -22,12 +22,16 @@ paths:
                 scenario:
                   type: string
                   description: Le scénario d'altération de l'enregistrement
-                fileContent:
-                  type: string
-                  description: Le contenu du fichier à altérer
-                fileName:
-                  type: string
-                  description: Le nom du fichier à altérer
+                  example:
+                    scenario: 'hide all_planes at 2 seconds'
+                recording:
+                  type: object
+                  $ref: '#/components/schemas/Recording'
+                  description: L'enregistrement à alterer contenant un nom et un contenu de fichier
+                recordingToReplay:
+                  type: object
+                  $ref: '#/components/schemas/Recording'
+                  description: L'enregistrement à utiliser pour alterer recording contenant un nom et un contenu de fichier en cas de replay
               required:
                 - scenario
                 - recording
@@ -39,9 +43,16 @@ paths:
               schema:
                 type: object
                 properties:
-                  alteredRecording:
+                  alteredRecordings:
+                    type: array
+                    items:
+                      type: object
+                      $ref: '#/components/schemas/Recording'
+                    description: Les enregistrements altérés sous forme de tableau
+                  error:
                     type: string
-                    description: Le contenu de l'enregistrement altéré
+                    nullable: true
+                    example: null
         422:
           description: Format invalide ou erreur de syntaxe
           content:
@@ -49,6 +60,28 @@ paths:
               schema:
                 type: object
                 properties:
+                  alteredRecordings:
+                    type: array
+                    default: []
+                    items:
+                      type: object
+                      $ref: '#/components/schemas/Recording'
+                    maxItems: 0
+                    description: Les enregistrements altérés sous forme de tableau vide
                   error:
                     type: string
                     description: Une description de l'erreur (format invalide ou syntaxe invalide)
+                    example: 'invalid_format'
+
+components:
+  schemas:
+    Recording:
+      properties:
+        name:
+          type: string
+        content:
+          type: string
+      type: object
+      example:
+        name: 'nomFichierValide.sbs'
+        content: 'MSG,5,1,4837,A4A445,18147,2016/12/09,09:13:34.120,2016/12/09,09:13:35.077,,7250,,,,,,,0,,0,0'
