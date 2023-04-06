@@ -30,7 +30,7 @@ jobs:
         run: npm install
       - name: Build
         working-directory: packages/client
-        run: npm build
+        run: npm run build
       - name: Run test Client
         working-directory: packages/client
         run: npm test
