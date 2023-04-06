@@ -8,6 +8,7 @@ import '../../../styles.css'
 import './ScenarioEditor.css'
 import { ScenarioOutputTestIds } from '../ScenarioOutput/ScenarioOutput'
 import { ScenarioEditorPageTestIds } from '../ScenarioEditorPage'
+import { act } from 'react-dom/test-utils'
 
 export enum ScenarioEditorTestIds {
   COMPONENT = 'ScenarioEditor',
@@ -67,7 +68,9 @@ const ScenarioEditor: React.FunctionComponent<ScenarioEditorProps> = ({
       }
     }
     onGenerate(options)
-    setError(null)
+    act(() => {
+      setError(null)
+    })
   }
 
   function onRecordingSelected(files: FileList) {

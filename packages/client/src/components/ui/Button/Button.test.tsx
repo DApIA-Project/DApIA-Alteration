@@ -8,7 +8,7 @@ describe('Button', () => {
   afterAll(() => {
     jest.clearAllMocks()
   })
-  it('calls onChange callback with selected recording file and recording replay file', () => {
+  it('calls onChange callback with selected recording file and recording replay file', async () => {
     const onGenerateClicked = jest.fn()
 
     render(
@@ -23,7 +23,7 @@ describe('Button', () => {
       ScenarioEditorTestIds.GENERATE_BUTTON
     )
 
-    userEvent.click(generateButton)
+    await userEvent.click(generateButton)
 
     expect(onGenerateClicked).toBeCalledTimes(1)
   })
