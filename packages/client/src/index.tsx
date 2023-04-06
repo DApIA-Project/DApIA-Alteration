@@ -4,10 +4,12 @@ import reportWebVitals from './reportWebVitals'
 import './types.d.ts'
 import ScenarioEditorPage from './pages/ScenarioEditorPage/ScenarioEditorPage'
 import './styles.css'
+import HeaderMenu from './pages/HeaderMenu/HeaderMenu'
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 root.render(
   <React.StrictMode>
+    <HeaderMenu />
     <ScenarioEditorPage />
   </React.StrictMode>
 )
