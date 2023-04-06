@@ -1,11 +1,8 @@
 import React from 'react'
-import { fireEvent, render, screen, waitFor } from '@testing-library/react'
-import InputFile from '../../../../components/ui/InputFile/InputFile'
-import { ScenarioEditorTestIds } from '../../ScenarioEditor/ScenarioEditor'
-import DownloadAlteredRecording, {
-  DownloadAlteredRecordingTestIds,
-} from './DownloadAlteredRecording'
+import { render, screen } from '@testing-library/react'
+import DownloadAlteredRecording from './DownloadAlteredRecording'
 import userEvent from '@testing-library/user-event'
+import { ScenarioOutputTestIds } from '../ScenarioOutput'
 
 describe('DownloadAlteredRecording', () => {
   afterAll(() => {
@@ -15,6 +12,7 @@ describe('DownloadAlteredRecording', () => {
     const onClick = jest.fn()
     render(
       <DownloadAlteredRecording
+        data-testid={ScenarioOutputTestIds.DISPLAY_DOWNLOAD_RECORDINGS}
         key={'modified__myfile.sbs'}
         recording={{
           name: 'modified__myfile.sbs',
@@ -26,7 +24,7 @@ describe('DownloadAlteredRecording', () => {
     )
 
     const downloadRecording = screen.getByTestId(
-      DownloadAlteredRecordingTestIds.DOWNLOAD_RECORDING
+      ScenarioOutputTestIds.DISPLAY_DOWNLOAD_RECORDINGS
     )
 
     userEvent.click(downloadRecording)
