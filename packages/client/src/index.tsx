@@ -5,12 +5,19 @@ import './types.d.ts'
 import ScenarioEditorPage from './pages/ScenarioEditorPage/ScenarioEditorPage'
 import './styles.css'
 import HeaderMenu from './pages/HeaderMenu/HeaderMenu'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import DocumentationPage from './pages/DocumentationPage/DocumentationPage'
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 root.render(
   <React.StrictMode>
-    <HeaderMenu />
-    <ScenarioEditorPage />
+    <BrowserRouter>
+      <HeaderMenu />
+      <Routes>
+        <Route path={'/accueil'} element={<ScenarioEditorPage />} />
+        <Route path={'/documentation'} element={<DocumentationPage />} />
+      </Routes>
+    </BrowserRouter>
   </React.StrictMode>
 )
 
