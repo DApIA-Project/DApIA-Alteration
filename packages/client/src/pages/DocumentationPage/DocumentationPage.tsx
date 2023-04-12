@@ -1,12 +1,17 @@
 import React from 'react'
 import '../../styles.css'
 import './DocumentationPage.css'
-import ReactMarkdown from 'react-markdown'
+import Button from '../../components/ui/Button/Button'
+
+function openGrammar() {
+  const url = '/assets/grammaireDsl.pdf'
+  window.open(url)
+}
 
 const DocumentationPage: React.FunctionComponent = () => {
   return (
     <div className={'documentationPage'}>
-      <ReactMarkdown>test</ReactMarkdown>
+      <Button text={'See grammar'} onClick={openGrammar} />
     </div>
   )
 }
