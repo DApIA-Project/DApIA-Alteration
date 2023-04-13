@@ -172,7 +172,7 @@ const ScenarioEditor: React.FunctionComponent<ScenarioEditorProps> = ({
       className={'scenarioEditor'}
       data-testid={ScenarioEditorPageTestIds.SCENARIO_EDITOR}
     >
-      <MonacoEditor />
+      <MonacoEditor className={'editor'} />
       <Button
         data-testid={ScenarioEditorTestIds.GENERATE_BUTTON}
         text='Generate alteration'

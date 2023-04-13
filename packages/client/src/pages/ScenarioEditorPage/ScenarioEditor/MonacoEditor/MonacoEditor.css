@@ -1,4 +1,8 @@
-#monaco-editor-root {
+.editor {
   flex-grow: 1;
   height: 80%;
+}
+
+.examples-editor {
+  height: 20%;
 }

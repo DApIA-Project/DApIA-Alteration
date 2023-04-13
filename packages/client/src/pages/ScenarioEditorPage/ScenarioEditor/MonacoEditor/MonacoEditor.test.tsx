@@ -7,7 +7,12 @@ import { ScenarioEditorTestIds } from '../ScenarioEditor'
 
 describe('Button', () => {
   it('calls onChange callback with selected recording file and recording replay file', () => {
-    render(<MonacoEditor data-testid={ScenarioEditorTestIds.EDITOR_MONACO} />)
+    render(
+      <MonacoEditor
+        className={'test-editor'}
+        data-testid={ScenarioEditorTestIds.EDITOR_MONACO}
+      />
+    )
 
     screen.getByTestId(ScenarioEditorTestIds.EDITOR_MONACO)
   })
