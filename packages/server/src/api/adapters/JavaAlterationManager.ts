@@ -1,5 +1,5 @@
 import { Parameters } from '@smartesting/fdit-scenario/dist/types'
-import { Recording } from '@smartesting/shared/dist'
+import { OptionsAlteration, Recording } from '@smartesting/shared/dist'
 import IAlterationManager from './IAlterationManager'
 import { execSync } from 'child_process'
 import * as fs from 'fs'
@@ -8,6 +8,7 @@ export class JavaAlterationManager implements IAlterationManager {
   async runAlterations(
     parameters: Parameters[],
     recording: Recording,
+    optionsAlteration: OptionsAlteration,
     recordingToReplay?: Recording
   ): Promise<Recording[]> {
     let recordingsAltered: Recording[] = []
@@ -36,9 +37,12 @@ export class JavaAlterationManager implements IAlterationManager {
         )
       }
 
+      const optionsToWrite: string = determineOptions(optionsAlteration)
+
       await executeAlterationJar(
         recording.content,
         newFileName,
+        optionsToWrite,
         'temp/scenario_' + numeroFichier + '.json'
       )
 
@@ -77,12 +81,26 @@ export class JavaAlterationManager implements IAlterationManager {
 function executeAlterationJar(
   fileContent: string,
   fileName: string,
+  options: string,
   scenarioPath: string
 ): void {
   execSync(
     'java -jar ../alteration/out/artifacts/alteration_atc_jar/alteration-atc.jar ' +
       scenarioPath +
       ' ' +
-      fileName
+      fileName +
+      ' ' +
+      options
   )
+}
+
+function determineOptions(options: OptionsAlteration): string {
+  let strOption = ''
+  if (options.haveLabel) {
+    strOption = strOption + '-l'
+  }
+  if (options.haveRealism) {
+    strOption = strOption + ' -gs -t -vr -latn -lonn'
+  }
+  return strOption
 }

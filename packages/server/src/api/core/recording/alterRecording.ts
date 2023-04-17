@@ -1,6 +1,7 @@
 import {
   AlterRecordingError,
   AlterRecordingResponse,
+  OptionsAlteration,
   Recording,
 } from '@smartesting/shared/dist'
 import {
@@ -18,6 +19,7 @@ export default async function alterRecording(
   scenario: string,
   recording: Recording,
   recordingToReplay: Recording | undefined,
+  optionsAlteration: OptionsAlteration,
   alterationManager: IAlterationManager
 ): Promise<AlterRecordingResponse> {
   const { errors, parameters } = await extractParameters(scenario, recording)
@@ -33,6 +35,7 @@ export default async function alterRecording(
   const alteredRecordings = await alterationManager.runAlterations(
     parameters,
     recording,
+    optionsAlteration,
     recordingToReplay
   )
 

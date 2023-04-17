@@ -50,7 +50,10 @@ const ScenarioOutput: React.FunctionComponent<ScenarioOutputProps> = ({
       )
     } else {
       return (
-        <div data-testid={ScenarioEditorPageTestIds.SCENARIO_OUTPUT}>
+        <div
+          className={'output'}
+          data-testid={ScenarioEditorPageTestIds.SCENARIO_OUTPUT}
+        >
           <Alert
             data-testid={ScenarioOutputTestIds.DISPLAY_SUCCESS}
             severity='success'

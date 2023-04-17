@@ -6,7 +6,7 @@ import { TestAlterationManager } from '../../adapters/TestAlterationManager'
 import { JavaAlterationManager } from '../../adapters/JavaAlterationManager'
 
 const alterRecording: RequestHandler = async (req, res) => {
-  const { scenario, recording, recordingToReplay } = req.body
+  const { scenario, recording, recordingToReplay, optionsAlteration } = req.body
   if (
     isBlank(scenario) ||
     !recording ||
@@ -57,6 +57,7 @@ const alterRecording: RequestHandler = async (req, res) => {
     scenario,
     recording,
     recordingToReplay,
+    optionsAlteration,
     new JavaAlterationManager()
   )
 

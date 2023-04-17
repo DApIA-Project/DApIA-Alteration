@@ -83,6 +83,7 @@ public class AlterationAPI {
             final ActionLogger logger = new ActionLogger();
             System.out.println("Nombre action : " + sensor.getActions().size());
             final EngineManager engineManager = new EngineManager(recording, sensor.getActions(), logger, parameters);
+            System.out.println(engineManager);
             recording.setFile(engineManager.run());
             copy(recording.getFile(), new File(
                     destination,

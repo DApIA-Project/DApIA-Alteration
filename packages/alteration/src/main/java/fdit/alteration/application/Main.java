@@ -4,8 +4,12 @@ import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import fdit.alteration.api.AlterationAPI;
 import fdit.alteration.core.engine.EngineParameters;
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.DefaultParser;
+import static fdit.alteration.core.engine.EngineParameters.OPTIONS;
 
 import java.io.File;
+import java.util.regex.Pattern;
 
 // Use this class as a free script to your needs
 class Main {
@@ -18,27 +22,32 @@ class Main {
                 AlterationAPI.setMapper(new XmlMapper());
             else
                 AlterationAPI.setMapper(new JsonMapper());
-            alterRecording(args[0], args[1]);
+                alterRecording(args,args[0], args[1]);
+
+
         }
     }
 
-    private static void alterRecording(final String incidentFilePath) throws Exception {
-        extracted(incidentFilePath, "./public", false, "");
+    private static void alterRecording(final String[] args, final String incidentFilePath) throws Exception {
+        extracted(args, incidentFilePath, "./public", false, "");
     }
 
-    private static void alterRecording(final String incidentFilePath, final String file_name) throws Exception {
+    private static void alterRecording(final String[] args,final String incidentFilePath, final String file_name) throws Exception {
         String file_name_without_ext = file_name.replaceFirst("[.][^.]+$", "");
-        extracted(incidentFilePath, "./temp", true, file_name_without_ext);
+        extracted(args,incidentFilePath, "./temp", true, file_name_without_ext);
     }
 
-    private static void extracted(String incidentFilePath, String pathname, boolean logResults, String suffix) throws Exception {
+
+
+    private static void extracted(final String[] args,String incidentFilePath, String pathname, boolean logResults, String suffix) throws Exception {
         final File incidentFile = new File(incidentFilePath);
         System.out.println(incidentFile.exists());
         System.out.println(incidentFile.isFile());
         if (incidentFile.exists() && incidentFile.isFile()) {
             System.out.println("alterRecording");
             //AlterationAPI.startAlteration(new File("."), new File(incidentFilePath));
-            AlterationAPI.startAlteration(new File(pathname), new File(incidentFilePath), logResults, new EngineParameters(), "modified", suffix);
+            final CommandLine commandLine = new DefaultParser().parse(OPTIONS, args);
+            AlterationAPI.startAlteration(new File(pathname), new File(incidentFilePath), logResults, commandLine, "modified", suffix);
         }
     }
 

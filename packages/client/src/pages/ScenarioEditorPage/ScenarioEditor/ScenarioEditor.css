@@ -1,5 +1,5 @@
 .scenarioEditor {
-  height: 50%;
+  height: 55%;
 }
 
 .zone_input_files {
@@ -12,4 +12,10 @@
 
 .zone_input_files > img {
   width: 2%;
+}
+
+.zoneOptions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
 }

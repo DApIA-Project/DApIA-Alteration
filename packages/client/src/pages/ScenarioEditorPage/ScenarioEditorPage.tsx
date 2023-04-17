@@ -22,9 +22,19 @@ const ScenarioEditorPage: React.FunctionComponent = () => {
     <div id={'root'}>
       <div className={'scenarioEditorPage'}>
         <ScenarioEditor
-          onGenerate={async ({ scenario, recording, recordingToReplay }) => {
+          onGenerate={async ({
+            scenario,
+            recording,
+            optionsAlteration,
+            recordingToReplay,
+          }) => {
             setAlteredRecordings(
-              await Client.alteration(scenario, recording, recordingToReplay)
+              await Client.alteration(
+                scenario,
+                recording,
+                optionsAlteration,
+                recordingToReplay
+              )
             )
           }}
         />

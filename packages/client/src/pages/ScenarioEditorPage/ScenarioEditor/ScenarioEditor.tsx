@@ -1,9 +1,15 @@
-import React, { useState } from 'react'
+import React, { ChangeEvent, useState } from 'react'
 import Button from '../../../components/ui/Button/Button'
-import { Alert, AlertTitle } from '@mui/material'
+import {
+  Alert,
+  AlertTitle,
+  Checkbox,
+  FormGroup,
+  FormControlLabel,
+} from '@mui/material'
 import MonacoEditor from './MonacoEditor/MonacoEditor'
 import InputFile from '../../../components/ui/InputFile/InputFile'
-import { Recording } from '@smartesting/shared/dist/models'
+import { OptionsAlteration, Recording } from '@smartesting/shared/dist/models'
 import '../../../styles.css'
 import './ScenarioEditor.css'
 import { ScenarioOutputTestIds } from '../ScenarioOutput/ScenarioOutput'
@@ -25,6 +31,7 @@ export enum ScenarioEditorTestIds {
 type OnGenerateOptions = {
   scenario: string
   recording: Recording
+  optionsAlteration: OptionsAlteration
   recordingToReplay?: Recording
 }
 
@@ -44,6 +51,8 @@ const ScenarioEditor: React.FunctionComponent<ScenarioEditorProps> = ({
   const [isRecordingPresent, setIsRecordingPresent] = useState<boolean>(false)
   const [isRecordingReplayPresent, setIsRecordingReplayPresent] =
     useState<boolean>(false)
+  const [haveLabelOption, setHaveLabelOption] = useState<boolean>(false)
+  const [haveRealismOption, setHaveRealismOption] = useState<boolean>(false)
 
   function onGenerateClicked() {
     const elements = document.getElementsByClassName(
@@ -53,12 +62,15 @@ const ScenarioEditor: React.FunctionComponent<ScenarioEditorProps> = ({
     const scenario = elements[0]?.textContent
 
     if (!scenario || !recordingContent || !recordingName) return
-
     const options: OnGenerateOptions = {
       scenario,
       recording: {
         content: recordingContent,
         name: recordingName,
+      },
+      optionsAlteration: {
+        haveLabel: haveLabelOption,
+        haveRealism: haveRealismOption,
       },
     }
     if (recordingToReplayName && recordingToReplayContent) {
@@ -67,6 +79,7 @@ const ScenarioEditor: React.FunctionComponent<ScenarioEditorProps> = ({
         content: recordingToReplayContent,
       }
     }
+
     onGenerate(options)
     act(() => {
       setError(null)
@@ -159,6 +172,15 @@ const ScenarioEditor: React.FunctionComponent<ScenarioEditorProps> = ({
     }
   }
 
+  const realismChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setHaveRealismOption(event.target.checked)
+    console.log(haveRealismOption)
+  }
+
+  const labelChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setHaveLabelOption(event.target.checked)
+  }
+
   if (error)
     return (
       <Alert severity='error'>
@@ -178,6 +200,40 @@ const ScenarioEditor: React.FunctionComponent<ScenarioEditorProps> = ({
         text='Generate alteration'
         onClick={onGenerateClicked}
       />
+      <div className={'zoneOptions'}>
+        <FormGroup>
+          <FormControlLabel
+            control={
+              <Checkbox
+                sx={{
+                  color: '#ffffff',
+                  '&.Mui-checked': {
+                    color: '#ffffff',
+                  },
+                }}
+                checked={haveLabelOption}
+                onChange={labelChange}
+              />
+            }
+            label='Labeling'
+          />
+          <FormControlLabel
+            control={
+              <Checkbox
+                sx={{
+                  color: '#ffffff',
+                  '&.Mui-checked': {
+                    color: '#ffffff',
+                  },
+                }}
+                checked={haveRealismOption}
+                onChange={realismChange}
+              />
+            }
+            label='Realism'
+          />
+        </FormGroup>
+      </div>
       <div className={'zone_input_files'}>
         <InputFile
           name={'recording'}
