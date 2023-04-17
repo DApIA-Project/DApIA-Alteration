@@ -35,6 +35,38 @@ npm run docker:build:server
 npm run docker:compose:up
 ```
 
+# Developer Installation
+
+## Installation in FDI-T-Web
+
+```shell
+npm i
+```
+
+## Installation in FDI-T-Web/packages/server
+
+```shell
+npm i
+```
+
+## Installation in FDI-T-Web/packages/client
+
+```shell
+npm i
+```
+
+## Run client in FDI-T-Web/packages/client
+
+```shell
+npm run start
+```
+
+## Run server in FDI-T-Web/packages/server
+
+```shell
+npm run start
+```
+
 ## Copy tools directory in .m2 directory (do this in git bash on windows)
 
 ```shell
