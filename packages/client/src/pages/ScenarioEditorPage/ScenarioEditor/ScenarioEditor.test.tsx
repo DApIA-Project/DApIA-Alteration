@@ -8,7 +8,7 @@ import {
 } from '@testing-library/react'
 import ScenarioEditor, { ScenarioEditorTestIds } from './ScenarioEditor'
 import userEvent from '@testing-library/user-event'
-import { Recording } from '@smartesting/shared/src'
+import { OptionsAlteration, Recording } from '@smartesting/shared/src'
 
 jest.mock('./MonacoEditor/MonacoEditor', () => () => (
   <div className={'view-lines monaco-mouse-cursor-text'} role={'code'}>
@@ -95,9 +95,14 @@ describe('ScenarioEditor', () => {
         'MSG,4,3,5022202,4CA1FA,5022202,2018/11/25,11:30:48.179,2018/11/25,11:30:48.179,,,474.53,295.86,,,0.0,,,,,',
       name: 'myfile2.sbs',
     }
+    let optionsAlteration: OptionsAlteration = {
+      haveLabel: false,
+      haveRealism: false,
+    }
     expect(spiedCallback).toBeCalledWith({
       scenario: 'hide all_planes at 0 seconds',
       recording,
+      optionsAlteration,
       recordingToReplay,
     })
   })

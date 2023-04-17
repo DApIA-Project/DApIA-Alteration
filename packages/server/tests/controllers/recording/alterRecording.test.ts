@@ -269,7 +269,7 @@ describe(`POST ${ApiRoutes.alteration()}`, () => {
 
   //TODO modify langage for remove file2 when replay
   /***
-    context('when scenario is replay and not have file2', () => {
+     context('when scenario is replay and not have file2', () => {
         it('returns 422 if its replay and not have file2', async () => {
             const response = await request(server)
                 .post(ApiRoutes.alteration())
@@ -303,6 +303,10 @@ describe(`POST ${ApiRoutes.alteration()}`, () => {
               'MSG,4,3,5022202,4CA1FA,5022202,2018/11/25,11:30:48.179,2018/11/25,11:30:48.179,,,474.53,295.86,,,0.0,,,,,',
             name: 'myfile.sbs',
           },
+          optionsAlteration: {
+            haveLabel: false,
+            haveRealism: false,
+          },
         })
         .expect(200)
 
@@ -327,6 +331,10 @@ describe(`POST ${ApiRoutes.alteration()}`, () => {
             content:
               'MSG,4,3,5022202,4CA1FA,5022202,2018/11/25,11:30:48.179,2018/11/25,11:30:48.179,,,474.53,295.86,,,0.0,,,,,',
             name: 'myfile2.sbs',
+          },
+          optionsAlteration: {
+            haveLabel: false,
+            haveRealism: false,
           },
         })
         .expect(200)
