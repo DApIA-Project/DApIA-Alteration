@@ -1,0 +1,8 @@
+.fditeditor {
+  flex-grow: 1;
+  height: 55%;
+}
+
+.examples-editor {
+  height: 20%;
+}

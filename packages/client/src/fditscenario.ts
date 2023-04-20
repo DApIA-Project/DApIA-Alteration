@@ -2,7 +2,7 @@ import { languages } from 'monaco-editor'
 import IMonarchLanguage = languages.IMonarchLanguage
 
 const FDITSCENARIO_FORMAT: IMonarchLanguage = {
-  defaultToken: 'invalid',
+  //defaultToken: 'invalid',
   keywords: [
     'hide',
     'create',
@@ -18,8 +18,34 @@ const FDITSCENARIO_FORMAT: IMonarchLanguage = {
     'until',
     'for',
     'with_values',
+    'let',
+    'assert',
+    'to',
+    'with',
+    'with_altitude',
+    'with_waypoints',
+    'with_delay',
+    'with_frequency',
+    'with_angle',
+    'triggered_by',
+    'from_recording',
+    'do',
+    'each',
+    'satisfying',
   ],
-  typeKeywords: ['seconds', 'and'],
+  typeKeywords: [
+    'seconds',
+    'and',
+    'in',
+    'centered',
+    'polygon',
+    'circle',
+    'radius',
+    'filter',
+    'vertices',
+    'area',
+    'global',
+  ],
   operators: [
     '=',
     '>',
@@ -61,7 +87,7 @@ const FDITSCENARIO_FORMAT: IMonarchLanguage = {
   ],
 
   // we include these common regular expressions
-  symbols: /[=><!~?:&|+\-*/^%]+/,
+  symbols: /[=><!~?:&|+\-*\/\^%]+/,
 
   // C# style strings
   escapes:
@@ -81,13 +107,13 @@ const FDITSCENARIO_FORMAT: IMonarchLanguage = {
           },
         },
       ],
-      [/[A-Z][\w$]*/, 'type.identifier'], // to show class names nicely
+      [/[A-Z][\w\$]*/, 'type.identifier'], // to show class names nicely
 
       // whitespace
       { include: '@whitespace' },
 
       // delimiters and operators
-      [/[{}()[\]]/, '@brackets'],
+      [/[{}()\[\]]/, '@brackets'],
       [/[<>](?!@symbols)/, '@brackets'],
       [
         /@symbols/,
@@ -103,12 +129,12 @@ const FDITSCENARIO_FORMAT: IMonarchLanguage = {
       // As an example, we emit a debugging log message on these tokens.
       // Note: message are supressed during the first load -- change some lines to see them.
       [
-        /@\s*[a-zA-Z_$][\w$]*/,
+        /@\s*[a-zA-Z_\$][\w\$]*/,
         { token: 'annotation', log: 'annotation token: $0' },
       ],
 
       // numbers
-      [/\d*\.\d+([eE][-+]?\d+)?/, 'number.float'],
+      [/\d*\.\d+([eE][\-+]?\d+)?/, 'number.float'],
       [/0[xX][0-9a-fA-F]+/, 'number.hex'],
       [/\d+/, 'number'],
 
@@ -126,10 +152,10 @@ const FDITSCENARIO_FORMAT: IMonarchLanguage = {
     ],
 
     comment: [
-      [/[^/*]+/, 'comment'],
+      [/[^\/*]+/, 'comment'],
       [/\/\*/, 'comment', '@push'], // nested comment
       ['\\*/', 'comment', '@pop'],
-      [/[/*]/, 'comment'],
+      [/[\/*]/, 'comment'],
     ],
 
     string: [

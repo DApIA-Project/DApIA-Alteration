@@ -14,7 +14,7 @@ root.render(
     <BrowserRouter>
       <HeaderMenu />
       <Routes>
-        <Route path={'/accueil'} element={<ScenarioEditorPage />} />
+        <Route path={'/'} element={<ScenarioEditorPage />} />
         <Route path={'/documentation'} element={<DocumentationPage />} />
       </Routes>
     </BrowserRouter>

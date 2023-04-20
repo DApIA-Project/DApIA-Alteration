@@ -15,7 +15,7 @@ let keywords = ['hide', 'create', 'alter', 'alter_speed', 'saturate', 'replay', 
     'from_recording', 'do', 'each', 'satisfying'];
 
 editorConfig.setMonarchTokensProvider({
-    //defaultToken: 'invalid',
+    defaultToken: 'invalid',
     keywords,
     typeKeywords: [
         'seconds', 'and', 'in', 'centered', 'polygon', 'circle', 'radius', 'filter', 'vertices', 'area', 'global'

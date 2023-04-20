@@ -7,7 +7,7 @@ const HeaderMenu: React.FunctionComponent = () => {
     <nav className='menu'>
       <ul>
         <li>
-          <NavLink className='navbar-item' to='/accueil'>
+          <NavLink className='navbar-item' to='/'>
             Accueil
           </NavLink>
         </li>

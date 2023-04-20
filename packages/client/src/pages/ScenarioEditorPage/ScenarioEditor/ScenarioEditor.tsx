@@ -15,6 +15,7 @@ import './ScenarioEditor.css'
 import { ScenarioOutputTestIds } from '../ScenarioOutput/ScenarioOutput'
 import { ScenarioEditorPageTestIds } from '../ScenarioEditorPage'
 import { act } from 'react-dom/test-utils'
+import FditscenarioEditor from './FditscenarioEditor/FditscenarioEditor'
 
 export enum ScenarioEditorTestIds {
   COMPONENT = 'ScenarioEditor',
@@ -194,7 +195,8 @@ const ScenarioEditor: React.FunctionComponent<ScenarioEditorProps> = ({
       className={'scenarioEditor'}
       data-testid={ScenarioEditorPageTestIds.SCENARIO_EDITOR}
     >
-      <MonacoEditor className={'editor'} />
+      {/*<MonacoEditor className={'editor'} />*/}
+      <FditscenarioEditor className={'fditeditor'} />
       <Button
         data-testid={ScenarioEditorTestIds.GENERATE_BUTTON}
         text='Generate alteration'
