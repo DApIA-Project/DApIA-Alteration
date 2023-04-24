@@ -1,7 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import reportWebVitals from './reportWebVitals'
-import './types.d.ts'
 import ScenarioEditorPage from './pages/ScenarioEditorPage/ScenarioEditorPage'
 import './styles.css'
 import HeaderMenu from './pages/HeaderMenu/HeaderMenu'
