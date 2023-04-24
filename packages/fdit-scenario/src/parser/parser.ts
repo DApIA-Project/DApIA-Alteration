@@ -13,7 +13,6 @@ export async function parseScenario(
   content: string
 ): Promise<ParseResult<ASTScenario>> {
   const services = createFditscenarioServices(EmptyFileSystem).Fditscenario
-  // create a document from a string instead of a file
   const document: LangiumDocument =
     services.shared.workspace.LangiumDocumentFactory.fromString(
       content,
@@ -35,12 +34,7 @@ export async function getSuggestions(
   line: number,
   column: number
 ): Promise<CompletionList | undefined> {
-  console.log(content)
-  console.log('line :' + line)
-  console.log('column :' + column)
-
   const services = createFditscenarioServices(EmptyFileSystem).Fditscenario
-  // create a document from a string instead of a file
   const document: LangiumDocument =
     services.shared.workspace.LangiumDocumentFactory.fromString(
       content,

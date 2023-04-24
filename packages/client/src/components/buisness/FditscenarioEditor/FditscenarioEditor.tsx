@@ -1,26 +1,35 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import Editor, { useMonaco } from '@monaco-editor/react'
 import * as monaco from 'monaco-editor'
 import { editor, languages } from 'monaco-editor'
 import * as parser from '@smartesting/fdit-scenario/dist/parser/parser'
-import FDITSCENARIO_FORMAT from '../../../../fditscenario'
+import FDITSCENARIO_FORMAT from '../../../fditscenario'
 import './FditscenarioEditor.css'
-import { CompletionList } from 'vscode-languageserver-types'
+import { CompletionList, TextEdit } from 'vscode-languageserver-types'
 import IModel = editor.IModel
 import CompletionItemProvider = languages.CompletionItemProvider
+import { InsertReplaceEdit } from 'vscode-languageserver'
+import ILanguageExtensionPoint = languages.ILanguageExtensionPoint
 
 type FditscenarioEditorProps = {
   className: string
+  language: string
+  defaultValue: string
 }
 
 const FditscenarioEditor: React.FunctionComponent<FditscenarioEditorProps> = ({
   className,
+  language,
+  defaultValue,
 }) => {
   const monaco = useMonaco()
-
+  function isTextEdit(edit: any): edit is TextEdit {
+    return 'range' in edit && 'newText' in edit
+  }
   function createCompletionProvider(): CompletionItemProvider | undefined {
     if (!monaco) return
     return {
+      triggerCharacters: [' '],
       provideCompletionItems: async function (
         model: IModel,
         position: monaco.IPosition
@@ -41,34 +50,31 @@ const FditscenarioEditor: React.FunctionComponent<FditscenarioEditorProps> = ({
             suggestions: [],
           }
 
-        console.log(completionList)
         const suggestions: monaco.languages.CompletionItem[] = []
-        let wordList: string[] = []
-
         if (completionList?.items !== undefined) {
           for (const resultElement of completionList?.items) {
-            console.log({ resultElement })
-            suggestions.push({
-              label: resultElement.label,
-              kind:
-                resultElement.kind || monaco.languages.CompletionItemKind.Text,
-              insertText: 'test',
-              range: monaco.Range.fromPositions(position),
-            })
-          }
-          console.log(wordList)
-          /*for (const wordListElement of wordList) {
-                        suggestions.push(
-                            {
-                                label: wordListElement,
-                                kind: monaco.languages.CompletionItemKind.Text,
-                                insertText: wordListElement,
-                                range: monaco.Range.fromPositions(position),
-                            }
-                        )
-                    }*/
-        }
+            const textEdit: TextEdit | InsertReplaceEdit | undefined =
+              resultElement.textEdit
+            if (isTextEdit(textEdit)) {
+              console.log(textEdit.range)
 
+              console.log({ resultElement })
+              console.log('POSITION : ' + position)
+              suggestions.push({
+                label: resultElement.label,
+                kind:
+                  resultElement.kind ||
+                  monaco.languages.CompletionItemKind.Text,
+                insertText: resultElement.label,
+                range: monaco.Range.fromPositions({
+                  lineNumber: textEdit.range.start.line + 1,
+                  column: textEdit.range.start.character + 1,
+                }),
+                documentation: resultElement.documentation,
+              })
+            }
+          }
+        }
         completionList.items = []
         return {
           suggestions: suggestions,
@@ -79,8 +85,18 @@ const FditscenarioEditor: React.FunctionComponent<FditscenarioEditorProps> = ({
   }
 
   useEffect(() => {
+    console.log('USE EFFECT')
     if (!monaco) return
     monaco.languages.typescript.javascriptDefaults.setEagerModelSync(true)
+    console.log(monaco.languages.getLanguages())
+    const languages: ILanguageExtensionPoint[] = monaco.languages.getLanguages()
+    let have_language: boolean = false
+    for (const language of languages) {
+      if (language.id === 'fditscenario') {
+        have_language = true
+      }
+    }
+    if (have_language) return
     monaco.languages.register({ id: 'fditscenario' })
     monaco.languages.setMonarchTokensProvider(
       'fditscenario',
@@ -96,7 +112,11 @@ const FditscenarioEditor: React.FunctionComponent<FditscenarioEditorProps> = ({
 
   return (
     <div id={'monaco-editor-root'} className={className}>
-      <Editor defaultLanguage='fditscenario' theme={'vs-dark'} />
+      <Editor
+        defaultLanguage={language}
+        theme={'vs-dark'}
+        defaultValue={defaultValue}
+      />
     </div>
   )
 }

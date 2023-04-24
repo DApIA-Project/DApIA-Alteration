@@ -7,15 +7,13 @@ import {
   FormGroup,
   FormControlLabel,
 } from '@mui/material'
-import MonacoEditor from './MonacoEditor/MonacoEditor'
 import InputFile from '../../../components/ui/InputFile/InputFile'
 import { OptionsAlteration, Recording } from '@smartesting/shared/dist/models'
 import '../../../styles.css'
 import './ScenarioEditor.css'
-import { ScenarioOutputTestIds } from '../ScenarioOutput/ScenarioOutput'
 import { ScenarioEditorPageTestIds } from '../ScenarioEditorPage'
 import { act } from 'react-dom/test-utils'
-import FditscenarioEditor from './FditscenarioEditor/FditscenarioEditor'
+import FditscenarioEditor from '../../../components/buisness/FditscenarioEditor/FditscenarioEditor'
 
 export enum ScenarioEditorTestIds {
   COMPONENT = 'ScenarioEditor',
@@ -195,8 +193,11 @@ const ScenarioEditor: React.FunctionComponent<ScenarioEditorProps> = ({
       className={'scenarioEditor'}
       data-testid={ScenarioEditorPageTestIds.SCENARIO_EDITOR}
     >
-      {/*<MonacoEditor className={'editor'} />*/}
-      <FditscenarioEditor className={'fditeditor'} />
+      <FditscenarioEditor
+        className={'fditeditor'}
+        language={'fditscenario'}
+        defaultValue={''}
+      />
       <Button
         data-testid={ScenarioEditorTestIds.GENERATE_BUTTON}
         text='Generate alteration'
