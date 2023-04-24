@@ -12,15 +12,15 @@ import { InsertReplaceEdit } from 'vscode-languageserver'
 import ILanguageExtensionPoint = languages.ILanguageExtensionPoint
 
 type FditscenarioEditorProps = {
-  className: string
   language: string
-  defaultValue: string
+  value: string
+  options?: {}
 }
 
 const FditscenarioEditor: React.FunctionComponent<FditscenarioEditorProps> = ({
-  className,
   language,
-  defaultValue,
+  value,
+  options,
 }) => {
   const monaco = useMonaco()
   function isTextEdit(edit: any): edit is TextEdit {
@@ -111,13 +111,12 @@ const FditscenarioEditor: React.FunctionComponent<FditscenarioEditorProps> = ({
   }, [monaco])
 
   return (
-    <div id={'monaco-editor-root'} className={className}>
-      <Editor
-        defaultLanguage={language}
-        theme={'vs-dark'}
-        defaultValue={defaultValue}
-      />
-    </div>
+    <Editor
+      defaultLanguage={language}
+      theme={'vs-dark'}
+      value={value}
+      options={options}
+    />
   )
 }
 export default FditscenarioEditor

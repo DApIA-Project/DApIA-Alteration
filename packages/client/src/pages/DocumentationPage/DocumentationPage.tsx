@@ -3,6 +3,7 @@ import '../../styles.css'
 import './DocumentationPage.css'
 import Button from '../../components/ui/Button/Button'
 import CodeEditor from '@uiw/react-textarea-code-editor'
+import FditscenarioEditor from '../../components/buisness/FditscenarioEditor/FditscenarioEditor'
 
 const DocumentationPage: React.FunctionComponent = () => {
   const [scenarioExample, setScenarioExample] = useState<string>('')
@@ -21,16 +22,12 @@ const DocumentationPage: React.FunctionComponent = () => {
   return (
     <div className={'documentationPage'}>
       <div className={'examples'}>
-        <CodeEditor
+        <FditscenarioEditor
+          language={'fditscenario'}
           value={scenarioExample}
-          language='js'
-          padding={15}
-          style={{
-            fontSize: 16,
-            backgroundColor: '#1e1e1e',
-            fontFamily:
-              'ui-monospace,SFMono-Regular,SF Mono,Consolas,Liberation Mono,Menlo,monospace',
-            color: 'orange',
+          options={{
+            readOnly: true,
+            hideCursorInOverviewRuler: true,
           }}
         />
       </div>

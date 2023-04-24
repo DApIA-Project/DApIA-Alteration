@@ -193,11 +193,9 @@ const ScenarioEditor: React.FunctionComponent<ScenarioEditorProps> = ({
       className={'scenarioEditor'}
       data-testid={ScenarioEditorPageTestIds.SCENARIO_EDITOR}
     >
-      <FditscenarioEditor
-        className={'fditeditor'}
-        language={'fditscenario'}
-        defaultValue={''}
-      />
+      <div id={'monaco-editor-root'} className={'fditeditor'}>
+        <FditscenarioEditor language={'fditscenario'} value={''} />
+      </div>
       <Button
         data-testid={ScenarioEditorTestIds.GENERATE_BUTTON}
         text='Generate alteration'
