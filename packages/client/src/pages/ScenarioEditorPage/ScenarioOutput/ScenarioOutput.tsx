@@ -5,7 +5,6 @@ import '../../../styles.css'
 import DownloadAlteredRecording from './DownloadAlteredRecording/DownloadAlteredRecording'
 import './ScenarioOutput.css'
 import { Recording } from '@smartesting/shared/src'
-import { ScenarioEditorPageTestIds } from '../ScenarioEditorPage'
 
 export enum ScenarioOutputTestIds {
   COMPONENT = 'ScenarioOutput',
@@ -14,6 +13,8 @@ export enum ScenarioOutputTestIds {
   DISPLAY_SUCCESS = 'ScenarioOutput.action.displaySuccess',
   DISPLAY_DOWNLOAD_RECORDINGS = 'ScenarioOutput.action.displayDownloadRecordings',
   DISPLAY_DOWNLOAD_RECORDING_ZONE = 'ScenarioOutput.action.displayDownloadRecordingZone',
+
+  SCENARIO_OUTPUT = 'ScenarioOutput.action.scenarioOutput',
 }
 
 type ScenarioOutputProps = {
@@ -52,7 +53,7 @@ const ScenarioOutput: React.FunctionComponent<ScenarioOutputProps> = ({
       return (
         <div
           className={'output'}
-          data-testid={ScenarioEditorPageTestIds.SCENARIO_OUTPUT}
+          data-testid={ScenarioOutputTestIds.SCENARIO_OUTPUT}
         >
           <Alert
             data-testid={ScenarioOutputTestIds.DISPLAY_SUCCESS}
@@ -78,7 +79,7 @@ const ScenarioOutput: React.FunctionComponent<ScenarioOutputProps> = ({
     }
   }
 
-  return <div data-testid={ScenarioEditorPageTestIds.SCENARIO_OUTPUT}></div>
+  return <div data-testid={ScenarioOutputTestIds.SCENARIO_OUTPUT}></div>
 }
 
 export default ScenarioOutput

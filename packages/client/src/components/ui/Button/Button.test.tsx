@@ -1,6 +1,6 @@
 import React from 'react'
 import Button from './Button'
-import { ScenarioEditorTestIds } from '../../../pages/ScenarioEditorPage/ScenarioEditor/ScenarioEditor'
+import { ButtonTestIds } from './Button'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
@@ -13,15 +13,13 @@ describe('Button', () => {
 
     render(
       <Button
-        data-testid={ScenarioEditorTestIds.GENERATE_BUTTON}
+        data-testid={ButtonTestIds.GENERATE_BUTTON}
         text='Generate alteration'
         onClick={onGenerateClicked}
       />
     )
 
-    const generateButton = screen.getByTestId(
-      ScenarioEditorTestIds.GENERATE_BUTTON
-    )
+    const generateButton = screen.getByTestId(ButtonTestIds.GENERATE_BUTTON)
 
     await userEvent.click(generateButton)
 

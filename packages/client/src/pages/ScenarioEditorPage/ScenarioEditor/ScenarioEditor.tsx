@@ -24,6 +24,10 @@ export enum ScenarioEditorTestIds {
   RECORDING_IS_NOT_PRESENT = 'ScenarioEditor.action.isNotSelectedRecording',
   RECORDING_REPLAY_IS_PRESENT = 'ScenarioEditor.action.isSelectedRecordingReplay',
   RECORDING_REPLAY_IS_NOT_PRESENT = 'ScenarioEditor.action.isNotSelectedRecordingReplay',
+
+  OPTION_LABELING = 'ScenarioEditor.action.selectOptionLabeling',
+
+  OPTION_REALISM = 'ScenarioEditor.action.selectOptionRealism',
   EDITOR_MONACO = 'ScenarioEditor.action.createMonacoEditor',
 }
 
@@ -206,6 +210,7 @@ const ScenarioEditor: React.FunctionComponent<ScenarioEditorProps> = ({
           <FormControlLabel
             control={
               <Checkbox
+                data-testid={ScenarioEditorTestIds.OPTION_LABELING}
                 sx={{
                   color: '#ffffff',
                   '&.Mui-checked': {
@@ -221,6 +226,7 @@ const ScenarioEditor: React.FunctionComponent<ScenarioEditorProps> = ({
           <FormControlLabel
             control={
               <Checkbox
+                data-testid={ScenarioEditorTestIds.OPTION_REALISM}
                 sx={{
                   color: '#ffffff',
                   '&.Mui-checked': {

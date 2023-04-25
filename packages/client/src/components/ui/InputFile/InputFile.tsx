@@ -1,6 +1,10 @@
 import React from 'react'
 import './InputFile.css'
-import { ScenarioEditorTestIds } from '../../../pages/ScenarioEditorPage/ScenarioEditor/ScenarioEditor'
+
+export enum InputFileTestIds {
+  INPUT_FILE_RECORDING_REPLAY = 'InputFile.action.selectRecordingReplay',
+  INPUT_FILE_RECORDING = 'InputFile.action.selectRecording',
+}
 
 interface InputFileProps {
   name: string

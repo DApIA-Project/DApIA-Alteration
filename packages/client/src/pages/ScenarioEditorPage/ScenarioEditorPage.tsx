@@ -1,7 +1,5 @@
 import React, { useState } from 'react'
-import ScenarioEditor, {
-  ScenarioEditorTestIds,
-} from './ScenarioEditor/ScenarioEditor'
+import ScenarioEditor from './ScenarioEditor/ScenarioEditor'
 import ScenarioOutput from './ScenarioOutput/ScenarioOutput'
 import Client from '../../Client'
 import { AlterRecordingResponse, Recording } from '@smartesting/shared/dist'

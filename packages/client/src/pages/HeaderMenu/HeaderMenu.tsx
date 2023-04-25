@@ -2,17 +2,31 @@ import React from 'react'
 import '../../styles.css'
 import './HeaderMenu.css'
 import { NavLink } from 'react-router-dom'
+import { ScenarioEditorTestIds } from '../ScenarioEditorPage/ScenarioEditor/ScenarioEditor'
+
+export enum HeaderMenuTestIds {
+  NAVIGATION_ACCUEIL = 'HeaderMenu.action.isNavigationAccueil',
+  NAVIGATION_DOCUMENTATION = 'HeaderMenu.action.isNavigationDocumentation',
+}
 const HeaderMenu: React.FunctionComponent = () => {
   return (
     <nav className='menu'>
       <ul>
         <li>
-          <NavLink className='navbar-item' to='/'>
+          <NavLink
+            className='navbar-item'
+            to='/'
+            data-testid={HeaderMenuTestIds.NAVIGATION_ACCUEIL}
+          >
             Accueil
           </NavLink>
         </li>
         <li>
-          <NavLink className='navbar-item' to='/documentation'>
+          <NavLink
+            className='navbar-item'
+            to='/documentation'
+            data-testid={HeaderMenuTestIds.NAVIGATION_DOCUMENTATION}
+          >
             Documentation
           </NavLink>
         </li>

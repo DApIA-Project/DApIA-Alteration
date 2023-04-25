@@ -2,7 +2,7 @@
   "name": "client",
   "version": "0.1.0",
   "private": true,
-  "type": "module",
+  "type": "commonjs",
   "dependencies": {
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
@@ -11,14 +11,10 @@
     "@smartesting/fdit-scenario": "file:../fdit-scenario",
     "@smartesting/shared": "file:../shared",
     "@testing-library/jest-dom": "^5.16.5",
-    "@testing-library/react": "^13.4.0",
-    "@testing-library/user-event": "^13.5.0",
-    "@types/jest": "^27.5.2",
     "@types/node": "^16.18.12",
     "@types/react": "^18.0.27",
     "@types/react-dom": "^18.0.10",
     "@uiw/react-textarea-code-editor": "^2.1.1",
-    "monaco-editor": "^0.37.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.10.0",
@@ -29,7 +25,8 @@
     "uuid": "^9.0.0",
     "vscode-languageclient": "^8.1.0",
     "vscode-languageserver": "^8.1.0",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "monaco-editor": "^0.37.1"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -56,6 +53,9 @@
     ]
   },
   "devDependencies": {
-    "@types/uuid": "^9.0.1"
+    "@testing-library/react": "^14.0.0",
+    "@testing-library/user-event": "^14.4.3",
+    "@types/uuid": "^9.0.1",
+    "monaco-editor": "^0.37.1"
   }
 }

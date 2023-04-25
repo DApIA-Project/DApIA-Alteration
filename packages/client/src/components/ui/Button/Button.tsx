@@ -6,6 +6,10 @@ interface ButtonProps {
   onClick: () => void
 }
 
+export enum ButtonTestIds {
+  GENERATE_BUTTON = 'Button.action.generateButton',
+}
+
 function Button({ text, onClick, ...props }: ButtonProps) {
   return (
     <button {...props} className='build' onClick={onClick}>

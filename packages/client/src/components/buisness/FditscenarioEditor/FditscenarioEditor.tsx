@@ -1,26 +1,26 @@
 import React, { useEffect, useState } from 'react'
 import Editor, { useMonaco } from '@monaco-editor/react'
+
 import * as monaco from 'monaco-editor'
-import { editor, languages } from 'monaco-editor'
 import * as parser from '@smartesting/fdit-scenario/dist/parser/parser'
 import FDITSCENARIO_FORMAT from '../../../fditscenario'
 import './FditscenarioEditor.css'
 import { CompletionList, TextEdit } from 'vscode-languageserver-types'
-import IModel = editor.IModel
-import CompletionItemProvider = languages.CompletionItemProvider
+import IModel = monaco.editor.IModel
+import CompletionItemProvider = monaco.languages.CompletionItemProvider
 import { InsertReplaceEdit } from 'vscode-languageserver'
-import ILanguageExtensionPoint = languages.ILanguageExtensionPoint
+import ILanguageExtensionPoint = monaco.languages.ILanguageExtensionPoint
 
 type FditscenarioEditorProps = {
   language: string
   value: string
   options?: {}
 }
-
 const FditscenarioEditor: React.FunctionComponent<FditscenarioEditorProps> = ({
   language,
   value,
   options,
+  ...props
 }) => {
   const monaco = useMonaco()
   function isTextEdit(edit: any): edit is TextEdit {
@@ -116,6 +116,7 @@ const FditscenarioEditor: React.FunctionComponent<FditscenarioEditorProps> = ({
       theme={'vs-dark'}
       value={value}
       options={options}
+      {...props}
     />
   )
 }

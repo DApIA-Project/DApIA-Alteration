@@ -2,6 +2,10 @@ import React from 'react'
 import './DownloadAlteredRecording.css'
 import { Recording } from '@smartesting/shared/src'
 
+export enum DownloadAlteredRecordingTestIds {
+  DISPLAY_DOWNLOAD_RECORDINGS = 'DownloadAlteredRecording.action.displayDownloadRecordings',
+  DISPLAY_DOWNLOAD_RECORDING_ZONE = 'DownloadAlteredRecording.action.displayDownloadRecordingZone',
+}
 interface DownloadAlteredRecordingProps {
   recording: Recording
 

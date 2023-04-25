@@ -1,7 +1,7 @@
 import React from 'react'
 import { fireEvent, render, screen } from '@testing-library/react'
 import InputFile from './InputFile'
-import { ScenarioEditorTestIds } from '../../../pages/ScenarioEditorPage/ScenarioEditor/ScenarioEditor'
+import { InputFileTestIds } from './InputFile'
 
 describe('InputFile', () => {
   afterAll(() => {
@@ -14,12 +14,12 @@ describe('InputFile', () => {
         <InputFile
           name='test-file-input'
           onChange={onChange}
-          data-testid={ScenarioEditorTestIds.INPUT_FILE_RECORDING}
+          data-testid={InputFileTestIds.INPUT_FILE_RECORDING}
         />
         <InputFile
           name='test-file-input'
           onChange={onChange}
-          data-testid={ScenarioEditorTestIds.INPUT_FILE_RECORDING_REPLAY}
+          data-testid={InputFileTestIds.INPUT_FILE_RECORDING_REPLAY}
         />
       </>
     )
@@ -42,13 +42,13 @@ describe('InputFile', () => {
       }
     )
     fireEvent.change(
-      screen.getByTestId(ScenarioEditorTestIds.INPUT_FILE_RECORDING),
+      screen.getByTestId(InputFileTestIds.INPUT_FILE_RECORDING),
       {
         target: { files: [file1] },
       }
     )
     fireEvent.change(
-      screen.getByTestId(ScenarioEditorTestIds.INPUT_FILE_RECORDING_REPLAY),
+      screen.getByTestId(InputFileTestIds.INPUT_FILE_RECORDING_REPLAY),
       {
         target: { files: [file2] },
       }

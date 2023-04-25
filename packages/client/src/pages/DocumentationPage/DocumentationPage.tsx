@@ -5,6 +5,9 @@ import Button from '../../components/ui/Button/Button'
 import CodeEditor from '@uiw/react-textarea-code-editor'
 import FditscenarioEditor from '../../components/buisness/FditscenarioEditor/FditscenarioEditor'
 
+export enum DocumentationPageTestIds {
+  BUTTON_DELETION = 'DocumentationPage.action.setButtonDeletion',
+}
 const DocumentationPage: React.FunctionComponent = () => {
   const [scenarioExample, setScenarioExample] = useState<string>('')
 
@@ -41,6 +44,7 @@ const DocumentationPage: React.FunctionComponent = () => {
               'hide all_planes from 56 seconds until 90 seconds with_frequency = 8'
             )
           }
+          data-testid={DocumentationPageTestIds.BUTTON_DELETION}
         />
         <Button
           {...props}
