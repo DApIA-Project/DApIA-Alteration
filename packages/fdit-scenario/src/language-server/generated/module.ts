@@ -18,7 +18,7 @@ import { AttackScenarioGrammarGrammar } from './grammar'
 export const AttackScenarioGrammarLanguageMetaData: LanguageMetaData = {
   languageId: 'fditscenario',
   fileExtensions: ['.fditscenario'],
-  caseInsensitive: false,
+  caseInsensitive: true,
 }
 
 export const AttackScenarioGrammarParserConfig: IParserConfig = {

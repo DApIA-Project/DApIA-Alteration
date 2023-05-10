@@ -16,6 +16,7 @@ import {
   FditscenarioValidator,
   registerValidationChecks,
 } from './fditscenario-validator'
+import { FditscenarioCompletionProvider } from './fditscenario-completion-provider'
 
 /**
  * Declaration of custom services - add your own service classes here.
@@ -41,6 +42,10 @@ export const FditscenarioModule: Module<
   FditscenarioServices,
   PartialLangiumServices & FditscenarioAddedServices
 > = {
+  lsp: {
+    CompletionProvider: (services: LangiumServices) =>
+      new FditscenarioCompletionProvider(services),
+  },
   validation: {
     FditscenarioValidator: () => new FditscenarioValidator(),
   },

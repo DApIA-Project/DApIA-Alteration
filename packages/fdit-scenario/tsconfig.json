@@ -18,5 +18,5 @@
   },
 
   "include": ["src/**/*.ts", "src/test/*.test.ts"],
-  "exclude": ["build"]
+  "exclude": ["build", "node_modules"]
 }
