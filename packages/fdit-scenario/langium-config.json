@@ -5,8 +5,6 @@
       "id": "fditscenario",
       "grammar": "src/language-server/fditscenario.langium",
       "fileExtensions": [".fditscenario"],
-      "caseInsensitive": true,
-      "showNonAlphabeticKeywords": true,
       "chevrotainParserConfig": {
         "maxLookahead": 1,
         "recoveryEnabled": true,

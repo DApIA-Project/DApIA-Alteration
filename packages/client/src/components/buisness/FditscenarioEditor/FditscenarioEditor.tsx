@@ -23,6 +23,37 @@ const FditscenarioEditor: React.FunctionComponent<FditscenarioEditorProps> = ({
   ...props
 }) => {
   const monaco = useMonaco()
+
+  function validate(
+    model: IModel,
+    column: number,
+    length: number,
+    message: string,
+    line: number
+  ) {
+    console.log(column)
+    console.log(length)
+    console.log(message)
+    const markers = []
+    const range = {
+      startLineNumber: line,
+      startColumn: column,
+      endLineNumber: 1,
+      endColumn: column + length - 1,
+    }
+    const content = model.getValueInRange(range).trim()
+    markers.push({
+      message: message,
+      severity: monaco!.MarkerSeverity.Error,
+      startLineNumber: range.startLineNumber,
+      startColumn: range.startColumn,
+      endLineNumber: range.endLineNumber,
+      endColumn: range.endColumn,
+    })
+
+    monaco!.editor.setModelMarkers(model, 'owner', markers)
+  }
+
   function isTextEdit(edit: any): edit is TextEdit {
     return 'range' in edit && 'newText' in edit
   }
@@ -34,25 +65,53 @@ const FditscenarioEditor: React.FunctionComponent<FditscenarioEditorProps> = ({
         model: IModel,
         position: monaco.IPosition
       ): Promise<monaco.languages.CompletionList | null | undefined> {
-        const completionList: CompletionList | undefined =
-          await parser.getSuggestions(
-            model.getValueInRange({
-              startLineNumber: 1,
-              startColumn: 1,
-              endLineNumber: position.lineNumber,
-              endColumn: position.column,
-            }),
-            position.lineNumber,
-            position.column
+        const completionList: {
+          suggestions: CompletionList | undefined
+          errors: { parser: any; lexer: any }
+        } = await parser.getSuggestions(
+          model.getValueInRange({
+            startLineNumber: 1,
+            startColumn: 1,
+            endLineNumber: position.lineNumber,
+            endColumn: position.column,
+          }),
+          position.lineNumber,
+          position.column
+        )
+
+        if (completionList.errors.lexer.length != 0) {
+          let messageError: string =
+            completionList.errors.lexer[0].message + '\n'
+          if (completionList.errors.parser.length != 0) {
+            messageError += completionList.errors.parser[0].message
+          }
+          validate(
+            model,
+            completionList.errors.lexer[0].column,
+            completionList.errors.lexer[0].length,
+            messageError,
+            completionList.errors.lexer[0].line
           )
-        if (!completionList)
+        } else {
+          if (completionList.errors.parser.length != 0) {
+            validate(
+              model,
+              completionList.errors.parser[0].columnNumber,
+              1,
+              completionList.errors.parser[0].MismatchedTokenException,
+              1
+            )
+          }
+        }
+        if (completionList.suggestions?.items.length == 0) {
           return {
             suggestions: [],
           }
-
+        }
+        console.log(completionList)
         const suggestions: monaco.languages.CompletionItem[] = []
-        if (completionList?.items !== undefined) {
-          for (const resultElement of completionList?.items) {
+        if (completionList?.suggestions!.items !== undefined) {
+          for (const resultElement of completionList?.suggestions.items) {
             const textEdit: TextEdit | InsertReplaceEdit | undefined =
               resultElement.textEdit
             if (isTextEdit(textEdit)) {
@@ -75,7 +134,7 @@ const FditscenarioEditor: React.FunctionComponent<FditscenarioEditorProps> = ({
             }
           }
         }
-        completionList.items = []
+        completionList.suggestions!.items = []
         return {
           suggestions: suggestions,
           incomplete: true,
@@ -88,7 +147,6 @@ const FditscenarioEditor: React.FunctionComponent<FditscenarioEditorProps> = ({
     console.log('USE EFFECT')
     if (!monaco) return
     monaco.languages.typescript.javascriptDefaults.setEagerModelSync(true)
-    console.log(monaco.languages.getLanguages())
     const languages: ILanguageExtensionPoint[] = monaco.languages.getLanguages()
     let have_language: boolean = false
     for (const language of languages) {
@@ -102,6 +160,7 @@ const FditscenarioEditor: React.FunctionComponent<FditscenarioEditorProps> = ({
       'fditscenario',
       FDITSCENARIO_FORMAT
     )
+
     const completionProvider = createCompletionProvider()
     if (!completionProvider) return
     monaco.languages.registerCompletionItemProvider(
