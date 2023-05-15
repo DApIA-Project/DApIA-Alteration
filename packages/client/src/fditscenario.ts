@@ -172,4 +172,51 @@ const FDITSCENARIO_FORMAT: IMonarchLanguage = {
     ],
   },
 }
+
+export function getDocumentationLabel(label: string): string | undefined {
+  switch (label) {
+    case '=':
+      return 'This value replaces the current value of the parameter'
+    case '-=':
+      return 'Subtract this value from the current value of the parameter'
+    case '+=':
+      return 'Add this value to the current value of the parameter'
+    case '--=':
+      return 'Decrement this value to the current value of the parameter on each line'
+    case '++=':
+      return 'Increment this value to the current value of the parameter on each line'
+    case '*=':
+      return 'Multiply this value to the current value of the parameter'
+    case '<<':
+      return 'This value replaces the current value of the parameter'
+    case '>>':
+      return 'This value replaces the current value of the parameter'
+    case 'let':
+      return 'Used to create a variable'
+    case 'alter':
+      return 'Used to modify features or trajectories'
+    case 'hide':
+      return 'Used to conceal aircraft'
+    case 'create':
+      return 'Used to create aircraft'
+    case 'replay':
+      return 'Used to replay aircraft'
+    case 'delay':
+      return 'Used to change aircraft time'
+    case 'saturate':
+      return 'Used to create many aircraft'
+    case 'alter_speed':
+      return 'Used to modify the speed of the aircraft'
+    case 'rotate':
+      return 'Used to turn the aircraft path'
+    case 'cut':
+      return 'Used to suppress aircraft'
+    case 'plane':
+      return 'Used to choose a specific aircraft'
+    case 'all_planes':
+      return 'Used to select all aircraft'
+    default:
+      return undefined
+  }
+}
 export default FDITSCENARIO_FORMAT

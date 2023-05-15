@@ -3,7 +3,6 @@ import { ASTScenario } from '../language-server/generated/ast'
 import { createFditscenarioServices } from '../language-server/fditscenario-module'
 import { URI } from 'vscode-uri'
 import { CompletionList } from 'vscode-languageserver-types'
-import { ILexingError, IRecognitionException } from 'chevrotain'
 
 /**
  * Extracts an AST node from a virtual document, represented as a string
