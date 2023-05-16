@@ -13,7 +13,6 @@ import {
   ASTParameters,
   ASTParameterType,
   ASTRecordingParameterType,
-  ASTReplayTarget,
   ASTRightShift,
   ASTRotateParameter,
   ASTSaturationParameter,
@@ -31,7 +30,6 @@ import {
   ASTVariableValue,
   ASTWayPoint,
   ASTWayPoints,
-  isASTAllPlaneFrom,
   isASTAllPlanes,
   isASTAlter,
   isASTAlterAndTrajectory,
@@ -75,15 +73,19 @@ import {
 export function generateStatements(
   astScenario: ASTScenario,
   fileName: string,
-  fileContent: string
+  fileContent: string,
+  fileNameReplay: string
 ): Parameters {
-  return { sensors: evalScenario(astScenario, fileName, fileContent) }
+  return {
+    sensors: evalScenario(astScenario, fileName, fileContent, fileNameReplay),
+  }
 }
 
 function evalScenario(
   astScenario: ASTScenario,
   fileName: string,
-  fileContent: string
+  fileContent: string,
+  fileNameReplay: string
 ): Sensors {
   return {
     sensor: [
@@ -93,7 +95,11 @@ function evalScenario(
         record: fileName,
         firstDate: evalFirstDate(fileContent),
         filter: '',
-        action: evalInstructions(astScenario.instructions, fileContent),
+        action: evalInstructions(
+          astScenario.instructions,
+          fileContent,
+          fileNameReplay
+        ),
       },
     ],
   }
@@ -154,16 +160,18 @@ enum RecordingParametreType {
 
 function evalInstructions(
   instrs: ASTInstruction[],
-  fileContent: string
+  fileContent: string,
+  fileNameReplay: string
 ): Action[] {
   return instrs
-    .flatMap((i) => evalInstr(i, fileContent))
+    .flatMap((i) => evalInstr(i, fileContent, fileNameReplay))
     .filter((i) => i !== undefined) as Action[]
 }
 
 function evalInstr(
   instr: ASTInstruction,
-  fileContent: string
+  fileContent: string,
+  fileNameReplay: string
 ): Action | undefined {
   if (isASTHide(instr)) {
     if (!isASTHideParameter(instr.frequency)) {
@@ -260,8 +268,8 @@ function evalInstr(
         alterationType: ActionType.replay,
         scope: evalTimeScope(instr.timeScope, fileContent),
         parameters: {
-          target: evalReplayTarget(instr.target),
-          recordPath: 'temp/' + evalValue(instr.target.recording),
+          target: evalTarget(instr.target),
+          recordPath: 'temp/' + fileNameReplay,
         },
       }
     } else {
@@ -269,8 +277,8 @@ function evalInstr(
         alterationType: ActionType.replay,
         scope: evalTimeScope(instr.timeScope, fileContent),
         parameters: {
-          target: evalReplayTarget(instr.target),
-          recordPath: 'temp/' + evalValue(instr.target.recording),
+          target: evalTarget(instr.target),
+          recordPath: 'temp/' + fileNameReplay,
           parameter: evalParameters(instr.parameters),
         },
       }
@@ -404,20 +412,6 @@ function evalRecordingParameterType(n: ASTRecordingParameterType): string {
 
 function evalTarget(t: ASTTarget): Target {
   if (isASTAllPlanes(t)) {
-    return {
-      identifier: 'hexIdent',
-      value: 'ALL',
-    }
-  } else {
-    return {
-      identifier: 'hexIdent',
-      value: 'random',
-    }
-  }
-}
-
-function evalReplayTarget(t: ASTReplayTarget): Target {
-  if (isASTAllPlaneFrom(t)) {
     return {
       identifier: 'hexIdent',
       value: 'ALL',

@@ -44,14 +44,6 @@ export function isASTNumberOffset(item: unknown): item is ASTNumberOffset {
   return reflection.isInstance(item, ASTNumberOffset)
 }
 
-export type ASTReplayTarget = ASTAllPlaneFrom | ASTPlaneFrom
-
-export const ASTReplayTarget = 'ASTReplayTarget'
-
-export function isASTReplayTarget(item: unknown): item is ASTReplayTarget {
-  return reflection.isInstance(item, ASTReplayTarget)
-}
-
 export type ASTTarget = ASTAllPlanes | ASTPlane
 
 export const ASTTarget = 'ASTTarget'
@@ -212,20 +204,6 @@ export type T_WITH_VALUES = 'with_values'
 
 export type T_WITH_WAYPOINTS = 'with_waypoints'
 
-export interface ASTAllPlaneFrom extends AstNode {
-  readonly $container: ASTReplay
-  readonly $type: 'ASTAllPlaneFrom'
-  filters?: ASTFilters
-  keyword: T_ALL_PLANES | T_FROM_RECORDING
-  recording: ASTValue
-}
-
-export const ASTAllPlaneFrom = 'ASTAllPlaneFrom'
-
-export function isASTAllPlaneFrom(item: unknown): item is ASTAllPlaneFrom {
-  return reflection.isInstance(item, ASTAllPlaneFrom)
-}
-
 export interface ASTAllPlanes extends AstNode {
   readonly $container:
     | ASTAlterAndTrajectory
@@ -233,6 +211,7 @@ export interface ASTAllPlanes extends AstNode {
     | ASTCut
     | ASTDelay
     | ASTHide
+    | ASTReplay
     | ASTRotate
     | ASTSaturate
   readonly $type: 'ASTAllPlanes'
@@ -371,14 +350,12 @@ export function isASTAtFor(item: unknown): item is ASTAtFor {
 
 export interface ASTConstantValue extends AstNode {
   readonly $container:
-    | ASTAllPlaneFrom
     | ASTCreationParameter
     | ASTFilters
     | ASTHideParameter
     | ASTLeftShift
     | ASTOffsetList
     | ASTParameter
-    | ASTPlaneFrom
     | ASTRightShift
     | ASTRotateParameter
     | ASTSaturationParameter
@@ -539,14 +516,12 @@ export function isASTDoubleRange(item: unknown): item is ASTDoubleRange {
 
 export interface ASTDoubleValue extends AstNode {
   readonly $container:
-    | ASTAllPlaneFrom
     | ASTCreationParameter
     | ASTFilters
     | ASTHideParameter
     | ASTLeftShift
     | ASTOffsetList
     | ASTParameter
-    | ASTPlaneFrom
     | ASTRightShift
     | ASTRotateParameter
     | ASTSaturationParameter
@@ -566,7 +541,7 @@ export function isASTDoubleValue(item: unknown): item is ASTDoubleValue {
 }
 
 export interface ASTFilters extends AstNode {
-  readonly $container: ASTAllPlaneFrom | ASTAllPlanes | ASTPlane | ASTPlaneFrom
+  readonly $container: ASTAllPlanes | ASTPlane
   readonly $type: 'ASTFilters'
   filters: Array<ASTValue>
   keyword: T_AND | T_SATISFYING
@@ -624,14 +599,12 @@ export function isASTIntegerRange(item: unknown): item is ASTIntegerRange {
 
 export interface ASTIntegerValue extends AstNode {
   readonly $container:
-    | ASTAllPlaneFrom
     | ASTCreationParameter
     | ASTFilters
     | ASTHideParameter
     | ASTLeftShift
     | ASTOffsetList
     | ASTParameter
-    | ASTPlaneFrom
     | ASTRightShift
     | ASTRotateParameter
     | ASTSaturationParameter
@@ -651,14 +624,12 @@ export function isASTIntegerValue(item: unknown): item is ASTIntegerValue {
 
 export interface ASTLeftShift extends AstNode {
   readonly $container:
-    | ASTAllPlaneFrom
     | ASTCreationParameter
     | ASTFilters
     | ASTHideParameter
     | ASTLeftShift
     | ASTOffsetList
     | ASTParameter
-    | ASTPlaneFrom
     | ASTRightShift
     | ASTRotateParameter
     | ASTSaturationParameter
@@ -762,6 +733,7 @@ export interface ASTPlane extends AstNode {
     | ASTCut
     | ASTDelay
     | ASTHide
+    | ASTReplay
     | ASTRotate
     | ASTSaturate
   readonly $type: 'ASTPlane'
@@ -773,20 +745,6 @@ export const ASTPlane = 'ASTPlane'
 
 export function isASTPlane(item: unknown): item is ASTPlane {
   return reflection.isInstance(item, ASTPlane)
-}
-
-export interface ASTPlaneFrom extends AstNode {
-  readonly $container: ASTReplay
-  readonly $type: 'ASTPlaneFrom'
-  filters: ASTFilters
-  keyword: T_FROM_RECORDING | T_PLANE
-  recording: ASTValue
-}
-
-export const ASTPlaneFrom = 'ASTPlaneFrom'
-
-export function isASTPlaneFrom(item: unknown): item is ASTPlaneFrom {
-  return reflection.isInstance(item, ASTPlaneFrom)
 }
 
 export interface ASTRange extends AstNode {
@@ -837,7 +795,7 @@ export interface ASTReplay extends AstNode {
   assertions?: ASTAssertions
   keyword: T_REPLAY
   parameters?: ASTParameters
-  target: ASTReplayTarget
+  target: ASTTarget
   timeScope: ASTTimeScope
 }
 
@@ -849,14 +807,12 @@ export function isASTReplay(item: unknown): item is ASTReplay {
 
 export interface ASTRightShift extends AstNode {
   readonly $container:
-    | ASTAllPlaneFrom
     | ASTCreationParameter
     | ASTFilters
     | ASTHideParameter
     | ASTLeftShift
     | ASTOffsetList
     | ASTParameter
-    | ASTPlaneFrom
     | ASTRightShift
     | ASTRotateParameter
     | ASTSaturationParameter
@@ -1041,14 +997,12 @@ export function isASTStringList(item: unknown): item is ASTStringList {
 
 export interface ASTStringValue extends AstNode {
   readonly $container:
-    | ASTAllPlaneFrom
     | ASTCreationParameter
     | ASTFilters
     | ASTHideParameter
     | ASTLeftShift
     | ASTOffsetList
     | ASTParameter
-    | ASTPlaneFrom
     | ASTRightShift
     | ASTRotateParameter
     | ASTSaturationParameter
@@ -1118,14 +1072,12 @@ export function isASTTrigger(item: unknown): item is ASTTrigger {
 
 export interface ASTVariableValue extends AstNode {
   readonly $container:
-    | ASTAllPlaneFrom
     | ASTCreationParameter
     | ASTFilters
     | ASTHideParameter
     | ASTLeftShift
     | ASTOffsetList
     | ASTParameter
-    | ASTPlaneFrom
     | ASTRightShift
     | ASTRotateParameter
     | ASTSaturationParameter
@@ -1273,7 +1225,6 @@ export function isASTParamOffset(item: unknown): item is ASTParamOffset {
 }
 
 export interface FditscenarioAstType {
-  ASTAllPlaneFrom: ASTAllPlaneFrom
   ASTAllPlanes: ASTAllPlanes
   ASTAlter: ASTAlter
   ASTAlterAndTrajectory: ASTAlterAndTrajectory
@@ -1313,13 +1264,11 @@ export interface FditscenarioAstType {
   ASTParameterType: ASTParameterType
   ASTParameters: ASTParameters
   ASTPlane: ASTPlane
-  ASTPlaneFrom: ASTPlaneFrom
   ASTRange: ASTRange
   ASTRangeDeclaration: ASTRangeDeclaration
   ASTRecordingParameterType: ASTRecordingParameterType
   ASTRecordingValue: ASTRecordingValue
   ASTReplay: ASTReplay
-  ASTReplayTarget: ASTReplayTarget
   ASTRightShift: ASTRightShift
   ASTRotate: ASTRotate
   ASTRotateParameter: ASTRotateParameter
@@ -1348,7 +1297,6 @@ export interface FditscenarioAstType {
 export class FditscenarioAstReflection extends AbstractAstReflection {
   getAllTypes(): string[] {
     return [
-      'ASTAllPlaneFrom',
       'ASTAllPlanes',
       'ASTAlter',
       'ASTAlterAndTrajectory',
@@ -1388,13 +1336,11 @@ export class FditscenarioAstReflection extends AbstractAstReflection {
       'ASTParameterType',
       'ASTParameters',
       'ASTPlane',
-      'ASTPlaneFrom',
       'ASTRange',
       'ASTRangeDeclaration',
       'ASTRecordingParameterType',
       'ASTRecordingValue',
       'ASTReplay',
-      'ASTReplayTarget',
       'ASTRightShift',
       'ASTRotate',
       'ASTRotateParameter',
@@ -1426,10 +1372,6 @@ export class FditscenarioAstReflection extends AbstractAstReflection {
     supertype: string
   ): boolean {
     switch (subtype) {
-      case ASTAllPlaneFrom:
-      case ASTPlaneFrom: {
-        return this.isSubtype(ASTReplayTarget, supertype)
-      }
       case ASTAllPlanes:
       case ASTPlane: {
         return this.isSubtype(ASTTarget, supertype)

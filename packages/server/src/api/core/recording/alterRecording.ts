@@ -22,7 +22,11 @@ export default async function alterRecording(
   optionsAlteration: OptionsAlteration,
   alterationManager: IAlterationManager
 ): Promise<AlterRecordingResponse> {
-  const { errors, parameters } = await extractParameters(scenario, recording)
+  const { errors, parameters } = await extractParameters(
+    scenario,
+    recording,
+    recordingToReplay
+  )
 
   if (errors.length > 0)
     return {
@@ -53,7 +57,8 @@ export default async function alterRecording(
  */
 export const extractParameters = async (
   scenario: string,
-  recording: Recording
+  recording: Recording,
+  recordingToReplay: Recording | undefined
 ): Promise<{
   parameters: Parameters[]
   errors: string[]
@@ -86,11 +91,25 @@ export const extractParameters = async (
 
   const scenarios: string[] = []
   if (declarations.declarations.length === 0)
-    return {
-      parameters: [
-        generateStatements(value, recording.name, recording.content),
-      ],
-      errors: [],
+    if (recordingToReplay === undefined) {
+      return {
+        parameters: [
+          generateStatements(value, recording.name, recording.content, ''),
+        ],
+        errors: [],
+      }
+    } else {
+      return {
+        parameters: [
+          generateStatements(
+            value,
+            recording.name,
+            recording.content,
+            recordingToReplay.name
+          ),
+        ],
+        errors: [],
+      }
     }
 
   let scenarioNumber: number = 1
@@ -104,9 +123,20 @@ export const extractParameters = async (
       newScenario
     )
     if (parserErrors.length === 0 && lexerErrors.length === 0) {
-      parameters.push(
-        generateStatements(value, recording.name, recording.content)
-      )
+      if (recordingToReplay === undefined) {
+        parameters.push(
+          generateStatements(value, recording.name, recording.content, '')
+        )
+      } else {
+        parameters.push(
+          generateStatements(
+            value,
+            recording.name,
+            recording.content,
+            recordingToReplay.name
+          )
+        )
+      }
     }
   }
   return {

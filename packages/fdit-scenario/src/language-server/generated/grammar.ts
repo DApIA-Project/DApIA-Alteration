@@ -67,7 +67,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@103"
+                "$ref": "#/rules@100"
               },
               "arguments": []
             }
@@ -118,7 +118,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@142"
+                "$ref": "#/rules@139"
               },
               "arguments": []
             }
@@ -133,7 +133,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@85"
+                    "$ref": "#/rules@82"
                   },
                   "arguments": []
                 }
@@ -145,7 +145,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@142"
+                    "$ref": "#/rules@139"
                   },
                   "arguments": []
                 }
@@ -160,7 +160,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@104"
+                "$ref": "#/rules@101"
               },
               "arguments": []
             }
@@ -187,7 +187,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@54"
+                "$ref": "#/rules@51"
               },
               "arguments": []
             }
@@ -202,7 +202,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@85"
+                    "$ref": "#/rules@82"
                   },
                   "arguments": []
                 }
@@ -214,7 +214,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@54"
+                    "$ref": "#/rules@51"
                   },
                   "arguments": []
                 }
@@ -229,7 +229,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@104"
+                "$ref": "#/rules@101"
               },
               "arguments": []
             }
@@ -256,7 +256,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@105"
+                "$ref": "#/rules@102"
               },
               "arguments": []
             }
@@ -307,7 +307,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@141"
+                "$ref": "#/rules@138"
               },
               "arguments": []
             }
@@ -319,7 +319,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@85"
+                "$ref": "#/rules@82"
               },
               "arguments": []
             }
@@ -331,7 +331,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@141"
+                "$ref": "#/rules@138"
               },
               "arguments": []
             }
@@ -343,7 +343,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@106"
+                "$ref": "#/rules@103"
               },
               "arguments": []
             }
@@ -370,7 +370,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@140"
+                "$ref": "#/rules@137"
               },
               "arguments": []
             }
@@ -382,7 +382,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@85"
+                "$ref": "#/rules@82"
               },
               "arguments": []
             }
@@ -394,7 +394,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@140"
+                "$ref": "#/rules@137"
               },
               "arguments": []
             }
@@ -406,7 +406,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@106"
+                "$ref": "#/rules@103"
               },
               "arguments": []
             }
@@ -433,7 +433,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@107"
+                "$ref": "#/rules@104"
               },
               "arguments": []
             }
@@ -445,7 +445,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@138"
+                "$ref": "#/rules@135"
               },
               "arguments": []
             }
@@ -457,7 +457,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@89"
+                "$ref": "#/rules@86"
               },
               "arguments": []
             }
@@ -488,7 +488,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@85"
+                "$ref": "#/rules@82"
               },
               "arguments": []
             }
@@ -637,7 +637,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@114"
+                "$ref": "#/rules@111"
               },
               "arguments": []
             }
@@ -661,7 +661,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@48"
+                "$ref": "#/rules@45"
               },
               "arguments": []
             }
@@ -673,7 +673,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@47"
+                "$ref": "#/rules@44"
               },
               "arguments": []
             },
@@ -686,7 +686,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@34"
+                "$ref": "#/rules@31"
               },
               "arguments": []
             },
@@ -727,7 +727,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@74"
+                "$ref": "#/rules@71"
               },
               "arguments": []
             }
@@ -751,7 +751,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@48"
+                "$ref": "#/rules@45"
               },
               "arguments": []
             }
@@ -763,7 +763,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@47"
+                "$ref": "#/rules@44"
               },
               "arguments": []
             },
@@ -815,7 +815,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@86"
+                "$ref": "#/rules@83"
               },
               "arguments": []
             }
@@ -827,7 +827,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@48"
+                "$ref": "#/rules@45"
               },
               "arguments": []
             }
@@ -839,7 +839,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@30"
+                "$ref": "#/rules@27"
               },
               "arguments": []
             }
@@ -851,7 +851,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@45"
+                "$ref": "#/rules@42"
               },
               "arguments": []
             },
@@ -892,7 +892,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@32"
+                "$ref": "#/rules@29"
               },
               "arguments": []
             }
@@ -932,7 +932,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@30"
+                "$ref": "#/rules@27"
               },
               "arguments": []
             }
@@ -972,7 +972,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@73"
+                "$ref": "#/rules@70"
               },
               "arguments": []
             }
@@ -996,7 +996,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@48"
+                "$ref": "#/rules@45"
               },
               "arguments": []
             }
@@ -1008,7 +1008,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@47"
+                "$ref": "#/rules@44"
               },
               "arguments": []
             },
@@ -1021,7 +1021,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@41"
+                "$ref": "#/rules@38"
               },
               "arguments": []
             }
@@ -1061,7 +1061,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@123"
+                "$ref": "#/rules@120"
               },
               "arguments": []
             }
@@ -1085,7 +1085,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@48"
+                "$ref": "#/rules@45"
               },
               "arguments": []
             }
@@ -1097,7 +1097,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@47"
+                "$ref": "#/rules@44"
               },
               "arguments": []
             },
@@ -1110,7 +1110,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@43"
+                "$ref": "#/rules@40"
               },
               "arguments": []
             }
@@ -1150,7 +1150,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@115"
+                "$ref": "#/rules@112"
               },
               "arguments": []
             }
@@ -1162,7 +1162,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@27"
+                "$ref": "#/rules@24"
               },
               "arguments": []
             }
@@ -1174,7 +1174,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@48"
+                "$ref": "#/rules@45"
               },
               "arguments": []
             }
@@ -1186,7 +1186,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@32"
+                "$ref": "#/rules@29"
               },
               "arguments": []
             },
@@ -1227,7 +1227,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@116"
+                "$ref": "#/rules@113"
               },
               "arguments": []
             }
@@ -1251,7 +1251,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@48"
+                "$ref": "#/rules@45"
               },
               "arguments": []
             }
@@ -1263,7 +1263,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@33"
+                "$ref": "#/rules@30"
               },
               "arguments": []
             }
@@ -1303,7 +1303,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@117"
+                "$ref": "#/rules@114"
               },
               "arguments": []
             }
@@ -1327,7 +1327,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@48"
+                "$ref": "#/rules@45"
               },
               "arguments": []
             }
@@ -1339,7 +1339,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@47"
+                "$ref": "#/rules@44"
               },
               "arguments": []
             },
@@ -1352,7 +1352,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@35"
+                "$ref": "#/rules@32"
               },
               "arguments": []
             }
@@ -1392,7 +1392,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@80"
+                "$ref": "#/rules@77"
               },
               "arguments": []
             }
@@ -1416,7 +1416,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@48"
+                "$ref": "#/rules@45"
               },
               "arguments": []
             }
@@ -1428,7 +1428,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@47"
+                "$ref": "#/rules@44"
               },
               "arguments": []
             },
@@ -1484,7 +1484,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@76"
+                    "$ref": "#/rules@73"
                   },
                   "arguments": []
                 }
@@ -1526,7 +1526,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@77"
+                "$ref": "#/rules@74"
               },
               "arguments": []
             }
@@ -1538,7 +1538,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@48"
+                "$ref": "#/rules@45"
               },
               "arguments": []
             }
@@ -1550,7 +1550,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@134"
+                "$ref": "#/rules@131"
               },
               "arguments": []
             }
@@ -1562,7 +1562,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@142"
+                "$ref": "#/rules@139"
               },
               "arguments": []
             }
@@ -1577,7 +1577,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@135"
+                    "$ref": "#/rules@132"
                   },
                   "arguments": []
                 }
@@ -1589,7 +1589,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@142"
+                    "$ref": "#/rules@139"
                   },
                   "arguments": []
                 }
@@ -1648,7 +1648,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@121"
+                "$ref": "#/rules@118"
               },
               "arguments": []
             }
@@ -1660,7 +1660,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@53"
+                "$ref": "#/rules@50"
               },
               "arguments": []
             }
@@ -1687,7 +1687,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@71"
+                "$ref": "#/rules@68"
               },
               "arguments": []
             }
@@ -1699,167 +1699,11 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@53"
+                "$ref": "#/rules@50"
               },
               "arguments": []
             },
             "cardinality": "?"
-          }
-        ]
-      },
-      "definesHiddenTokens": false,
-      "entry": false,
-      "fragment": false,
-      "hiddenTokens": [],
-      "parameters": [],
-      "wildcard": false
-    },
-    {
-      "$type": "ParserRule",
-      "name": "ASTReplayTarget",
-      "definition": {
-        "$type": "Alternatives",
-        "elements": [
-          {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@28"
-            },
-            "arguments": []
-          },
-          {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@29"
-            },
-            "arguments": []
-          }
-        ]
-      },
-      "definesHiddenTokens": false,
-      "entry": false,
-      "fragment": false,
-      "hiddenTokens": [],
-      "parameters": [],
-      "wildcard": false
-    },
-    {
-      "$type": "ParserRule",
-      "name": "ASTPlaneFrom",
-      "definition": {
-        "$type": "Group",
-        "elements": [
-          {
-            "$type": "Assignment",
-            "feature": "keyword",
-            "operator": "=",
-            "terminal": {
-              "$type": "RuleCall",
-              "rule": {
-                "$ref": "#/rules@121"
-              },
-              "arguments": []
-            }
-          },
-          {
-            "$type": "Assignment",
-            "feature": "filters",
-            "operator": "=",
-            "terminal": {
-              "$type": "RuleCall",
-              "rule": {
-                "$ref": "#/rules@53"
-              },
-              "arguments": []
-            }
-          },
-          {
-            "$type": "Assignment",
-            "feature": "keyword",
-            "operator": "=",
-            "terminal": {
-              "$type": "RuleCall",
-              "rule": {
-                "$ref": "#/rules@98"
-              },
-              "arguments": []
-            }
-          },
-          {
-            "$type": "Assignment",
-            "feature": "recording",
-            "operator": "=",
-            "terminal": {
-              "$type": "RuleCall",
-              "rule": {
-                "$ref": "#/rules@61"
-              },
-              "arguments": []
-            }
-          }
-        ]
-      },
-      "definesHiddenTokens": false,
-      "entry": false,
-      "fragment": false,
-      "hiddenTokens": [],
-      "parameters": [],
-      "wildcard": false
-    },
-    {
-      "$type": "ParserRule",
-      "name": "ASTAllPlaneFrom",
-      "definition": {
-        "$type": "Group",
-        "elements": [
-          {
-            "$type": "Assignment",
-            "feature": "keyword",
-            "operator": "=",
-            "terminal": {
-              "$type": "RuleCall",
-              "rule": {
-                "$ref": "#/rules@71"
-              },
-              "arguments": []
-            }
-          },
-          {
-            "$type": "Assignment",
-            "feature": "filters",
-            "operator": "=",
-            "terminal": {
-              "$type": "RuleCall",
-              "rule": {
-                "$ref": "#/rules@53"
-              },
-              "arguments": []
-            },
-            "cardinality": "?"
-          },
-          {
-            "$type": "Assignment",
-            "feature": "keyword",
-            "operator": "=",
-            "terminal": {
-              "$type": "RuleCall",
-              "rule": {
-                "$ref": "#/rules@98"
-              },
-              "arguments": []
-            }
-          },
-          {
-            "$type": "Assignment",
-            "feature": "recording",
-            "operator": "=",
-            "terminal": {
-              "$type": "RuleCall",
-              "rule": {
-                "$ref": "#/rules@61"
-              },
-              "arguments": []
-            }
           }
         ]
       },
@@ -1883,7 +1727,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@133"
+                "$ref": "#/rules@130"
               },
               "arguments": []
             }
@@ -1895,7 +1739,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@105"
+                "$ref": "#/rules@102"
               },
               "arguments": []
             }
@@ -1907,7 +1751,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@31"
+                "$ref": "#/rules@28"
               },
               "arguments": []
             }
@@ -1922,7 +1766,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@85"
+                    "$ref": "#/rules@82"
                   },
                   "arguments": []
                 }
@@ -1934,7 +1778,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@31"
+                    "$ref": "#/rules@28"
                   },
                   "arguments": []
                 }
@@ -1949,7 +1793,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@106"
+                "$ref": "#/rules@103"
               },
               "arguments": []
             }
@@ -1976,7 +1820,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@101"
+                "$ref": "#/rules@98"
               },
               "arguments": []
             }
@@ -1988,7 +1832,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@61"
+                "$ref": "#/rules@58"
               },
               "arguments": []
             }
@@ -2000,7 +1844,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@85"
+                "$ref": "#/rules@82"
               },
               "arguments": []
             }
@@ -2012,7 +1856,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@61"
+                "$ref": "#/rules@58"
               },
               "arguments": []
             }
@@ -2024,7 +1868,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@102"
+                "$ref": "#/rules@99"
               },
               "arguments": []
             }
@@ -2036,7 +1880,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@132"
+                "$ref": "#/rules@129"
               },
               "arguments": []
             }
@@ -2048,7 +1892,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@61"
+                "$ref": "#/rules@58"
               },
               "arguments": []
             }
@@ -2060,7 +1904,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@78"
+                "$ref": "#/rules@75"
               },
               "arguments": []
             }
@@ -2072,7 +1916,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@52"
+                "$ref": "#/rules@49"
               },
               "arguments": []
             }
@@ -2099,7 +1943,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@131"
+                "$ref": "#/rules@128"
               },
               "arguments": []
             }
@@ -2111,7 +1955,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@36"
+                "$ref": "#/rules@33"
               },
               "arguments": []
             }
@@ -2126,7 +1970,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@76"
+                    "$ref": "#/rules@73"
                   },
                   "arguments": []
                 }
@@ -2138,7 +1982,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@36"
+                    "$ref": "#/rules@33"
                   },
                   "arguments": []
                 }
@@ -2168,7 +2012,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@118"
+                "$ref": "#/rules@115"
               },
               "arguments": []
             }
@@ -2180,7 +2024,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@52"
+                "$ref": "#/rules@49"
               },
               "arguments": []
             }
@@ -2207,7 +2051,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@119"
+                "$ref": "#/rules@116"
               },
               "arguments": []
             }
@@ -2219,7 +2063,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@61"
+                "$ref": "#/rules@58"
               },
               "arguments": []
             }
@@ -2246,7 +2090,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@120"
+                "$ref": "#/rules@117"
               },
               "arguments": []
             }
@@ -2258,7 +2102,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@61"
+                "$ref": "#/rules@58"
               },
               "arguments": []
             }
@@ -2285,7 +2129,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@68"
+                "$ref": "#/rules@65"
               },
               "arguments": []
             }
@@ -2296,28 +2140,28 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
               {
                 "$type": "RuleCall",
                 "rule": {
+                  "$ref": "#/rules@34"
+                },
+                "arguments": []
+              },
+              {
+                "$type": "RuleCall",
+                "rule": {
+                  "$ref": "#/rules@35"
+                },
+                "arguments": []
+              },
+              {
+                "$type": "RuleCall",
+                "rule": {
+                  "$ref": "#/rules@36"
+                },
+                "arguments": []
+              },
+              {
+                "$type": "RuleCall",
+                "rule": {
                   "$ref": "#/rules@37"
-                },
-                "arguments": []
-              },
-              {
-                "$type": "RuleCall",
-                "rule": {
-                  "$ref": "#/rules@38"
-                },
-                "arguments": []
-              },
-              {
-                "$type": "RuleCall",
-                "rule": {
-                  "$ref": "#/rules@39"
-                },
-                "arguments": []
-              },
-              {
-                "$type": "RuleCall",
-                "rule": {
-                  "$ref": "#/rules@40"
                 },
                 "arguments": []
               }
@@ -2330,7 +2174,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@61"
+                "$ref": "#/rules@58"
               },
               "arguments": []
             }
@@ -2354,7 +2198,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@89"
+            "$ref": "#/rules@86"
           },
           "arguments": []
         }
@@ -2379,14 +2223,14 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@91"
+                "$ref": "#/rules@88"
               },
               "arguments": []
             },
             {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@92"
+                "$ref": "#/rules@89"
               },
               "arguments": []
             }
@@ -2410,7 +2254,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@90"
+            "$ref": "#/rules@87"
           },
           "arguments": []
         }
@@ -2435,14 +2279,14 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@93"
+                "$ref": "#/rules@90"
               },
               "arguments": []
             },
             {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@94"
+                "$ref": "#/rules@91"
               },
               "arguments": []
             }
@@ -2469,7 +2313,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@131"
+                "$ref": "#/rules@128"
               },
               "arguments": []
             }
@@ -2481,7 +2325,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@42"
+                "$ref": "#/rules@39"
               },
               "arguments": []
             }
@@ -2496,7 +2340,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@76"
+                    "$ref": "#/rules@73"
                   },
                   "arguments": []
                 }
@@ -2508,7 +2352,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@42"
+                    "$ref": "#/rules@39"
                   },
                   "arguments": []
                 }
@@ -2538,7 +2382,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@67"
+                "$ref": "#/rules@64"
               },
               "arguments": []
             }
@@ -2550,7 +2394,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@89"
+                "$ref": "#/rules@86"
               },
               "arguments": []
             }
@@ -2562,7 +2406,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@61"
+                "$ref": "#/rules@58"
               },
               "arguments": []
             }
@@ -2589,7 +2433,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@131"
+                "$ref": "#/rules@128"
               },
               "arguments": []
             }
@@ -2601,7 +2445,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@44"
+                "$ref": "#/rules@41"
               },
               "arguments": []
             }
@@ -2616,7 +2460,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@76"
+                    "$ref": "#/rules@73"
                   },
                   "arguments": []
                 }
@@ -2628,7 +2472,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@44"
+                    "$ref": "#/rules@41"
                   },
                   "arguments": []
                 }
@@ -2658,7 +2502,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@65"
+                "$ref": "#/rules@62"
               },
               "arguments": []
             }
@@ -2670,7 +2514,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@89"
+                "$ref": "#/rules@86"
               },
               "arguments": []
             }
@@ -2682,7 +2526,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@61"
+                "$ref": "#/rules@58"
               },
               "arguments": []
             }
@@ -2709,7 +2553,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@131"
+                "$ref": "#/rules@128"
               },
               "arguments": []
             }
@@ -2721,7 +2565,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@46"
+                "$ref": "#/rules@43"
               },
               "arguments": []
             }
@@ -2736,7 +2580,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@76"
+                    "$ref": "#/rules@73"
                   },
                   "arguments": []
                 }
@@ -2748,7 +2592,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@46"
+                    "$ref": "#/rules@43"
                   },
                   "arguments": []
                 }
@@ -2778,7 +2622,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@66"
+                "$ref": "#/rules@63"
               },
               "arguments": []
             }
@@ -2790,7 +2634,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@89"
+                "$ref": "#/rules@86"
               },
               "arguments": []
             }
@@ -2802,7 +2646,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@61"
+                "$ref": "#/rules@58"
               },
               "arguments": []
             }
@@ -2829,7 +2673,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@125"
+                "$ref": "#/rules@122"
               },
               "arguments": []
             }
@@ -2841,7 +2685,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@61"
+                "$ref": "#/rules@58"
               },
               "arguments": []
             }
@@ -2864,14 +2708,14 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@49"
+              "$ref": "#/rules@46"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@50"
+              "$ref": "#/rules@47"
             },
             "arguments": []
           }
@@ -2897,7 +2741,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@78"
+                "$ref": "#/rules@75"
               },
               "arguments": []
             }
@@ -2909,7 +2753,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@52"
+                "$ref": "#/rules@49"
               },
               "arguments": []
             }
@@ -2921,7 +2765,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@51"
+                "$ref": "#/rules@48"
               },
               "arguments": []
             },
@@ -2949,7 +2793,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@99"
+                "$ref": "#/rules@96"
               },
               "arguments": []
             }
@@ -2961,7 +2805,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@52"
+                "$ref": "#/rules@49"
               },
               "arguments": []
             }
@@ -2973,7 +2817,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@128"
+                "$ref": "#/rules@125"
               },
               "arguments": []
             }
@@ -2985,7 +2829,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@52"
+                "$ref": "#/rules@49"
               },
               "arguments": []
             }
@@ -3012,7 +2856,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@97"
+                "$ref": "#/rules@94"
               },
               "arguments": []
             }
@@ -3024,7 +2868,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@52"
+                "$ref": "#/rules@49"
               },
               "arguments": []
             }
@@ -3051,7 +2895,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@61"
+                "$ref": "#/rules@58"
               },
               "arguments": []
             }
@@ -3063,7 +2907,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@126"
+                "$ref": "#/rules@123"
               },
               "arguments": []
             }
@@ -3090,7 +2934,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@124"
+                "$ref": "#/rules@121"
               },
               "arguments": []
             }
@@ -3102,7 +2946,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@61"
+                "$ref": "#/rules@58"
               },
               "arguments": []
             }
@@ -3117,7 +2961,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@76"
+                    "$ref": "#/rules@73"
                   },
                   "arguments": []
                 }
@@ -3129,7 +2973,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@61"
+                    "$ref": "#/rules@58"
                   },
                   "arguments": []
                 }
@@ -3155,21 +2999,21 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@57"
+              "$ref": "#/rules@54"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@55"
+              "$ref": "#/rules@52"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@56"
+              "$ref": "#/rules@53"
             },
             "arguments": []
           }
@@ -3195,7 +3039,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@95"
+                "$ref": "#/rules@92"
               },
               "arguments": []
             }
@@ -3207,7 +3051,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@57"
+                "$ref": "#/rules@54"
               },
               "arguments": []
             }
@@ -3234,7 +3078,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@96"
+                "$ref": "#/rules@93"
               },
               "arguments": []
             }
@@ -3246,7 +3090,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@57"
+                "$ref": "#/rules@54"
               },
               "arguments": []
             }
@@ -3269,14 +3113,14 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@58"
+              "$ref": "#/rules@55"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@59"
+              "$ref": "#/rules@56"
             },
             "arguments": []
           }
@@ -3299,7 +3143,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@141"
+            "$ref": "#/rules@138"
           },
           "arguments": []
         }
@@ -3324,7 +3168,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@140"
+                "$ref": "#/rules@137"
               },
               "arguments": []
             }
@@ -3336,7 +3180,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@60"
+                "$ref": "#/rules@57"
               },
               "arguments": []
             },
@@ -3364,7 +3208,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@112"
+                "$ref": "#/rules@109"
               },
               "arguments": []
             }
@@ -3376,7 +3220,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@69"
+                "$ref": "#/rules@66"
               },
               "arguments": []
             }
@@ -3399,28 +3243,28 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@62"
+              "$ref": "#/rules@59"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@54"
+              "$ref": "#/rules@51"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@63"
+              "$ref": "#/rules@60"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@64"
+              "$ref": "#/rules@61"
             },
             "arguments": []
           }
@@ -3443,7 +3287,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@142"
+            "$ref": "#/rules@139"
           },
           "arguments": []
         }
@@ -3465,7 +3309,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@139"
+            "$ref": "#/rules@136"
           },
           "arguments": []
         }
@@ -3487,7 +3331,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@138"
+            "$ref": "#/rules@135"
           },
           "arguments": []
         }
@@ -4806,13 +4650,13 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
           {
             "$type": "TerminalRuleCall",
             "rule": {
-              "$ref": "#/rules@136"
+              "$ref": "#/rules@133"
             }
           },
           {
             "$type": "TerminalRuleCall",
             "rule": {
-              "$ref": "#/rules@146"
+              "$ref": "#/rules@143"
             }
           }
         ]
@@ -4829,13 +4673,13 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
           {
             "$type": "TerminalRuleCall",
             "rule": {
-              "$ref": "#/rules@137"
+              "$ref": "#/rules@134"
             }
           },
           {
             "$type": "TerminalRuleCall",
             "rule": {
-              "$ref": "#/rules@146"
+              "$ref": "#/rules@143"
             }
           }
         ]
@@ -5013,7 +4857,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
               {
                 "$type": "TerminalRuleCall",
                 "rule": {
-                  "$ref": "#/rules@148"
+                  "$ref": "#/rules@145"
                 }
               },
               {
@@ -5173,7 +5017,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
                       {
                         "$type": "TerminalRuleCall",
                         "rule": {
-                          "$ref": "#/rules@143"
+                          "$ref": "#/rules@140"
                         }
                       }
                     ]
@@ -5217,13 +5061,13 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
           {
             "$type": "TerminalRuleCall",
             "rule": {
-              "$ref": "#/rules@144"
+              "$ref": "#/rules@141"
             }
           },
           {
             "$type": "TerminalRuleCall",
             "rule": {
-              "$ref": "#/rules@145"
+              "$ref": "#/rules@142"
             },
             "cardinality": "*"
           }
@@ -5357,7 +5201,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
               {
                 "$type": "TerminalRuleCall",
                 "rule": {
-                  "$ref": "#/rules@150"
+                  "$ref": "#/rules@147"
                 }
               }
             ]
@@ -5365,7 +5209,7 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
           {
             "$type": "TerminalRuleCall",
             "rule": {
-              "$ref": "#/rules@149"
+              "$ref": "#/rules@146"
             }
           }
         ]
@@ -5514,25 +5358,25 @@ export const AttackScenarioGrammarGrammar = (): Grammar =>
           {
             "$type": "TerminalRuleCall",
             "rule": {
-              "$ref": "#/rules@151"
+              "$ref": "#/rules@148"
             }
           },
           {
             "$type": "TerminalRuleCall",
             "rule": {
-              "$ref": "#/rules@151"
+              "$ref": "#/rules@148"
             }
           },
           {
             "$type": "TerminalRuleCall",
             "rule": {
-              "$ref": "#/rules@151"
+              "$ref": "#/rules@148"
             }
           },
           {
             "$type": "TerminalRuleCall",
             "rule": {
-              "$ref": "#/rules@151"
+              "$ref": "#/rules@148"
             }
           }
         ]

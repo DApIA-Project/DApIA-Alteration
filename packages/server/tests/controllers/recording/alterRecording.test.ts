@@ -178,8 +178,7 @@ describe(`POST ${ApiRoutes.alteration()}`, () => {
       const response = await request(server)
         .post(ApiRoutes.alteration())
         .send({
-          scenario:
-            'replay all_planes from_recording "record_AFR.sbs" from 0 seconds until 1000 seconds ',
+          scenario: 'replay all_planes from 0 seconds until 1000 seconds ',
           recording: {
             name: 'myfile.sbs',
             content:
@@ -223,8 +222,7 @@ describe(`POST ${ApiRoutes.alteration()}`, () => {
       const response = await request(server)
         .post(ApiRoutes.alteration())
         .send({
-          scenario:
-            'replay all_planes from_recording "myfile2.sbs" from 0 seconds until 1000 seconds ',
+          scenario: 'replay all_planes from 0 seconds until 1000 seconds ',
           recording: {
             name: 'myfile.sbs',
             content:
@@ -321,7 +319,7 @@ describe(`POST ${ApiRoutes.alteration()}`, () => {
         .post(ApiRoutes.alteration())
         .send({
           scenario:
-            'let $call = {0, 10}, replay all_planes from_recording "myfile2.sbs" from $call seconds until 1000 seconds ',
+            'let $call = {0, 10}, replay all_planes from $call seconds until 1000 seconds ',
           recording: {
             content:
               'MSG,4,3,5022202,4CA1FA,5022202,2018/11/25,11:30:48.179,2018/11/25,11:30:48.179,,,474.53,295.86,,,0.0,,,,,',

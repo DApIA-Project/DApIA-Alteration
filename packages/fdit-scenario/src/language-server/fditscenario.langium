@@ -81,7 +81,7 @@ ASTSaturate
 ;
 
 ASTReplay
-: keyword=T_REPLAY target=ASTReplayTarget timeScope=ASTTimeScope parameters=ASTParameters? assertions=ASTAssertions?
+: keyword=T_REPLAY target=ASTTarget timeScope=ASTTimeScope parameters=ASTParameters? assertions=ASTAssertions?
 ;
 
 ASTDelay
@@ -117,18 +117,6 @@ ASTAllPlanes
 : keyword=T_ALL_PLANES (filters=ASTFilters)?
 ;
 
-ASTReplayTarget:
-    ASTPlaneFrom
-    | ASTAllPlaneFrom
-;
-
-ASTPlaneFrom:
-    keyword=T_PLANE filters=ASTFilters keyword=T_FROM_RECORDING recording=ASTValue
-;
-
-ASTAllPlaneFrom:
-    keyword=T_ALL_PLANES(filters=ASTFilters)? keyword=T_FROM_RECORDING recording=ASTValue
-;
 
 ASTWayPoints
 : keyword=T_WITH_WAYPOINTS keyword=T_OPEN_SBRACE waypoints+=ASTWayPoint (keyword=T_COMMA waypoints+=ASTWayPoint)* keyword=T_CLOSE_SBRACE

@@ -30,7 +30,6 @@ export default {
     'filter',
     'for',
     'from',
-    'from_recording',
     'groovy_file',
     'hide',
     'let',
