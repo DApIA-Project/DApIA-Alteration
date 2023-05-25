@@ -1,4 +1,5 @@
 #!/bin/bash
+
 m2_dir="$HOME/.m2/repository/com/fdit"
 if [ ! -d "$m2_dir" ]; then
     echo "Creating directory $m2_dir"

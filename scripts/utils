@@ -1,0 +1,51 @@
+#!/bin/bash
+
+GREEN="\033[0;32m"
+RED="\033[0;31m"
+NC="\033[0m"
+
+output_title() {
+  echo ""
+  echo -e "${GREEN}$1${NC}"
+  echo ""
+}
+
+output_subtitle() {
+  echo ""
+  echo -e "-- ${GREEN}$1${NC}"
+  echo ""
+}
+
+output_warning() {
+  echo ""
+  echo "⚠️  $1 ⚠️"
+  echo ""
+}
+
+output_error() {
+  echo ""
+  echo -e "${RED}🛑 $1 🛑${NC}"
+}
+
+output_check_error() {
+  echo -e "[${RED}⨯${NC}] $1"
+}
+
+output_check_success() {
+  echo -e "[${GREEN}✓${NC}] $1"
+}
+
+install_dependencies() {
+  output_title "Installing dependencies"
+  (cd "$DIR/../" && npm install)
+  run_in_all_packages "npm install"
+}
+
+run_in_all_packages() {
+  local DIR
+  DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
+  (cd "$DIR/../packages/shared" && output_subtitle "Running \`$1\` in packages/shared" && $1)
+  (cd "$DIR/../packages/fdit-scenario" && output_subtitle "Running \`$1\` in packages/fdit-scenario" && $1)
+  (cd "$DIR/../packages/client" && output_subtitle "Running \`$1\` in packages/client" && $1)
+  (cd "$DIR/../packages/server" && output_subtitle "Running \`$1\` in packages/server" && $1)
+}
