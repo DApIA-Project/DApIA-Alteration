@@ -19,7 +19,6 @@ dist/
 
 # Maven
 target/
-dist/
 
 # JetBrains IDE
 .idea/
@@ -46,18 +45,6 @@ Thumbs.db
 *.mov
 *.wmv
 
-
-# Jest Coverage
-
-packages/fdit-scenario/coverage
-packages/server/build/
-packages/server/public/monaco-editor-workers
-packages/server/public/monaco-editor-wrapper
-packages/alteration/temp
-packages/fdit-scenario/.nyc_output
-packages/server/temp
-packages/server/.nyc_output
-packages/server/coverage
 
 
 

@@ -1,0 +1,7 @@
+build/
+tmp/
+public/monaco-editor-workers/
+public/monaco-editor-wrapper/
+temp/
+.nyc_output/
+coverage/
