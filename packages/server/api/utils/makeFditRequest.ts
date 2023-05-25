@@ -1,6 +1,6 @@
-import express from 'express'
 import * as core from 'express-serve-static-core'
 import { FditAdapters } from '../FditAdapters'
+import express from 'express'
 
 interface FditRequest<
   P = core.ParamsDictionary,

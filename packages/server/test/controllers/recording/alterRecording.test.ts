@@ -4,7 +4,6 @@ import request from 'supertest'
 import { ApiRoutes } from '@smartesting/shared/src/routes'
 import assert from 'assert'
 import { AlterRecordingError } from '@smartesting/shared/dist'
-import { renderIntoDocument } from 'react-dom/test-utils'
 
 describe(`POST ${ApiRoutes.alteration()}`, () => {
   let server: express.Express

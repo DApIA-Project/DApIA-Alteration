@@ -11,28 +11,32 @@ export class JavaAlterationManager implements IAlterationManager {
     optionsAlteration: OptionsAlteration,
     recordingToReplay?: Recording
   ): Promise<Recording[]> {
-    let recordingsAltered: Recording[] = []
+    const recordingsAltered: Recording[] = []
 
-    let numeroFichier = 0
-    for (const parameter of parameters) {
-      let indexFileName = recording.name.indexOf('.')
-      let newFileName =
-        recording.name.substring(0, indexFileName) +
-        '_' +
-        numeroFichier +
-        recording.name.substring(indexFileName)
-      if (parameters[numeroFichier].sensors != undefined) {
-        parameters[numeroFichier].sensors.sensor![0].record = newFileName
+    for (let i = 0; i < parameters.length; i++) {
+      const parameter = parameters[i]
+      const scenarioJsonPath = `temp/scenario_${i}.json`
+      const indexFileName = recording.name.indexOf('.')
+      const newFileName = `${recording.name.substring(
+        0,
+        indexFileName
+      )}_${i}${recording.name.substring(indexFileName)}`
+
+      const newFileFilePath = `temp/${newFileName}`
+      if (
+        parameter.sensors.sensor !== undefined &&
+        parameter.sensors.sensor.length > 0
+      ) {
+        parameter.sensors.sensor[0].record = newFileName
       }
-
       await fs.promises.writeFile(
-        'temp/scenario_' + numeroFichier + '.json',
-        JSON.stringify(parameters[numeroFichier], null, 2)
+        scenarioJsonPath,
+        JSON.stringify(parameter, null, 2)
       )
-      await fs.promises.writeFile('temp/' + newFileName, recording.content)
+      await fs.promises.writeFile(newFileFilePath, recording.content)
       if (recordingToReplay != undefined) {
         await fs.promises.writeFile(
-          'temp/' + recordingToReplay.name,
+          `temp/${recordingToReplay.name}`,
           recordingToReplay.content
         )
       }
@@ -43,28 +47,22 @@ export class JavaAlterationManager implements IAlterationManager {
         recording.content,
         newFileName,
         optionsToWrite,
-        'temp/scenario_' + numeroFichier + '.json'
+        scenarioJsonPath
       )
 
       const contentFileAltered = await fs.promises.readFile(
-        'temp/modified__' + newFileName
+        `temp/modified__${newFileName}`
       )
       recordingsAltered.push({
-        name: 'modified__' + newFileName,
+        name: `modified__${newFileName}`,
         content: contentFileAltered.toString(),
       })
 
-      fs.unlink('temp/scenario_' + numeroFichier + '.json', () => {})
-
-      fs.unlink('temp/' + newFileName, () => {})
-
-      fs.unlink('temp/modified__' + newFileName, () => {})
-
-      if (recordingToReplay != undefined) {
-        fs.unlink('temp/' + recordingToReplay.name, () => {})
-      }
-
-      numeroFichier++
+      fs.unlink(scenarioJsonPath, () => {})
+      fs.unlink(newFileFilePath, () => {})
+      fs.unlink(`temp/modified__${newFileName}`, () => {})
+      if (recordingToReplay != undefined)
+        fs.unlink(`temp/${recordingToReplay.name}`, () => {})
     }
 
     return recordingsAltered
@@ -75,6 +73,7 @@ export class JavaAlterationManager implements IAlterationManager {
  * Execution of Java Alteration program
  * @param fileContent Content of file will be altered
  * @param fileName Name of file will be altered
+ * @param options Options passing to the alteration engine
  * @param scenarioPath Path of scenario which will be applied on recording
  * @returns void
  */

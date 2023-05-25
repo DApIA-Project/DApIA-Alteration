@@ -4,8 +4,8 @@ import request from 'supertest'
 import { ApiRoutes } from '@smartesting/shared/src/routes'
 import assert from 'assert'
 import { AlterRecordingError } from '@smartesting/shared/dist'
-import alterRecording from '../../../src/api/core/recording/alterRecording'
-import { TestAlterationManager } from '../../../src/api/adapters/TestAlterationManager'
+import alterRecording from '../../../api/core/recording/alterRecording'
+import { TestAlterationManager } from '../../../api/adapters/TestAlterationManager'
 
 describe(`core/alterRecording`, () => {
   let server: express.Express

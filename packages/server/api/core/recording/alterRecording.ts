@@ -53,6 +53,7 @@ export default async function alterRecording(
  * Generation of Json scenario and creation of altered recording
  * @param scenario scenario program to parse
  * @param recording Recording to alter
+ * @param recordingToReplay *optional* Recording to replay
  * @returns Generated output from this FDI-T program
  */
 export const extractParameters = async (

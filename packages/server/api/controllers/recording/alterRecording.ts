@@ -1,8 +1,6 @@
 import { RequestHandler } from 'express'
 import { AlterRecordingError } from '@smartesting/shared/dist'
 import alterRecordingCore from '../../core/recording/alterRecording'
-import makeFditRequest from '../../utils/makeFditRequest'
-import { TestAlterationManager } from '../../adapters/TestAlterationManager'
 import { JavaAlterationManager } from '../../adapters/JavaAlterationManager'
 
 const alterRecording: RequestHandler = async (req, res) => {
@@ -43,10 +41,7 @@ const alterRecording: RequestHandler = async (req, res) => {
     }
 
     const regex_replay = new RegExp(`\\breplay\\b`, 'g')
-    if (
-      scenario.match(regex_replay) != null &&
-      recordingToReplay == undefined
-    ) {
+    if (scenario.match(regex_replay) === null) {
       return res.status(422).json({
         error: AlterRecordingError.invalidFormat,
         alteredRecordings: [],

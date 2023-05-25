@@ -1,5 +1,5 @@
 import express, { Router } from 'express'
-import { ApiRoutes } from '@smartesting/shared/dist/routes'
+import { ApiRoutes } from '@smartesting/shared/dist'
 import alterRecording from './api/controllers/recording/alterRecording'
 const router = express.Router()
 

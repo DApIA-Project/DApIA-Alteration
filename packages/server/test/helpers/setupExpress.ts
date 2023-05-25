@@ -1,5 +1,5 @@
 import express, { json } from 'express'
-import setRoutes from '../../src/appRoute'
+import setRoutes from '../../appRoute'
 
 export function setupExpress() {
   const app = express()
