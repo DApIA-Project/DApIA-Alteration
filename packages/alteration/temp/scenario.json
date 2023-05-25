@@ -1,0 +1,41 @@
+{
+  "sensors": {
+    "sensor": [
+      {
+        "sensorType": "SBS",
+        "sID": "",
+        "record": "zigzag.sbs",
+        "firstDate": 1543145448179,
+        "filter": "",
+        "action": [
+          {
+            "alterationType": "SATURATION",
+            "scope": {
+              "type": "timeWindow",
+              "lowerBound": "0",
+              "upperBound": "3551544"
+            },
+            "parameters": {
+              "target": {
+                "identifier": "hexIdent",
+                "value": "ALL"
+              },
+              "parameter": [
+                {
+                  "mode": "simple",
+                  "key": "ICAO",
+                  "value": "123456"
+                },
+                {
+                  "mode": "simple",
+                  "key": "AIRCRAFT_NUMBER",
+                  "number": "100"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    ]
+  }
+}
