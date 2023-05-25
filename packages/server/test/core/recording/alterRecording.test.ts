@@ -1,17 +1,16 @@
 import express from 'express'
 import { setupExpress } from '../../helpers/setupExpress'
-import request from 'supertest'
-import { ApiRoutes } from '@smartesting/shared/src/routes'
 import assert from 'assert'
-import { AlterRecordingError } from '@smartesting/shared/dist'
 import alterRecording from '../../../api/core/recording/alterRecording'
-import { TestAlterationManager } from '../../../api/adapters/TestAlterationManager'
+import makeTestAdapters from '../../makeTestAdapters'
+import IAlterationManager from '../../../api/adapters/IAlterationManager'
 
 describe(`core/alterRecording`, () => {
   let server: express.Express
-  let alterationManager = new TestAlterationManager()
+  let alterationManager: IAlterationManager
 
   beforeEach(() => {
+    alterationManager = makeTestAdapters().alterationManager
     server = setupExpress()
   })
 

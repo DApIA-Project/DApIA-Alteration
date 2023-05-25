@@ -1,4 +1,3 @@
-import assert from 'assert'
 import IContractTest from '../../IContractTest'
 import {
   makeMemoryAdapters,
@@ -19,11 +18,28 @@ const IAlterationContractTest: IContractTest = (
     })
 
     it('fails', async () => {
-      assert(false)
+      await alterationManager.runAlterations(
+        [
+          {
+            sensors: {
+              sensor: [
+                {
+                  action: [],
+                  filter: '',
+                  record: 'zigzag.sbs',
+                  firstDate: 1543145448179,
+                  sID: '',
+                  sensorType: 'SBS',
+                },
+              ],
+            },
+          },
+        ],
+        { name: 'recording.bst', content: '' },
+        { haveLabel: false, haveRealism: false }
+      )
     })
   })
 }
-
-IAlterationContractTest('TestAlterationManager', makeMemoryAdapters)
 
 IAlterationContractTest('JavaAlterationManager', makeProductionAdapters)

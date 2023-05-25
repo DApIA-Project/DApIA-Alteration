@@ -2,9 +2,7 @@
 import express from 'express'
 import cors from 'cors'
 import setRoutes from './appRoute'
-import { TestAlterationManager } from './api/adapters/TestAlterationManager'
 
-new TestAlterationManager()
 const app = express()
 
 app.use(cors())

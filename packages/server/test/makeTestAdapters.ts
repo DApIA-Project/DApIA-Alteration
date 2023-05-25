@@ -1,5 +1,4 @@
 import { FditAdapters } from '../api/FditAdapters'
-import { TestAlterationManager } from '../api/adapters/TestAlterationManager'
 import { JavaAlterationManager } from '../api/adapters/JavaAlterationManager'
 
 export default function makeTestAdapters(): FditAdapters {
@@ -11,7 +10,7 @@ export default function makeTestAdapters(): FditAdapters {
 
 export function makeMemoryAdapters(): FditAdapters {
   return {
-    alterationManager: new TestAlterationManager(),
+    alterationManager: new JavaAlterationManager(),
   }
 }
 
