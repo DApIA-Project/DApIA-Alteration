@@ -12,6 +12,9 @@ import IModel = monaco.editor.IModel
 import CompletionItemProvider = monaco.languages.CompletionItemProvider
 import { InsertReplaceEdit } from 'vscode-languageserver'
 import ILanguageExtensionPoint = monaco.languages.ILanguageExtensionPoint
+import { FditScenarioSemanticVisitor } from '@smartesting/fdit-scenario/dist/generators/FditScenarioSemanticVisitor'
+import { SemanticError } from '@smartesting/fdit-scenario/dist/generators/index'
+import { parseScenario } from '@smartesting/fdit-scenario/dist/parser/parser'
 
 type FditscenarioEditorProps = {
   language: string
@@ -26,19 +29,23 @@ const FditscenarioEditor: React.FunctionComponent<FditscenarioEditorProps> = ({
 }) => {
   const monaco = useMonaco()
 
-  function validate(
+  async function validate(
     model: IModel,
     column: number,
     length: number,
     message: string,
     line: number
   ) {
+    console.log(message)
+    console.log(column)
+    console.log(line)
+    console.log(length)
     const markers = []
     const range = {
       startLineNumber: line,
       startColumn: column,
-      endLineNumber: 1,
-      endColumn: column + length - 1,
+      endLineNumber: line,
+      endColumn: column + length,
     }
     markers.push({
       message: message,
@@ -49,8 +56,84 @@ const FditscenarioEditor: React.FunctionComponent<FditscenarioEditorProps> = ({
       endColumn: range.endColumn,
     })
 
+    const { value } = await parseScenario(
+      model.getValueInRange({
+        startLineNumber: 1,
+        startColumn: 1,
+        endLineNumber: line,
+        endColumn: column,
+      })
+    )
+
+    const visitor = new FditScenarioSemanticVisitor()
+    const result: SemanticError[] = visitor.visitScenario(value)
+    console.log(result)
+
+    for (const error of result) {
+      if (
+        error.position.startline !== undefined &&
+        error.position.endline !== undefined &&
+        error.position.startcolumn !== undefined &&
+        error.position.endcolumn !== undefined &&
+        error.errors !== ''
+      ) {
+        console.log(error.position.startcolumn)
+        console.log(error.position.endcolumn)
+        console.log(error.position.startline)
+        console.log(error.position.endline)
+        const range2 = {
+          startLineNumber: error.position.startline + 1,
+          startColumn: error.position.startcolumn + 1,
+          endLineNumber: error.position.endline + 1,
+          endColumn: error.position.endcolumn + 1,
+        }
+        markers.push({
+          message: error.errors,
+          severity: monaco!.MarkerSeverity.Info,
+          startLineNumber: range2.startLineNumber,
+          startColumn: range2.startColumn,
+          endLineNumber: range2.endLineNumber,
+          endColumn: range2.endColumn,
+        })
+      }
+    }
+    console.log(markers)
     monaco!.editor.setModelMarkers(model, 'owner', markers)
   }
+
+  /**function validateSemantic(
+      model: IModel,
+      semanticErrors : SemanticError[]
+  ) {
+    const markers = []
+    for (const error of semanticErrors) {
+      if(error.position.startline !== undefined
+          && error.position.endline !== undefined
+          && error.position.startcolumn !== undefined
+          && error.position.endcolumn !== undefined
+          && error.errors !== ""){
+        console.log(error.position.startcolumn)
+        console.log(error.position.endcolumn)
+        console.log(error.position.startline)
+        console.log(error.position.endline)
+        const range2 = {
+          startLineNumber: error.position.startline+1,
+          startColumn: error.position.startcolumn +1,
+          endLineNumber: error.position.endline+1,
+          endColumn: error.position.endcolumn+1,
+        }
+        markers.push({
+          message: error.errors,
+          severity: monaco!.MarkerSeverity.Info,
+          startLineNumber: range2.startLineNumber,
+          startColumn: range2.startColumn,
+          endLineNumber: range2.endLineNumber,
+          endColumn: range2.endColumn,
+        })
+      }
+    }
+    monaco!.editor.setModelMarkers(model, 'owner', markers)
+  }**/
 
   function isTextEdit(edit: any): edit is TextEdit {
     return 'range' in edit && 'newText' in edit
@@ -92,15 +175,35 @@ const FditscenarioEditor: React.FunctionComponent<FditscenarioEditorProps> = ({
           )
         } else {
           if (completionList.errors.parser.length !== 0) {
+            console.log(completionList)
             validate(
               model,
-              completionList.errors.parser[0].columnNumber,
+              position.column,
               1,
-              completionList.errors.parser[0].MismatchedTokenException,
-              1
+              completionList.errors.parser[0].message,
+              position.lineNumber
             )
+          } else {
+            const { value } = await parseScenario(
+              model.getValueInRange({
+                startLineNumber: 1,
+                startColumn: 1,
+                endLineNumber: position.lineNumber,
+                endColumn: position.column,
+              })
+            )
+
+            const visitor = new FditScenarioSemanticVisitor()
+            const result: SemanticError[] = visitor.visitScenario(value)
+            console.log(result)
+            /**validateSemantic(model,result)**/
           }
         }
+        /**
+
+
+**/
+
         if (completionList.suggestions?.items.length === 0) {
           return {
             suggestions: [],

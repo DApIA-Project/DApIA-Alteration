@@ -84,6 +84,7 @@ const FDITSCENARIO_FORMAT: IMonarchLanguage = {
     '<<=',
     '>>=',
     '>>>=',
+    ',',
   ],
 
   // we include these common regular expressions

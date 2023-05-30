@@ -94,7 +94,7 @@ const DocumentationPage: React.FunctionComponent = () => {
           text={'REPLAY'}
           onClick={() =>
             editContentExample(
-              'replay all_planes from_recording "test.sbs" from 56 seconds until 90 seconds'
+              'replay all_planes from 56 seconds until 90 seconds'
             )
           }
         />
