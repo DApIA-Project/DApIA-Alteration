@@ -142,4 +142,62 @@ public class IncidentDeserializerJsonTest {
                                 )))));
 
     }
+
+    @Test
+    public void deserialize_json_test_3() throws IOException {
+        final File incidentFile = File.createTempFile("incidentjson", ".json");
+        write("{" +
+
+                "\"sensors\": {\n" +
+                "\"sensor\":\n" +
+                "[{\n" +
+                "\"sensorType\": \"SBS\",\n" +
+                "\"sID\": \"ALL\",\n" +
+                "\"record\": \"../../temp/2022_07_toulouse_SAMUCF.sbs\",\n" +
+                "\"filter\": \"\",\n" +
+                "\"action\": [\n" +
+                "{\n" +
+                "\"alterationType\": \"ALTERATION\",\n" +
+                "\"scope\": {\n" +
+                "\"type\": \"timeWindow\",\n" +
+                "\"lowerBound\": \"0\",\n" +
+                "\"upperBound\": \"4200\"\n" +
+                "},\n" +
+                "\"parameters\": {\n" +
+                "\"target\": \n" +
+                "{\n" +
+                "\"identifier\": \"hexIdent\",\n" +
+                "\"value\": \"ALL\"\n" +
+                "}\n" +
+                ",\n" +
+                "\"parameter\": [\n" +
+                "{\n" +
+                "\"mode\": \"simple\",\n" +
+                "\"key\": \"CALLSIGN\",\n" +
+                "\"value\": \"SAMU39\"\n" +
+                "}\n" +
+                "]\n" +
+                "}\n" +
+                "}\n" +
+                "]\n" +
+                "}]\n" +
+                "\n" +
+                "}\n" +
+
+                "}\n", incidentFile, UTF_8);
+
+        final IncidentDeserializer deserializer = new IncidentDeserializer(incidentFile);
+        System.out.println(deserializer.deserialize(new JsonMapper()).getSensors().size());
+        assertThat(deserializer.deserialize(new JsonMapper()),
+                anIncident(IncidentHelper.withSensors(
+                        aSensor("SBS", "ALL", "../../temp/2022_07_toulouse_SAMUCF.sbs", "",
+                                withActions(
+                                        anAction("ALTERATION",
+                                                withScopeTimeWindow(0, 4200),
+                                                withParameters(
+                                                        onTargetHexIdent("ALL"),
+                                                        aParameter(MODE_SIMPLE, "CALLSIGN", "SAMU39")))
+                                )))));
+
+    }
 }

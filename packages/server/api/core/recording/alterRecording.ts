@@ -37,7 +37,6 @@ export default async function alterRecording(
     }
 
   assert(parameters)
-
   const alteredRecordings = await alterationManager.runAlterations(
     parameters,
     recording,

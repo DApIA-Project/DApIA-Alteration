@@ -64,7 +64,7 @@ const FditscenarioEditor: React.FunctionComponent<FditscenarioEditorProps> = ({
         endColumn: column,
       })
     )
-
+    /**
     const visitor = new FditScenarioSemanticVisitor()
     const result: SemanticError[] = visitor.visitScenario(value)
     console.log(result)
@@ -97,6 +97,7 @@ const FditscenarioEditor: React.FunctionComponent<FditscenarioEditorProps> = ({
         })
       }
     }
+ **/
     console.log(markers)
     monaco!.editor.setModelMarkers(model, 'owner', markers)
   }
@@ -193,9 +194,9 @@ const FditscenarioEditor: React.FunctionComponent<FditscenarioEditorProps> = ({
               })
             )
 
-            const visitor = new FditScenarioSemanticVisitor()
+            /**const visitor = new FditScenarioSemanticVisitor()
             const result: SemanticError[] = visitor.visitScenario(value)
-            console.log(result)
+            console.log(result)**/
             /**validateSemantic(model,result)**/
           }
         }

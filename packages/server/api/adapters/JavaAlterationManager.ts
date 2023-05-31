@@ -83,6 +83,7 @@ function executeAlterationJar(
   options: string,
   scenarioPath: string
 ): void {
+  console.log(scenarioPath)
   execSync(
     'java -jar ../alteration/out/artifacts/alteration_atc_jar/alteration-atc.jar ' +
       scenarioPath +
@@ -99,7 +100,7 @@ function determineOptions(options: OptionsAlteration): string {
     strOption = strOption + '-l'
   }
   if (options.haveRealism) {
-    strOption = strOption + ' -gs -t -vr -latn -lonn'
+    strOption = strOption + ' -gs -t -vr'
   }
   return strOption
 }

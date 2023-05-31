@@ -4,16 +4,16 @@
       {
         "sensorType": "SBS",
         "sID": "",
-        "record": "zigzag.sbs",
-        "firstDate": 1543145448179,
+        "record": "2022_07_toulouse_SAMUCF.sbs",
+        "firstDate": 1656652002000,
         "filter": "",
         "action": [
           {
-            "alterationType": "SATURATION",
+            "alterationType": "ALTERATION",
             "scope": {
               "type": "timeWindow",
               "lowerBound": "0",
-              "upperBound": "3551544"
+              "upperBound": "4200000"
             },
             "parameters": {
               "target": {
@@ -23,13 +23,8 @@
               "parameter": [
                 {
                   "mode": "simple",
-                  "key": "ICAO",
-                  "value": "123456"
-                },
-                {
-                  "mode": "simple",
-                  "key": "AIRCRAFT_NUMBER",
-                  "number": "100"
+                  "key": "CALLSIGN",
+                  "value": "SAMU39"
                 }
               ]
             }
