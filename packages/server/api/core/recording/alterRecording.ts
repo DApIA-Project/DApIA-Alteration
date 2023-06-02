@@ -14,6 +14,7 @@ import {
 import { Parameters } from '@smartesting/fdit-scenario/dist/types'
 import assert from 'assert'
 import IAlterationManager from '../../adapters/IAlterationManager'
+import { convertCSVtoSBS } from '@dapia-project/data-converter/dist'
 /**import {FditScenarioSemanticVisitor} from '@smartesting/fdit-scenario/dist/generators/FditScenarioSemanticVisitor'
 import {SemanticError} from '@smartesting/fdit-scenario/dist/generators/index'**/
 
@@ -24,6 +25,18 @@ export default async function alterRecording(
   optionsAlteration: OptionsAlteration,
   alterationManager: IAlterationManager
 ): Promise<AlterRecordingResponse> {
+  const regex = /.csv$/i
+  if (regex.test(recording.name) == true) {
+    recording.content = convertCSVtoSBS(recording.content)
+    recording.name = recording.name.replace('.csv', '.sbs')
+  }
+  if (recordingToReplay !== undefined) {
+    if (regex.test(recordingToReplay.name) == true) {
+      recordingToReplay.content = convertCSVtoSBS(recordingToReplay.content)
+      recordingToReplay.name = recordingToReplay.name.replace('.csv', '.sbs')
+    }
+  }
+
   const { errors, parameters } = await extractParameters(
     scenario,
     recording,
