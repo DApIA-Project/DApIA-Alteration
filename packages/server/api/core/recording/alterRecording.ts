@@ -14,7 +14,10 @@ import {
 import { Parameters } from '@smartesting/fdit-scenario/dist/types'
 import assert from 'assert'
 import IAlterationManager from '../../adapters/IAlterationManager'
-import { convertCSVtoSBS } from '@dapia-project/data-converter/dist/src'
+import {
+  convertCSVtoSBS,
+  convertSBStoCSV,
+} from '@dapia-project/data-converter/dist/src'
 /**import {FditScenarioSemanticVisitor} from '@smartesting/fdit-scenario/dist/generators/FditScenarioSemanticVisitor'
 import {SemanticError} from '@smartesting/fdit-scenario/dist/generators/index'**/
 
@@ -25,8 +28,11 @@ export default async function alterRecording(
   optionsAlteration: OptionsAlteration,
   alterationManager: IAlterationManager
 ): Promise<AlterRecordingResponse> {
+  let fileIsCsv: boolean = false
+
   const regex = /.csv$/i
   if (regex.test(recording.name) == true) {
+    fileIsCsv = true
     recording.content = convertCSVtoSBS(recording.content)
     if (recording.content === 'Error content file') {
       return {
@@ -69,9 +75,24 @@ export default async function alterRecording(
     recordingToReplay
   )
 
-  return {
-    alteredRecordings,
-    error: null,
+  if (fileIsCsv) {
+    let alteredRecordingsCsv: Recording[] = []
+    for (const recordingSbs of alteredRecordings) {
+      let contentCsv: string = convertSBStoCSV(recordingSbs.content)
+      let contentName: string = recordingSbs.name.replace('.sbs', '.csv')
+      let recordingCsv: Recording = { content: contentCsv, name: contentName }
+      alteredRecordingsCsv.push(recordingCsv)
+    }
+
+    return {
+      alteredRecordings: alteredRecordingsCsv,
+      error: null,
+    }
+  } else {
+    return {
+      alteredRecordings,
+      error: null,
+    }
   }
 }
 
