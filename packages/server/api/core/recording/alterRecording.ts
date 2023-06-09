@@ -34,6 +34,7 @@ export default async function alterRecording(
   if (regex.test(recording.name) == true) {
     fileIsCsv = true
     recording.content = convertCSVtoSBS(recording.content)
+
     if (recording.content === 'Error content file') {
       return {
         error: recording.content,
@@ -74,7 +75,7 @@ export default async function alterRecording(
     optionsAlteration,
     recordingToReplay
   )
-
+  console.log(recording.content)
   if (fileIsCsv) {
     let alteredRecordingsCsv: Recording[] = []
     for (const recordingSbs of alteredRecordings) {
