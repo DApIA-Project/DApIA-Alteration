@@ -48,11 +48,11 @@ public class BaseStationDeletionEngine extends BaseStationActionEngine {
                 counters.put(action, 0);
             }
         }
-        final StringBuilder newMessage = new StringBuilder(message.toString());
+        message.setMask(message.getMask());
         if (parameters.isLabeled()) {
-            addMaskToMessage(newMessage, message);
+            return message.toStringWithMask();
         }
-        return newMessage.toString();
+        return message.toString();
     }
 
     @Override

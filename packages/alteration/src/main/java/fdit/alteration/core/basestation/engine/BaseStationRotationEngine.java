@@ -53,11 +53,11 @@ public class BaseStationRotationEngine extends BaseStationActionEngine {
             processAlteration(bstMessage, action);
             updateLogger(message);
         }
-        final StringBuilder newMessage = new StringBuilder(message.toString());
+        message.setMask(message.getMask());
         if (parameters.isLabeled()) {
-            addMaskToMessage(newMessage, message);
+            return message.toStringWithMask();
         }
-        return newMessage.toString();
+        return message.toString();
     }
 
     private void processAlteration(final BaseStationMessage message, final Action action) {

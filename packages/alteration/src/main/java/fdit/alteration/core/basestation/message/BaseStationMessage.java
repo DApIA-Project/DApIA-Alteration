@@ -1,5 +1,6 @@
 package fdit.alteration.core.basestation.message;
 
+import com.google.gson.JsonObject;
 import fdit.alteration.core.engine.Message;
 
 import java.text.DecimalFormat;
@@ -60,6 +61,13 @@ public abstract class BaseStationMessage implements Message, Comparable<BaseStat
         } else {
             return "0";
         }
+    }
+
+    static String jsonObjectToString(final JsonObject jsonObject) {
+        if (jsonObject == null) {
+            return "";
+        }
+        return "," + jsonObject;
     }
 
     public int getFlightID() {

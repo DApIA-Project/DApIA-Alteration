@@ -1,5 +1,8 @@
 package fdit.alteration.core.basestation;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
+import com.google.gson.JsonParser;
 import fdit.alteration.core.basestation.message.BaseStationMessage.BstMessageTypeSwitch;
 import fdit.alteration.core.basestation.message.BaseStationMessageFull;
 import fdit.alteration.core.engine.Message;
@@ -12,6 +15,7 @@ import java.util.concurrent.Callable;
 
 import static java.lang.Double.parseDouble;
 import static java.lang.Integer.parseInt;
+import static java.util.Arrays.copyOf;
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
 import static java.util.TimeZone.getTimeZone;
@@ -20,20 +24,31 @@ public class BaseStationParser {
 
     public static final String BST_DATE_PATTERN = "yyyy/MM/dd,HH:mm:ss.SSS";
     private static final String SPLIT_PATTERN = ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)";
+    private static final String SPLIT_JSON_PATTERN = ",\\{";
 
     private BaseStationParser() {
     }
 
     public static Optional<Message> createBstMessage(final String line) {
-        final String[] fields = line.split(SPLIT_PATTERN);
+        /* Separation du message de base et de l'objet json **/
+        String[] parts = line.split(SPLIT_JSON_PATTERN);
+        final boolean extraFieldsArePresent = parts.length > 1;
+
+        /* Separation des valeurs du message **/
+        String[] fields = parts[0].split(SPLIT_PATTERN);
+
+        /* Regroupement des valeurs et de l'objet json **/
+        final String[] fieldsWithElement = copyOf(fields, extraFieldsArePresent ? fields.length + 1 : fields.length);
+        if (extraFieldsArePresent) fieldsWithElement[fieldsWithElement.length - 1] = '{' + parts[1];
+
         try {
-            final int bstType = extractBstType(fields);
-            final int sessionID = extractSessionID(fields);
-            final int aircraftID = extractAircraftID(fields);
-            final String icao = extractIcao(fields);
-            final int flightID = extractFlightID(fields);
-            final long timestampGenerated = extractTimestampGenerated(fields);
-            final long timestampLogged = extractTimestampLogged(fields);
+            final int bstType = extractBstType(fieldsWithElement);
+            final int sessionID = extractSessionID(fieldsWithElement);
+            final int aircraftID = extractAircraftID(fieldsWithElement);
+            final String icao = extractIcao(fieldsWithElement);
+            final int flightID = extractFlightID(fieldsWithElement);
+            final long timestampGenerated = extractTimestampGenerated(fieldsWithElement);
+            final long timestampLogged = extractTimestampLogged(fieldsWithElement);
 
             return new BstMessageTypeSwitch<Optional<Message>>() {
 
@@ -47,19 +62,20 @@ public class BaseStationParser {
                             flightID,
                             timestampGenerated,
                             timestampLogged,
-                            nullableString(() -> extractCallSign(fields)),
-                            nullableInteger(() -> extractAltitude(fields)),
-                            nullableDouble(() -> extractGroundSpeed(fields)),
-                            nullableDouble(() -> extractTrack(fields)),
-                            nullableDouble(() -> extractLatitude(fields)),
-                            nullableDouble(() -> extractLongitude(fields)),
-                            nullableInteger(() -> extractVerticalRate(fields)),
-                            nullableInteger(() -> extractSquawk(fields)),
-                            nullableBoolean(() -> extractAlert(fields)),
-                            nullableBoolean(() -> extractEmergency(fields)),
-                            nullableBoolean(() -> extractSpi(fields)),
-                            nullableBoolean(() -> extractOnGround(fields)),
-                            extractMask(fields)));
+                            nullableString(() -> extractCallSign(fieldsWithElement)),
+                            nullableInteger(() -> extractAltitude(fieldsWithElement)),
+                            nullableDouble(() -> extractGroundSpeed(fieldsWithElement)),
+                            nullableDouble(() -> extractTrack(fieldsWithElement)),
+                            nullableDouble(() -> extractLatitude(fieldsWithElement)),
+                            nullableDouble(() -> extractLongitude(fieldsWithElement)),
+                            nullableInteger(() -> extractVerticalRate(fieldsWithElement)),
+                            nullableInteger(() -> extractSquawk(fieldsWithElement)),
+                            nullableBoolean(() -> extractAlert(fieldsWithElement)),
+                            nullableBoolean(() -> extractEmergency(fieldsWithElement)),
+                            nullableBoolean(() -> extractSpi(fieldsWithElement)),
+                            nullableBoolean(() -> extractOnGround(fieldsWithElement)),
+                            nullableJsonObject(() -> extractExtraField(fieldsWithElement)),
+                            extractMask(fieldsWithElement)));
                 }
             }.doSwitch(0);
         } catch (final Exception e) {
@@ -82,6 +98,10 @@ public class BaseStationParser {
 
     private static Boolean nullableBoolean(final Callable<Boolean> callable) {
         return (Boolean) nullableObject(callable);
+    }
+
+    private static JsonObject nullableJsonObject(final Callable<JsonObject> callable) {
+        return (JsonObject) nullableObject(callable);
     }
 
     private static Object nullableObject(final Callable<?> callable) {
@@ -113,10 +133,26 @@ public class BaseStationParser {
     }
 
     private static int extractMask(final String[] fields) {
-        if (fields.length == 24) {
+        if (fields.length >= 24) {
             return parseInt(fields[23]);
         }
         return 0;
+    }
+
+    private static JsonObject extractExtraField(final String[] fields) {
+        if (fields.length == 23 || fields.length == 25) {
+            JsonParser parser = new JsonParser();
+            JsonObject jsonObject;
+            try {
+                jsonObject = parser.parse(fields[fields.length - 1]).getAsJsonObject();
+            } catch (JsonParseException e) {
+                System.out.println("Erreur de parsing JSON : " + e.getMessage());
+                return null;
+            }
+            return jsonObject;
+        }
+        return null;
+
     }
 
     private static Double extractGroundSpeed(final String[] fields) {

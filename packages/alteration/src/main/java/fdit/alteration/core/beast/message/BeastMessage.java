@@ -91,6 +91,11 @@ public abstract class BeastMessage implements Message, Comparable<BeastMessage> 
         return (int) (getTimestampNanoAsLong() - message.getTimestampNanoAsLong());
     }
 
+    @Override
+    public String toStringWithMask() {
+        return "";
+    }
+
     public interface BeastMessageVisitor<T> {
 
         T visitAdsbAirbornPositionMessage(final AdsbAirbornePositionMessage message) throws UnknownCharacteristicException;

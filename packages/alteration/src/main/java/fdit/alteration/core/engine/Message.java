@@ -11,4 +11,6 @@ public interface Message {
     void setMask(final int mask);
 
     Message copy();
+
+    String toStringWithMask();
 }

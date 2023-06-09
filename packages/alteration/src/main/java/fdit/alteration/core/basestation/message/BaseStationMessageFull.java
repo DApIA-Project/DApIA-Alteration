@@ -1,11 +1,13 @@
 package fdit.alteration.core.basestation.message;
 
+import com.google.gson.JsonObject;
 import fdit.alteration.core.basestation.message.parameter.*;
 import fdit.alteration.core.engine.Message;
 
 import javax.annotation.Nullable;
 import java.util.Optional;
 
+import static fdit.alteration.core.engine.AlterationUtils.renderBooleanToFlag;
 import static java.util.Optional.ofNullable;
 
 public class BaseStationMessageFull extends BaseStationMessage implements
@@ -47,6 +49,9 @@ public class BaseStationMessageFull extends BaseStationMessage implements
     @Nullable
     private Integer altitude;
 
+    @Nullable
+    private JsonObject extraField;
+
     public BaseStationMessageFull(final int transmissionType,
                                   final int sessionID,
                                   final int aircraftID,
@@ -65,7 +70,8 @@ public class BaseStationMessageFull extends BaseStationMessage implements
                                   @Nullable final Boolean alert,
                                   @Nullable final Boolean emergency,
                                   @Nullable final Boolean spi,
-                                  @Nullable final Boolean onGround) {
+                                  @Nullable final Boolean onGround,
+                                  @Nullable final JsonObject extraField) {
         super(transmissionType, sessionID, aircraftID, icao, flightID, timestampGenerated, timestampLogged, 0);
         this.alert = alert;
         this.verticalRate = verticalRate;
@@ -79,6 +85,7 @@ public class BaseStationMessageFull extends BaseStationMessage implements
         this.emergency = emergency;
         this.callsign = callsign;
         this.altitude = altitude;
+        this.extraField = extraField;
     }
 
     public BaseStationMessageFull(final int transmissionType,
@@ -100,6 +107,7 @@ public class BaseStationMessageFull extends BaseStationMessage implements
                                   @Nullable final Boolean emergency,
                                   @Nullable final Boolean spi,
                                   @Nullable final Boolean onGround,
+                                  @Nullable final JsonObject extraField,
                                   final int mask) {
         super(transmissionType, sessionID, aircraftID, icao, flightID, timestampGenerated, timestampLogged, mask);
         this.alert = alert;
@@ -114,6 +122,7 @@ public class BaseStationMessageFull extends BaseStationMessage implements
         this.emergency = emergency;
         this.callsign = callsign;
         this.altitude = altitude;
+        this.extraField = extraField;
     }
 
     @Override
@@ -236,6 +245,15 @@ public class BaseStationMessageFull extends BaseStationMessage implements
         this.verticalRate = verticalRate;
     }
 
+
+    public Optional<JsonObject> getExtraField() {
+        return ofNullable(extraField);
+    }
+
+    public void setExtraField(final JsonObject extraField) {
+        this.extraField = extraField;
+    }
+
     @Override
     public String toString() {
         return super.toString() +
@@ -250,7 +268,28 @@ public class BaseStationMessageFull extends BaseStationMessage implements
                 booleanToString(alert) + ',' +
                 booleanToString(emergency) + ',' +
                 booleanToString(spi) + ',' +
-                booleanToString(onGround);
+                booleanToString(onGround) +
+                jsonObjectToString(extraField);
+    }
+
+    @Override
+    public String toStringWithMask() {
+        return super.toString() +
+                (callsign != null ? callsign : "") + ',' +
+                integerToString(altitude) + ',' +
+                doubleToString(groundSpeed, DECIMAL_FORMAT_1) + ',' +
+                doubleToString(track, DECIMAL_FORMAT_1) + ',' +
+                doubleToString(latitude, DECIMAL_FORMAT_5) + ',' +
+                doubleToString(longitude, DECIMAL_FORMAT_5) + ',' +
+                integerToString(verticalRate) + ',' +
+                integerToString(squawk) + ',' +
+                booleanToString(alert) + ',' +
+                booleanToString(emergency) + ',' +
+                booleanToString(spi) + ',' +
+                booleanToString(onGround) + ','+
+                booleanToString(getMask() > 0) + ',' +
+                integerToString(getMask()) +
+                jsonObjectToString(extraField);
     }
 
     @Override
@@ -275,6 +314,7 @@ public class BaseStationMessageFull extends BaseStationMessage implements
                 emergency,
                 spi,
                 onGround,
+                extraField != null ? extraField.deepCopy() : null,
                 getMask());
     }
 }

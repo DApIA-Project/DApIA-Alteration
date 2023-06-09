@@ -168,7 +168,6 @@ public class BaseStationAlterationEngine extends BaseStationActionEngine {
     protected String applyAction(final Message message) throws UnknownScopeException {
         final BaseStationMessage baseStationMessage = (BaseStationMessage) message;
         int mask = message.getMask() != null ? message.getMask() : 0;
-        boolean altered = false;
         for (final Action action : superAction.getConcernedActions(baseStationMessage, recording.getFirstDate())) {
             steps.putIfAbsent(message.getIcao(), newHashMap());
             steps.get(message.getIcao()).putIfAbsent(action, new Step());
@@ -177,13 +176,12 @@ public class BaseStationAlterationEngine extends BaseStationActionEngine {
                     action.getParameters(),
                     steps.get(message.getIcao()).get(action),
                     message.getMask());
-            altered = true;
         }
-        final StringBuilder newMessage = new StringBuilder(message.toString());
+        message.setMask(mask);
         if (parameters.isLabeled()) {
-            newMessage.append(",").append(renderBooleanToFlag(altered)).append(",").append(mask);
+            return message.toStringWithMask();
         }
-        return newMessage.toString();
+        return message.toString();
     }
 
     private int processAlteration(final BaseStationMessage message,

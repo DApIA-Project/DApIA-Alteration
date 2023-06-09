@@ -64,11 +64,14 @@ public class BaseStationCutEngine extends BaseStationActionEngine {
                 applyNewAltitude(bstMessage, action);
             }
         }
-        final StringBuilder newMessage = new StringBuilder(toDelete ? "" : message.toString());
+        message.setMask(message.getMask());
         if (!toDelete && parameters.isLabeled()) {
-            addMaskToMessage(newMessage, message);
+            return message.toStringWithMask();
         }
-        return newMessage.toString();
+        if(toDelete){
+            return "";
+        }
+        return message.toString();
     }
 
     private void applyNewAltitude(final BaseStationMessage message, final Action action) {

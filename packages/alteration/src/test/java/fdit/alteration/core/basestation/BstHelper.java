@@ -1,5 +1,6 @@
 package fdit.alteration.core.basestation;
 
+import com.google.gson.JsonObject;
 import fdit.alteration.core.basestation.message.BaseStationMessage;
 import fdit.alteration.core.basestation.message.BaseStationMessageFull;
 import fdit.alteration.core.engine.Message;
@@ -17,6 +18,12 @@ public class BstHelper {
             public BaseStationMessage copy() {
                 return null;
             }
+
+            @Override
+            public String toStringWithMask() {
+                return "";
+            }
+
         };
     }
 
@@ -33,6 +40,7 @@ public class BstHelper {
                 date,
                 date,
                 "",
+                null,
                 null,
                 null,
                 null,
@@ -96,6 +104,10 @@ public class BstHelper {
 
     public static Consumer<BaseStationMessageFull> onGround(final boolean onGround) {
         return bstMessageFull -> bstMessageFull.setOnGround(onGround);
+    }
+
+    public static Consumer<BaseStationMessageFull> extraField(final JsonObject extraField) {
+        return bstMessageFull -> bstMessageFull.setExtraField(extraField);
     }
 
 

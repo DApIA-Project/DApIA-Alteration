@@ -33,4 +33,9 @@ public class AdsbVelocityMessage extends BeastMessage {
                 getTimestampNano(),
                 getData().copy());
     }
+
+    @Override
+    public String toString() {
+        return null;
+    }
 }
