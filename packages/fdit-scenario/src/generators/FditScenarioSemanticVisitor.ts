@@ -477,46 +477,395 @@ export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
 
   computeErrorCallsign(value: ASTValue): SemanticError[] {
     let semanticError: SemanticError[] = []
+    let errors = ''
+    let content: string = ''
+    if (isASTDoubleValue(value)) {
+      errors +=
+        "CALLSIGN can't be a double : " + value.content.toString() + '\n'
+    }
+    if (isASTIntegerValue(value)) {
+      if (value.content.toString().length > 8) {
+        errors +=
+          "CALLSIGN can't have more than 8 digits in the case of an integer: " +
+          value.content.toString() +
+          '\n'
+      }
+      if (value.content.toString()[0] === '0') {
+        errors +=
+          "CALLSIGN can't start with 0 in the case of an integer : " +
+          value.content.toString() +
+          '\n'
+      }
+      if (value.content < 0) {
+        errors +=
+          "CALLSIGN can't be negative in the case of an integer : " +
+          value.content.toString() +
+          '\n'
+      }
+    }
+    if (isASTStringValue(value)) {
+      content = value.content.replace(/"/g, '')
+      if (content.length < 1) {
+        errors +=
+          'CALLSIGN can\'t be empty in the case of a string : "' +
+          content +
+          '"\n'
+      }
+      if (content.length > 8) {
+        errors +=
+          'CALLSIGN can\'t have more than 8 symbols in the case of a string : "' +
+          content +
+          '"\n'
+      }
+      if (!/^[A-Z0-9\s]+$/.test(content)) {
+        errors +=
+          'CALLSIGN can have only uppercase and/or digit in the case of a string : "' +
+          content +
+          '"\n'
+      }
+      if (!/^[^\s]+$/.test(content)) {
+        errors +=
+          'CALLSIGN can\'t contain whitespaces in the case of a string : "' +
+          content +
+          '"\n'
+      }
+    }
+
+    let position = {
+      startline: value.$cstNode?.range.start.line,
+      endline: value.$cstNode?.range.end.line,
+      startcolumn: value.$cstNode?.range.start.character,
+      endcolumn: value.$cstNode?.range.end.character,
+    }
+    let error: SemanticError = {
+      errors: errors,
+      position: position,
+    }
+    semanticError.push(error)
+
     return semanticError
   }
 
   computeErrorEmergency(value: ASTValue): SemanticError[] {
     let semanticError: SemanticError[] = []
+    let errors = ''
+    let content: string = ''
+    if (isASTDoubleValue(value)) {
+      errors +=
+        "EMERGENCY can't be a double : " + value.content.toString() + '\n'
+    }
+    if (isASTIntegerValue(value)) {
+      if (value.content != 0 && value.content != 1) {
+        errors +=
+          'EMERGENCY must be 0 or 1 in the case of an integer: ' +
+          value.content.toString() +
+          '\n'
+      }
+    }
+    if (isASTStringValue(value)) {
+      content = value.content.replace(/"/g, '')
+      if (content !== '0' && content !== '1') {
+        errors +=
+          'EMERGENCY must be "0" or "1" in the case of a string: "' +
+          content +
+          '"\n'
+      }
+    }
+
+    let position = {
+      startline: value.$cstNode?.range.start.line,
+      endline: value.$cstNode?.range.end.line,
+      startcolumn: value.$cstNode?.range.start.character,
+      endcolumn: value.$cstNode?.range.end.character,
+    }
+    let error: SemanticError = {
+      errors: errors,
+      position: position,
+    }
+    semanticError.push(error)
     return semanticError
   }
 
   computeErrorGroundspeed(value: ASTValue): SemanticError[] {
     let semanticError: SemanticError[] = []
+    let errors = ''
+    let content: string = ''
+    if (isASTDoubleValue(value)) {
+      content = value.content.toString()
+    }
+    if (isASTIntegerValue(value)) {
+      content = value.content.toString()
+    }
+    if (isASTStringValue(value)) {
+      content = value.content.replace(/"/g, '')
+    }
+
+    let valueInFloat: number = parseFloat(content)
+
+    if (
+      !(
+        /^\d+(\.\d)?$/.test(content) &&
+        valueInFloat >= 0 &&
+        valueInFloat <= 1446
+      )
+    ) {
+      errors +=
+        'GROUNDSPEED must be between 0 and 1446 with a maximum precision of 0.1: "' +
+        content +
+        '"\n'
+    }
+
+    let position = {
+      startline: value.$cstNode?.range.start.line,
+      endline: value.$cstNode?.range.end.line,
+      startcolumn: value.$cstNode?.range.start.character,
+      endcolumn: value.$cstNode?.range.end.character,
+    }
+    let error: SemanticError = {
+      errors: errors,
+      position: position,
+    }
+    semanticError.push(error)
+
     return semanticError
   }
 
   computeErrorIcao(value: ASTValue): SemanticError[] {
     let semanticError: SemanticError[] = []
+    let errors = ''
+    let content: string = ''
+    if (isASTDoubleValue(value)) {
+      errors += "ICAO can't be a double : " + value.content.toString() + '\n'
+    }
+    if (isASTIntegerValue(value)) {
+      if (value.content.toString().length != 6) {
+        errors +=
+          'ICAO length must be 6 in the case of an integer: ' +
+          value.content.toString() +
+          '\n'
+      }
+      if (value.content < 100000 || value.content > 999999) {
+        errors +=
+          'ICAO value must be between 100000 and 999999 inclusive in the case of an integer: ' +
+          value.content.toString() +
+          '\n'
+      }
+    }
+    if (isASTStringValue(value)) {
+      content = value.content.replace(/"/g, '')
+      if (!/^(([0-9A-F]{6})|RANDOM)$/.test(content)) {
+        errors +=
+          'ICAO value must be 6 symbol hexadecimal or RANDOM in the case of a string: "' +
+          content +
+          '"\n'
+      }
+    }
+
+    let position = {
+      startline: value.$cstNode?.range.start.line,
+      endline: value.$cstNode?.range.end.line,
+      startcolumn: value.$cstNode?.range.start.character,
+      endcolumn: value.$cstNode?.range.end.character,
+    }
+    let error: SemanticError = {
+      errors: errors,
+      position: position,
+    }
+    semanticError.push(error)
     return semanticError
   }
 
   computeErrorLatitude(value: ASTValue): SemanticError[] {
     let semanticError: SemanticError[] = []
+    let errors = ''
+    let content: string = ''
+    if (isASTDoubleValue(value)) {
+      content = value.content.toString()
+    }
+    if (isASTIntegerValue(value)) {
+      content = value.content.toString()
+    }
+    if (isASTStringValue(value)) {
+      content = value.content.replace(/"/g, '')
+    }
+    if (isNaN(parseFloat(content))) {
+      errors = 'LATITUDE expected a float value :' + content + '\n'
+    } else {
+      let valueInFloat = parseFloat(content)
+      if (valueInFloat < -90 || valueInFloat > 90) {
+        errors = 'LATITUDE must be between -90 and 90 :' + content + '\n'
+      }
+    }
+
+    let position = {
+      startline: value.$cstNode?.range.start.line,
+      endline: value.$cstNode?.range.end.line,
+      startcolumn: value.$cstNode?.range.start.character,
+      endcolumn: value.$cstNode?.range.end.character,
+    }
+    let error: SemanticError = {
+      errors: errors,
+      position: position,
+    }
+    semanticError.push(error)
     return semanticError
   }
 
   computeErrorLongitude(value: ASTValue): SemanticError[] {
     let semanticError: SemanticError[] = []
+    let errors = ''
+    let content: string = ''
+    if (isASTDoubleValue(value)) {
+      content = value.content.toString()
+    }
+    if (isASTIntegerValue(value)) {
+      content = value.content.toString()
+    }
+    if (isASTStringValue(value)) {
+      content = value.content.replace(/"/g, '')
+    }
+    if (isNaN(parseFloat(content))) {
+      errors = 'LONGITUDE expected a float value :' + content + '\n'
+    } else {
+      let valueInFloat = parseFloat(content)
+      if (valueInFloat < -180 || valueInFloat > 180) {
+        errors = 'LONGITUDE must be between -180 and 180 :' + content + '\n'
+      }
+    }
+
+    let position = {
+      startline: value.$cstNode?.range.start.line,
+      endline: value.$cstNode?.range.end.line,
+      startcolumn: value.$cstNode?.range.start.character,
+      endcolumn: value.$cstNode?.range.end.character,
+    }
+    let error: SemanticError = {
+      errors: errors,
+      position: position,
+    }
+    semanticError.push(error)
     return semanticError
   }
 
   computeErrorSpi(value: ASTValue): SemanticError[] {
     let semanticError: SemanticError[] = []
+    let errors = ''
+    let content: string = ''
+    if (isASTDoubleValue(value)) {
+      errors += "SPI can't be a double : " + value.content.toString() + '\n'
+    }
+    if (isASTIntegerValue(value)) {
+      if (value.content != 0 && value.content != 1) {
+        errors +=
+          'SPI must be 0 or 1 in the case of an integer: ' +
+          value.content.toString() +
+          '\n'
+      }
+    }
+    if (isASTStringValue(value)) {
+      content = value.content.replace(/"/g, '')
+      if (content !== '0' && content !== '1') {
+        errors +=
+          'SPI must be "0" or "1" in the case of a string: "' + content + '"\n'
+      }
+    }
+
+    let position = {
+      startline: value.$cstNode?.range.start.line,
+      endline: value.$cstNode?.range.end.line,
+      startcolumn: value.$cstNode?.range.start.character,
+      endcolumn: value.$cstNode?.range.end.character,
+    }
+    let error: SemanticError = {
+      errors: errors,
+      position: position,
+    }
+    semanticError.push(error)
     return semanticError
   }
 
   computeErrorSquawk(value: ASTValue): SemanticError[] {
     let semanticError: SemanticError[] = []
+    let errors = ''
+    let content: string = ''
+    if (isASTDoubleValue(value)) {
+      errors += "SQUAWK can't be a double : " + value.content.toString() + '\n'
+    }
+    if (isASTIntegerValue(value)) {
+      if (value.content.toString().length != 4) {
+        errors +=
+          'SQUAWK length must be 4 in the case of an integer: ' +
+          value.content.toString() +
+          '\n'
+      }
+      if (value.content < 1000 || value.content > 7777) {
+        errors +=
+          'SQUAWK value must be between 1000 and 7777 inclusive in the case of an integer: ' +
+          value.content.toString() +
+          '\n'
+      }
+    }
+    if (isASTStringValue(value)) {
+      content = value.content.replace(/"/g, '')
+      if (!/^([0-7]{4})$/.test(content)) {
+        errors +=
+          'SQUAWK value must be 4 symbol between 0 and 7  in the case of a string: "' +
+          content +
+          '"\n'
+      }
+    }
+
+    let position = {
+      startline: value.$cstNode?.range.start.line,
+      endline: value.$cstNode?.range.end.line,
+      startcolumn: value.$cstNode?.range.start.character,
+      endcolumn: value.$cstNode?.range.end.character,
+    }
+    let error: SemanticError = {
+      errors: errors,
+      position: position,
+    }
+    semanticError.push(error)
     return semanticError
   }
 
   computeErrorTrack(value: ASTValue): SemanticError[] {
     let semanticError: SemanticError[] = []
+    let errors = ''
+    let content: string = ''
+    if (isASTDoubleValue(value)) {
+      content = value.content.toString()
+    }
+    if (isASTIntegerValue(value)) {
+      content = value.content.toString()
+    }
+    if (isASTStringValue(value)) {
+      content = value.content.replace(/"/g, '')
+    }
+
+    let valueInFloat: number = parseFloat(content)
+
+    if (
+      !(/^\d+(\.\d)?$/.test(content) && valueInFloat >= 0 && valueInFloat < 360)
+    ) {
+      errors +=
+        'TRACK must be between 0 and 360 with a maximum precision of 0.1: "' +
+        content +
+        '"\n'
+    }
+
+    let position = {
+      startline: value.$cstNode?.range.start.line,
+      endline: value.$cstNode?.range.end.line,
+      startcolumn: value.$cstNode?.range.start.character,
+      endcolumn: value.$cstNode?.range.end.character,
+    }
+    let error: SemanticError = {
+      errors: errors,
+      position: position,
+    }
+    semanticError.push(error)
+
     return semanticError
   }
 

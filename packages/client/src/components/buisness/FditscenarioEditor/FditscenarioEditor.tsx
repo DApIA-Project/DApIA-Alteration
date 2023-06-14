@@ -12,8 +12,8 @@ import IModel = monaco.editor.IModel
 import CompletionItemProvider = monaco.languages.CompletionItemProvider
 import { InsertReplaceEdit } from 'vscode-languageserver'
 import ILanguageExtensionPoint = monaco.languages.ILanguageExtensionPoint
-//import { FditScenarioSemanticVisitor } from '@smartesting/fdit-scenario/dist/generators/FditScenarioSemanticVisitor'
-//import { SemanticError } from '@smartesting/fdit-scenario/dist/generators/index'
+import { FditScenarioSemanticVisitor } from '@smartesting/fdit-scenario/dist/generators/FditScenarioSemanticVisitor'
+import { SemanticError } from '@smartesting/fdit-scenario/dist/generators/index'
 import { parseScenario } from '@smartesting/fdit-scenario/dist/parser/parser'
 
 type FditscenarioEditorProps = {
@@ -60,8 +60,8 @@ const FditscenarioEditor: React.FunctionComponent<FditscenarioEditorProps> = ({
         endColumn: column,
       })
     )
-    //TODO ENLEVER DES COMMENTAIRES POUR SEMANTIC ANALYSE
-    /*const visitor = new FditScenarioSemanticVisitor()
+
+    const visitor = new FditScenarioSemanticVisitor()
     const result: SemanticError[] = visitor.visitScenario(value)
 
     for (const error of result) {
@@ -87,28 +87,26 @@ const FditscenarioEditor: React.FunctionComponent<FditscenarioEditorProps> = ({
           endColumn: range2.endColumn,
         })
       }
-    }*/
+    }
 
     monaco!.editor.setModelMarkers(model, 'owner', markers)
   }
 
-  //TODO ENLEVER DES COMMENTAIRES POUR SEMANTIC ANALYSE
-  /*function validateSemantic(
-      model: IModel,
-      semanticErrors : SemanticError[]
-  ) {
+  function validateSemantic(model: IModel, semanticErrors: SemanticError[]) {
     const markers = []
     for (const error of semanticErrors) {
-      if(error.position.startline !== undefined
-          && error.position.endline !== undefined
-          && error.position.startcolumn !== undefined
-          && error.position.endcolumn !== undefined
-          && error.errors !== ""){
+      if (
+        error.position.startline !== undefined &&
+        error.position.endline !== undefined &&
+        error.position.startcolumn !== undefined &&
+        error.position.endcolumn !== undefined &&
+        error.errors !== ''
+      ) {
         const range2 = {
-          startLineNumber: error.position.startline+1,
-          startColumn: error.position.startcolumn +1,
-          endLineNumber: error.position.endline+1,
-          endColumn: error.position.endcolumn+1,
+          startLineNumber: error.position.startline + 1,
+          startColumn: error.position.startcolumn + 1,
+          endLineNumber: error.position.endline + 1,
+          endColumn: error.position.endcolumn + 1,
         }
         markers.push({
           message: error.errors,
@@ -121,7 +119,7 @@ const FditscenarioEditor: React.FunctionComponent<FditscenarioEditorProps> = ({
       }
     }
     monaco!.editor.setModelMarkers(model, 'owner', markers)
-  }*/
+  }
 
   function isTextEdit(edit: any): edit is TextEdit {
     return 'range' in edit && 'newText' in edit
@@ -179,11 +177,10 @@ const FditscenarioEditor: React.FunctionComponent<FditscenarioEditorProps> = ({
                 endColumn: position.column,
               })
             )
-            //TODO ENLEVER DES COMMENTAIRES POUR SEMANTIC ANALYSE
-            /*
+
             const visitor = new FditScenarioSemanticVisitor()
             const result: SemanticError[] = visitor.visitScenario(value)
-            validateSemantic(model,result)*/
+            validateSemantic(model, result)
           }
         }
 
