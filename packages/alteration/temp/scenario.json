@@ -4,16 +4,16 @@
       {
         "sensorType": "SBS",
         "sID": "",
-        "record": "2022_07_toulouse_SAMUCF.sbs",
+        "record": "SAMU13_1672575671.sbs",
         "firstDate": 1672575671000,
         "filter": "",
         "action": [
           {
-            "alterationType": "ALTERATION",
+            "alterationType": "ROTATION",
             "scope": {
               "type": "timeWindow",
               "lowerBound": "0",
-              "upperBound": "4200000"
+              "upperBound": "1245000"
             },
             "parameters": {
               "target": {
@@ -22,12 +22,48 @@
               },
               "parameter": [
                 {
-                  "mode": "simple",
-                  "key": "CALLSIGN",
-                  "value": "SAMU39"
+                  "angle": "80",
+                  "key": "angle",
+                  "mode": "simple"
                 }
               ]
             }
+          },
+          {
+            "alterationType": "ALTERATION",
+            "scope": {
+              "type": "timeWindow",
+              "lowerBound": "0",
+              "upperBound": "1245000"
+            },
+            "parameters": {
+              "target": {
+                "identifier": "hexIdent",
+                "value": "ALL"
+              },
+              "parameter": [
+                {
+                  "key": "latitude",
+                  "mode": "offset",
+                  "value": "+0.3"
+                },
+                {
+                  "key": "longitude",
+                  "mode": "offset",
+                  "value": "-4"
+                },
+                {
+                  "key": "hexIdent",
+                  "mode": "simple",
+                  "value": "39ac45"
+                },
+                {
+                  "key": "callsign",
+                  "mode": "simple",
+                  "value": "SAMUCF"
+                }
+              ]
+           }
           }
         ]
       }

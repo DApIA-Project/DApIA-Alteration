@@ -54,5 +54,6 @@ public class AlterationUtilsTest {
         assertEquals(192, computeCharacteristicMask(newArrayList(CHARAC_LATITUDE, CHARAC_LONGITUDE)));
         assertEquals(1024, computeCharacteristicMask(newArrayList(CHARAC_ALTITUDE)));
         assertEquals(23, computeCharacteristicMask(newArrayList(CHARAC_ALERT, CHARAC_EMERGENCY, CHARAC_SPI, CHARAC_ISONGROUND)));
+        assertEquals(1984, computeCharacteristicMask(newArrayList(CHARAC_LATITUDE, CHARAC_LONGITUDE, CHARAC_ALTITUDE, CHARAC_GROUNDSPEED, CHARAC_TRACK)));
     }
 }

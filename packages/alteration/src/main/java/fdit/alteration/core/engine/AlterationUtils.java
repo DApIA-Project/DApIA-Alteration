@@ -300,4 +300,17 @@ public class AlterationUtils {
             newTrajectory.addLongitude(wayPoint.getVertex().getLonValue(), wayPointTimestamp);
         }
     }
+
+    public static void addMessageToTrajectory(final BaseStationMessage message,
+                                        final AircraftTrajectory trajectory) {
+        if (message instanceof LatitudeParameter && ((LatitudeParameter) message).getLatitude().isPresent()) {
+            trajectory.addLatitude(((LatitudeParameter) message).getLatitude().get(), message.getTimestampGenerated());
+        }
+        if (message instanceof LongitudeParameter && ((LongitudeParameter) message).getLongitude().isPresent()) {
+            trajectory.addLongitude(((LongitudeParameter) message).getLongitude().get(), message.getTimestampGenerated());
+        }
+        if (message instanceof AltitudeParameter && ((AltitudeParameter) message).getAltitude().isPresent()) {
+            trajectory.addAltitude(((AltitudeParameter) message).getAltitude().get(), message.getTimestampGenerated());
+        }
+    }
 }

@@ -18,8 +18,8 @@ import {
   convertCSVtoSBS,
   convertSBStoCSV,
 } from '@dapia-project/data-converter/dist/src'
-/**import {FditScenarioSemanticVisitor} from '@smartesting/fdit-scenario/dist/generators/FditScenarioSemanticVisitor'
-import {SemanticError} from '@smartesting/fdit-scenario/dist/generators/index'**/
+//import {FditScenarioSemanticVisitor} from '@smartesting/fdit-scenario/dist/generators/FditScenarioSemanticVisitor'
+//import {SemanticError} from '@smartesting/fdit-scenario/dist/generators/index'
 
 export default async function alterRecording(
   scenario: string,
@@ -75,7 +75,7 @@ export default async function alterRecording(
     optionsAlteration,
     recordingToReplay
   )
-  console.log(recording.content)
+  console.log(parameters)
   if (fileIsCsv) {
     let alteredRecordingsCsv: Recording[] = []
     for (const recordingSbs of alteredRecordings) {
@@ -135,8 +135,8 @@ export const extractParameters = async (
   }
 
   const declarations = evalDeclarations(value.declarations)
-
-  /**const visitor = new FditScenarioSemanticVisitor();
+  //TODO ENLEVER DES COMMENTAIRES POUR SEMANTIC ANALYSE
+  /*const visitor = new FditScenarioSemanticVisitor();
   const result : SemanticError[] = visitor.visitScenario(value);
   const array_result : string[] = []
   for (const semanticError of result) {
@@ -149,8 +149,8 @@ export const extractParameters = async (
       parameters : [],
       errors: array_result
     }
-  }
-**/
+  }*/
+
   const parameters: Parameters[] = []
 
   const scenarios: string[] = []

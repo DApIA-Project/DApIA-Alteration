@@ -1,19 +1,32 @@
 import {
   ASTAllPlanes,
+  ASTAlter,
+  ASTAlterAndTrajectory,
+  ASTAt,
   ASTDeclaration,
   ASTHide,
   ASTHideParameter,
   ASTInstruction,
   ASTListDeclaration,
+  ASTParamDrift,
+  ASTParamEdit,
+  ASTParameter,
+  ASTParameters,
+  ASTParameterType,
+  ASTParamNoise,
+  ASTParamOffset,
   ASTPlane,
   ASTRangeDeclaration,
   ASTScenario,
   ASTTarget,
+  ASTTime,
+  ASTTimeScope,
 } from '../language-server/generated/ast'
 import { AstNode } from 'langium'
 
 export abstract class FditScenarioVisitor<T> {
   doSwitch(node: AstNode): T {
+    console.log(node.$type)
     switch (node.$type) {
       case 'ASTScenario': {
         let astScenario: ASTScenario = node as ASTScenario
@@ -75,9 +88,89 @@ export abstract class FditScenarioVisitor<T> {
         if (result == null) result = this.defaultCase(node)
         return result
       }
+      case 'ASTAlterAndTrajectory': {
+        let astAlterAndTrajectory: ASTAlterAndTrajectory =
+          node as ASTAlterAndTrajectory
+        let result: T = this.visitAlterAndTrajectory(astAlterAndTrajectory)
+        if (result == null)
+          result = this.visitInstruction(astAlterAndTrajectory)
+        if (result == null) result = this.defaultCase(node)
+        return result
+      }
+      case 'ASTAlter': {
+        let astAlter: ASTAlter = node as ASTAlter
+        let result: T = this.visitAlter(astAlter)
+        if (result == null) result = this.defaultCase(node)
+        return result
+      }
       case 'ASTHideParameter': {
         let astHideParameter: ASTHideParameter = node as ASTHideParameter
         let result: T = this.visitHideParameter(astHideParameter)
+        if (result == null) result = this.defaultCase(node)
+        return result
+      }
+      case 'ASTAt': {
+        let astAt: ASTAt = node as ASTAt
+        let result: T = this.visitAt(astAt)
+        if (result == null) result = this.visitTimeScope(astAt)
+        if (result == null) result = this.defaultCase(node)
+        return result
+      }
+      case 'ASTTimeScope': {
+        let astTimeScope: ASTTimeScope = node as ASTTimeScope
+        let result: T = this.visitTimeScope(astTimeScope)
+        if (result == null) result = this.defaultCase(node)
+        return result
+      }
+      case 'ASTTime': {
+        let astTime: ASTTime = node as ASTTime
+        let result: T = this.visitTime(astTime)
+        if (result == null) result = this.defaultCase(node)
+        return result
+      }
+      case 'ASTParameters': {
+        let astParameters: ASTParameters = node as ASTParameters
+        let result: T = this.visitParameters(astParameters)
+        if (result == null) result = this.defaultCase(node)
+        return result
+      }
+      case 'ASTParameter': {
+        let astParameter: ASTParameter = node as ASTParameter
+        let result: T = this.visitParameter(astParameter)
+        if (result == null) result = this.defaultCase(node)
+        return result
+      }
+      case 'ASTParameterType': {
+        let astParameterType: ASTParameterType = node as ASTParameterType
+        let result: T = this.visitParameterType(astParameterType)
+        if (result == null) result = this.defaultCase(node)
+        return result
+      }
+      case 'ASTParamEdit': {
+        let astParamEdit: ASTParamEdit = node as ASTParamEdit
+        let result: T = this.visitParamEdit(astParamEdit)
+        if (result == null) result = this.visitParameter(astParamEdit)
+        if (result == null) result = this.defaultCase(node)
+        return result
+      }
+      case 'ASTParamOffset': {
+        let astParamOffset: ASTParamOffset = node as ASTParamOffset
+        let result: T = this.visitParamOffset(astParamOffset)
+        if (result == null) result = this.visitParameter(astParamOffset)
+        if (result == null) result = this.defaultCase(node)
+        return result
+      }
+      case 'ASTParamNoise': {
+        let astParamNoise: ASTParamNoise = node as ASTParamNoise
+        let result: T = this.visitParamNoise(astParamNoise)
+        if (result == null) result = this.visitParameter(astParamNoise)
+        if (result == null) result = this.defaultCase(node)
+        return result
+      }
+      case 'ASTParamDrift': {
+        let astParamDrift: ASTParamDrift = node as ASTParamDrift
+        let result: T = this.visitParamDrift(astParamDrift)
+        if (result == null) result = this.visitParameter(astParamDrift)
         if (result == null) result = this.defaultCase(node)
         return result
       }
@@ -97,8 +190,23 @@ export abstract class FditScenarioVisitor<T> {
   abstract visitAllPlanes(node: ASTAllPlanes): T
   abstract visitPlane(node: ASTPlane): T
   abstract visitHide(node: ASTHide): T
+  abstract visitAlterAndTrajectory(node: ASTAlterAndTrajectory): T
+  abstract visitAlter(node: ASTAlter): T
 
   abstract visitHideParameter(node: ASTHideParameter): T
+
+  abstract visitTimeScope(node: ASTTimeScope): T
+
+  abstract visitTime(node: ASTTime): T
+
+  abstract visitAt(node: ASTAt): T
+  abstract visitParameter(node: ASTParameter): T
+  abstract visitParameters(node: ASTParameters): T
+  abstract visitParameterType(node: ASTParameterType): T
+  abstract visitParamEdit(node: ASTParamEdit): T
+  abstract visitParamOffset(node: ASTParamOffset): T
+  abstract visitParamNoise(node: ASTParamNoise): T
+  abstract visitParamDrift(node: ASTParamDrift): T
 
   abstract defaultCase(node: Object): T
 }

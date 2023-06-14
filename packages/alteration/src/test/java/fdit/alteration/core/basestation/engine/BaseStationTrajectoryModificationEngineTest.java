@@ -197,7 +197,7 @@ public class BaseStationTrajectoryModificationEngineTest {
     }
 
     @Test
-    public void applyActionEngineWithLabelsGroundSpeedAnsTrack() throws Exception {
+    public void applyActionEngineWithLabelsGroundSpeedAndTrack() throws Exception {
         final File recordingFile = createTempFile("initial", ".bst");
         final long startDate = 1519833871000L;
         write("MSG,0,30,1105,300065,3839,2018/02/28,16:04:31.000,2018/02/28,16:04:31.000,,,414.1,333.0,,,64,,,,,\n" +

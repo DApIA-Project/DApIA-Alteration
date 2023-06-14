@@ -12,8 +12,8 @@ import IModel = monaco.editor.IModel
 import CompletionItemProvider = monaco.languages.CompletionItemProvider
 import { InsertReplaceEdit } from 'vscode-languageserver'
 import ILanguageExtensionPoint = monaco.languages.ILanguageExtensionPoint
-import { FditScenarioSemanticVisitor } from '@smartesting/fdit-scenario/dist/generators/FditScenarioSemanticVisitor'
-import { SemanticError } from '@smartesting/fdit-scenario/dist/generators/index'
+//import { FditScenarioSemanticVisitor } from '@smartesting/fdit-scenario/dist/generators/FditScenarioSemanticVisitor'
+//import { SemanticError } from '@smartesting/fdit-scenario/dist/generators/index'
 import { parseScenario } from '@smartesting/fdit-scenario/dist/parser/parser'
 
 type FditscenarioEditorProps = {
@@ -36,10 +36,6 @@ const FditscenarioEditor: React.FunctionComponent<FditscenarioEditorProps> = ({
     message: string,
     line: number
   ) {
-    console.log(message)
-    console.log(column)
-    console.log(line)
-    console.log(length)
     const markers = []
     const range = {
       startLineNumber: line,
@@ -64,10 +60,9 @@ const FditscenarioEditor: React.FunctionComponent<FditscenarioEditorProps> = ({
         endColumn: column,
       })
     )
-    /**
-    const visitor = new FditScenarioSemanticVisitor()
+    //TODO ENLEVER DES COMMENTAIRES POUR SEMANTIC ANALYSE
+    /*const visitor = new FditScenarioSemanticVisitor()
     const result: SemanticError[] = visitor.visitScenario(value)
-    console.log(result)
 
     for (const error of result) {
       if (
@@ -77,10 +72,6 @@ const FditscenarioEditor: React.FunctionComponent<FditscenarioEditorProps> = ({
         error.position.endcolumn !== undefined &&
         error.errors !== ''
       ) {
-        console.log(error.position.startcolumn)
-        console.log(error.position.endcolumn)
-        console.log(error.position.startline)
-        console.log(error.position.endline)
         const range2 = {
           startLineNumber: error.position.startline + 1,
           startColumn: error.position.startcolumn + 1,
@@ -96,13 +87,13 @@ const FditscenarioEditor: React.FunctionComponent<FditscenarioEditorProps> = ({
           endColumn: range2.endColumn,
         })
       }
-    }
- **/
-    console.log(markers)
+    }*/
+
     monaco!.editor.setModelMarkers(model, 'owner', markers)
   }
 
-  /**function validateSemantic(
+  //TODO ENLEVER DES COMMENTAIRES POUR SEMANTIC ANALYSE
+  /*function validateSemantic(
       model: IModel,
       semanticErrors : SemanticError[]
   ) {
@@ -113,10 +104,6 @@ const FditscenarioEditor: React.FunctionComponent<FditscenarioEditorProps> = ({
           && error.position.startcolumn !== undefined
           && error.position.endcolumn !== undefined
           && error.errors !== ""){
-        console.log(error.position.startcolumn)
-        console.log(error.position.endcolumn)
-        console.log(error.position.startline)
-        console.log(error.position.endline)
         const range2 = {
           startLineNumber: error.position.startline+1,
           startColumn: error.position.startcolumn +1,
@@ -134,7 +121,7 @@ const FditscenarioEditor: React.FunctionComponent<FditscenarioEditorProps> = ({
       }
     }
     monaco!.editor.setModelMarkers(model, 'owner', markers)
-  }**/
+  }*/
 
   function isTextEdit(edit: any): edit is TextEdit {
     return 'range' in edit && 'newText' in edit
@@ -176,7 +163,6 @@ const FditscenarioEditor: React.FunctionComponent<FditscenarioEditorProps> = ({
           )
         } else {
           if (completionList.errors.parser.length !== 0) {
-            console.log(completionList)
             validate(
               model,
               position.column,
@@ -193,17 +179,13 @@ const FditscenarioEditor: React.FunctionComponent<FditscenarioEditorProps> = ({
                 endColumn: position.column,
               })
             )
-
-            /**const visitor = new FditScenarioSemanticVisitor()
+            //TODO ENLEVER DES COMMENTAIRES POUR SEMANTIC ANALYSE
+            /*
+            const visitor = new FditScenarioSemanticVisitor()
             const result: SemanticError[] = visitor.visitScenario(value)
-            console.log(result)**/
-            /**validateSemantic(model,result)**/
+            validateSemantic(model,result)*/
           }
         }
-        /**
-
-
-**/
 
         if (completionList.suggestions?.items.length === 0) {
           return {
@@ -216,7 +198,6 @@ const FditscenarioEditor: React.FunctionComponent<FditscenarioEditorProps> = ({
             const textEdit: TextEdit | InsertReplaceEdit | undefined =
               resultElement.textEdit
             if (isTextEdit(textEdit)) {
-              console.log(resultElement)
               suggestions.push({
                 label: resultElement.label,
                 kind:
