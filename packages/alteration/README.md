@@ -3,6 +3,8 @@
 
 ## Develop
 
+# TODO: add libs copy instructions
+
 Compile the package:
 ```shell
 mvn compile

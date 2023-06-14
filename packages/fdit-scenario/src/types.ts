@@ -1,3 +1,5 @@
+// TODO: remove useless types
+
 export type Parameters = {
   sensors: Sensors
 }
