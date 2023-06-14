@@ -1,9 +1,8 @@
 import IContractTest from '../../IContractTest'
-import {
-  makeMemoryAdapters,
-  makeProductionAdapters,
-} from '../../makeTestAdapters'
+import { makeProductionAdapters } from '../../makeTestAdapters'
 import IAlterationManager from '../../../api/adapters/IAlterationManager'
+
+// TODO: complete test suite
 
 const IAlterationContractTest: IContractTest = (
   implementationName,
