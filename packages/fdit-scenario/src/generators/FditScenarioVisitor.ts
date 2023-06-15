@@ -2,8 +2,17 @@ import {
   ASTAllPlanes,
   ASTAlter,
   ASTAlterAndTrajectory,
+  ASTAlterSpeed,
   ASTAt,
+  ASTAtFor,
+  ASTCreate,
+  ASTCreationParameter,
+  ASTCreationParameters,
+  ASTCut,
   ASTDeclaration,
+  ASTDelay,
+  ASTDelayParameter,
+  ASTFilters,
   ASTHide,
   ASTHideParameter,
   ASTInstruction,
@@ -17,10 +26,23 @@ import {
   ASTParamOffset,
   ASTPlane,
   ASTRangeDeclaration,
+  ASTReplay,
+  ASTRotate,
+  ASTRotateParameter,
+  ASTSaturate,
+  ASTSaturationParameter,
+  ASTSaturationParameters,
   ASTScenario,
+  ASTSpeedParameter,
+  ASTSpeedParameters,
   ASTTarget,
   ASTTime,
   ASTTimeScope,
+  ASTTrajectory,
+  ASTTrigger,
+  ASTWayPoint,
+  ASTWayPoints,
+  ASTWindow,
 } from '../language-server/generated/ast'
 import { AstNode } from 'langium'
 
@@ -81,6 +103,18 @@ export abstract class FditScenarioVisitor<T> {
         if (result == null) result = this.defaultCase(node)
         return result
       }
+      case 'ASTTrigger': {
+        let astTrigger: ASTTrigger = node as ASTTrigger
+        let result: T = this.visitTrigger(astTrigger)
+        if (result == null) result = this.defaultCase(node)
+        return result
+      }
+      case 'ASTFilters': {
+        let astFilters: ASTFilters = node as ASTFilters
+        let result: T = this.visitFilters(astFilters)
+        if (result == null) result = this.defaultCase(node)
+        return result
+      }
       case 'ASTHide': {
         let astHide: ASTHide = node as ASTHide
         let result: T = this.visitHide(astHide)
@@ -103,9 +137,97 @@ export abstract class FditScenarioVisitor<T> {
         if (result == null) result = this.defaultCase(node)
         return result
       }
+      case 'ASTTrajectory': {
+        let astTrajectory: ASTTrajectory = node as ASTTrajectory
+        let result: T = this.visitTrajectory(astTrajectory)
+        if (result == null) result = this.defaultCase(node)
+        return result
+      }
+      case 'ASTCreate': {
+        let astCreate: ASTCreate = node as ASTCreate
+        let result: T = this.visitCreate(astCreate)
+        if (result == null) result = this.visitInstruction(astCreate)
+        if (result == null) result = this.defaultCase(node)
+        return result
+      }
+      case 'ASTSaturate': {
+        let astSaturate: ASTSaturate = node as ASTSaturate
+        let result: T = this.visitSaturate(astSaturate)
+        if (result == null) result = this.visitInstruction(astSaturate)
+        if (result == null) result = this.defaultCase(node)
+        return result
+      }
+      case 'ASTReplay': {
+        let astReplay: ASTReplay = node as ASTReplay
+        let result: T = this.visitReplay(astReplay)
+        if (result == null) result = this.visitInstruction(astReplay)
+        if (result == null) result = this.defaultCase(node)
+        return result
+      }
+      case 'ASTDelay': {
+        let astDelay: ASTDelay = node as ASTDelay
+        let result: T = this.visitDelay(astDelay)
+        if (result == null) result = this.visitInstruction(astDelay)
+        if (result == null) result = this.defaultCase(node)
+        return result
+      }
+      case 'ASTRotate': {
+        let astRotate: ASTRotate = node as ASTRotate
+        let result: T = this.visitRotate(astRotate)
+        if (result == null) result = this.visitInstruction(astRotate)
+        if (result == null) result = this.defaultCase(node)
+        return result
+      }
+      case 'ASTCut': {
+        let astCut: ASTCut = node as ASTCut
+        let result: T = this.visitCut(astCut)
+        if (result == null) result = this.visitInstruction(astCut)
+        if (result == null) result = this.defaultCase(node)
+        return result
+      }
       case 'ASTHideParameter': {
         let astHideParameter: ASTHideParameter = node as ASTHideParameter
         let result: T = this.visitHideParameter(astHideParameter)
+        if (result == null) result = this.defaultCase(node)
+        return result
+      }
+      case 'ASTDelayParameter': {
+        let astDelayParameter: ASTDelayParameter = node as ASTDelayParameter
+        let result: T = this.visitDelayParameter(astDelayParameter)
+        if (result == null) result = this.defaultCase(node)
+        return result
+      }
+      case 'ASTRotateParameter': {
+        let astRotateParameter: ASTRotateParameter = node as ASTRotateParameter
+        let result: T = this.visitRotateParameter(astRotateParameter)
+        if (result == null) result = this.defaultCase(node)
+        return result
+      }
+      case 'ASTCreationParameters': {
+        let astCreationParameters: ASTCreationParameters =
+          node as ASTCreationParameters
+        let result: T = this.visitCreationParameters(astCreationParameters)
+        if (result == null) result = this.defaultCase(node)
+        return result
+      }
+      case 'ASTCreationParameter': {
+        let astCreationParameter: ASTCreationParameter =
+          node as ASTCreationParameter
+        let result: T = this.visitCreationParameter(astCreationParameter)
+        if (result == null) result = this.defaultCase(node)
+        return result
+      }
+      case 'ASTSaturationParameters': {
+        let astSaturationParameters: ASTSaturationParameters =
+          node as ASTSaturationParameters
+        let result: T = this.visitSaturationParameters(astSaturationParameters)
+        if (result == null) result = this.defaultCase(node)
+        return result
+      }
+      case 'ASTSaturationParameter': {
+        let astSaturationParameter: ASTSaturationParameter =
+          node as ASTSaturationParameter
+        let result: T = this.visitSaturationParameter(astSaturationParameter)
         if (result == null) result = this.defaultCase(node)
         return result
       }
@@ -113,6 +235,19 @@ export abstract class FditScenarioVisitor<T> {
         let astAt: ASTAt = node as ASTAt
         let result: T = this.visitAt(astAt)
         if (result == null) result = this.visitTimeScope(astAt)
+        if (result == null) result = this.defaultCase(node)
+        return result
+      }
+      case 'ASTWindow': {
+        let astWindow: ASTWindow = node as ASTWindow
+        let result: T = this.visitWindow(astWindow)
+        if (result == null) result = this.visitTimeScope(astWindow)
+        if (result == null) result = this.defaultCase(node)
+        return result
+      }
+      case 'ASTAtFor': {
+        let astAtFor: ASTAtFor = node as ASTAtFor
+        let result: T = this.visitAtFor(astAtFor)
         if (result == null) result = this.defaultCase(node)
         return result
       }
@@ -174,6 +309,18 @@ export abstract class FditScenarioVisitor<T> {
         if (result == null) result = this.defaultCase(node)
         return result
       }
+      case 'ASTWayPoints': {
+        let astWayPoints: ASTWayPoints = node as ASTWayPoints
+        let result: T = this.visitWayPoints(astWayPoints)
+        if (result == null) result = this.defaultCase(node)
+        return result
+      }
+      case 'ASTWayPoint': {
+        let astWayPoint: ASTWayPoint = node as ASTWayPoint
+        let result: T = this.visitWayPoint(astWayPoint)
+        if (result == null) result = this.defaultCase(node)
+        return result
+      }
       default:
         throw new Error('Unsupported node')
     }
@@ -185,6 +332,8 @@ export abstract class FditScenarioVisitor<T> {
 
   abstract visitListDeclaration(node: ASTListDeclaration): T
   abstract visitRangeDeclaration(node: ASTRangeDeclaration): T
+  abstract visitTrigger(node: ASTTrigger): T
+  abstract visitFilters(node: ASTFilters): T
 
   abstract visitTarget(node: ASTTarget): T
   abstract visitAllPlanes(node: ASTAllPlanes): T
@@ -192,14 +341,30 @@ export abstract class FditScenarioVisitor<T> {
   abstract visitHide(node: ASTHide): T
   abstract visitAlterAndTrajectory(node: ASTAlterAndTrajectory): T
   abstract visitAlter(node: ASTAlter): T
+  abstract visitTrajectory(node: ASTTrajectory): T
+  abstract visitCreate(node: ASTCreate): T
+  abstract visitSaturate(node: ASTSaturate): T
+  abstract visitReplay(node: ASTReplay): T
+  abstract visitDelay(node: ASTDelay): T
+  abstract visitRotate(node: ASTRotate): T
+  abstract visitCut(node: ASTCut): T
 
   abstract visitHideParameter(node: ASTHideParameter): T
+  abstract visitDelayParameter(node: ASTDelayParameter): T
+  abstract visitRotateParameter(node: ASTRotateParameter): T
+  abstract visitCreationParameters(node: ASTCreationParameters): T
+  abstract visitCreationParameter(node: ASTCreationParameter): T
+
+  abstract visitSaturationParameters(node: ASTSaturationParameters): T
+  abstract visitSaturationParameter(node: ASTSaturationParameter): T
 
   abstract visitTimeScope(node: ASTTimeScope): T
 
   abstract visitTime(node: ASTTime): T
 
   abstract visitAt(node: ASTAt): T
+  abstract visitAtFor(node: ASTAtFor): T
+  abstract visitWindow(node: ASTWindow): T
   abstract visitParameter(node: ASTParameter): T
   abstract visitParameters(node: ASTParameters): T
   abstract visitParameterType(node: ASTParameterType): T
@@ -207,6 +372,8 @@ export abstract class FditScenarioVisitor<T> {
   abstract visitParamOffset(node: ASTParamOffset): T
   abstract visitParamNoise(node: ASTParamNoise): T
   abstract visitParamDrift(node: ASTParamDrift): T
+  abstract visitWayPoints(node: ASTWayPoints): T
+  abstract visitWayPoint(node: ASTWayPoint): T
 
   abstract defaultCase(node: Object): T
 }
