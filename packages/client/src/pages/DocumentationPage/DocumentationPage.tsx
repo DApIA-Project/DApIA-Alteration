@@ -71,16 +71,6 @@ const DocumentationPage: React.FunctionComponent = () => {
         />
         <Button
           {...props}
-          text={'SPEED ALTERATION'}
-          onClick={() =>
-            editContentExample(
-              'alter_speed all_planes from 56 seconds until 90 seconds with_values \n' +
-                'EAST_WEST_VELOCITY = 78 and NORTH_SOUTH_VELOCITY = 45'
-            )
-          }
-        />
-        <Button
-          {...props}
           text={'SATURATION'}
           onClick={() =>
             editContentExample(

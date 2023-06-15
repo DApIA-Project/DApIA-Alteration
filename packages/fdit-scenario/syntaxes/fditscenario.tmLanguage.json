@@ -8,7 +8,7 @@
     },
     {
       "name": "keyword.control.fditscenario",
-      "match": "\\b(ALERT|ALTITUDE|ALT_DURATION|CALLSIGN|EAST_WEST_VELOCITY|EMERGENCY|GROUNDSPEED|ICAO|LATITUDE|LONGITUDE|NORTH_SOUTH_VELOCITY|NUMBER|REC_DURATION|REC_NBR_AIRCRAFT|SPI|SQUAWK|TRACK|all_planes|alter|alter_speed|and|assert|at|create|cut|delay|filter|for|from|groovy_file|hide|let|plane|replay|rotate|satisfying|saturate|seconds|triggered_by|until|with_altitude|with_angle|with_delay|with_frequency|with_values|with_waypoints)\\b"
+      "match": "\\b(ALERT|ALTITUDE|ALT_DURATION|CALLSIGN|EMERGENCY|GROUNDSPEED|ICAO|LATITUDE|LONGITUDE|NUMBER|REC_DURATION|REC_NBR_AIRCRAFT|SPI|SQUAWK|TRACK|all_planes|alter|and|at|create|cut|delay|for|from|hide|let|plane|replay|rotate|satisfying|saturate|seconds|triggered_by|until|with_altitude|with_angle|with_delay|with_frequency|with_values|with_waypoints)\\b"
     }
   ],
   "repository": {}

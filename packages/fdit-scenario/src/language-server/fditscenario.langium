@@ -44,7 +44,6 @@ ASTInstruction
 : ASTHide
     | ASTCreate
     | ASTAlterAndTrajectory
-    | ASTAlterSpeed
     | ASTSaturate
     | ASTReplay
     | ASTDelay
@@ -53,7 +52,7 @@ ASTInstruction
 ;
 
 ASTHide
-: keyword=T_HIDE target=ASTTarget timeScope=ASTTimeScope trigger=ASTTrigger? frequency=ASTHideParameter? assertions=ASTAssertions?
+: keyword=T_HIDE target=ASTTarget timeScope=ASTTimeScope trigger=ASTTrigger? frequency=ASTHideParameter?
 ;
 
 ASTAlterAndTrajectory
@@ -61,48 +60,40 @@ ASTAlterAndTrajectory
 ;
 
 ASTCreate
-: keyword=T_CREATE timeScope=ASTTimeScope trajectory=ASTWayPoints parameters=ASTCreationParameters? assertions=ASTAssertions?
+: keyword=T_CREATE timeScope=ASTTimeScope trajectory=ASTWayPoints parameters=ASTCreationParameters?
 ;
 
 ASTAlter
-: parameters=ASTParameters assertions=ASTAssertions?
+: parameters=ASTParameters
 ;
 
 ASTTrajectory
-: trajectory=ASTWayPoints assertions=ASTAssertions?
-;
-
-ASTAlterSpeed
-: keyword=T_ALTER_SPEED target=ASTTarget timeScope=ASTTimeScope trigger=ASTTrigger? parameters=ASTSpeedParameters assertions=ASTAssertions?
+: trajectory=ASTWayPoints
 ;
 
 ASTSaturate
-: keyword=T_SATURATE target=ASTTarget timeScope=ASTTimeScope trigger=ASTTrigger? parameters=ASTSaturationParameters assertions=ASTAssertions?
+: keyword=T_SATURATE target=ASTTarget timeScope=ASTTimeScope trigger=ASTTrigger? parameters=ASTSaturationParameters
 ;
 
 ASTReplay
-: keyword=T_REPLAY target=ASTTarget timeScope=ASTTimeScope parameters=ASTParameters? assertions=ASTAssertions?
+: keyword=T_REPLAY target=ASTTarget timeScope=ASTTimeScope parameters=ASTParameters?
 ;
 
 ASTDelay
-: keyword=T_DELAY target=ASTTarget timeScope=ASTTimeScope delay=ASTDelayParameter assertions=ASTAssertions?
+: keyword=T_DELAY target=ASTTarget timeScope=ASTTimeScope delay=ASTDelayParameter
 ;
 
 ASTRotate
-: keyword=T_ROTATE target=ASTTarget timeScope=ASTTimeScope trigger=ASTTrigger? angle=ASTRotateParameter assertions=ASTAssertions?
+: keyword=T_ROTATE target=ASTTarget timeScope=ASTTimeScope trigger=ASTTrigger? angle=ASTRotateParameter
 ;
 
 ASTCut
-: keyword=T_CUT target=ASTTarget timeScope=ASTTimeScope trigger=ASTTrigger? assertions=ASTAssertions?
+: keyword=T_CUT target=ASTTarget timeScope=ASTTimeScope trigger=ASTTrigger?
 ;
 
-ASTAssertions
-: items+=ASTAssertion (keyword=T_AND items+=ASTAssertion)*
-;
 
-ASTAssertion
-: keyword=T_ASSERT timeScope=ASTTimeScope keyword=T_GROOVY_FILE file=T_STRING_LITERAL (keyword=T_FILTER filter=T_STRING_LITERAL)?
-;
+
+
 
 ASTTarget
 : ASTPlane
@@ -162,13 +153,6 @@ ASTParamDrift
 :  drift_op=(T_PLUSPLUSEQUAL|T_MINUSMINUSEQUAL)
 ;
 
-ASTSpeedParameters
-: keyword=T_WITH_VALUES items+=ASTSpeedParameter (keyword=T_AND items+=ASTSpeedParameter)?
-;
-
-ASTSpeedParameter
-: name=ASTSpeedParameterType keyword=T_EQUAL value=ASTValue
-;
 
 ASTSaturationParameters
 : keyword=T_WITH_VALUES items+=ASTSaturationParameter (keyword=T_AND items+=ASTSaturationParameter)*
@@ -276,9 +260,6 @@ ASTCreationParameterType:
     ALERT="ALERT"|
     SPI="SPI";
 
-ASTSpeedParameterType:
-    EAST_WEST_VELOCITY="EAST_WEST_VELOCITY"|
-    NORTH_SOUTH_VELOCITY="NORTH_SOUTH_VELOCITY";
 
 ASTParameterType:
     ALTITUDE="ALTITUDE"|

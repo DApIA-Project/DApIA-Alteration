@@ -583,56 +583,6 @@ describe('generator', () => {
       )
     })
 
-    it('returns json with action when content is alter_speed all_planes with_values ', async () => {
-      const scenario = await parseScenario(
-        'alter_speed all_planes from 56 seconds until 90 seconds with_values EAST_WEST_VELOCITY = 78 and NORTH_SOUTH_VELOCITY = 45'
-      )
-      assert.deepStrictEqual(
-        generateStatements(scenario.value, 'zigzag.sbs', fileContent, ''),
-        {
-          sensors: {
-            sensor: [
-              {
-                sensorType: 'SBS',
-                sID: '',
-                record: 'zigzag.sbs',
-                firstDate: 1543145448179,
-                filter: '',
-                action: [
-                  {
-                    alterationType: 'ALTERATIONSPEED',
-                    scope: {
-                      type: 'timeWindow',
-                      lowerBound: '56000',
-                      upperBound: '90000',
-                    },
-                    parameters: {
-                      target: {
-                        identifier: 'hexIdent',
-                        value: 'ALL',
-                      },
-                      parameter: [
-                        {
-                          mode: 'simple',
-                          key: 'EAST_WEST_VELOCITY',
-                          value: '78',
-                        },
-                        {
-                          mode: 'simple',
-                          key: 'NORTH_SOUTH_VELOCITY',
-                          value: '45',
-                        },
-                      ],
-                    },
-                  },
-                ],
-              },
-            ],
-          },
-        }
-      )
-    })
-
     it('returns json with action when content is saturate all_planes with_values ', async () => {
       const scenario = await parseScenario(
         'saturate all_planes from 56 seconds until 90 seconds with_values ICAO = 78 and NUMBER = 45'

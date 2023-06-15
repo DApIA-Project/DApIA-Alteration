@@ -3,7 +3,6 @@ import {
   ASTAllPlanes,
   ASTAlter,
   ASTAlterAndTrajectory,
-  ASTAlterSpeed,
   ASTAt,
   ASTAtFor,
   ASTCreate,
@@ -35,8 +34,6 @@ import {
   ASTSaturationParameter,
   ASTSaturationParameters,
   ASTScenario,
-  ASTSpeedParameter,
-  ASTSpeedParameters,
   ASTTarget,
   ASTTime,
   ASTTimeScope,
@@ -48,7 +45,6 @@ import {
   ASTWindow,
   isASTConstantValue,
   isASTDoubleValue,
-  isASTHide,
   isASTIntegerValue,
   isASTLeftShift,
   isASTParameters,
@@ -105,9 +101,6 @@ export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
     if (node.trigger != undefined) {
       semanticError.push(...this.doSwitch(node.trigger))
     }
-    if (node.assertions != undefined) {
-      semanticError.push(...this.doSwitch(node.assertions))
-    }
     return semanticError
   }
 
@@ -141,9 +134,6 @@ export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
       return this.buildError(node, '')
     }
     semanticError.push(...this.doSwitch(node.parameters))
-    if (node.assertions != undefined) {
-      semanticError.push(...this.doSwitch(node.assertions))
-    }
     return semanticError
   }
 
@@ -153,9 +143,6 @@ export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
       return this.buildError(node, '')
     }
     semanticError.push(...this.doSwitch(node.trajectory))
-    if (node.assertions != undefined) {
-      semanticError.push(...this.doSwitch(node.assertions))
-    }
     return semanticError
   }
 
@@ -168,9 +155,6 @@ export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
     semanticError.push(...this.doSwitch(node.trajectory))
     if (node.parameters != undefined) {
       semanticError.push(...this.doSwitch(node.parameters))
-    }
-    if (node.assertions != undefined) {
-      semanticError.push(...this.doSwitch(node.assertions))
     }
     return semanticError
   }
@@ -187,9 +171,6 @@ export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
       semanticError.push(...this.doSwitch(node.trigger))
     }
     semanticError.push(...this.doSwitch(node.parameters))
-    if (node.assertions != undefined) {
-      semanticError.push(...this.doSwitch(node.assertions))
-    }
     return semanticError
   }
 
@@ -274,9 +255,6 @@ export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
     if (node.parameters != undefined) {
       semanticError.push(...this.doSwitch(node.parameters))
     }
-    if (node.assertions != undefined) {
-      semanticError.push(...this.doSwitch(node.assertions))
-    }
     return semanticError
   }
 
@@ -288,10 +266,6 @@ export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
     semanticError.push(...this.doSwitch(node.target))
     semanticError.push(...this.doSwitch(node.timeScope))
     semanticError.push(...this.doSwitch(node.delay))
-
-    if (node.assertions != undefined) {
-      semanticError.push(...this.doSwitch(node.assertions))
-    }
     return semanticError
   }
 
@@ -313,9 +287,6 @@ export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
       semanticError.push(...this.doSwitch(node.trigger))
     }
     semanticError.push(...this.doSwitch(node.angle))
-    if (node.assertions != undefined) {
-      semanticError.push(...this.doSwitch(node.assertions))
-    }
     return semanticError
   }
 
@@ -344,9 +315,6 @@ export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
     semanticError.push(...this.doSwitch(node.timeScope))
     if (node.trigger != undefined) {
       semanticError.push(...this.doSwitch(node.trigger))
-    }
-    if (node.assertions != undefined) {
-      semanticError.push(...this.doSwitch(node.assertions))
     }
     return semanticError
   }

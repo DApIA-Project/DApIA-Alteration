@@ -19,9 +19,6 @@ import {
   ASTSaturationParameters,
   ASTSaturationParameterType,
   ASTScenario,
-  ASTSpeedParameter,
-  ASTSpeedParameters,
-  ASTSpeedParameterType,
   ASTStringValue,
   ASTTarget,
   ASTTime,
@@ -33,7 +30,6 @@ import {
   isASTAllPlanes,
   isASTAlter,
   isASTAlterAndTrajectory,
-  isASTAlterSpeed,
   isASTAt,
   isASTAtFor,
   isASTCreate,
@@ -142,11 +138,6 @@ enum CreationParametreType {
   alert = 'alert',
 }
 
-enum SpeedParametreType {
-  east_west_velocity = 'EAST_WEST_VELOCITY',
-  north_south_velocity = 'NORTH_SOUTH_VELOCITY',
-}
-
 enum SaturationParametreType {
   icao = 'ICAO',
   aircraft_number = 'AIRCRAFT_NUMBER',
@@ -243,15 +234,6 @@ function evalInstr(
           parameter: evalCreationParameters(instr.parameters),
         },
       }
-    }
-  } else if (isASTAlterSpeed(instr)) {
-    return {
-      alterationType: ActionType.speedAltaration,
-      scope: evalTimeScope(instr.timeScope, fileContent),
-      parameters: {
-        target: evalTarget(instr.target),
-        parameter: evalSpeedParameters(instr.parameters),
-      },
     }
   } else if (isASTSaturate(instr)) {
     return {
@@ -501,34 +483,6 @@ function evalCreationParameterType(
     return CreationParametreType.spi
   } else {
     return CreationParametreType.squawk
-  }
-}
-
-function evalSpeedParameters(param: ASTSpeedParameters): Parameter[] {
-  return evalSpeedParameter(param.items)
-}
-
-function evalSpeedParameter(pm: ASTSpeedParameter[]): Parameter[] {
-  let params: Parameter[] = []
-  for (let i = 0; i < pm.length; i++) {
-    params.push(evalOneSpeedParameter(pm[i]))
-  }
-  return params
-}
-
-function evalOneSpeedParameter(pm: ASTSpeedParameter): Parameter {
-  return {
-    mode: 'simple',
-    key: evalSpeedParametreType(pm.name),
-    value: evalValue(pm.value),
-  }
-}
-
-function evalSpeedParametreType(pm: ASTSpeedParameterType): string | undefined {
-  if (pm.EAST_WEST_VELOCITY != undefined) {
-    return SpeedParametreType.east_west_velocity
-  } else {
-    return SpeedParametreType.north_south_velocity
   }
 }
 

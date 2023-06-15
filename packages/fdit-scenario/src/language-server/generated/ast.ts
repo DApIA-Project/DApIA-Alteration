@@ -13,7 +13,6 @@ import {
 
 export type ASTInstruction =
   | ASTAlterAndTrajectory
-  | ASTAlterSpeed
   | ASTCreate
   | ASTCut
   | ASTDelay
@@ -207,7 +206,6 @@ export type T_WITH_WAYPOINTS = 'with_waypoints'
 export interface ASTAllPlanes extends AstNode {
   readonly $container:
     | ASTAlterAndTrajectory
-    | ASTAlterSpeed
     | ASTCut
     | ASTDelay
     | ASTHide
@@ -228,7 +226,6 @@ export function isASTAllPlanes(item: unknown): item is ASTAllPlanes {
 export interface ASTAlter extends AstNode {
   readonly $container: ASTAlterAndTrajectory
   readonly $type: 'ASTAlter'
-  assertions?: ASTAssertions
   parameters: ASTParameters
 }
 
@@ -256,66 +253,9 @@ export function isASTAlterAndTrajectory(
   return reflection.isInstance(item, ASTAlterAndTrajectory)
 }
 
-export interface ASTAlterSpeed extends AstNode {
-  readonly $container: ASTScenario
-  readonly $type: 'ASTAlterSpeed'
-  assertions?: ASTAssertions
-  keyword: T_ALTER_SPEED
-  parameters: ASTSpeedParameters
-  target: ASTTarget
-  timeScope: ASTTimeScope
-  trigger?: ASTTrigger
-}
-
-export const ASTAlterSpeed = 'ASTAlterSpeed'
-
-export function isASTAlterSpeed(item: unknown): item is ASTAlterSpeed {
-  return reflection.isInstance(item, ASTAlterSpeed)
-}
-
-export interface ASTAssertion extends AstNode {
-  readonly $container: ASTAssertions
-  readonly $type: 'ASTAssertion'
-  file: string
-  filter?: string
-  keyword: T_ASSERT | T_FILTER | T_GROOVY_FILE
-  timeScope: ASTTimeScope
-}
-
-export const ASTAssertion = 'ASTAssertion'
-
-export function isASTAssertion(item: unknown): item is ASTAssertion {
-  return reflection.isInstance(item, ASTAssertion)
-}
-
-export interface ASTAssertions extends AstNode {
-  readonly $container:
-    | ASTAlter
-    | ASTAlterSpeed
-    | ASTCreate
-    | ASTCut
-    | ASTDelay
-    | ASTHide
-    | ASTReplay
-    | ASTRotate
-    | ASTSaturate
-    | ASTTrajectory
-  readonly $type: 'ASTAssertions'
-  items: Array<ASTAssertion>
-  keyword?: T_AND
-}
-
-export const ASTAssertions = 'ASTAssertions'
-
-export function isASTAssertions(item: unknown): item is ASTAssertions {
-  return reflection.isInstance(item, ASTAssertions)
-}
-
 export interface ASTAt extends AstNode {
   readonly $container:
     | ASTAlterAndTrajectory
-    | ASTAlterSpeed
-    | ASTAssertion
     | ASTCreate
     | ASTCut
     | ASTDelay
@@ -359,7 +299,6 @@ export interface ASTConstantValue extends AstNode {
     | ASTRightShift
     | ASTRotateParameter
     | ASTSaturationParameter
-    | ASTSpeedParameter
     | ASTTime
     | ASTTrigger
     | ASTWayPoint
@@ -376,7 +315,6 @@ export function isASTConstantValue(item: unknown): item is ASTConstantValue {
 export interface ASTCreate extends AstNode {
   readonly $container: ASTScenario
   readonly $type: 'ASTCreate'
-  assertions?: ASTAssertions
   keyword: T_CREATE
   parameters?: ASTCreationParameters
   timeScope: ASTTimeScope
@@ -442,7 +380,6 @@ export function isASTCreationParameterType(
 export interface ASTCut extends AstNode {
   readonly $container: ASTScenario
   readonly $type: 'ASTCut'
-  assertions?: ASTAssertions
   keyword: T_CUT
   target: ASTTarget
   timeScope: ASTTimeScope
@@ -474,7 +411,6 @@ export function isASTDeclaration(item: unknown): item is ASTDeclaration {
 export interface ASTDelay extends AstNode {
   readonly $container: ASTScenario
   readonly $type: 'ASTDelay'
-  assertions?: ASTAssertions
   delay: ASTDelayParameter
   keyword: T_DELAY
   target: ASTTarget
@@ -525,7 +461,6 @@ export interface ASTDoubleValue extends AstNode {
     | ASTRightShift
     | ASTRotateParameter
     | ASTSaturationParameter
-    | ASTSpeedParameter
     | ASTTime
     | ASTTrigger
     | ASTWayPoint
@@ -556,7 +491,6 @@ export function isASTFilters(item: unknown): item is ASTFilters {
 export interface ASTHide extends AstNode {
   readonly $container: ASTScenario
   readonly $type: 'ASTHide'
-  assertions?: ASTAssertions
   frequency?: ASTHideParameter
   keyword: T_HIDE
   target: ASTTarget
@@ -608,7 +542,6 @@ export interface ASTIntegerValue extends AstNode {
     | ASTRightShift
     | ASTRotateParameter
     | ASTSaturationParameter
-    | ASTSpeedParameter
     | ASTTime
     | ASTTrigger
     | ASTWayPoint
@@ -633,7 +566,6 @@ export interface ASTLeftShift extends AstNode {
     | ASTRightShift
     | ASTRotateParameter
     | ASTSaturationParameter
-    | ASTSpeedParameter
     | ASTTime
     | ASTTrigger
     | ASTWayPoint
@@ -729,7 +661,6 @@ export function isASTParameterType(item: unknown): item is ASTParameterType {
 export interface ASTPlane extends AstNode {
   readonly $container:
     | ASTAlterAndTrajectory
-    | ASTAlterSpeed
     | ASTCut
     | ASTDelay
     | ASTHide
@@ -792,7 +723,6 @@ export function isASTRecordingValue(item: unknown): item is ASTRecordingValue {
 export interface ASTReplay extends AstNode {
   readonly $container: ASTScenario
   readonly $type: 'ASTReplay'
-  assertions?: ASTAssertions
   keyword: T_REPLAY
   parameters?: ASTParameters
   target: ASTTarget
@@ -816,7 +746,6 @@ export interface ASTRightShift extends AstNode {
     | ASTRightShift
     | ASTRotateParameter
     | ASTSaturationParameter
-    | ASTSpeedParameter
     | ASTTime
     | ASTTrigger
     | ASTWayPoint
@@ -835,7 +764,6 @@ export interface ASTRotate extends AstNode {
   readonly $container: ASTScenario
   readonly $type: 'ASTRotate'
   angle: ASTRotateParameter
-  assertions?: ASTAssertions
   keyword: T_ROTATE
   target: ASTTarget
   timeScope: ASTTimeScope
@@ -866,7 +794,6 @@ export function isASTRotateParameter(
 export interface ASTSaturate extends AstNode {
   readonly $container: ASTScenario
   readonly $type: 'ASTSaturate'
-  assertions?: ASTAssertions
   keyword: T_SATURATE
   parameters: ASTSaturationParameters
   target: ASTTarget
@@ -938,50 +865,6 @@ export function isASTScenario(item: unknown): item is ASTScenario {
   return reflection.isInstance(item, ASTScenario)
 }
 
-export interface ASTSpeedParameter extends AstNode {
-  readonly $container: ASTSpeedParameters
-  readonly $type: 'ASTSpeedParameter'
-  keyword: T_EQUAL
-  name: ASTSpeedParameterType
-  value: ASTValue
-}
-
-export const ASTSpeedParameter = 'ASTSpeedParameter'
-
-export function isASTSpeedParameter(item: unknown): item is ASTSpeedParameter {
-  return reflection.isInstance(item, ASTSpeedParameter)
-}
-
-export interface ASTSpeedParameters extends AstNode {
-  readonly $container: ASTAlterSpeed
-  readonly $type: 'ASTSpeedParameters'
-  items: Array<ASTSpeedParameter>
-  keyword: T_AND | T_WITH_VALUES
-}
-
-export const ASTSpeedParameters = 'ASTSpeedParameters'
-
-export function isASTSpeedParameters(
-  item: unknown
-): item is ASTSpeedParameters {
-  return reflection.isInstance(item, ASTSpeedParameters)
-}
-
-export interface ASTSpeedParameterType extends AstNode {
-  readonly $container: ASTSpeedParameter
-  readonly $type: 'ASTSpeedParameterType'
-  EAST_WEST_VELOCITY?: 'EAST_WEST_VELOCITY'
-  NORTH_SOUTH_VELOCITY?: 'NORTH_SOUTH_VELOCITY'
-}
-
-export const ASTSpeedParameterType = 'ASTSpeedParameterType'
-
-export function isASTSpeedParameterType(
-  item: unknown
-): item is ASTSpeedParameterType {
-  return reflection.isInstance(item, ASTSpeedParameterType)
-}
-
 export interface ASTStringList extends AstNode {
   readonly $container: ASTList
   readonly $type: 'ASTStringList'
@@ -1006,7 +889,6 @@ export interface ASTStringValue extends AstNode {
     | ASTRightShift
     | ASTRotateParameter
     | ASTSaturationParameter
-    | ASTSpeedParameter
     | ASTTime
     | ASTTrigger
     | ASTWayPoint
@@ -1041,7 +923,6 @@ export function isASTTime(item: unknown): item is ASTTime {
 export interface ASTTrajectory extends AstNode {
   readonly $container: ASTAlterAndTrajectory
   readonly $type: 'ASTTrajectory'
-  assertions?: ASTAssertions
   trajectory: ASTWayPoints
 }
 
@@ -1054,7 +935,6 @@ export function isASTTrajectory(item: unknown): item is ASTTrajectory {
 export interface ASTTrigger extends AstNode {
   readonly $container:
     | ASTAlterAndTrajectory
-    | ASTAlterSpeed
     | ASTCut
     | ASTHide
     | ASTRotate
@@ -1081,7 +961,6 @@ export interface ASTVariableValue extends AstNode {
     | ASTRightShift
     | ASTRotateParameter
     | ASTSaturationParameter
-    | ASTSpeedParameter
     | ASTTime
     | ASTTrigger
     | ASTWayPoint
@@ -1127,8 +1006,6 @@ export function isASTWayPoints(item: unknown): item is ASTWayPoints {
 export interface ASTWindow extends AstNode {
   readonly $container:
     | ASTAlterAndTrajectory
-    | ASTAlterSpeed
-    | ASTAssertion
     | ASTCreate
     | ASTCut
     | ASTDelay
@@ -1228,9 +1105,6 @@ export interface FditscenarioAstType {
   ASTAllPlanes: ASTAllPlanes
   ASTAlter: ASTAlter
   ASTAlterAndTrajectory: ASTAlterAndTrajectory
-  ASTAlterSpeed: ASTAlterSpeed
-  ASTAssertion: ASTAssertion
-  ASTAssertions: ASTAssertions
   ASTAt: ASTAt
   ASTAtFor: ASTAtFor
   ASTConstantValue: ASTConstantValue
@@ -1277,9 +1151,6 @@ export interface FditscenarioAstType {
   ASTSaturationParameterType: ASTSaturationParameterType
   ASTSaturationParameters: ASTSaturationParameters
   ASTScenario: ASTScenario
-  ASTSpeedParameter: ASTSpeedParameter
-  ASTSpeedParameterType: ASTSpeedParameterType
-  ASTSpeedParameters: ASTSpeedParameters
   ASTStringList: ASTStringList
   ASTStringValue: ASTStringValue
   ASTTarget: ASTTarget
@@ -1300,9 +1171,6 @@ export class FditscenarioAstReflection extends AbstractAstReflection {
       'ASTAllPlanes',
       'ASTAlter',
       'ASTAlterAndTrajectory',
-      'ASTAlterSpeed',
-      'ASTAssertion',
-      'ASTAssertions',
       'ASTAt',
       'ASTAtFor',
       'ASTConstantValue',
@@ -1349,9 +1217,6 @@ export class FditscenarioAstReflection extends AbstractAstReflection {
       'ASTSaturationParameterType',
       'ASTSaturationParameters',
       'ASTScenario',
-      'ASTSpeedParameter',
-      'ASTSpeedParameterType',
-      'ASTSpeedParameters',
       'ASTStringList',
       'ASTStringValue',
       'ASTTarget',
@@ -1377,7 +1242,6 @@ export class FditscenarioAstReflection extends AbstractAstReflection {
         return this.isSubtype(ASTTarget, supertype)
       }
       case ASTAlterAndTrajectory:
-      case ASTAlterSpeed:
       case ASTCreate:
       case ASTCut:
       case ASTDelay:
@@ -1433,12 +1297,6 @@ export class FditscenarioAstReflection extends AbstractAstReflection {
 
   getTypeMetaData(type: string): TypeMetaData {
     switch (type) {
-      case 'ASTAssertions': {
-        return {
-          name: 'ASTAssertions',
-          mandatory: [{ name: 'items', type: 'array' }],
-        }
-      }
       case 'ASTCreationParameters': {
         return {
           name: 'ASTCreationParameters',
@@ -1476,12 +1334,6 @@ export class FditscenarioAstReflection extends AbstractAstReflection {
             { name: 'declarations', type: 'array' },
             { name: 'instructions', type: 'array' },
           ],
-        }
-      }
-      case 'ASTSpeedParameters': {
-        return {
-          name: 'ASTSpeedParameters',
-          mandatory: [{ name: 'items', type: 'array' }],
         }
       }
       case 'ASTStringList': {
