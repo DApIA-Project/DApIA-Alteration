@@ -54,16 +54,11 @@ import {
 import { SemanticError } from './index'
 import { AstNode } from 'langium'
 
-type Predicate<T> = (arg: T) => boolean
-
 export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
   SemanticError[]
 > {
   visitScenario(node: ASTScenario): SemanticError[] {
     let semanticError: SemanticError[] = []
-    if (node === undefined) {
-      return this.buildError(node, '')
-    }
     for (const decl of node.declarations) {
       semanticError.push(...this.doSwitch(decl))
     }
@@ -90,9 +85,6 @@ export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
 
   visitHide(node: ASTHide): SemanticError[] {
     let semanticError: SemanticError[] = []
-    if (node === undefined) {
-      return this.buildError(node, '')
-    }
     semanticError.push(...this.doSwitch(node.target))
     semanticError.push(...this.doSwitch(node.timeScope))
     if (node.frequency != undefined) {
@@ -105,9 +97,6 @@ export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
   }
 
   visitHideParameter(node: ASTHideParameter): SemanticError[] {
-    if (node === undefined) {
-      return this.buildError(node, '')
-    }
     if (this.isAnOffset(node.value)) {
       return this.buildError(node, 'error.offset' + '\n')
     }
@@ -116,9 +105,6 @@ export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
 
   visitAlterAndTrajectory(node: ASTAlterAndTrajectory): SemanticError[] {
     let semanticError: SemanticError[] = []
-    if (node === undefined) {
-      return this.buildError(node, '')
-    }
     semanticError.push(...this.doSwitch(node.target))
     semanticError.push(...this.doSwitch(node.timeScope))
     if (node.trigger != undefined) {
@@ -130,27 +116,18 @@ export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
 
   visitAlter(node: ASTAlter): SemanticError[] {
     let semanticError: SemanticError[] = []
-    if (node === undefined) {
-      return this.buildError(node, '')
-    }
     semanticError.push(...this.doSwitch(node.parameters))
     return semanticError
   }
 
   visitTrajectory(node: ASTTrajectory): SemanticError[] {
     let semanticError: SemanticError[] = []
-    if (node === undefined) {
-      return this.buildError(node, '')
-    }
     semanticError.push(...this.doSwitch(node.trajectory))
     return semanticError
   }
 
   visitCreate(node: ASTCreate): SemanticError[] {
     let semanticError: SemanticError[] = []
-    if (node === undefined) {
-      return this.buildError(node, '')
-    }
     semanticError.push(...this.doSwitch(node.timeScope))
     semanticError.push(...this.doSwitch(node.trajectory))
     if (node.parameters != undefined) {
@@ -161,9 +138,6 @@ export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
 
   visitSaturate(node: ASTSaturate): SemanticError[] {
     let semanticError: SemanticError[] = []
-    if (node === undefined) {
-      return this.buildError(node, '')
-    }
     semanticError.push(...this.doSwitch(node.target))
     semanticError.push(...this.doSwitch(node.timeScope))
 
@@ -179,15 +153,8 @@ export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
   }
 
   visitCreationParameter(node: ASTCreationParameter): SemanticError[] {
-    let semanticError: SemanticError[] = []
-    if (node === undefined) {
-      return this.buildError(node, '')
-    }
     let errors: string = ''
     let characteristicName = node.name.$cstNode?.text
-    if (characteristicName === undefined) {
-      return semanticError
-    }
 
     if (isASTLeftShift(node.value) || isASTRightShift(node.value)) {
       errors +=
@@ -199,7 +166,7 @@ export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
     //TODO Case where value == ConstantValue (range and list)
 
     return this.computeCreationParameterValueError(
-      characteristicName,
+      characteristicName!,
       node.value
     )
   }
@@ -220,15 +187,8 @@ export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
   }
 
   visitSaturationParameter(node: ASTSaturationParameter): SemanticError[] {
-    let semanticError: SemanticError[] = []
-    if (node === undefined) {
-      return this.buildError(node, '')
-    }
     let errors: string = ''
     let characteristicName = node.name.$cstNode?.text
-    if (characteristicName === undefined) {
-      return semanticError
-    }
 
     if (isASTLeftShift(node.value) || isASTRightShift(node.value)) {
       errors +=
@@ -240,16 +200,13 @@ export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
     //TODO Case where value == ConstantValue (range and list)
 
     return this.computeSaturationParameterValueError(
-      characteristicName,
+      characteristicName!,
       node.value
     )
   }
 
   visitReplay(node: ASTReplay): SemanticError[] {
     let semanticError: SemanticError[] = []
-    if (node === undefined) {
-      return this.buildError(node, '')
-    }
     semanticError.push(...this.doSwitch(node.target))
     semanticError.push(...this.doSwitch(node.timeScope))
     if (node.parameters != undefined) {
@@ -260,9 +217,6 @@ export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
 
   visitDelay(node: ASTDelay): SemanticError[] {
     let semanticError: SemanticError[] = []
-    if (node === undefined) {
-      return this.buildError(node, '')
-    }
     semanticError.push(...this.doSwitch(node.target))
     semanticError.push(...this.doSwitch(node.timeScope))
     semanticError.push(...this.doSwitch(node.delay))
@@ -270,17 +224,11 @@ export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
   }
 
   visitDelayParameter(node: ASTDelayParameter): SemanticError[] {
-    if (node === undefined) {
-      return this.buildError(node, '')
-    }
     return this.doSwitch(node.value)
   }
 
   visitRotate(node: ASTRotate): SemanticError[] {
     let semanticError: SemanticError[] = []
-    if (node === undefined) {
-      return this.buildError(node, '')
-    }
     semanticError.push(...this.doSwitch(node.target))
     semanticError.push(...this.doSwitch(node.timeScope))
     if (node.trigger != undefined) {
@@ -291,9 +239,6 @@ export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
   }
 
   visitRotateParameter(node: ASTRotateParameter): SemanticError[] {
-    if (node === undefined) {
-      return this.buildError(node, '')
-    }
     let errors: string = ''
 
     if (isASTLeftShift(node.value) || isASTRightShift(node.value)) {
@@ -308,9 +253,6 @@ export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
 
   visitCut(node: ASTCut): SemanticError[] {
     let semanticError: SemanticError[] = []
-    if (node === undefined) {
-      return this.buildError(node, '')
-    }
     semanticError.push(...this.doSwitch(node.target))
     semanticError.push(...this.doSwitch(node.timeScope))
     if (node.trigger != undefined) {
@@ -321,18 +263,12 @@ export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
 
   visitDeclaration(node: ASTDeclaration): SemanticError[] {
     let semanticError: SemanticError[] = []
-    if (node === undefined) {
-      return this.buildError(node, '')
-    }
     semanticError.push(...this.doSwitch(node))
     return semanticError
   }
 
   visitInstruction(node: ASTInstruction): SemanticError[] {
     let semanticError: SemanticError[] = []
-    if (node === undefined) {
-      return this.buildError(node, '')
-    }
     semanticError.push(...this.doSwitch(node))
     return semanticError
   }
@@ -354,20 +290,8 @@ export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
     return this.buildError(node, 'Filters is not yet implemented !')
   }
 
-  visitTarget(node: ASTTarget): SemanticError[] {
-    let semanticError: SemanticError[] = []
-    if (node === undefined) {
-      return this.buildError(node, '')
-    }
-    semanticError.push(...this.doSwitch(node))
-    return semanticError
-  }
-
   visitWindow(node: ASTWindow): SemanticError[] {
     let semanticError: SemanticError[] = []
-    if (node === undefined) {
-      return this.buildError(node, '')
-    }
     semanticError.push(...this.doSwitch(node.start))
     semanticError.push(...this.doSwitch(node.end))
     return semanticError
@@ -375,44 +299,25 @@ export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
 
   visitAt(node: ASTAt): SemanticError[] {
     let semanticError: SemanticError[] = []
-    if (node === undefined) {
-      return this.buildError(node, '')
-    }
     semanticError.push(...this.doSwitch(node.time))
+    if (node.for != undefined) {
+      semanticError.push(...this.doSwitch(node.for))
+    }
     return semanticError
   }
   visitAtFor(node: ASTAtFor): SemanticError[] {
     let semanticError: SemanticError[] = []
-    if (node === undefined) {
-      return this.buildError(node, '')
-    }
     semanticError.push(...this.doSwitch(node.for))
     return semanticError
   }
 
-  visitTimeScope(node: ASTTimeScope): SemanticError[] {
-    let semanticError: SemanticError[] = []
-    if (node === undefined) {
-      return this.buildError(node, '')
-    }
-    semanticError.push(...this.doSwitch(node))
-    return semanticError
-  }
-
   visitTime(node: ASTTime): SemanticError[] {
-    if (node === undefined) {
-      return this.buildError(node, '')
-    }
     let errors: string = ''
     const time: ASTValue = node.realTime
     if (isASTIntegerValue(time)) {
       return this.computeTimeError(time.content, time)
     } else if (isASTRightShift(time) || isASTLeftShift(time)) {
-      errors +=
-        'A time cannot be a shift : ' +
-        node.$cstNode?.parent?.text +
-        ' ' +
-        time.content
+      errors += 'A time cannot be a shift : ' + node.$cstNode?.parent?.text
     } else if (isASTConstantValue(time)) {
       //TODO Gestion de la mémoire pour les constantes et les variables
     } else {
@@ -428,15 +333,8 @@ export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
   }
 
   visitParameter(node: ASTParameter): SemanticError[] {
-    let semanticError: SemanticError[] = []
-    if (node === undefined) {
-      return this.buildError(node, '')
-    }
     let errors: string = ''
     let characteristicName = node.name.$cstNode?.text
-    if (characteristicName === undefined) {
-      return semanticError
-    }
 
     if (isASTLeftShift(node.value) || isASTRightShift(node.value)) {
       errors +=
@@ -447,11 +345,7 @@ export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
 
     //TODO Case where value == ConstantValue (range and list)
 
-    return this.computeParameterValueError(characteristicName, node.value)
-  }
-
-  visitParameterType(node: ASTParameterType): SemanticError[] {
-    return []
+    return this.computeParameterValueError(characteristicName!, node.value)
   }
 
   visitParamDrift(node: ASTParamDrift): SemanticError[] {
@@ -472,9 +366,6 @@ export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
 
   visitWayPoints(node: ASTWayPoints): SemanticError[] {
     let semanticError: SemanticError[] = []
-    if (node === undefined) {
-      return this.buildError(node, '')
-    }
     let errors: string = ''
     let position = {
       startline: node.$cstNode?.range.start.line,
@@ -498,9 +389,6 @@ export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
 
   visitWayPoint(node: ASTWayPoint): SemanticError[] {
     let semanticError: SemanticError[] = []
-    if (node === undefined) {
-      return this.buildError(node, '')
-    }
     semanticError.push(...this.computeErrorAltitude(node.altitude))
     semanticError.push(...this.computeErrorLatitude(node.latitude))
     semanticError.push(...this.computeErrorLongitude(node.longitude))
@@ -512,9 +400,6 @@ export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
     node: ASTParameters | ASTCreationParameters | ASTSaturationParameters
   ): SemanticError[] {
     let semanticError: SemanticError[] = []
-    if (node === undefined) {
-      return this.buildError(node, '')
-    }
     let errors: string = ''
     for (const parameter of node.items) {
       if (this.isDuplicateParameter(node, parameter.name.$cstNode?.text!)) {
@@ -547,9 +432,6 @@ export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
   }
 
   computeTimeError(integer: number, time: ASTIntegerValue): SemanticError[] {
-    if (time === undefined) {
-      return this.buildError(time, '')
-    }
     let errors: string = ''
     if (integer < 0) {
       errors += "A time can't be negative : " + integer
@@ -560,9 +442,6 @@ export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
   }
 
   computeIntError(integer: ASTValue, name: string): SemanticError[] {
-    if (integer === undefined) {
-      return this.buildError(integer, '')
-    }
     let errors: string = ''
     if (isASTDoubleValue(integer)) {
       errors +=
@@ -571,13 +450,14 @@ export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
         ' : Integer expected but found Double : ' +
         integer.content +
         '\n'
+      return this.buildError(integer, errors)
     }
     let content: string = ''
     if (isASTIntegerValue(integer)) {
       content = integer.content.toString()
     }
     if (isASTStringValue(integer)) {
-      content = integer.content
+      content = integer.content.replace(/"/g, '')
     }
     if (!this.isIntValid(content)) {
       errors +=
@@ -596,9 +476,6 @@ export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
     value: ASTValue
   ): SemanticError[] {
     let semanticError: SemanticError[] = []
-    if (value === undefined) {
-      return this.buildError(value, '')
-    }
     switch (characName) {
       case 'ALTITUDE':
         semanticError = this.computeErrorAltitude(value)
@@ -639,9 +516,6 @@ export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
     value: ASTValue
   ): SemanticError[] {
     let semanticError: SemanticError[] = []
-    if (value === undefined) {
-      return this.buildError(value, '')
-    }
     switch (characName) {
       case 'CALLSIGN':
         semanticError = this.computeErrorCallsign(value)
@@ -667,9 +541,6 @@ export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
     value: ASTValue
   ): SemanticError[] {
     let semanticError: SemanticError[] = []
-    if (value === undefined) {
-      return this.buildError(value, '')
-    }
     switch (characName) {
       case 'ICAO':
         semanticError = this.computeErrorIcao(value)
@@ -682,9 +553,6 @@ export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
   }
 
   computeErrorAltitude(value: ASTValue): SemanticError[] {
-    if (value === undefined) {
-      return this.buildError(value, '')
-    }
     let errors = ''
     let content: string = ''
     if (isASTDoubleValue(value)) {
@@ -707,9 +575,6 @@ export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
   }
 
   computeErrorCallsign(value: ASTValue): SemanticError[] {
-    if (value === undefined) {
-      return this.buildError(value, '')
-    }
     let errors = ''
     let content: string = ''
     if (isASTDoubleValue(value)) {
@@ -768,9 +633,6 @@ export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
   }
 
   computeErrorEmergency(value: ASTValue): SemanticError[] {
-    if (value === undefined) {
-      return this.buildError(value, '')
-    }
     let errors = ''
     let content: string = ''
     if (isASTDoubleValue(value)) {
@@ -799,9 +661,6 @@ export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
   }
 
   computeErrorGroundspeed(value: ASTValue): SemanticError[] {
-    if (value === undefined) {
-      return this.buildError(value, '')
-    }
     let errors = ''
     let content: string = ''
     if (isASTDoubleValue(value)) {
@@ -833,9 +692,6 @@ export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
   }
 
   computeErrorIcao(value: ASTValue): SemanticError[] {
-    if (value === undefined) {
-      return this.buildError(value, '')
-    }
     let errors = ''
     let content: string = ''
     if (isASTDoubleValue(value)) {
@@ -868,9 +724,6 @@ export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
   }
 
   computeErrorLatitude(value: ASTValue): SemanticError[] {
-    if (value === undefined) {
-      return this.buildError(value, '')
-    }
     let errors = ''
     let content: string = ''
     if (isASTDoubleValue(value)) {
@@ -895,9 +748,6 @@ export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
   }
 
   computeErrorLongitude(value: ASTValue): SemanticError[] {
-    if (value === undefined) {
-      return this.buildError(value, '')
-    }
     let errors = ''
     let content: string = ''
     if (isASTDoubleValue(value)) {
@@ -922,9 +772,6 @@ export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
   }
 
   computeErrorSpi(value: ASTValue): SemanticError[] {
-    if (value === undefined) {
-      return this.buildError(value, '')
-    }
     let errors = ''
     let content: string = ''
     if (isASTDoubleValue(value)) {
@@ -950,9 +797,6 @@ export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
   }
 
   computeErrorSquawk(value: ASTValue): SemanticError[] {
-    if (value === undefined) {
-      return this.buildError(value, '')
-    }
     let errors = ''
     let content: string = ''
     if (isASTDoubleValue(value)) {
@@ -971,6 +815,12 @@ export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
           value.content.toString() +
           '\n'
       }
+      if (!/^([0-7]{4})$/.test(value.content.toString())) {
+        errors +=
+          'SQUAWK value must be 4 symbol between 0 and 7  in the case of an integer: "' +
+          value.content.toString() +
+          '"\n'
+      }
     }
     if (isASTStringValue(value)) {
       content = value.content.replace(/"/g, '')
@@ -986,9 +836,6 @@ export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
   }
 
   computeErrorTrack(value: ASTValue, name: string): SemanticError[] {
-    if (value === undefined) {
-      return this.buildError(value, '')
-    }
     let errors = ''
     let content: string = ''
     if (isASTDoubleValue(value)) {
@@ -1017,9 +864,6 @@ export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
   }
 
   computeErrorAlert(value: ASTValue): SemanticError[] {
-    if (value === undefined) {
-      return this.buildError(value, '')
-    }
     let errors = ''
     let content: string = ''
     if (isASTDoubleValue(value)) {
@@ -1079,18 +923,13 @@ export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
       return false
     }
 
-    try {
-      parseInt(content)
-      return true
-    } catch (error) {
+    if (isNaN(parseInt(content))) {
       return false
     }
+    return true
   }
 
   isAnOffset(value: ASTValue): boolean {
-    if (value === undefined) {
-      return false
-    }
     return isASTLeftShift(value) || isASTRightShift(value)
   }
 

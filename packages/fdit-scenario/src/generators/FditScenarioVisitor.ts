@@ -34,7 +34,6 @@ import {
   ASTScenario,
   ASTTarget,
   ASTTime,
-  ASTTimeScope,
   ASTTrajectory,
   ASTTrigger,
   ASTWayPoint,
@@ -45,7 +44,6 @@ import { AstNode } from 'langium'
 
 export abstract class FditScenarioVisitor<T> {
   doSwitch(node: AstNode): T {
-    console.log(node.$type)
     switch (node.$type) {
       case 'ASTScenario': {
         let astScenario: ASTScenario = node as ASTScenario
@@ -80,23 +78,15 @@ export abstract class FditScenarioVisitor<T> {
         if (result == null) result = this.defaultCase(node)
         return result
       }
-      case 'ASTTarget': {
-        let astTarget: ASTTarget = node as ASTTarget
-        let result: T = this.visitTarget(astTarget)
-        if (result == null) result = this.defaultCase(node)
-        return result
-      }
       case 'ASTAllPlanes': {
         let astAllPlanes: ASTAllPlanes = node as ASTAllPlanes
         let result: T = this.visitAllPlanes(astAllPlanes)
-        if (result == null) result = this.visitTarget(astAllPlanes)
         if (result == null) result = this.defaultCase(node)
         return result
       }
       case 'ASTPlane': {
         let astPlane: ASTPlane = node as ASTPlane
         let result: T = this.visitPlane(astPlane)
-        if (result == null) result = this.visitTarget(astPlane)
         if (result == null) result = this.defaultCase(node)
         return result
       }
@@ -231,26 +221,18 @@ export abstract class FditScenarioVisitor<T> {
       case 'ASTAt': {
         let astAt: ASTAt = node as ASTAt
         let result: T = this.visitAt(astAt)
-        if (result == null) result = this.visitTimeScope(astAt)
         if (result == null) result = this.defaultCase(node)
         return result
       }
       case 'ASTWindow': {
         let astWindow: ASTWindow = node as ASTWindow
         let result: T = this.visitWindow(astWindow)
-        if (result == null) result = this.visitTimeScope(astWindow)
         if (result == null) result = this.defaultCase(node)
         return result
       }
       case 'ASTAtFor': {
         let astAtFor: ASTAtFor = node as ASTAtFor
         let result: T = this.visitAtFor(astAtFor)
-        if (result == null) result = this.defaultCase(node)
-        return result
-      }
-      case 'ASTTimeScope': {
-        let astTimeScope: ASTTimeScope = node as ASTTimeScope
-        let result: T = this.visitTimeScope(astTimeScope)
         if (result == null) result = this.defaultCase(node)
         return result
       }
@@ -269,12 +251,6 @@ export abstract class FditScenarioVisitor<T> {
       case 'ASTParameter': {
         let astParameter: ASTParameter = node as ASTParameter
         let result: T = this.visitParameter(astParameter)
-        if (result == null) result = this.defaultCase(node)
-        return result
-      }
-      case 'ASTParameterType': {
-        let astParameterType: ASTParameterType = node as ASTParameterType
-        let result: T = this.visitParameterType(astParameterType)
         if (result == null) result = this.defaultCase(node)
         return result
       }
@@ -332,7 +308,6 @@ export abstract class FditScenarioVisitor<T> {
   abstract visitTrigger(node: ASTTrigger): T
   abstract visitFilters(node: ASTFilters): T
 
-  abstract visitTarget(node: ASTTarget): T
   abstract visitAllPlanes(node: ASTAllPlanes): T
   abstract visitPlane(node: ASTPlane): T
   abstract visitHide(node: ASTHide): T
@@ -355,8 +330,6 @@ export abstract class FditScenarioVisitor<T> {
   abstract visitSaturationParameters(node: ASTSaturationParameters): T
   abstract visitSaturationParameter(node: ASTSaturationParameter): T
 
-  abstract visitTimeScope(node: ASTTimeScope): T
-
   abstract visitTime(node: ASTTime): T
 
   abstract visitAt(node: ASTAt): T
@@ -364,7 +337,6 @@ export abstract class FditScenarioVisitor<T> {
   abstract visitWindow(node: ASTWindow): T
   abstract visitParameter(node: ASTParameter): T
   abstract visitParameters(node: ASTParameters): T
-  abstract visitParameterType(node: ASTParameterType): T
   abstract visitParamEdit(node: ASTParamEdit): T
   abstract visitParamOffset(node: ASTParamOffset): T
   abstract visitParamNoise(node: ASTParamNoise): T
