@@ -154,12 +154,12 @@ export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
 
   visitCreationParameter(node: ASTCreationParameter): SemanticError[] {
     let errors: string = ''
-    let characteristicName = node.name.$cstNode?.text
+    let characteristicName = node.name.$cstNode!.text
 
     if (isASTLeftShift(node.value) || isASTRightShift(node.value)) {
       errors +=
         'A value of parameter cannot be a shift : ' +
-        node.$cstNode?.parent?.text
+        node.$cstNode!.parent!.text
       return this.buildError(node, errors)
     }
 
@@ -188,12 +188,12 @@ export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
 
   visitSaturationParameter(node: ASTSaturationParameter): SemanticError[] {
     let errors: string = ''
-    let characteristicName = node.name.$cstNode?.text
+    let characteristicName = node.name.$cstNode!.text
 
     if (isASTLeftShift(node.value) || isASTRightShift(node.value)) {
       errors +=
         'A value of parameter cannot be a shift : ' +
-        node.$cstNode?.parent?.text
+        node.$cstNode!.parent!.text
       return this.buildError(node, errors)
     }
 
@@ -244,7 +244,7 @@ export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
     if (isASTLeftShift(node.value) || isASTRightShift(node.value)) {
       errors +=
         'A value of parameter cannot be a shift : ' +
-        node.$cstNode?.parent?.text
+        node.$cstNode!.parent!.text
       return this.buildError(node, errors)
     }
 
@@ -317,7 +317,7 @@ export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
     if (isASTIntegerValue(time)) {
       return this.computeTimeError(time.content, time)
     } else if (isASTRightShift(time) || isASTLeftShift(time)) {
-      errors += 'A time cannot be a shift : ' + node.$cstNode?.parent?.text
+      errors += 'A time cannot be a shift : ' + node.$cstNode!.parent!.text
     } else if (isASTConstantValue(time)) {
       //TODO Gestion de la mémoire pour les constantes et les variables
     } else {
@@ -334,12 +334,12 @@ export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
 
   visitParameter(node: ASTParameter): SemanticError[] {
     let errors: string = ''
-    let characteristicName = node.name.$cstNode?.text
+    let characteristicName = node.name.$cstNode!.text
 
     if (isASTLeftShift(node.value) || isASTRightShift(node.value)) {
       errors +=
         'A value of parameter cannot be a shift : ' +
-        node.$cstNode?.parent?.text
+        node.$cstNode!.parent!.text
       return this.buildError(node, errors)
     }
 
@@ -368,10 +368,10 @@ export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
     let semanticError: SemanticError[] = []
     let errors: string = ''
     let position = {
-      startline: node.$cstNode?.range.start.line,
-      endline: node.$cstNode?.range.end.line,
-      startcolumn: node.$cstNode?.range.start.character,
-      endcolumn: node.$cstNode?.range.end.character,
+      startline: node.$cstNode!.range.start.line,
+      endline: node.$cstNode!.range.end.line,
+      startcolumn: node.$cstNode!.range.start.character,
+      endcolumn: node.$cstNode!.range.end.character,
     }
     let error = {
       errors: errors,
@@ -402,16 +402,16 @@ export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
     let semanticError: SemanticError[] = []
     let errors: string = ''
     for (const parameter of node.items) {
-      if (this.isDuplicateParameter(node, parameter.name.$cstNode?.text!)) {
-        errors += 'Duplicate parameter : ' + parameter.name.$cstNode?.text!
+      if (this.isDuplicateParameter(node, parameter.name.$cstNode!.text!)) {
+        errors += 'Duplicate parameter : ' + parameter.name.$cstNode!.text!
         break
       }
     }
     let position = {
-      startline: node.$cstNode?.range.start.line,
-      endline: node.$cstNode?.range.end.line,
-      startcolumn: node.$cstNode?.range.start.character,
-      endcolumn: node.$cstNode?.range.end.character,
+      startline: node.$cstNode!.range.start.line,
+      endline: node.$cstNode!.range.end.line,
+      startcolumn: node.$cstNode!.range.start.character,
+      endcolumn: node.$cstNode!.range.end.character,
     }
     let error = {
       errors: errors,
@@ -908,7 +908,7 @@ export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
   ): number {
     let cpt: number = 0
     for (const parameter of node.items) {
-      if (parameter.name.$cstNode?.text === name) {
+      if (parameter.name.$cstNode!.text === name) {
         cpt++
       }
     }
@@ -936,10 +936,10 @@ export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
   buildError(value: AstNode, errors: string): SemanticError[] {
     let semanticError: SemanticError[] = []
     let position = {
-      startline: value.$cstNode?.range.start.line,
-      endline: value.$cstNode?.range.end.line,
-      startcolumn: value.$cstNode?.range.start.character,
-      endcolumn: value.$cstNode?.range.end.character,
+      startline: value.$cstNode!.range.start.line,
+      endline: value.$cstNode!.range.end.line,
+      startcolumn: value.$cstNode!.range.start.character,
+      endcolumn: value.$cstNode!.range.end.character,
     }
     let error: SemanticError = {
       errors: errors,

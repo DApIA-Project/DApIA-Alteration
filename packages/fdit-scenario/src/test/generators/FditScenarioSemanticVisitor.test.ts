@@ -600,6 +600,22 @@ describe('FditScenarioSemanticVisitor', () => {
       assert.deepStrictEqual(semanticError[2].errors, '')
     })
 
+    it('returns error empty when scenario alter groundspeed and callsign and icao is valid ', async () => {
+      const scenario = await parseScenario(
+        'alter all_planes at 0 seconds with_values GROUNDSPEED = 3.7 and CALLSIGN = "SAMU12" and ICAO = "A2A2A2"'
+      )
+      let f: FditScenarioSemanticVisitor = new FditScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitInstruction(
+        scenario.value.instructions[0]
+      )
+      assert.deepStrictEqual(semanticError.length, 5)
+      assert.deepStrictEqual(semanticError[0].errors, '')
+      assert.deepStrictEqual(semanticError[1].errors, '')
+      assert.deepStrictEqual(semanticError[2].errors, '')
+      assert.deepStrictEqual(semanticError[3].errors, '')
+      assert.deepStrictEqual(semanticError[4].errors, '')
+    })
+
     it('returns error empty when scenario alter groundspeed with int in string', async () => {
       const scenario = await parseScenario(
         'alter all_planes at 0 seconds with_values GROUNDSPEED = "3"'
