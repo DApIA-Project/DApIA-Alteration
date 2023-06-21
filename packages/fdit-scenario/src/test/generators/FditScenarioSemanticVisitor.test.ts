@@ -657,29 +657,23 @@ describe('FditScenarioSemanticVisitor', () => {
       )
     })
 
-    it('returns error when scenario is no valid with seconds who are string in range constant', async () => {
-      const scenario = await parseScenario(
-        'let $var = ["2", 9], hide all_planes at $var seconds'
-      )
-      let f: FditScenarioSemanticVisitor = new FditScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
-      assert.deepStrictEqual(semanticError.length, -1)
-    })
-
     it('returns error when scenario is no valid with seconds who are double in range constant', async () => {
       const scenario = await parseScenario(
-        'let $var = [2, 9.9], hide all_planes at 2.9 seconds'
+        'let $var = [2.0, 9.9], hide all_planes at $var seconds'
       )
-      let f: FditScenarioSemanticVisitor = new FditScenarioSemanticVisitor()
+      let constant: RangeConstant = new RangeConstant('$var', 2.0, 9.9)
+      let memory: Memory = new Memory()
+      memory.addConstant(constant)
+      let f: FditScenarioSemanticVisitor = new FditScenarioSemanticVisitor(
+        memory
+      )
       let semanticError: SemanticError[] = f.visitInstruction(
         scenario.value.instructions[0]
       )
       assert.deepStrictEqual(semanticError.length, 1)
       assert.deepStrictEqual(
         semanticError[0].errors,
-        'Bad time type. Integer expected : 2.9\n'
+        'Time must be an Integer : $var\n'
       )
     })
 
@@ -687,36 +681,45 @@ describe('FditScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = [-2, 9], hide all_planes at $var seconds'
       )
-      let f: FditScenarioSemanticVisitor = new FditScenarioSemanticVisitor()
+      let constant: RangeConstant = new RangeConstant('$var', -2, 9)
+      let memory: Memory = new Memory()
+      memory.addConstant(constant)
+      let f: FditScenarioSemanticVisitor = new FditScenarioSemanticVisitor(
+        memory
+      )
       let semanticError: SemanticError[] = f.visitInstruction(
         scenario.value.instructions[0]
       )
-      assert.deepStrictEqual(semanticError.length, -1)
-    })
-
-    it('returns error when scenario is no valid with seconds who are string in list constant', async () => {
-      const scenario = await parseScenario(
-        'let $var = {"2", 9}, hide all_planes at $var seconds'
+      assert.deepStrictEqual(semanticError.length, 4)
+      assert.deepStrictEqual(
+        semanticError[0].errors,
+        "A time can't be negative : -3"
       )
-      let f: FditScenarioSemanticVisitor = new FditScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
+      assert.deepStrictEqual(
+        semanticError[1].errors,
+        "A time can't be negative : -1"
       )
-      assert.deepStrictEqual(semanticError.length, -1)
+      assert.deepStrictEqual(semanticError[2].errors, '')
+      assert.deepStrictEqual(semanticError[3].errors, '')
     })
 
     it('returns error when scenario is no valid with seconds who are double in list constant', async () => {
       const scenario = await parseScenario(
-        'let $var = {2, 9.9}, hide all_planes at 2.9 seconds'
+        'let $var = {2, 9.9}, hide all_planes at $var seconds'
       )
-      let f: FditScenarioSemanticVisitor = new FditScenarioSemanticVisitor()
+      let constant: ListConstant = new ListConstant('$var', [2, 9.9])
+      let memory: Memory = new Memory()
+      memory.addConstant(constant)
+      let f: FditScenarioSemanticVisitor = new FditScenarioSemanticVisitor(
+        memory
+      )
       let semanticError: SemanticError[] = f.visitInstruction(
         scenario.value.instructions[0]
       )
-      assert.deepStrictEqual(semanticError.length, -1)
+      assert.deepStrictEqual(semanticError.length, 1)
       assert.deepStrictEqual(
         semanticError[0].errors,
-        'Bad time type. Integer expected : 2.9\n'
+        'Time must be an Integer\n'
       )
     })
 
@@ -724,11 +727,21 @@ describe('FditScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = {-2, 9}, hide all_planes at $var seconds'
       )
-      let f: FditScenarioSemanticVisitor = new FditScenarioSemanticVisitor()
+      let constant: ListConstant = new ListConstant('$var', [-2, 9])
+      let memory: Memory = new Memory()
+      memory.addConstant(constant)
+      let f: FditScenarioSemanticVisitor = new FditScenarioSemanticVisitor(
+        memory
+      )
       let semanticError: SemanticError[] = f.visitInstruction(
         scenario.value.instructions[0]
       )
-      assert.deepStrictEqual(semanticError.length, -1)
+      assert.deepStrictEqual(semanticError.length, 2)
+      assert.deepStrictEqual(
+        semanticError[0].errors,
+        "A time can't be negative : -2"
+      )
+      assert.deepStrictEqual(semanticError[1].errors, '')
     })
   })
 
@@ -1307,99 +1320,171 @@ describe('FditScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = [2,9], alter all_planes at 0 seconds with_values ALTITUDE = $var'
       )
-      let f: FditScenarioSemanticVisitor = new FditScenarioSemanticVisitor()
+      let constant: RangeConstant = new RangeConstant('$var', 2, 9)
+      let memory: Memory = new Memory()
+      memory.addConstant(constant)
+      let f: FditScenarioSemanticVisitor = new FditScenarioSemanticVisitor(
+        memory
+      )
       let semanticError: SemanticError[] = f.visitInstruction(
         scenario.value.instructions[0]
       )
-      assert.deepStrictEqual(semanticError.length, -1)
+      assert.deepStrictEqual(semanticError.length, 3)
+      assert.deepStrictEqual(semanticError[0].errors, '')
+      assert.deepStrictEqual(semanticError[1].errors, '')
+      assert.deepStrictEqual(semanticError[2].errors, '')
     })
 
     it('returns error empty when scenario alter altitude with drift in range constant', async () => {
       const scenario = await parseScenario(
         'let $var = [2,9], alter all_planes at 0 seconds with_values ALTITUDE ++= $var'
       )
-      let f: FditScenarioSemanticVisitor = new FditScenarioSemanticVisitor()
+      let constant: RangeConstant = new RangeConstant('$var', 2, 9)
+      let memory: Memory = new Memory()
+      memory.addConstant(constant)
+      let f: FditScenarioSemanticVisitor = new FditScenarioSemanticVisitor(
+        memory
+      )
       let semanticError: SemanticError[] = f.visitInstruction(
         scenario.value.instructions[0]
       )
-      assert.deepStrictEqual(semanticError.length, -1)
+      assert.deepStrictEqual(semanticError.length, 3)
+      assert.deepStrictEqual(semanticError[0].errors, '')
+      assert.deepStrictEqual(semanticError[1].errors, '')
+      assert.deepStrictEqual(semanticError[2].errors, '')
     })
 
     it('returns error empty when scenario alter altitude with noise in range constant', async () => {
       const scenario = await parseScenario(
         'let $var = [2,9], alter all_planes at 0 seconds with_values ALTITUDE *= $var'
       )
-      let f: FditScenarioSemanticVisitor = new FditScenarioSemanticVisitor()
+      let constant: RangeConstant = new RangeConstant('$var', 2, 9)
+      let memory: Memory = new Memory()
+      memory.addConstant(constant)
+      let f: FditScenarioSemanticVisitor = new FditScenarioSemanticVisitor(
+        memory
+      )
       let semanticError: SemanticError[] = f.visitInstruction(
         scenario.value.instructions[0]
       )
-      assert.deepStrictEqual(semanticError.length, -1)
+      assert.deepStrictEqual(semanticError.length, 3)
+      assert.deepStrictEqual(semanticError[0].errors, '')
+      assert.deepStrictEqual(semanticError[1].errors, '')
+      assert.deepStrictEqual(semanticError[2].errors, '')
     })
 
     it('returns error empty when scenario alter altitude with offset in range constant', async () => {
       const scenario = await parseScenario(
         'let $var = [2,9], alter all_planes at 0 seconds with_values ALTITUDE += $var'
       )
-      let f: FditScenarioSemanticVisitor = new FditScenarioSemanticVisitor()
+      let constant: RangeConstant = new RangeConstant('$var', 2, 9)
+      let memory: Memory = new Memory()
+      memory.addConstant(constant)
+      let f: FditScenarioSemanticVisitor = new FditScenarioSemanticVisitor(
+        memory
+      )
       let semanticError: SemanticError[] = f.visitInstruction(
         scenario.value.instructions[0]
       )
-      assert.deepStrictEqual(semanticError.length, -1)
+      assert.deepStrictEqual(semanticError.length, 3)
+      assert.deepStrictEqual(semanticError[0].errors, '')
+      assert.deepStrictEqual(semanticError[1].errors, '')
+      assert.deepStrictEqual(semanticError[2].errors, '')
     })
 
     it('returns error empty when scenario alter altitude with int negative in range constant', async () => {
       const scenario = await parseScenario(
         'let $var = [-2,9], alter all_planes at 0 seconds with_values ALTITUDE = $var'
       )
-      let f: FditScenarioSemanticVisitor = new FditScenarioSemanticVisitor()
+      let constant: RangeConstant = new RangeConstant('$var', -2, 9)
+      let memory: Memory = new Memory()
+      memory.addConstant(constant)
+      let f: FditScenarioSemanticVisitor = new FditScenarioSemanticVisitor(
+        memory
+      )
       let semanticError: SemanticError[] = f.visitInstruction(
         scenario.value.instructions[0]
       )
-      assert.deepStrictEqual(semanticError.length, -1)
+      assert.deepStrictEqual(semanticError.length, 3)
+      assert.deepStrictEqual(semanticError[0].errors, '')
+      assert.deepStrictEqual(semanticError[1].errors, '')
+      assert.deepStrictEqual(semanticError[2].errors, '')
     })
 
     it('returns error empty when scenario alter altitude with double in range constant', async () => {
       const scenario = await parseScenario(
         'let $var = [2.0,9.1], alter all_planes at 0 seconds with_values ALTITUDE = $var'
       )
-      let f: FditScenarioSemanticVisitor = new FditScenarioSemanticVisitor()
+      let constant: RangeConstant = new RangeConstant('$var', 2.0, 9.1)
+      let memory: Memory = new Memory()
+      memory.addConstant(constant)
+      let f: FditScenarioSemanticVisitor = new FditScenarioSemanticVisitor(
+        memory
+      )
       let semanticError: SemanticError[] = f.visitInstruction(
         scenario.value.instructions[0]
       )
-      assert.deepStrictEqual(semanticError.length, -1)
+      assert.deepStrictEqual(semanticError.length, 3)
+      assert.deepStrictEqual(semanticError[0].errors, '')
+      assert.deepStrictEqual(semanticError[1].errors, '')
+      assert.deepStrictEqual(semanticError[2].errors, '')
     })
 
     it('returns error empty when scenario alter groundspeed with int in range constant', async () => {
       const scenario = await parseScenario(
         'let $var = [2,9], alter all_planes at 0 seconds with_values GROUNDSPEED = $var'
       )
-      let f: FditScenarioSemanticVisitor = new FditScenarioSemanticVisitor()
+      let constant: RangeConstant = new RangeConstant('$var', 2, 9)
+      let memory: Memory = new Memory()
+      memory.addConstant(constant)
+      let f: FditScenarioSemanticVisitor = new FditScenarioSemanticVisitor(
+        memory
+      )
       let semanticError: SemanticError[] = f.visitInstruction(
         scenario.value.instructions[0]
       )
-      assert.deepStrictEqual(semanticError.length, -1)
+      assert.deepStrictEqual(semanticError.length, 3)
+      assert.deepStrictEqual(semanticError[0].errors, '')
+      assert.deepStrictEqual(semanticError[1].errors, '')
+      assert.deepStrictEqual(semanticError[2].errors, '')
     })
 
     it('returns error empty when scenario alter groundspeed with double in range constant', async () => {
       const scenario = await parseScenario(
         'let $var = [2.1,9.7], alter all_planes at 0 seconds with_values GROUNDSPEED = $var'
       )
-      let f: FditScenarioSemanticVisitor = new FditScenarioSemanticVisitor()
+      let constant: RangeConstant = new RangeConstant('$var', 2.1, 9.7)
+      let memory: Memory = new Memory()
+      memory.addConstant(constant)
+      let f: FditScenarioSemanticVisitor = new FditScenarioSemanticVisitor(
+        memory
+      )
       let semanticError: SemanticError[] = f.visitInstruction(
         scenario.value.instructions[0]
       )
-      assert.deepStrictEqual(semanticError.length, -1)
+      assert.deepStrictEqual(semanticError.length, 3)
+      assert.deepStrictEqual(semanticError[0].errors, '')
+      assert.deepStrictEqual(semanticError[1].errors, '')
+      assert.deepStrictEqual(semanticError[2].errors, '')
     })
 
     it('returns error empty when scenario alter latitude int in range constant', async () => {
       const scenario = await parseScenario(
         'let $var = [2,9], alter all_planes at 0 seconds with_values LATITUDE = $var'
       )
-      let f: FditScenarioSemanticVisitor = new FditScenarioSemanticVisitor()
+      let constant: RangeConstant = new RangeConstant('$var', 2, 9)
+      let memory: Memory = new Memory()
+      memory.addConstant(constant)
+      let f: FditScenarioSemanticVisitor = new FditScenarioSemanticVisitor(
+        memory
+      )
       let semanticError: SemanticError[] = f.visitInstruction(
         scenario.value.instructions[0]
       )
-      assert.deepStrictEqual(semanticError.length, -1)
+      assert.deepStrictEqual(semanticError.length, 3)
+      assert.deepStrictEqual(semanticError[0].errors, '')
+      assert.deepStrictEqual(semanticError[1].errors, '')
+      assert.deepStrictEqual(semanticError[2].errors, '')
     })
 
     it('returns error empty when scenario alter latitude double in range constant', async () => {
@@ -1505,11 +1590,19 @@ describe('FditScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = {10000, 20000}, alter all_planes at 0 seconds with_values CALLSIGN = $var'
       )
-      let f: FditScenarioSemanticVisitor = new FditScenarioSemanticVisitor()
+      let constant: ListConstant = new ListConstant('$var', [10000, 20000])
+      let memory: Memory = new Memory()
+      memory.addConstant(constant)
+      let f: FditScenarioSemanticVisitor = new FditScenarioSemanticVisitor(
+        memory
+      )
       let semanticError: SemanticError[] = f.visitInstruction(
         scenario.value.instructions[0]
       )
-      assert.deepStrictEqual(semanticError.length, -1)
+      assert.deepStrictEqual(semanticError.length, 3)
+      assert.deepStrictEqual(semanticError[0].errors, '')
+      assert.deepStrictEqual(semanticError[1].errors, '')
+      assert.deepStrictEqual(semanticError[2].errors, '')
     })
 
     it('returns error empty when scenario alter callsign with string in list constant', async () => {
@@ -2746,27 +2839,51 @@ describe('FditScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = [990, 100000], alter all_planes at 0 seconds with_values ALTITUDE = $var'
       )
-      let f: FditScenarioSemanticVisitor = new FditScenarioSemanticVisitor()
+      let constant: RangeConstant = new RangeConstant('$var', 990, 100000)
+      let memory: Memory = new Memory()
+      memory.addConstant(constant)
+      let f: FditScenarioSemanticVisitor = new FditScenarioSemanticVisitor(
+        memory
+      )
       let semanticError: SemanticError[] = f.visitInstruction(
         scenario.value.instructions[0]
       )
-      assert.deepStrictEqual(semanticError.length, -1)
+      assert.deepStrictEqual(semanticError.length, 3)
+      assert.deepStrictEqual(semanticError[0].errors, '')
+      assert.deepStrictEqual(semanticError[1].errors, '')
+      assert.deepStrictEqual(
+        semanticError[2].errors,
+        'ALTITUDE must be between -1000 and 50175 : 99999 found\n' +
+          'ALTITUDE must be between -1000 and 50175 : 100001 found\n'
+      )
     })
 
     it('returns error when scenario alter altitude is too small in range constant', async () => {
       const scenario = await parseScenario(
         'let $var = [-10000, 5000], alter all_planes at 0 seconds with_values ALTITUDE = $var'
       )
-      let f: FditScenarioSemanticVisitor = new FditScenarioSemanticVisitor()
+      let constant: RangeConstant = new RangeConstant('$var', -10000, 5000)
+      let memory: Memory = new Memory()
+      memory.addConstant(constant)
+      let f: FditScenarioSemanticVisitor = new FditScenarioSemanticVisitor(
+        memory
+      )
       let semanticError: SemanticError[] = f.visitInstruction(
         scenario.value.instructions[0]
       )
-      assert.deepStrictEqual(semanticError.length, -1)
+      assert.deepStrictEqual(semanticError.length, 3)
+      assert.deepStrictEqual(semanticError[0].errors, '')
+      assert.deepStrictEqual(semanticError[1].errors, '')
+      assert.deepStrictEqual(
+        semanticError[2].errors,
+        'ALTITUDE must be between -1000 and 50175 : -10001 found\n' +
+          'ALTITUDE must be between -1000 and 50175 : -9999 found\n'
+      )
     })
 
     it('returns error when scenario alter callsign is double in range constant', async () => {
       const scenario = await parseScenario(
-        'let $var = [1000, 1233.8], alter all_planes at 0 seconds with_values CALLSIGN = $var'
+        'let $var = [1000.2, 1233.8], alter all_planes at 0 seconds with_values CALLSIGN = $var'
       )
       let f: FditScenarioSemanticVisitor = new FditScenarioSemanticVisitor()
       let semanticError: SemanticError[] = f.visitInstruction(
@@ -2790,11 +2907,23 @@ describe('FditScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = [-2, 2], alter all_planes at 0 seconds with_values GROUNDSPEED = $var'
       )
-      let f: FditScenarioSemanticVisitor = new FditScenarioSemanticVisitor()
+      let constant: RangeConstant = new RangeConstant('$var', -2, 2)
+      let memory: Memory = new Memory()
+      memory.addConstant(constant)
+      let f: FditScenarioSemanticVisitor = new FditScenarioSemanticVisitor(
+        memory
+      )
       let semanticError: SemanticError[] = f.visitInstruction(
         scenario.value.instructions[0]
       )
-      assert.deepStrictEqual(semanticError.length, -1)
+      assert.deepStrictEqual(semanticError.length, 3)
+      assert.deepStrictEqual(semanticError[0].errors, '')
+      assert.deepStrictEqual(semanticError[1].errors, '')
+      assert.deepStrictEqual(
+        semanticError[2].errors,
+        'GROUNDSPEED must be between 0 and 1446 with a maximum precision of 0.1: "-3"\n' +
+          'GROUNDSPEED must be between 0 and 1446 with a maximum precision of 0.1: "-1"\n'
+      )
     })
     it('returns error when scenario alter groundspeed is > 1446 in range constant', async () => {
       const scenario = await parseScenario(

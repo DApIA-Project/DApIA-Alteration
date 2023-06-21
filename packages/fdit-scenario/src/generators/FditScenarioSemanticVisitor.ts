@@ -391,25 +391,32 @@ export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
           valuesRange.push(constant.getEnd() + 1)
 
           for (const valueRange of valuesRange) {
-            if (this.isIntValid(valueRange.toString()) && valueRange >= 0) {
+            if (this.isIntValid(valueRange.toString())) {
               semanticError.push(...this.computeTimeError(valueRange, time))
             } else {
-              return this.buildError(time, 'Time must be an Integer\n')
+              return this.buildError(
+                time,
+                'Time must be an Integer : ' + time.content + '\n'
+              )
             }
           }
+
+          return semanticError
         }
         if (isListConstant(constant)) {
           for (const value of constant.getValues()) {
             if (typeof value === 'string') {
               return this.buildError(node, 'Time must be an Integer\n')
             } else if (typeof value === 'number') {
-              if (this.isIntValid(value.toString()) && value >= 0) {
+              if (this.isIntValid(value.toString())) {
                 semanticError.push(...this.computeTimeError(value, time))
               } else {
                 return this.buildError(time, 'Time must be an Integer\n')
               }
             }
           }
+
+          return semanticError
         }
       }
     } else {
@@ -425,6 +432,7 @@ export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
   }
 
   visitParameter(node: ASTParameter): SemanticError[] {
+    let semanticError: SemanticError[] = []
     let errors: string = ''
     let characteristicName = node.name.$cstNode!.text
 
@@ -433,6 +441,13 @@ export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
         'A value of parameter cannot be a shift : ' +
         node.$cstNode!.parent!.text
       return this.buildError(node, errors)
+    }
+
+    if (isASTConstantValue(node.value)) {
+      semanticError.push(
+        ...this.computeParameterValueError(characteristicName!, node.value)
+      )
+      return semanticError
     }
 
     //TODO Case where value == ConstantValue (range and list)
@@ -708,6 +723,68 @@ export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
     if (isASTStringValue(value)) {
       content = value.content.replace(/"/g, '')
     }
+
+    if (isASTConstantValue(value)) {
+      let constant: Constant<ConstantTypes> | undefined =
+        this.memory.getConstant(value.content)
+      if (constant === undefined) {
+        return this.buildError(
+          value,
+          'Variable ' + value.content + ' not found'
+        )
+      } else {
+        if (isRangeConstant(constant)) {
+          const valuesRange: number[] = []
+          valuesRange.push(constant.getStart() - 1)
+          valuesRange.push(constant.getStart() + 1)
+          valuesRange.push(constant.getEnd() - 1)
+          valuesRange.push(constant.getEnd() + 1)
+
+          for (const valRange of valuesRange) {
+            if (isNaN(parseFloat(valRange.toString()))) {
+              errors +=
+                'Bad Value. Expected a float value : ' +
+                valRange.toString() +
+                ' found\n'
+            } else {
+              if (
+                parseFloat(valRange.toString()) < -1000 ||
+                parseFloat(valRange.toString()) > 50175
+              ) {
+                errors +=
+                  'ALTITUDE must be between -1000 and 50175 : ' +
+                  valRange.toString() +
+                  ' found\n'
+              }
+            }
+          }
+          return this.buildError(value, errors)
+        }
+
+        if (isListConstant(constant)) {
+          for (const valList of constant.getValues()) {
+            if (isNaN(parseFloat(valList.toString()))) {
+              errors +=
+                'Bad Value. Expected a float value : ' +
+                valList.toString() +
+                ' found\n'
+            } else {
+              if (
+                parseFloat(valList.toString()) < -1000 ||
+                parseFloat(valList.toString()) > 50175
+              ) {
+                errors +=
+                  'ALTITUDE must be between -1000 and 50175 : ' +
+                  valList.toString() +
+                  ' found\n'
+              }
+            }
+          }
+          return this.buildError(value, errors)
+        }
+      }
+    }
+
     if (isNaN(parseFloat(content))) {
       errors = 'Bad Value. Expected a float value.'
     } else {
@@ -721,6 +798,80 @@ export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
   computeErrorCallsign(value: ASTValue): SemanticError[] {
     let errors = ''
     let content: string = ''
+
+    if (isASTConstantValue(value)) {
+      let constant: Constant<ConstantTypes> | undefined =
+        this.memory.getConstant(value.content)
+      if (constant === undefined) {
+        return this.buildError(
+          value,
+          'Variable ' + value.content + ' not found'
+        )
+      } else {
+        if (isRangeConstant(constant)) {
+          errors = 'Range is not possible for CALLSIGN'
+          return this.buildError(value, errors)
+        }
+
+        if (isListConstant(constant)) {
+          for (const valList of constant.getValues()) {
+            if (typeof valList === 'number') {
+              if (Number.isInteger(valList)) {
+                if (valList.toString().length > 8) {
+                  errors +=
+                    "CALLSIGN can't have more than 8 digits in the case of an integer: " +
+                    valList.toString() +
+                    '\n'
+                }
+                if (valList.toString()[0] === '0') {
+                  errors +=
+                    "CALLSIGN can't start with 0 in the case of an integer : " +
+                    valList.toString() +
+                    '\n'
+                }
+                if (valList < 0) {
+                  errors +=
+                    "CALLSIGN can't be negative in the case of an integer : " +
+                    valList.toString() +
+                    '\n'
+                }
+              } else {
+                errors +=
+                  "CALLSIGN can't be a double : " + valList.toString() + '\n'
+              }
+            } else {
+              content = valList.toString().replace(/"/g, '')
+              if (content.length < 1) {
+                errors +=
+                  'CALLSIGN can\'t be empty in the case of a string : "' +
+                  content +
+                  '"\n'
+              }
+              if (content.length > 8) {
+                errors +=
+                  'CALLSIGN can\'t have more than 8 symbols in the case of a string : "' +
+                  content +
+                  '"\n'
+              }
+              if (!/^[A-Z0-9\s]+$/.test(content)) {
+                errors +=
+                  'CALLSIGN can have only uppercase and/or digit in the case of a string : "' +
+                  content +
+                  '"\n'
+              }
+              if (!/^[^\s]+$/.test(content)) {
+                errors +=
+                  'CALLSIGN can\'t contain whitespaces in the case of a string : "' +
+                  content +
+                  '"\n'
+              }
+            }
+          }
+          return this.buildError(value, errors)
+        }
+      }
+    }
+
     if (isASTDoubleValue(value)) {
       errors +=
         "CALLSIGN can't be a double : " + value.content.toString() + '\n'
@@ -801,6 +952,28 @@ export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
       }
     }
 
+    if (isASTConstantValue(value)) {
+      let constant: Constant<ConstantTypes> | undefined =
+        this.memory.getConstant(value.content)
+      if (constant === undefined) {
+        return this.buildError(
+          value,
+          'Variable ' + value.content + ' not found'
+        )
+      } else {
+        if (isRangeConstant(constant)) {
+          errors = 'Range is not possible for EMERGENCY'
+          return this.buildError(value, errors)
+        }
+
+        if (isListConstant(constant)) {
+          for (const valList of constant.getValues()) {
+          }
+          return this.buildError(value, errors)
+        }
+      }
+    }
+
     return this.buildError(value, errors)
   }
 
@@ -815,6 +988,63 @@ export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
     }
     if (isASTStringValue(value)) {
       content = value.content.replace(/"/g, '')
+    }
+
+    if (isASTConstantValue(value)) {
+      let constant: Constant<ConstantTypes> | undefined =
+        this.memory.getConstant(value.content)
+      if (constant === undefined) {
+        return this.buildError(
+          value,
+          'Variable ' + value.content + ' not found'
+        )
+      } else {
+        if (isRangeConstant(constant)) {
+          const valuesRange: number[] = []
+          valuesRange.push(constant.getStart() - 1)
+          valuesRange.push(constant.getStart() + 1)
+          valuesRange.push(constant.getEnd() - 1)
+          valuesRange.push(constant.getEnd() + 1)
+
+          for (const valRange of valuesRange) {
+            let valueInFloat: number = parseFloat(valRange.toString())
+
+            if (
+              !(
+                /^\d+(\.\d)?$/.test(valRange.toString()) &&
+                valueInFloat >= 0 &&
+                valueInFloat <= 1446
+              )
+            ) {
+              errors +=
+                'GROUNDSPEED must be between 0 and 1446 with a maximum precision of 0.1: "' +
+                valRange.toString() +
+                '"\n'
+            }
+          }
+          return this.buildError(value, errors)
+        }
+
+        if (isListConstant(constant)) {
+          for (const valList of constant.getValues()) {
+            let valueInFloat: number = parseFloat(valList.toString())
+
+            if (
+              !(
+                /^\d+(\.\d)?$/.test(valList.toString()) &&
+                valueInFloat >= 0 &&
+                valueInFloat <= 1446
+              )
+            ) {
+              errors +=
+                'GROUNDSPEED must be between 0 and 1446 with a maximum precision of 0.1: "' +
+                valList.toString() +
+                '"\n'
+            }
+          }
+          return this.buildError(value, errors)
+        }
+      }
     }
 
     let valueInFloat: number = parseFloat(content)
@@ -864,6 +1094,28 @@ export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
           '"\n'
       }
     }
+
+    if (isASTConstantValue(value)) {
+      let constant: Constant<ConstantTypes> | undefined =
+        this.memory.getConstant(value.content)
+      if (constant === undefined) {
+        return this.buildError(
+          value,
+          'Variable ' + value.content + ' not found'
+        )
+      } else {
+        if (isRangeConstant(constant)) {
+          errors = 'Range is not possible for ICAO'
+          return this.buildError(value, errors)
+        }
+
+        if (isListConstant(constant)) {
+          for (const valList of constant.getValues()) {
+          }
+          return this.buildError(value, errors)
+        }
+      }
+    }
     return this.buildError(value, errors)
   }
 
@@ -879,6 +1131,60 @@ export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
     if (isASTStringValue(value)) {
       content = value.content.replace(/"/g, '')
     }
+
+    if (isASTConstantValue(value)) {
+      let constant: Constant<ConstantTypes> | undefined =
+        this.memory.getConstant(value.content)
+      if (constant === undefined) {
+        return this.buildError(
+          value,
+          'Variable ' + value.content + ' not found'
+        )
+      } else {
+        if (isRangeConstant(constant)) {
+          const valuesRange: number[] = []
+          valuesRange.push(constant.getStart() - 1)
+          valuesRange.push(constant.getStart() + 1)
+          valuesRange.push(constant.getEnd() - 1)
+          valuesRange.push(constant.getEnd() + 1)
+
+          for (const valRange of valuesRange) {
+            if (isNaN(parseFloat(valRange.toString()))) {
+              errors +=
+                'LATITUDE expected a float value :' + valRange.toString() + '\n'
+            } else {
+              let valueInFloat = parseFloat(valRange.toString())
+              if (valueInFloat < -90 || valueInFloat > 90) {
+                errors +=
+                  'LATITUDE must be between -90 and 90 :' +
+                  valRange.toString() +
+                  '\n'
+              }
+            }
+          }
+          return this.buildError(value, errors)
+        }
+
+        if (isListConstant(constant)) {
+          for (const valList of constant.getValues()) {
+            if (isNaN(parseFloat(valList.toString()))) {
+              errors +=
+                'LATITUDE expected a float value :' + valList.toString() + '\n'
+            } else {
+              let valueInFloat = parseFloat(valList.toString())
+              if (valueInFloat < -90 || valueInFloat > 90) {
+                errors +=
+                  'LATITUDE must be between -90 and 90 :' +
+                  valList.toString() +
+                  '\n'
+              }
+            }
+          }
+          return this.buildError(value, errors)
+        }
+      }
+    }
+
     if (isNaN(parseFloat(content))) {
       errors = 'LATITUDE expected a float value :' + content + '\n'
     } else {
@@ -902,6 +1208,61 @@ export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
     }
     if (isASTStringValue(value)) {
       content = value.content.replace(/"/g, '')
+    }
+
+    if (isASTConstantValue(value)) {
+      let constant: Constant<ConstantTypes> | undefined =
+        this.memory.getConstant(value.content)
+      if (constant === undefined) {
+        return this.buildError(
+          value,
+          'Variable ' + value.content + ' not found'
+        )
+      } else {
+        if (isRangeConstant(constant)) {
+          const valuesRange: number[] = []
+          valuesRange.push(constant.getStart() - 1)
+          valuesRange.push(constant.getStart() + 1)
+          valuesRange.push(constant.getEnd() - 1)
+          valuesRange.push(constant.getEnd() + 1)
+
+          for (const valRange of valuesRange) {
+            if (isNaN(parseFloat(valRange.toString()))) {
+              errors +=
+                'LONGITUDE expected a float value :' +
+                valRange.toString() +
+                '\n'
+            } else {
+              let valueInFloat = parseFloat(valRange.toString())
+              if (valueInFloat < -180 || valueInFloat > 180) {
+                errors +=
+                  'LONGITUDE must be between -180 and 180 :' +
+                  valRange.toString() +
+                  '\n'
+              }
+            }
+          }
+          return this.buildError(value, errors)
+        }
+
+        if (isListConstant(constant)) {
+          for (const valList of constant.getValues()) {
+            if (isNaN(parseFloat(valList.toString()))) {
+              errors +=
+                'LONGITUDE expected a float value :' + valList.toString() + '\n'
+            } else {
+              let valueInFloat = parseFloat(valList.toString())
+              if (valueInFloat < -180 || valueInFloat > 180) {
+                errors +=
+                  'LONGITUDE must be between -180 and 180 :' +
+                  valList.toString() +
+                  '\n'
+              }
+            }
+          }
+          return this.buildError(value, errors)
+        }
+      }
     }
     if (isNaN(parseFloat(content))) {
       errors = 'LONGITUDE expected a float value :' + content + '\n'
@@ -934,6 +1295,28 @@ export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
       if (content !== '0' && content !== '1') {
         errors +=
           'SPI must be "0" or "1" in the case of a string: "' + content + '"\n'
+      }
+    }
+
+    if (isASTConstantValue(value)) {
+      let constant: Constant<ConstantTypes> | undefined =
+        this.memory.getConstant(value.content)
+      if (constant === undefined) {
+        return this.buildError(
+          value,
+          'Variable ' + value.content + ' not found'
+        )
+      } else {
+        if (isRangeConstant(constant)) {
+          errors = 'Range is not possible for SPI'
+          return this.buildError(value, errors)
+        }
+
+        if (isListConstant(constant)) {
+          for (const valList of constant.getValues()) {
+          }
+          return this.buildError(value, errors)
+        }
       }
     }
 
@@ -976,12 +1359,56 @@ export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
       }
     }
 
+    if (isASTConstantValue(value)) {
+      let constant: Constant<ConstantTypes> | undefined =
+        this.memory.getConstant(value.content)
+      if (constant === undefined) {
+        return this.buildError(
+          value,
+          'Variable ' + value.content + ' not found'
+        )
+      } else {
+        if (isRangeConstant(constant)) {
+          errors = 'Range is not possible for SQUAWK'
+          return this.buildError(value, errors)
+        }
+
+        if (isListConstant(constant)) {
+          for (const valList of constant.getValues()) {
+          }
+          return this.buildError(value, errors)
+        }
+      }
+    }
+
     return this.buildError(value, errors)
   }
 
   computeErrorTrack(value: ASTValue, name: string): SemanticError[] {
     let errors = ''
     let content: string = ''
+    if (isASTConstantValue(value)) {
+      let constant: Constant<ConstantTypes> | undefined =
+        this.memory.getConstant(value.content)
+      if (constant === undefined) {
+        return this.buildError(
+          value,
+          'Variable ' + value.content + ' not found'
+        )
+      } else {
+        if (isRangeConstant(constant)) {
+          errors = 'Range is not possible for TRACK'
+          return this.buildError(value, errors)
+        }
+
+        if (isListConstant(constant)) {
+          for (const valList of constant.getValues()) {
+          }
+          return this.buildError(value, errors)
+        }
+      }
+    }
+
     if (isASTDoubleValue(value)) {
       content = value.content.toString()
     }
