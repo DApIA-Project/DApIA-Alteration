@@ -11,11 +11,15 @@ import {
   ASTDeclaration,
   ASTDelay,
   ASTDelayParameter,
+  ASTDoubleRange,
   ASTFilters,
   ASTHide,
   ASTHideParameter,
   ASTInstruction,
+  ASTIntegerRange,
+  ASTList,
   ASTListDeclaration,
+  ASTOffsetList,
   ASTParamDrift,
   ASTParamEdit,
   ASTParameter,
@@ -24,6 +28,7 @@ import {
   ASTParamNoise,
   ASTParamOffset,
   ASTPlane,
+  ASTRange,
   ASTRangeDeclaration,
   ASTReplay,
   ASTRotate,
@@ -32,6 +37,7 @@ import {
   ASTSaturationParameter,
   ASTSaturationParameters,
   ASTScenario,
+  ASTStringList,
   ASTTarget,
   ASTTime,
   ASTTrajectory,
@@ -75,6 +81,42 @@ export abstract class FditScenarioVisitor<T> {
           node as ASTRangeDeclaration
         let result: T = this.visitRangeDeclaration(astRangeDeclaration)
         if (result == null) result = this.visitDeclaration(astRangeDeclaration)
+        if (result == null) result = this.defaultCase(node)
+        return result
+      }
+      case 'ASTList': {
+        let astList: ASTList = node as ASTList
+        let result: T = this.visitList(astList)
+        if (result == null) result = this.defaultCase(node)
+        return result
+      }
+      case 'ASTOffsetList': {
+        let astOffsetList: ASTOffsetList = node as ASTOffsetList
+        let result: T = this.visitOffsetList(astOffsetList)
+        if (result == null) result = this.defaultCase(node)
+        return result
+      }
+      case 'ASTStringList': {
+        let astStringList: ASTStringList = node as ASTStringList
+        let result: T = this.visitStringList(astStringList)
+        if (result == null) result = this.defaultCase(node)
+        return result
+      }
+      case 'ASTRange': {
+        let astRange: ASTRange = node as ASTRange
+        let result: T = this.visitRange(astRange)
+        if (result == null) result = this.defaultCase(node)
+        return result
+      }
+      case 'ASTIntegerRange': {
+        let astIntegerRange: ASTIntegerRange = node as ASTIntegerRange
+        let result: T = this.visitIntegerRange(astIntegerRange)
+        if (result == null) result = this.defaultCase(node)
+        return result
+      }
+      case 'ASTDoubleRange': {
+        let astDoubleRange: ASTDoubleRange = node as ASTDoubleRange
+        let result: T = this.visitDoubleRange(astDoubleRange)
         if (result == null) result = this.defaultCase(node)
         return result
       }
@@ -305,6 +347,12 @@ export abstract class FditScenarioVisitor<T> {
 
   abstract visitListDeclaration(node: ASTListDeclaration): T
   abstract visitRangeDeclaration(node: ASTRangeDeclaration): T
+  abstract visitList(node: ASTList): T
+  abstract visitOffsetList(node: ASTOffsetList): T
+  abstract visitStringList(node: ASTStringList): T
+  abstract visitRange(node: ASTRange): T
+  abstract visitIntegerRange(node: ASTIntegerRange): T
+  abstract visitDoubleRange(node: ASTDoubleRange): T
   abstract visitTrigger(node: ASTTrigger): T
   abstract visitFilters(node: ASTFilters): T
 

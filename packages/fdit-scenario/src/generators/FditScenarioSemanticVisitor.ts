@@ -5,6 +5,7 @@ import {
   ASTAlterAndTrajectory,
   ASTAt,
   ASTAtFor,
+  ASTConstantValue,
   ASTCreate,
   ASTCreationParameter,
   ASTCreationParameters,
@@ -12,20 +13,25 @@ import {
   ASTDeclaration,
   ASTDelay,
   ASTDelayParameter,
+  ASTDoubleRange,
   ASTFilters,
   ASTHide,
   ASTHideParameter,
   ASTInstruction,
+  ASTIntegerRange,
   ASTIntegerValue,
+  ASTList,
   ASTListDeclaration,
+  ASTNumberOffset,
+  ASTOffsetList,
   ASTParamDrift,
   ASTParamEdit,
   ASTParameter,
   ASTParameters,
-  ASTParameterType,
   ASTParamNoise,
   ASTParamOffset,
   ASTPlane,
+  ASTRange,
   ASTRangeDeclaration,
   ASTReplay,
   ASTRotate,
@@ -34,9 +40,8 @@ import {
   ASTSaturationParameter,
   ASTSaturationParameters,
   ASTScenario,
-  ASTTarget,
+  ASTStringList,
   ASTTime,
-  ASTTimeScope,
   ASTTrajectory,
   ASTTrigger,
   ASTValue,
@@ -53,10 +58,28 @@ import {
 } from '../language-server/generated/ast'
 import { SemanticError } from './index'
 import { AstNode } from 'langium'
+import { Memory } from './Memory/Memory'
+import { Constant } from './Memory/Constant'
+import { ListConstant } from './Memory/ListConstant'
+import { RangeConstant } from './Memory/RangeConstant'
+import { ConstantTypes } from './Memory/ConstantTypes'
+import { isRangeConstant } from './Memory/isRangeConstant'
+import { isListConstant } from './Memory/isListConstant'
 
 export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
   SemanticError[]
 > {
+  private memory: Memory
+
+  constructor(memory?: Memory) {
+    super()
+    if (memory != undefined) {
+      this.memory = memory
+    } else {
+      this.memory = new Memory()
+    }
+  }
+
   visitScenario(node: ASTScenario): SemanticError[] {
     let semanticError: SemanticError[] = []
     for (const decl of node.declarations) {
@@ -71,10 +94,41 @@ export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
 
   visitListDeclaration(node: ASTListDeclaration): SemanticError[] {
     let semanticError: SemanticError[] = []
+    let list = this.visitList(node.list)
+    semanticError.push()
     return semanticError
   }
 
   visitRangeDeclaration(node: ASTRangeDeclaration): SemanticError[] {
+    let semanticError: SemanticError[] = []
+    semanticError.push(...this.doSwitch(node.range))
+    return semanticError
+  }
+
+  visitList(node: ASTList): SemanticError[] {
+    let semanticError: SemanticError[] = []
+    semanticError.push(...this.doSwitch(node.list))
+    return semanticError
+  }
+  visitOffsetList(node: ASTOffsetList): SemanticError[] {
+    let semanticError: SemanticError[] = []
+    return semanticError
+  }
+  visitStringList(node: ASTStringList): SemanticError[] {
+    let semanticError: SemanticError[] = []
+    return semanticError
+  }
+
+  visitRange(node: ASTRange): SemanticError[] {
+    let semanticError: SemanticError[] = []
+    semanticError.push(...this.doSwitch(node.range))
+    return semanticError
+  }
+  visitIntegerRange(node: ASTIntegerRange): SemanticError[] {
+    let semanticError: SemanticError[] = []
+    return semanticError
+  }
+  visitDoubleRange(node: ASTDoubleRange): SemanticError[] {
     let semanticError: SemanticError[] = []
     return semanticError
   }
@@ -97,9 +151,11 @@ export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
   }
 
   visitHideParameter(node: ASTHideParameter): SemanticError[] {
+    let semanticError: SemanticError[] = []
     if (this.isAnOffset(node.value)) {
       return this.buildError(node, 'error.offset' + '\n')
     }
+
     return this.computeIntError(node.value, 'Frequency')
   }
 
@@ -305,6 +361,7 @@ export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
     }
     return semanticError
   }
+
   visitAtFor(node: ASTAtFor): SemanticError[] {
     let semanticError: SemanticError[] = []
     semanticError.push(...this.doSwitch(node.for))
@@ -312,6 +369,7 @@ export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
   }
 
   visitTime(node: ASTTime): SemanticError[] {
+    let semanticError: SemanticError[] = []
     let errors: string = ''
     const time: ASTValue = node.realTime
     if (isASTIntegerValue(time)) {
@@ -320,6 +378,40 @@ export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
       errors += 'A time cannot be a shift : ' + node.$cstNode!.parent!.text
     } else if (isASTConstantValue(time)) {
       //TODO Gestion de la mémoire pour les constantes et les variables
+      let constant: Constant<ConstantTypes> | undefined =
+        this.memory.getConstant(time.content)
+      if (constant === undefined) {
+        return this.buildError(node, 'Variable ' + time.content + ' not found')
+      } else {
+        if (isRangeConstant(constant)) {
+          const valuesRange: number[] = []
+          valuesRange.push(constant.getStart() - 1)
+          valuesRange.push(constant.getStart() + 1)
+          valuesRange.push(constant.getEnd() - 1)
+          valuesRange.push(constant.getEnd() + 1)
+
+          for (const valueRange of valuesRange) {
+            if (this.isIntValid(valueRange.toString()) && valueRange >= 0) {
+              semanticError.push(...this.computeTimeError(valueRange, time))
+            } else {
+              return this.buildError(time, 'Time must be an Integer\n')
+            }
+          }
+        }
+        if (isListConstant(constant)) {
+          for (const value of constant.getValues()) {
+            if (typeof value === 'string') {
+              return this.buildError(node, 'Time must be an Integer\n')
+            } else if (typeof value === 'number') {
+              if (this.isIntValid(value.toString()) && value >= 0) {
+                semanticError.push(...this.computeTimeError(value, time))
+              } else {
+                return this.buildError(time, 'Time must be an Integer\n')
+              }
+            }
+          }
+        }
+      }
     } else {
       errors +=
         'Bad time type. Integer expected : ' + node.realTime.content + '\n'
@@ -431,7 +523,10 @@ export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
     return []
   }
 
-  computeTimeError(integer: number, time: ASTIntegerValue): SemanticError[] {
+  computeTimeError(
+    integer: number,
+    time: ASTIntegerValue | ASTConstantValue
+  ): SemanticError[] {
     let errors: string = ''
     if (integer < 0) {
       errors += "A time can't be negative : " + integer
@@ -459,13 +554,62 @@ export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
     if (isASTStringValue(integer)) {
       content = integer.content.replace(/"/g, '')
     }
-    if (!this.isIntValid(content)) {
-      errors +=
-        'Bad value : ' +
-        name +
-        ' : Integer expected but found ' +
-        content +
-        '\n'
+
+    if (isASTConstantValue(integer)) {
+      let constant: Constant<ConstantTypes> | undefined =
+        this.memory.getConstant(integer.content)
+      if (constant === undefined) {
+        return this.buildError(
+          integer,
+          'Variable ' + integer.content + ' not found'
+        )
+      } else {
+        if (isRangeConstant(constant)) {
+          const valuesRange: number[] = []
+          valuesRange.push(constant.getStart() - 1)
+          valuesRange.push(constant.getStart() + 1)
+          valuesRange.push(constant.getEnd() - 1)
+          valuesRange.push(constant.getEnd() + 1)
+
+          for (const valueRange of valuesRange) {
+            if (!this.isIntValid(valueRange.toString())) {
+              errors +=
+                'Bad value : ' +
+                name +
+                ' : Integer expected but found ' +
+                valueRange +
+                '\n'
+            }
+          }
+        }
+        if (isListConstant(constant)) {
+          for (const value of constant.getValues()) {
+            if (typeof value === 'string') {
+              content = value
+            } else {
+              content = value.toString()
+            }
+
+            if (!this.isIntValid(content)) {
+              errors +=
+                'Bad value : ' +
+                name +
+                ' : Integer expected but found ' +
+                content +
+                '\n'
+            }
+          }
+        }
+      }
+    } else {
+      if (!this.isIntValid(content)) {
+        errors +=
+          'Bad value : ' +
+          name +
+          ' : Integer expected but found ' +
+          content +
+          '\n'
+      }
     }
 
     return this.buildError(integer, errors)
