@@ -741,21 +741,14 @@ export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
           valuesRange.push(constant.getEnd() + 1)
 
           for (const valRange of valuesRange) {
-            if (isNaN(parseFloat(valRange.toString()))) {
+            if (
+              parseFloat(valRange.toString()) < -1000 ||
+              parseFloat(valRange.toString()) > 50175
+            ) {
               errors +=
-                'Bad Value. Expected a float value : ' +
+                'ALTITUDE must be between -1000 and 50175 : ' +
                 valRange.toString() +
                 ' found\n'
-            } else {
-              if (
-                parseFloat(valRange.toString()) < -1000 ||
-                parseFloat(valRange.toString()) > 50175
-              ) {
-                errors +=
-                  'ALTITUDE must be between -1000 and 50175 : ' +
-                  valRange.toString() +
-                  ' found\n'
-              }
             }
           }
           return this.buildError(value, errors)
@@ -809,7 +802,7 @@ export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
         )
       } else {
         if (isRangeConstant(constant)) {
-          errors = 'Range is not possible for CALLSIGN'
+          errors = 'Range is not possible for CALLSIGN\n'
           return this.buildError(value, errors)
         }
 
@@ -820,12 +813,6 @@ export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
                 if (valList.toString().length > 8) {
                   errors +=
                     "CALLSIGN can't have more than 8 digits in the case of an integer: " +
-                    valList.toString() +
-                    '\n'
-                }
-                if (valList.toString()[0] === '0') {
-                  errors +=
-                    "CALLSIGN can't start with 0 in the case of an integer : " +
                     valList.toString() +
                     '\n'
                 }
@@ -962,12 +949,32 @@ export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
         )
       } else {
         if (isRangeConstant(constant)) {
-          errors = 'Range is not possible for EMERGENCY'
+          errors = 'Range is not possible for EMERGENCY\n'
           return this.buildError(value, errors)
         }
 
         if (isListConstant(constant)) {
           for (const valList of constant.getValues()) {
+            if (typeof valList === 'number') {
+              if (Number.isInteger(valList)) {
+                if (valList != 0 && valList != 1) {
+                  errors +=
+                    'EMERGENCY must be 0 or 1 in the case of an integer: ' +
+                    valList.toString() +
+                    '\n'
+                }
+              } else {
+                errors +=
+                  "EMERGENCY can't be a double : " + valList.toString() + '\n'
+              }
+            } else {
+              if (valList !== '0' && valList !== '1') {
+                errors +=
+                  'EMERGENCY must be "0" or "1" in the case of a string: "' +
+                  valList +
+                  '"\n'
+              }
+            }
           }
           return this.buildError(value, errors)
         }
@@ -1105,12 +1112,38 @@ export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
         )
       } else {
         if (isRangeConstant(constant)) {
-          errors = 'Range is not possible for ICAO'
+          errors = 'Range is not possible for ICAO\n'
           return this.buildError(value, errors)
         }
 
         if (isListConstant(constant)) {
           for (const valList of constant.getValues()) {
+            if (typeof valList === 'number') {
+              if (Number.isInteger(valList)) {
+                if (valList.toString().length != 6) {
+                  errors +=
+                    'ICAO length must be 6 in the case of an integer: ' +
+                    valList.toString() +
+                    '\n'
+                }
+                if (valList < 100000 || valList > 999999) {
+                  errors +=
+                    'ICAO value must be between 100000 and 999999 inclusive in the case of an integer: ' +
+                    valList.toString() +
+                    '\n'
+                }
+              } else {
+                errors +=
+                  "ICAO can't be a double : " + valList.toString() + '\n'
+              }
+            } else {
+              if (!/^(([0-9A-F]{6})|RANDOM)$/.test(valList.toString())) {
+                errors +=
+                  'ICAO value must be 6 symbol hexadecimal and uppercase or RANDOM in the case of a string: "' +
+                  valList.toString() +
+                  '"\n'
+              }
+            }
           }
           return this.buildError(value, errors)
         }
@@ -1149,17 +1182,12 @@ export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
           valuesRange.push(constant.getEnd() + 1)
 
           for (const valRange of valuesRange) {
-            if (isNaN(parseFloat(valRange.toString()))) {
+            let valueInFloat = parseFloat(valRange.toString())
+            if (valueInFloat < -90 || valueInFloat > 90) {
               errors +=
-                'LATITUDE expected a float value :' + valRange.toString() + '\n'
-            } else {
-              let valueInFloat = parseFloat(valRange.toString())
-              if (valueInFloat < -90 || valueInFloat > 90) {
-                errors +=
-                  'LATITUDE must be between -90 and 90 :' +
-                  valRange.toString() +
-                  '\n'
-              }
+                'LATITUDE must be between -90 and 90 : ' +
+                valRange.toString() +
+                '\n'
             }
           }
           return this.buildError(value, errors)
@@ -1169,12 +1197,12 @@ export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
           for (const valList of constant.getValues()) {
             if (isNaN(parseFloat(valList.toString()))) {
               errors +=
-                'LATITUDE expected a float value :' + valList.toString() + '\n'
+                'LATITUDE expected a float value : ' + valList.toString() + '\n'
             } else {
               let valueInFloat = parseFloat(valList.toString())
               if (valueInFloat < -90 || valueInFloat > 90) {
                 errors +=
-                  'LATITUDE must be between -90 and 90 :' +
+                  'LATITUDE must be between -90 and 90 : ' +
                   valList.toString() +
                   '\n'
               }
@@ -1186,11 +1214,11 @@ export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
     }
 
     if (isNaN(parseFloat(content))) {
-      errors = 'LATITUDE expected a float value :' + content + '\n'
+      errors = 'LATITUDE expected a float value : ' + content + '\n'
     } else {
       let valueInFloat = parseFloat(content)
       if (valueInFloat < -90 || valueInFloat > 90) {
-        errors = 'LATITUDE must be between -90 and 90 :' + content + '\n'
+        errors = 'LATITUDE must be between -90 and 90 : ' + content + '\n'
       }
     }
 
@@ -1227,19 +1255,12 @@ export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
           valuesRange.push(constant.getEnd() + 1)
 
           for (const valRange of valuesRange) {
-            if (isNaN(parseFloat(valRange.toString()))) {
+            let valueInFloat = parseFloat(valRange.toString())
+            if (valueInFloat < -180 || valueInFloat > 180) {
               errors +=
-                'LONGITUDE expected a float value :' +
+                'LONGITUDE must be between -180 and 180 : ' +
                 valRange.toString() +
                 '\n'
-            } else {
-              let valueInFloat = parseFloat(valRange.toString())
-              if (valueInFloat < -180 || valueInFloat > 180) {
-                errors +=
-                  'LONGITUDE must be between -180 and 180 :' +
-                  valRange.toString() +
-                  '\n'
-              }
             }
           }
           return this.buildError(value, errors)
@@ -1249,12 +1270,14 @@ export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
           for (const valList of constant.getValues()) {
             if (isNaN(parseFloat(valList.toString()))) {
               errors +=
-                'LONGITUDE expected a float value :' + valList.toString() + '\n'
+                'LONGITUDE expected a float value : ' +
+                valList.toString() +
+                '\n'
             } else {
               let valueInFloat = parseFloat(valList.toString())
               if (valueInFloat < -180 || valueInFloat > 180) {
                 errors +=
-                  'LONGITUDE must be between -180 and 180 :' +
+                  'LONGITUDE must be between -180 and 180 : ' +
                   valList.toString() +
                   '\n'
               }
@@ -1308,12 +1331,31 @@ export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
         )
       } else {
         if (isRangeConstant(constant)) {
-          errors = 'Range is not possible for SPI'
+          errors = 'Range is not possible for SPI\n'
           return this.buildError(value, errors)
         }
 
         if (isListConstant(constant)) {
           for (const valList of constant.getValues()) {
+            if (typeof valList === 'number') {
+              if (Number.isInteger(valList)) {
+                if (valList != 0 && valList != 1) {
+                  errors +=
+                    'SPI must be 0 or 1 in the case of an integer: ' +
+                    valList.toString() +
+                    '\n'
+                }
+              } else {
+                errors += "SPI can't be a double : " + valList.toString() + '\n'
+              }
+            } else {
+              if (valList.toString() !== '0' && valList.toString() !== '1') {
+                errors +=
+                  'SPI must be "0" or "1" in the case of a string: "' +
+                  valList.toString() +
+                  '"\n'
+              }
+            }
           }
           return this.buildError(value, errors)
         }
@@ -1369,12 +1411,44 @@ export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
         )
       } else {
         if (isRangeConstant(constant)) {
-          errors = 'Range is not possible for SQUAWK'
+          errors = 'Range is not possible for SQUAWK\n'
           return this.buildError(value, errors)
         }
 
         if (isListConstant(constant)) {
           for (const valList of constant.getValues()) {
+            if (typeof valList === 'number') {
+              if (Number.isInteger(valList)) {
+                if (valList.toString().length != 4) {
+                  errors +=
+                    'SQUAWK length must be 4 in the case of an integer: ' +
+                    valList.toString() +
+                    '\n'
+                }
+                if (valList < 1000 || valList > 7777) {
+                  errors +=
+                    'SQUAWK value must be between 1000 and 7777 inclusive in the case of an integer: ' +
+                    valList.toString() +
+                    '\n'
+                }
+                if (!/^([0-7]{4})$/.test(valList.toString())) {
+                  errors +=
+                    'SQUAWK value must be 4 symbol between 0 and 7  in the case of an integer: "' +
+                    valList.toString() +
+                    '"\n'
+                }
+              } else {
+                errors +=
+                  "SQUAWK can't be a double : " + valList.toString() + '\n'
+              }
+            } else {
+              if (!/^([0-7]{4})$/.test(valList.toString())) {
+                errors +=
+                  'SQUAWK value must be 4 symbol between 0 and 7  in the case of a string: "' +
+                  valList.toString() +
+                  '"\n'
+              }
+            }
           }
           return this.buildError(value, errors)
         }
@@ -1397,12 +1471,27 @@ export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
         )
       } else {
         if (isRangeConstant(constant)) {
-          errors = 'Range is not possible for TRACK'
+          errors = 'Range is not possible for ' + name + '\n'
           return this.buildError(value, errors)
         }
 
         if (isListConstant(constant)) {
           for (const valList of constant.getValues()) {
+            let valueInFloat: number = parseFloat(valList.toString())
+
+            if (
+              !(
+                /^\d+(\.\d)?$/.test(valList.toString()) &&
+                valueInFloat >= 0 &&
+                valueInFloat < 360
+              )
+            ) {
+              errors +=
+                name +
+                ' must be between 0 and 360 with a maximum precision of 0.1: "' +
+                valList.toString() +
+                '"\n'
+            }
           }
           return this.buildError(value, errors)
         }
@@ -1437,6 +1526,49 @@ export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
   computeErrorAlert(value: ASTValue): SemanticError[] {
     let errors = ''
     let content: string = ''
+
+    if (isASTConstantValue(value)) {
+      let constant: Constant<ConstantTypes> | undefined =
+        this.memory.getConstant(value.content)
+      if (constant === undefined) {
+        return this.buildError(
+          value,
+          'Variable ' + value.content + ' not found'
+        )
+      } else {
+        if (isRangeConstant(constant)) {
+          errors = 'Range is not possible for ALERT\n'
+          return this.buildError(value, errors)
+        }
+
+        if (isListConstant(constant)) {
+          for (const valList of constant.getValues()) {
+            if (typeof valList === 'number') {
+              if (Number.isInteger(valList)) {
+                if (valList != 0 && valList != 1) {
+                  errors +=
+                    'ALERT must be 0 or 1 in the case of an integer: ' +
+                    valList.toString() +
+                    '\n'
+                }
+              } else {
+                errors +=
+                  "ALERT can't be a double : " + valList.toString() + '\n'
+              }
+            } else {
+              if (valList.toString() !== '0' && valList.toString() !== '1') {
+                errors +=
+                  'ALERT must be "0" or "1" in the case of a string: "' +
+                  valList.toString() +
+                  '"\n'
+              }
+            }
+          }
+          return this.buildError(value, errors)
+        }
+      }
+    }
+
     if (isASTDoubleValue(value)) {
       errors += "ALERT can't be a double : " + value.content.toString() + '\n'
     }
