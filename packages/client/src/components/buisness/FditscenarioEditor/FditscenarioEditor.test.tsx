@@ -1,6 +1,6 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
-import FditscenarioEditor from './FditscenarioEditor'
+import FditScenarioEditor from './FditScenarioEditor'
 
 jest.mock('./FditscenarioEditor', () => () => (
   <div
@@ -17,7 +17,7 @@ describe('FditscenarioEditor', () => {
 
   it('calls onClick callback with selected recording file and recording replay file', async () => {
     jest.fn()
-    render(<FditscenarioEditor language={'fditscenario'} value={''} />)
+    render(<FditScenarioEditor language={'fditscenario'} value={''} />)
 
     screen.getByTestId('FditscenarioEditor.action.createFditscenarioEditor')
   })

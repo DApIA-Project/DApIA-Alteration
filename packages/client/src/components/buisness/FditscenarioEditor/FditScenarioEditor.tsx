@@ -2,32 +2,67 @@ import React, { useEffect } from 'react'
 import Editor, { useMonaco } from '@monaco-editor/react'
 
 import * as monaco from 'monaco-editor'
+import { editor } from 'monaco-editor'
 import * as parser from '@smartesting/fdit-scenario/dist/parser/parser'
-import FDITSCENARIO_FORMAT, {
+import {
+  parseScenario,
+  Suggestion,
+} from '@smartesting/fdit-scenario/dist/parser/parser'
+import FDIT_SCENARIO_FORMAT, {
   getDocumentationLabel,
 } from '../../../fditscenario'
 import './FditscenarioEditor.css'
-import { CompletionList, TextEdit } from 'vscode-languageserver-types'
+import { TextEdit } from 'vscode-languageserver-types'
+import { InsertReplaceEdit } from 'vscode-languageserver'
+import { FditScenarioSemanticVisitor } from '@smartesting/fdit-scenario/dist/generators/FditScenarioSemanticVisitor'
+import { SemanticError } from '@smartesting/fdit-scenario/dist/generators'
 import IModel = monaco.editor.IModel
 import CompletionItemProvider = monaco.languages.CompletionItemProvider
-import { InsertReplaceEdit } from 'vscode-languageserver'
 import ILanguageExtensionPoint = monaco.languages.ILanguageExtensionPoint
-import { FditScenarioSemanticVisitor } from '@smartesting/fdit-scenario/dist/generators/FditScenarioSemanticVisitor'
-import { SemanticError } from '@smartesting/fdit-scenario/dist/generators/index'
-import { parseScenario } from '@smartesting/fdit-scenario/dist/parser/parser'
+import IMarkerData = editor.IMarkerData
 
-type FditscenarioEditorProps = {
+type FditScenarioEditorProps = {
   language: string
   value: string
   options?: {}
 }
-const FditscenarioEditor: React.FunctionComponent<FditscenarioEditorProps> = ({
+const FditScenarioEditor: React.FunctionComponent<FditScenarioEditorProps> = ({
   language,
   value,
   options,
   ...props
 }) => {
   const monaco = useMonaco()
+
+  useEffect(
+    () => {
+      if (!monaco) return
+      monaco.languages.typescript.javascriptDefaults.setEagerModelSync(true)
+      const languages: ILanguageExtensionPoint[] =
+        monaco.languages.getLanguages()
+      let haveLanguage = false
+      for (const language of languages) {
+        if (language.id === 'fditscenario') {
+          haveLanguage = true
+        }
+      }
+      if (haveLanguage) return
+      monaco.languages.register({ id: 'fditscenario' })
+      monaco.languages.setMonarchTokensProvider(
+        'fditscenario',
+        FDIT_SCENARIO_FORMAT
+      )
+
+      const completionProvider = createCompletionProvider()
+      if (!completionProvider) return
+      monaco.languages.registerCompletionItemProvider(
+        'fditscenario',
+        completionProvider
+      )
+    },
+    // eslint-disable-next-line
+    [monaco]
+  )
 
   async function validate(
     model: IModel,
@@ -36,13 +71,13 @@ const FditscenarioEditor: React.FunctionComponent<FditscenarioEditorProps> = ({
     message: string,
     line: number
   ) {
-    const markers = []
     const range = {
       startLineNumber: line,
       startColumn: column,
       endLineNumber: line,
       endColumn: column + length,
     }
+    const markers: IMarkerData[] = []
     markers.push({
       message: message,
       severity: monaco!.MarkerSeverity.Error,
@@ -62,38 +97,22 @@ const FditscenarioEditor: React.FunctionComponent<FditscenarioEditorProps> = ({
     )
 
     const visitor = new FditScenarioSemanticVisitor()
-    const result: SemanticError[] = visitor.visitScenario(value)
-
-    for (const error of result) {
-      if (
-        error.position.startline !== undefined &&
-        error.position.endline !== undefined &&
-        error.position.startcolumn !== undefined &&
-        error.position.endcolumn !== undefined &&
-        error.errors !== ''
-      ) {
-        const range2 = {
-          startLineNumber: error.position.startline + 1,
-          startColumn: error.position.startcolumn + 1,
-          endLineNumber: error.position.endline + 1,
-          endColumn: error.position.endcolumn + 1,
-        }
-        markers.push({
-          message: error.errors,
-          severity: monaco!.MarkerSeverity.Info,
-          startLineNumber: range2.startLineNumber,
-          startColumn: range2.startColumn,
-          endLineNumber: range2.endLineNumber,
-          endColumn: range2.endColumn,
-        })
-      }
-    }
+    const semanticErrors: SemanticError[] = visitor.visitScenario(value)
+    markers.push(...getSemantic(model, semanticErrors))
 
     monaco!.editor.setModelMarkers(model, 'owner', markers)
   }
 
   function validateSemantic(model: IModel, semanticErrors: SemanticError[]) {
-    const markers = []
+    const markers = getSemantic(model, semanticErrors)
+    monaco!.editor.setModelMarkers(model, 'owner', markers)
+  }
+
+  function getSemantic(
+    model: IModel,
+    semanticErrors: SemanticError[]
+  ): IMarkerData[] {
+    const markers: IMarkerData[] = []
     for (const error of semanticErrors) {
       if (
         error.position.startline !== undefined &&
@@ -118,12 +137,13 @@ const FditscenarioEditor: React.FunctionComponent<FditscenarioEditorProps> = ({
         })
       }
     }
-    monaco!.editor.setModelMarkers(model, 'owner', markers)
+    return markers
   }
 
   function isTextEdit(edit: any): edit is TextEdit {
     return 'range' in edit && 'newText' in edit
   }
+
   function createCompletionProvider(): CompletionItemProvider | undefined {
     if (!monaco) return
     return {
@@ -132,10 +152,7 @@ const FditscenarioEditor: React.FunctionComponent<FditscenarioEditorProps> = ({
         model: IModel,
         position: monaco.IPosition
       ): Promise<monaco.languages.CompletionList | null | undefined> {
-        const completionList: {
-          suggestions: CompletionList | undefined
-          errors: { parser: any; lexer: any }
-        } = await parser.getSuggestions(
+        const completionList: Suggestion = await parser.getSuggestions(
           model.getValueInRange({
             startLineNumber: 1,
             startColumn: 1,
@@ -147,26 +164,26 @@ const FditscenarioEditor: React.FunctionComponent<FditscenarioEditorProps> = ({
         )
 
         if (completionList.errors.lexer.length !== 0) {
-          let messageError: string =
-            completionList.errors.lexer[0].message + '\n'
-          if (completionList.errors.parser.length !== 0) {
-            messageError += completionList.errors.parser[0].message
-          }
-          validate(
+          await validate(
             model,
-            completionList.errors.lexer[0].column,
+            completionList.errors.lexer[0].column || 0,
             completionList.errors.lexer[0].length,
-            messageError,
-            completionList.errors.lexer[0].line
+            completionList.errors.lexer[0].message,
+            completionList.errors.lexer[0].line || 0
           )
         } else {
           if (completionList.errors.parser.length !== 0) {
-            validate(
+            const { token } = completionList.errors.parser[0]
+            const length =
+              token.startColumn !== undefined && token.endColumn !== undefined
+                ? token.endColumn - token.startColumn
+                : 0
+            await validate(
               model,
-              position.column,
-              1,
+              token.startColumn || 0,
+              length,
               completionList.errors.parser[0].message,
-              position.lineNumber
+              token.startLine || 0
             )
           } else {
             const { value } = await parseScenario(
@@ -220,31 +237,6 @@ const FditscenarioEditor: React.FunctionComponent<FditscenarioEditorProps> = ({
     }
   }
 
-  useEffect(() => {
-    if (!monaco) return
-    monaco.languages.typescript.javascriptDefaults.setEagerModelSync(true)
-    const languages: ILanguageExtensionPoint[] = monaco.languages.getLanguages()
-    let have_language: boolean = false
-    for (const language of languages) {
-      if (language.id === 'fditscenario') {
-        have_language = true
-      }
-    }
-    if (have_language) return
-    monaco.languages.register({ id: 'fditscenario' })
-    monaco.languages.setMonarchTokensProvider(
-      'fditscenario',
-      FDITSCENARIO_FORMAT
-    )
-
-    const completionProvider = createCompletionProvider()
-    if (!completionProvider) return
-    monaco.languages.registerCompletionItemProvider(
-      'fditscenario',
-      completionProvider
-    )
-  }, [monaco])
-
   return (
     <Editor
       defaultLanguage={language}
@@ -255,4 +247,4 @@ const FditscenarioEditor: React.FunctionComponent<FditscenarioEditorProps> = ({
     />
   )
 }
-export default FditscenarioEditor
+export default FditScenarioEditor

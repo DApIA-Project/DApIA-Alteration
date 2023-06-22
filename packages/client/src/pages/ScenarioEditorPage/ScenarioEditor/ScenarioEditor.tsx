@@ -13,7 +13,7 @@ import '../../../styles.css'
 import './ScenarioEditor.css'
 import { ScenarioEditorPageTestIds } from '../ScenarioEditorPage'
 import { act } from 'react-dom/test-utils'
-import FditscenarioEditor from '../../../components/buisness/FditscenarioEditor/FditscenarioEditor'
+import FditScenarioEditor from '../../../components/buisness/FditscenarioEditor/FditScenarioEditor'
 
 export enum ScenarioEditorTestIds {
   COMPONENT = 'ScenarioEditor',
@@ -198,7 +198,7 @@ const ScenarioEditor: React.FunctionComponent<ScenarioEditorProps> = ({
       data-testid={ScenarioEditorPageTestIds.SCENARIO_EDITOR}
     >
       <div id={'monaco-editor-root'} className={'fditeditor'}>
-        <FditscenarioEditor language={'fditscenario'} value={''} />
+        <FditScenarioEditor language={'fditscenario'} value={''} />
       </div>
       <Button
         data-testid={ScenarioEditorTestIds.GENERATE_BUTTON}
