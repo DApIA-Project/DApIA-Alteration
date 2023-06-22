@@ -2,8 +2,7 @@ import React, { useState } from 'react'
 import '../../styles.css'
 import './DocumentationPage.css'
 import Button from '../../components/ui/Button/Button'
-import CodeEditor from '@uiw/react-textarea-code-editor'
-import FditScenarioEditor from '../../components/buisness/FditscenarioEditor/FditScenarioEditor'
+import FditScenarioEditor from '../../components/business/FditScenarioEditor/FditScenarioEditor'
 
 export enum DocumentationPageTestIds {
   BUTTON_DELETION = 'DocumentationPage.action.setButtonDeletion',

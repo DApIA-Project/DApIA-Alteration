@@ -13,7 +13,7 @@ import '../../../styles.css'
 import './ScenarioEditor.css'
 import { ScenarioEditorPageTestIds } from '../ScenarioEditorPage'
 import { act } from 'react-dom/test-utils'
-import FditScenarioEditor from '../../../components/buisness/FditscenarioEditor/FditScenarioEditor'
+import FditScenarioEditor from '../../../components/business/FditScenarioEditor/FditScenarioEditor'
 
 export enum ScenarioEditorTestIds {
   COMPONENT = 'ScenarioEditor',
