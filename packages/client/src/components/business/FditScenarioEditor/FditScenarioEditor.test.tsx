@@ -2,15 +2,15 @@ import React from 'react'
 import { render, screen } from '@testing-library/react'
 import FditScenarioEditor from './FditScenarioEditor'
 
-jest.mock('./FditscenarioEditor', () => () => (
+jest.mock('./FditScenarioEditor', () => () => (
   <div
     className={'view-lines monaco-mouse-cursor-text'}
-    data-testid={'FditscenarioEditor.action.createFditscenarioEditor'}
+    data-testid={'FditScenarioEditor.action.createFditScenarioEditor'}
   >
     hide all_planes at 0 seconds
   </div>
 ))
-describe('FditscenarioEditor', () => {
+describe('FditScenarioEditor', () => {
   afterAll(() => {
     jest.clearAllMocks()
   })
@@ -19,6 +19,6 @@ describe('FditscenarioEditor', () => {
     jest.fn()
     render(<FditScenarioEditor language={'fditscenario'} value={''} />)
 
-    screen.getByTestId('FditscenarioEditor.action.createFditscenarioEditor')
+    screen.getByTestId('FditScenarioEditor.action.createFditScenarioEditor')
   })
 })

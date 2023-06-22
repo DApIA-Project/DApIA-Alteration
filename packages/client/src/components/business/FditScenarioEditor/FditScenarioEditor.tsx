@@ -11,7 +11,7 @@ import {
 import FDIT_SCENARIO_FORMAT, {
   getDocumentationLabel,
 } from '../../../fditscenario'
-import './FditscenarioEditor.css'
+import './FditScenarioEditor.css'
 import { TextEdit } from 'vscode-languageserver-types'
 import { InsertReplaceEdit } from 'vscode-languageserver'
 import { FditScenarioSemanticVisitor } from '@smartesting/fdit-scenario/dist/generators/FditScenarioSemanticVisitor'
