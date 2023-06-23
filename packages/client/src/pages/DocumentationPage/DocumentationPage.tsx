@@ -9,7 +9,9 @@ export enum DocumentationPageTestIds {
   BUTTON_DELETION = 'DocumentationPage.action.setButtonDeletion',
 }
 const DocumentationPage: React.FunctionComponent = () => {
-  const [scenarioExample, setScenarioExample] = useState<string>('')
+  const [scenarioExample, setScenarioExample] = useState<string>(
+    'hide all_planes from 56 seconds until 90 seconds with_frequency = 8'
+  )
 
   const props_grammar = { style: { width: '50%', marginBottom: '5%' } }
   const props = { style: { width: '50%' } }

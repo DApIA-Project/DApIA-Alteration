@@ -73,6 +73,16 @@ const FditscenarioEditor: React.FunctionComponent<FditscenarioEditorProps> = ({
       })
     )
 
+    window.localStorage.setItem(
+      'lastScenario',
+      model.getValueInRange({
+        startLineNumber: 1,
+        startColumn: 1,
+        endLineNumber: line,
+        endColumn: column,
+      })
+    )
+
     if (value.declarations.length !== 0) {
       console.log(value.declarations)
       for (const decl of value.declarations) {
@@ -296,6 +306,13 @@ const FditscenarioEditor: React.FunctionComponent<FditscenarioEditorProps> = ({
     )
   }, [monaco])
 
+  if (value === '') {
+    if (window.localStorage.getItem('lastScenario') == null) {
+      value = ''
+    } else {
+      value = window.localStorage.getItem('lastScenario') ?? ''
+    }
+  }
   return (
     <Editor
       defaultLanguage={language}
