@@ -14,7 +14,18 @@ import { InsertReplaceEdit } from 'vscode-languageserver'
 import ILanguageExtensionPoint = monaco.languages.ILanguageExtensionPoint
 import { FditScenarioSemanticVisitor } from '@smartesting/fdit-scenario/dist/generators/FditScenarioSemanticVisitor'
 import { SemanticError } from '@smartesting/fdit-scenario/dist/generators/index'
+import { Memory } from '@smartesting/fdit-scenario/dist/generators/Memory/Memory'
+import { RangeConstant } from '@smartesting/fdit-scenario/dist/generators/Memory/RangeConstant'
+import { ListConstant } from '@smartesting/fdit-scenario/dist/generators/Memory/ListConstant'
 import { parseScenario } from '@smartesting/fdit-scenario/dist/parser/parser'
+import {
+  ASTListDeclaration,
+  ASTRangeDeclaration,
+  isASTListDeclaration,
+  isASTOffsetList,
+  isASTRangeDeclaration,
+  isASTStringList,
+} from '@smartesting/fdit-scenario/dist/language-server/generated/ast'
 
 type FditscenarioEditorProps = {
   language: string
@@ -28,6 +39,7 @@ const FditscenarioEditor: React.FunctionComponent<FditscenarioEditorProps> = ({
   ...props
 }) => {
   const monaco = useMonaco()
+  let memory: Memory = new Memory()
 
   async function validate(
     model: IModel,
@@ -61,7 +73,46 @@ const FditscenarioEditor: React.FunctionComponent<FditscenarioEditorProps> = ({
       })
     )
 
-    const visitor = new FditScenarioSemanticVisitor()
+    if (value.declarations.length !== 0) {
+      console.log(value.declarations)
+      for (const decl of value.declarations) {
+        if (isASTRangeDeclaration(decl)) {
+          let rangeDecl: ASTRangeDeclaration = decl as ASTRangeDeclaration
+          console.log(decl.constant)
+          let constant: RangeConstant = new RangeConstant(
+            decl.constant,
+            rangeDecl.range.range.start,
+            rangeDecl.range.range.end
+          )
+          memory.addConstant(constant)
+          console.log(memory.getConstant('$var'))
+        }
+
+        if (isASTListDeclaration(decl)) {
+          let listDecl: ASTListDeclaration = decl as ASTListDeclaration
+          console.log(listDecl)
+          let valuesList = []
+          if (isASTStringList(listDecl.list.list)) {
+            for (const valuesListElement of listDecl.list.list.items) {
+              valuesList.push(valuesListElement)
+            }
+          }
+          if (isASTOffsetList(listDecl.list.list)) {
+            for (const valuesListElement of listDecl.list.list.items) {
+              valuesList.push(valuesListElement.content)
+            }
+          }
+
+          let constant: ListConstant = new ListConstant(
+            decl.constant,
+            valuesList
+          )
+          memory.addConstant(constant)
+        }
+      }
+    }
+
+    const visitor = new FditScenarioSemanticVisitor(memory)
     const result: SemanticError[] = visitor.visitScenario(value)
 
     for (const error of result) {
