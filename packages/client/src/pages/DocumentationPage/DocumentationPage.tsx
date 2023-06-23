@@ -62,9 +62,9 @@ const DocumentationPage: React.FunctionComponent = () => {
             editContentExample(
               'alter all_planes at 56 seconds for 90 seconds with_waypoints\n' +
                 '[(45,78) with_altitude 9000 at 78 seconds,\n' +
-                '(12,70) with_altitude 7000 at 99 seconds],\n' +
-                '(90,11) with_altitude 5000 at 102 seconds],\n' +
-                '(11,89) with_altitude 6000 at 107 seconds],\n' +
+                '(12,70) with_altitude 7000 at 99 seconds,\n' +
+                '(90,11) with_altitude 5000 at 102 seconds,\n' +
+                '(11,89) with_altitude 6000 at 107 seconds,\n' +
                 '(15,90) with_altitude 8000 at 110 seconds]'
             )
           }
