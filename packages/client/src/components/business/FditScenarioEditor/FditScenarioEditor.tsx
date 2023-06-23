@@ -20,6 +20,7 @@ import IModel = monaco.editor.IModel
 import CompletionItemProvider = monaco.languages.CompletionItemProvider
 import ILanguageExtensionPoint = monaco.languages.ILanguageExtensionPoint
 import IMarkerData = editor.IMarkerData
+import { getSemantic } from './utils/getSemantic'
 
 type FditScenarioEditorProps = {
   language: string
@@ -108,38 +109,6 @@ const FditScenarioEditor: React.FunctionComponent<FditScenarioEditorProps> = ({
     monaco!.editor.setModelMarkers(model, 'owner', markers)
   }
 
-  function getSemantic(
-    model: IModel,
-    semanticErrors: SemanticError[]
-  ): IMarkerData[] {
-    const markers: IMarkerData[] = []
-    for (const error of semanticErrors) {
-      if (
-        error.position.startline !== undefined &&
-        error.position.endline !== undefined &&
-        error.position.startcolumn !== undefined &&
-        error.position.endcolumn !== undefined &&
-        error.errors !== ''
-      ) {
-        const range2 = {
-          startLineNumber: error.position.startline + 1,
-          startColumn: error.position.startcolumn + 1,
-          endLineNumber: error.position.endline + 1,
-          endColumn: error.position.endcolumn + 1,
-        }
-        markers.push({
-          message: error.errors,
-          severity: monaco!.MarkerSeverity.Info,
-          startLineNumber: range2.startLineNumber,
-          startColumn: range2.startColumn,
-          endLineNumber: range2.endLineNumber,
-          endColumn: range2.endColumn,
-        })
-      }
-    }
-    return markers
-  }
-
   function isTextEdit(edit: any): edit is TextEdit {
     return 'range' in edit && 'newText' in edit
   }
@@ -152,7 +121,7 @@ const FditScenarioEditor: React.FunctionComponent<FditScenarioEditorProps> = ({
         model: IModel,
         position: monaco.IPosition
       ): Promise<monaco.languages.CompletionList | null | undefined> {
-        const completionList: Suggestion = await parser.getSuggestions(
+        const suggestion: Suggestion = await parser.getSuggestions(
           model.getValueInRange({
             startLineNumber: 1,
             startColumn: 1,
@@ -163,17 +132,17 @@ const FditScenarioEditor: React.FunctionComponent<FditScenarioEditorProps> = ({
           position.column
         )
 
-        if (completionList.errors.lexer.length !== 0) {
+        if (suggestion.errors.lexer.length !== 0) {
           await validate(
             model,
-            completionList.errors.lexer[0].column || 0,
-            completionList.errors.lexer[0].length,
-            completionList.errors.lexer[0].message,
-            completionList.errors.lexer[0].line || 0
+            suggestion.errors.lexer[0].column || 0,
+            suggestion.errors.lexer[0].length,
+            suggestion.errors.lexer[0].message,
+            suggestion.errors.lexer[0].line || 0
           )
         } else {
-          if (completionList.errors.parser.length !== 0) {
-            const { token } = completionList.errors.parser[0]
+          if (suggestion.errors.parser.length !== 0) {
+            const { token } = suggestion.errors.parser[0]
             const length =
               token.startColumn !== undefined && token.endColumn !== undefined
                 ? token.endColumn - token.startColumn
@@ -182,7 +151,7 @@ const FditScenarioEditor: React.FunctionComponent<FditScenarioEditorProps> = ({
               model,
               token.startColumn || 0,
               length,
-              completionList.errors.parser[0].message,
+              suggestion.errors.parser[0].message,
               token.startLine || 0
             )
           } else {
@@ -201,14 +170,14 @@ const FditScenarioEditor: React.FunctionComponent<FditScenarioEditorProps> = ({
           }
         }
 
-        if (completionList.suggestions?.items.length === 0) {
+        if (suggestion.suggestions?.items.length === 0) {
           return {
             suggestions: [],
           }
         }
         const suggestions: monaco.languages.CompletionItem[] = []
-        if (completionList?.suggestions!.items !== undefined) {
-          for (const resultElement of completionList?.suggestions.items) {
+        if (suggestion?.suggestions!.items !== undefined) {
+          for (const resultElement of suggestion?.suggestions.items) {
             const textEdit: TextEdit | InsertReplaceEdit | undefined =
               resultElement.textEdit
             if (isTextEdit(textEdit)) {
@@ -228,7 +197,7 @@ const FditScenarioEditor: React.FunctionComponent<FditScenarioEditorProps> = ({
             }
           }
         }
-        completionList.suggestions!.items = []
+        suggestion.suggestions!.items = []
         return {
           suggestions: suggestions,
           incomplete: true,
