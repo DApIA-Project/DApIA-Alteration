@@ -20,6 +20,17 @@ import {
 } from '@dapia-project/data-converter/dist/src'
 import { FditScenarioSemanticVisitor } from '@smartesting/fdit-scenario/dist/generators/FditScenarioSemanticVisitor'
 import { SemanticError } from '@smartesting/fdit-scenario/dist/generators/index'
+import {
+  ASTListDeclaration,
+  ASTRangeDeclaration,
+  isASTListDeclaration,
+  isASTOffsetList,
+  isASTRangeDeclaration,
+  isASTStringList,
+} from '@smartesting/fdit-scenario/dist/language-server/generated/ast'
+import { RangeConstant } from '@smartesting/fdit-scenario/dist/generators/Memory/RangeConstant'
+import { ListConstant } from '@smartesting/fdit-scenario/dist/generators/Memory/ListConstant'
+import { Memory } from '@smartesting/fdit-scenario/dist/generators/Memory/Memory'
 
 export default async function alterRecording(
   scenario: string,
@@ -28,6 +39,7 @@ export default async function alterRecording(
   optionsAlteration: OptionsAlteration,
   alterationManager: IAlterationManager
 ): Promise<AlterRecordingResponse> {
+  let memory: Memory = new Memory()
   let fileIsCsv: boolean = false
 
   const regex = /.csv$/i
@@ -59,7 +71,8 @@ export default async function alterRecording(
   const { errors, parameters } = await extractParameters(
     scenario,
     recording,
-    recordingToReplay
+    recordingToReplay,
+    memory
   )
 
   if (errors.length > 0)
@@ -107,7 +120,8 @@ export default async function alterRecording(
 export const extractParameters = async (
   scenario: string,
   recording: Recording,
-  recordingToReplay: Recording | undefined
+  recordingToReplay: Recording | undefined,
+  memory: Memory
 ): Promise<{
   parameters: Parameters[]
   errors: string[]
@@ -135,7 +149,42 @@ export const extractParameters = async (
   }
 
   const declarations = evalDeclarations(value.declarations)
-  const visitor = new FditScenarioSemanticVisitor()
+  if (value.declarations.length !== 0) {
+    console.log(value.declarations)
+    for (const decl of value.declarations) {
+      if (isASTRangeDeclaration(decl)) {
+        let rangeDecl: ASTRangeDeclaration = decl as ASTRangeDeclaration
+        console.log(decl.constant)
+        let constant: RangeConstant = new RangeConstant(
+          decl.constant,
+          rangeDecl.range.range.start,
+          rangeDecl.range.range.end
+        )
+        memory.addConstant(constant)
+        console.log(memory.getConstant('$var'))
+      }
+
+      if (isASTListDeclaration(decl)) {
+        let listDecl: ASTListDeclaration = decl as ASTListDeclaration
+        console.log(listDecl)
+        let valuesList = []
+        if (isASTStringList(listDecl.list.list)) {
+          for (const valuesListElement of listDecl.list.list.items) {
+            valuesList.push(valuesListElement)
+          }
+        }
+        if (isASTOffsetList(listDecl.list.list)) {
+          for (const valuesListElement of listDecl.list.list.items) {
+            valuesList.push(valuesListElement.content)
+          }
+        }
+
+        let constant: ListConstant = new ListConstant(decl.constant, valuesList)
+        memory.addConstant(constant)
+      }
+    }
+  }
+  const visitor = new FditScenarioSemanticVisitor(memory)
   const result: SemanticError[] = visitor.visitScenario(value)
   const array_result: string[] = []
   for (const semanticError of result) {
