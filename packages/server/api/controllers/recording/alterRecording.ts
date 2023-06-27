@@ -47,6 +47,14 @@ const alterRecording: RequestHandler = async (req, res) => {
         alteredRecordings: [],
       })
     }
+  } else {
+    const regex_replay = new RegExp(`\\breplay\\b`, 'g')
+    if (scenario.match(regex_replay) !== null) {
+      return res.status(422).json({
+        error: AlterRecordingError.invalidFormat,
+        alteredRecordings: [],
+      })
+    }
   }
   const response = await alterRecordingCore(
     scenario,
