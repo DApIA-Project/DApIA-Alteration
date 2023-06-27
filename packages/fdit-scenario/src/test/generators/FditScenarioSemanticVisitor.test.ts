@@ -185,7 +185,6 @@ describe('FditScenarioSemanticVisitor', () => {
       assert.deepStrictEqual(semanticError[1].errors, '')
     })
 
-    //TODO A modifier
     it('returns error empty when scenario is valid with frequency with list constant int in string', async () => {
       const scenario = await parseScenario(
         'let $var = {"2", "3", "5"}, hide all_planes at 0 seconds with_frequency $var'

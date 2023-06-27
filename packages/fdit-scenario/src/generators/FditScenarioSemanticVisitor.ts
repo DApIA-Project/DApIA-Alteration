@@ -60,8 +60,6 @@ import { SemanticError } from './index'
 import { AstNode } from 'langium'
 import { Memory } from './Memory/Memory'
 import { Constant } from './Memory/Constant'
-import { ListConstant } from './Memory/ListConstant'
-import { RangeConstant } from './Memory/RangeConstant'
 import { ConstantTypes } from './Memory/ConstantTypes'
 import { isRangeConstant } from './Memory/isRangeConstant'
 import { isListConstant } from './Memory/isListConstant'
@@ -219,8 +217,6 @@ export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
       return this.buildError(node, errors)
     }
 
-    //TODO Case where value == ConstantValue (range and list)
-
     return this.computeCreationParameterValueError(
       characteristicName!,
       node.value
@@ -252,8 +248,6 @@ export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
         node.$cstNode!.parent!.text
       return this.buildError(node, errors)
     }
-
-    //TODO Case where value == ConstantValue (range and list)
 
     return this.computeSaturationParameterValueError(
       characteristicName!,
@@ -377,7 +371,6 @@ export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
     } else if (isASTRightShift(time) || isASTLeftShift(time)) {
       errors += 'A time cannot be a shift : ' + node.$cstNode!.parent!.text
     } else if (isASTConstantValue(time)) {
-      //TODO Gestion de la mémoire pour les constantes et les variables
       let constant: Constant<ConstantTypes> | undefined =
         this.memory.getConstant(time.content)
       if (constant === undefined) {
@@ -449,8 +442,6 @@ export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
       )
       return semanticError
     }
-
-    //TODO Case where value == ConstantValue (range and list)
 
     return this.computeParameterValueError(characteristicName!, node.value)
   }
