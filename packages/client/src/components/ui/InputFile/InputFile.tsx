@@ -17,6 +17,7 @@ function InputFile({ name, onChange, ...props }: InputFileProps) {
       type='file'
       {...props}
       name={name}
+      accept={'.csv, .sbs, .bst'}
       onChange={(event) => {
         if (event.target.files) onChange(event.target.files)
       }}
