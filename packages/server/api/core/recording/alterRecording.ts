@@ -43,7 +43,7 @@ export default async function alterRecording(
   let fileIsCsv: boolean = false
 
   const regex = /.csv$/i
-  if (regex.test(recording.name) == true) {
+  if (regex.test(recording.name)) {
     fileIsCsv = true
     recording.content = convertCSVtoSBS(recording.content)
 
@@ -56,7 +56,7 @@ export default async function alterRecording(
     recording.name = recording.name.replace('.csv', '.sbs')
   }
   if (recordingToReplay !== undefined) {
-    if (regex.test(recordingToReplay.name) == true) {
+    if (regex.test(recordingToReplay.name)) {
       recordingToReplay.content = convertCSVtoSBS(recordingToReplay.content)
       if (recordingToReplay.content === 'Error content file') {
         return {
@@ -114,7 +114,8 @@ export default async function alterRecording(
  * Generation of Json scenario and creation of altered recording
  * @param scenario scenario program to parse
  * @param recording Recording to alter
- * @param recordingToReplay *optional* Recording to replay
+ * @param recordingToReplay Recording to replay
+ * @param memory Memory
  * @returns Generated output from this FDI-T program
  */
 export const extractParameters = async (

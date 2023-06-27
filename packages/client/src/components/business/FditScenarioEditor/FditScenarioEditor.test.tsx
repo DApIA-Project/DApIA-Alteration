@@ -1,24 +1,24 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
-import FditscenarioEditor from './FditscenarioEditor'
+import FditScenarioEditor from './FditScenarioEditor'
 
-jest.mock('./FditscenarioEditor', () => () => (
+jest.mock('./FditScenarioEditor', () => () => (
   <div
     className={'view-lines monaco-mouse-cursor-text'}
-    data-testid={'FditscenarioEditor.action.createFditscenarioEditor'}
+    data-testid={'FditScenarioEditor.action.createFditScenarioEditor'}
   >
     hide all_planes at 0 seconds
   </div>
 ))
-describe('FditscenarioEditor', () => {
+describe('FditScenarioEditor', () => {
   afterAll(() => {
     jest.clearAllMocks()
   })
 
   it('calls onClick callback with selected recording file and recording replay file', async () => {
     jest.fn()
-    render(<FditscenarioEditor language={'fditscenario'} value={''} />)
+    render(<FditScenarioEditor language={'fditscenario'} value={''} />)
 
-    screen.getByTestId('FditscenarioEditor.action.createFditscenarioEditor')
+    screen.getByTestId('FditScenarioEditor.action.createFditScenarioEditor')
   })
 })

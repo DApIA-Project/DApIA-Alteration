@@ -1,7 +1,7 @@
 import { languages } from 'monaco-editor'
 import IMonarchLanguage = languages.IMonarchLanguage
 
-const FDITSCENARIO_FORMAT: IMonarchLanguage = {
+const FDIT_SCENARIO_FORMAT: IMonarchLanguage = {
   defaultToken: 'invalid',
   keywords: [
     'hide',
@@ -218,4 +218,4 @@ export function getDocumentationLabel(label: string): string | undefined {
       return undefined
   }
 }
-export default FDITSCENARIO_FORMAT
+export default FDIT_SCENARIO_FORMAT
