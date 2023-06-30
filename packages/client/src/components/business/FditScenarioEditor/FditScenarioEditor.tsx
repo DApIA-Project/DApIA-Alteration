@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import Editor, { useMonaco } from '@monaco-editor/react'
 
 import * as monaco from 'monaco-editor'
-import { editor } from 'monaco-editor'
+import { CancellationToken, editor, languages } from 'monaco-editor'
 import * as parser from '@smartesting/fdit-scenario/dist/parser/parser'
 import {
   parseScenario,
@@ -32,6 +32,7 @@ import IModel = monaco.editor.IModel
 import CompletionItemProvider = monaco.languages.CompletionItemProvider
 import ILanguageExtensionPoint = monaco.languages.ILanguageExtensionPoint
 import IMarkerData = editor.IMarkerData
+import CompletionContext = languages.CompletionContext
 
 type FditScenarioEditorProps = {
   language: string
@@ -109,16 +110,6 @@ const FditScenarioEditor: React.FunctionComponent<FditScenarioEditorProps> = ({
       })
     )
 
-    window.localStorage.setItem(
-      'lastScenario',
-      model.getValueInRange({
-        startLineNumber: 1,
-        startColumn: 1,
-        endLineNumber: line,
-        endColumn: column,
-      })
-    )
-
     if (value.declarations.length !== 0) {
       console.log(value.declarations)
       for (const decl of value.declarations) {
@@ -177,11 +168,20 @@ const FditScenarioEditor: React.FunctionComponent<FditScenarioEditorProps> = ({
   function createCompletionProvider(): CompletionItemProvider | undefined {
     if (!monaco) return
     return {
-      triggerCharacters: [' '],
+      triggerCharacters: [' ', '\b'],
       provideCompletionItems: async function (
         model: IModel,
         position: monaco.IPosition
       ): Promise<monaco.languages.CompletionList | null | undefined> {
+        window.localStorage.setItem(
+          'lastScenario',
+          model.getValueInRange({
+            startLineNumber: 1,
+            startColumn: 1,
+            endLineNumber: position.lineNumber,
+            endColumn: position.column,
+          })
+        )
         const suggestion: Suggestion = await parser.getSuggestions(
           model.getValueInRange({
             startLineNumber: 1,
@@ -274,7 +274,6 @@ const FditScenarioEditor: React.FunctionComponent<FditScenarioEditorProps> = ({
       value = window.localStorage.getItem('lastScenario') ?? ''
     }
   }
-
   return (
     <Editor
       defaultLanguage={language}
