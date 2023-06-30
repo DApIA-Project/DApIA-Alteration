@@ -99,13 +99,17 @@ export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
 
   visitRangeDeclaration(node: ASTRangeDeclaration): SemanticError[] {
     let semanticError: SemanticError[] = []
-    semanticError.push(...this.doSwitch(node.range))
+    if (node.range != undefined) {
+      semanticError.push(...this.doSwitch(node.range))
+    }
     return semanticError
   }
 
   visitList(node: ASTList): SemanticError[] {
     let semanticError: SemanticError[] = []
-    semanticError.push(...this.doSwitch(node.list))
+    if (node.list != undefined) {
+      semanticError.push(...this.doSwitch(node.list))
+    }
     return semanticError
   }
   visitOffsetList(node: ASTOffsetList): SemanticError[] {
@@ -119,7 +123,9 @@ export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
 
   visitRange(node: ASTRange): SemanticError[] {
     let semanticError: SemanticError[] = []
-    semanticError.push(...this.doSwitch(node.range))
+    if (node.range != undefined) {
+      semanticError.push(...this.doSwitch(node.range))
+    }
     return semanticError
   }
   visitIntegerRange(node: ASTIntegerRange): SemanticError[] {
@@ -137,8 +143,12 @@ export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
 
   visitHide(node: ASTHide): SemanticError[] {
     let semanticError: SemanticError[] = []
-    semanticError.push(...this.doSwitch(node.target))
-    semanticError.push(...this.doSwitch(node.timeScope))
+    if (node.target != undefined) {
+      semanticError.push(...this.doSwitch(node.target))
+    }
+    if (node.timeScope != undefined) {
+      semanticError.push(...this.doSwitch(node.timeScope))
+    }
     if (node.frequency != undefined) {
       semanticError.push(...this.doSwitch(node.frequency))
     }
@@ -159,31 +169,45 @@ export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
 
   visitAlterAndTrajectory(node: ASTAlterAndTrajectory): SemanticError[] {
     let semanticError: SemanticError[] = []
-    semanticError.push(...this.doSwitch(node.target))
-    semanticError.push(...this.doSwitch(node.timeScope))
+    if (node.target != undefined) {
+      semanticError.push(...this.doSwitch(node.target))
+    }
+    if (node.timeScope != undefined) {
+      semanticError.push(...this.doSwitch(node.timeScope))
+    }
     if (node.trigger != undefined) {
       semanticError.push(...this.doSwitch(node.trigger))
     }
-    semanticError.push(...this.doSwitch(node.mode))
+    if (node.mode != undefined) {
+      semanticError.push(...this.doSwitch(node.mode))
+    }
     return semanticError
   }
 
   visitAlter(node: ASTAlter): SemanticError[] {
     let semanticError: SemanticError[] = []
-    semanticError.push(...this.doSwitch(node.parameters))
+    if (node.parameters != undefined) {
+      semanticError.push(...this.doSwitch(node.parameters))
+    }
     return semanticError
   }
 
   visitTrajectory(node: ASTTrajectory): SemanticError[] {
     let semanticError: SemanticError[] = []
-    semanticError.push(...this.doSwitch(node.trajectory))
+    if (node.trajectory != undefined) {
+      semanticError.push(...this.doSwitch(node.trajectory))
+    }
     return semanticError
   }
 
   visitCreate(node: ASTCreate): SemanticError[] {
     let semanticError: SemanticError[] = []
-    semanticError.push(...this.doSwitch(node.timeScope))
-    semanticError.push(...this.doSwitch(node.trajectory))
+    if (node.timeScope != undefined) {
+      semanticError.push(...this.doSwitch(node.timeScope))
+    }
+    if (node.trajectory != undefined) {
+      semanticError.push(...this.doSwitch(node.trajectory))
+    }
     if (node.parameters != undefined) {
       semanticError.push(...this.doSwitch(node.parameters))
     }
@@ -192,13 +216,19 @@ export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
 
   visitSaturate(node: ASTSaturate): SemanticError[] {
     let semanticError: SemanticError[] = []
-    semanticError.push(...this.doSwitch(node.target))
-    semanticError.push(...this.doSwitch(node.timeScope))
+    if (node.target != undefined) {
+      semanticError.push(...this.doSwitch(node.target))
+    }
+    if (node.timeScope != undefined) {
+      semanticError.push(...this.doSwitch(node.timeScope))
+    }
 
     if (node.trigger != undefined) {
       semanticError.push(...this.doSwitch(node.trigger))
     }
-    semanticError.push(...this.doSwitch(node.parameters))
+    if (node.parameters != undefined) {
+      semanticError.push(...this.doSwitch(node.parameters))
+    }
     return semanticError
   }
 
@@ -257,8 +287,12 @@ export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
 
   visitReplay(node: ASTReplay): SemanticError[] {
     let semanticError: SemanticError[] = []
-    semanticError.push(...this.doSwitch(node.target))
-    semanticError.push(...this.doSwitch(node.timeScope))
+    if (node.target != undefined) {
+      semanticError.push(...this.doSwitch(node.target))
+    }
+    if (node.timeScope != undefined) {
+      semanticError.push(...this.doSwitch(node.timeScope))
+    }
     if (node.parameters != undefined) {
       semanticError.push(...this.doSwitch(node.parameters))
     }
@@ -267,24 +301,40 @@ export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
 
   visitDelay(node: ASTDelay): SemanticError[] {
     let semanticError: SemanticError[] = []
-    semanticError.push(...this.doSwitch(node.target))
-    semanticError.push(...this.doSwitch(node.timeScope))
-    semanticError.push(...this.doSwitch(node.delay))
+    if (node.target != undefined) {
+      semanticError.push(...this.doSwitch(node.target))
+    }
+    if (node.timeScope != undefined) {
+      semanticError.push(...this.doSwitch(node.timeScope))
+    }
+    if (node.delay != undefined) {
+      semanticError.push(...this.doSwitch(node.delay))
+    }
     return semanticError
   }
 
   visitDelayParameter(node: ASTDelayParameter): SemanticError[] {
-    return this.doSwitch(node.value)
+    let semanticError: SemanticError[] = []
+    if (node.value != undefined) {
+      return this.doSwitch(node.value)
+    }
+    return semanticError
   }
 
   visitRotate(node: ASTRotate): SemanticError[] {
     let semanticError: SemanticError[] = []
-    semanticError.push(...this.doSwitch(node.target))
-    semanticError.push(...this.doSwitch(node.timeScope))
+    if (node.target != undefined) {
+      semanticError.push(...this.doSwitch(node.target))
+    }
+    if (node.timeScope != undefined) {
+      semanticError.push(...this.doSwitch(node.timeScope))
+    }
     if (node.trigger != undefined) {
       semanticError.push(...this.doSwitch(node.trigger))
     }
-    semanticError.push(...this.doSwitch(node.angle))
+    if (node.angle != undefined) {
+      semanticError.push(...this.doSwitch(node.angle))
+    }
     return semanticError
   }
 
@@ -303,8 +353,12 @@ export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
 
   visitCut(node: ASTCut): SemanticError[] {
     let semanticError: SemanticError[] = []
-    semanticError.push(...this.doSwitch(node.target))
-    semanticError.push(...this.doSwitch(node.timeScope))
+    if (node.target != undefined) {
+      semanticError.push(...this.doSwitch(node.target))
+    }
+    if (node.timeScope != undefined) {
+      semanticError.push(...this.doSwitch(node.timeScope))
+    }
     if (node.trigger != undefined) {
       semanticError.push(...this.doSwitch(node.trigger))
     }
@@ -313,13 +367,19 @@ export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
 
   visitDeclaration(node: ASTDeclaration): SemanticError[] {
     let semanticError: SemanticError[] = []
-    semanticError.push(...this.doSwitch(node))
+    if (node != undefined) {
+      semanticError.push(...this.doSwitch(node))
+    }
+
     return semanticError
   }
 
   visitInstruction(node: ASTInstruction): SemanticError[] {
     let semanticError: SemanticError[] = []
-    semanticError.push(...this.doSwitch(node))
+    if (node != undefined) {
+      semanticError.push(...this.doSwitch(node))
+    }
+
     return semanticError
   }
 
@@ -333,7 +393,11 @@ export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
   }
 
   visitPlane(node: ASTPlane): SemanticError[] {
-    return this.doSwitch(node.filters)
+    let semanticError: SemanticError[] = []
+    if (node.filters != undefined) {
+      return this.doSwitch(node.filters)
+    }
+    return semanticError
   }
 
   visitFilters(node: ASTFilters): SemanticError[] {
@@ -342,14 +406,22 @@ export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
 
   visitWindow(node: ASTWindow): SemanticError[] {
     let semanticError: SemanticError[] = []
-    semanticError.push(...this.doSwitch(node.start))
-    semanticError.push(...this.doSwitch(node.end))
+    if (node.start != undefined) {
+      semanticError.push(...this.doSwitch(node.start))
+    }
+    if (node.end != undefined) {
+      semanticError.push(...this.doSwitch(node.end))
+    }
+
     return semanticError
   }
 
   visitAt(node: ASTAt): SemanticError[] {
     let semanticError: SemanticError[] = []
-    semanticError.push(...this.doSwitch(node.time))
+    if (node.time != undefined) {
+      semanticError.push(...this.doSwitch(node.time))
+    }
+
     if (node.for != undefined) {
       semanticError.push(...this.doSwitch(node.for))
     }
@@ -358,7 +430,10 @@ export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
 
   visitAtFor(node: ASTAtFor): SemanticError[] {
     let semanticError: SemanticError[] = []
-    semanticError.push(...this.doSwitch(node.for))
+    if (node.for != undefined) {
+      semanticError.push(...this.doSwitch(node.for))
+    }
+
     return semanticError
   }
 
@@ -490,7 +565,10 @@ export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
     semanticError.push(...this.computeErrorAltitude(node.altitude))
     semanticError.push(...this.computeErrorLatitude(node.latitude))
     semanticError.push(...this.computeErrorLongitude(node.longitude))
-    semanticError.push(...this.doSwitch(node.time))
+    if (node.time != undefined) {
+      semanticError.push(...this.doSwitch(node.time))
+    }
+
     return semanticError
   }
 
@@ -1629,6 +1707,9 @@ export class FditScenarioSemanticVisitor extends FditScenarioVisitor<
 
   buildError(value: AstNode, errors: string): SemanticError[] {
     let semanticError: SemanticError[] = []
+    if (value == undefined) {
+      return semanticError
+    }
     let position = {
       startline: value.$cstNode!.range.start.line,
       endline: value.$cstNode!.range.end.line,
