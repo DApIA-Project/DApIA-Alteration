@@ -1,11 +1,11 @@
 import { RequestHandler } from 'express'
-import makeFditRequest from '../utils/makeFditRequest'
-import { FditAdapters } from '../FditAdapters'
+import makeAlterationRequest from '../utils/makeAlterationRequest'
+import { AlterationAdapters } from '../AlterationAdapters'
 
-function makeAdapters(adapters: FditAdapters): RequestHandler {
+function makeAdapters(adapters: AlterationAdapters): RequestHandler {
   return (req, _, next) => {
-    const fditRequest = makeFditRequest(req)
-    fditRequest.adapters = adapters
+    const alterationRequest = makeAlterationRequest(req)
+    alterationRequest.adapters = adapters
     next()
   }
 }

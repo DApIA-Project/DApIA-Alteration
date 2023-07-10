@@ -1,0 +1,15 @@
+{
+  "name": "alterationscenario",
+  "scopeName": "source.alterationscenario",
+  "fileTypes": [".alterationscenario"],
+  "patterns": [
+    {
+      "include": "#comments"
+    },
+    {
+      "name": "keyword.control.alterationscenario",
+      "match": "\\b(ALERT|ALTITUDE|ALT_DURATION|CALLSIGN|EMERGENCY|GROUNDSPEED|ICAO|LATITUDE|LONGITUDE|NUMBER|REC_DURATION|REC_NBR_AIRCRAFT|SPI|SQUAWK|TRACK|all_planes|alter|and|at|create|cut|delay|for|from|hide|let|plane|replay|rotate|satisfying|saturate|seconds|triggered_by|until|with_altitude|with_angle|with_delay|with_frequency|with_values|with_waypoints)\\b"
+    }
+  ],
+  "repository": {}
+}

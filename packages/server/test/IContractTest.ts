@@ -1,8 +1,8 @@
-import { FditAdapters } from '../api/FditAdapters'
+import { AlterationAdapters } from '../api/AlterationAdapters'
 
 type IContractTest = (
   implementationName: string,
-  makeAdapters: () => FditAdapters
+  makeAdapters: () => AlterationAdapters
 ) => void
 
 export default IContractTest

@@ -1,4 +1,4 @@
-import { Parameters } from '@smartesting/fdit-scenario/dist/types'
+import { Parameters } from '@smartesting/alteration-scenario/dist/types'
 import { OptionsAlteration, Recording } from '@smartesting/shared/dist'
 import IAlterationManager from './IAlterationManager'
 import { execSync } from 'child_process'

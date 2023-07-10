@@ -5,7 +5,7 @@ import userEvent from '@testing-library/user-event'
 import { OptionsAlteration, Recording } from '@smartesting/shared/src'
 
 jest.mock(
-  '../../../components/business/FditScenarioEditor/FditScenarioEditor',
+  '../../../components/business/AlterationScenarioEditor/AlterationScenarioEditor',
   () => () =>
     (
       <div className={'view-lines monaco-mouse-cursor-text'} role={'code'}>

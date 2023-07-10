@@ -6,7 +6,7 @@ import DocumentationPage, {
 import userEvent from '@testing-library/user-event'
 
 jest.mock(
-  '../../components/business/FditScenarioEditor/FditScenarioEditor',
+  '../../components/business/AlterationScenarioEditor/AlterationScenarioEditor',
   () => () =>
     (
       <div

@@ -10,16 +10,16 @@ import {
   evalDeclarations,
   generateStatements,
   parseScenario,
-} from '@smartesting/fdit-scenario/dist/web'
-import { Parameters } from '@smartesting/fdit-scenario/dist/types'
+} from '@smartesting/alteration-scenario/dist/web'
+import { Parameters } from '@smartesting/alteration-scenario/dist/types'
 import assert from 'assert'
 import IAlterationManager from '../../adapters/IAlterationManager'
 import {
   convertCSVtoSBS,
   convertSBStoCSV,
 } from '@dapia-project/data-converter/dist/src'
-import { FditScenarioSemanticVisitor } from '@smartesting/fdit-scenario/dist/generators/FditScenarioSemanticVisitor'
-import { SemanticError } from '@smartesting/fdit-scenario/dist/generators/index'
+import { AlterationScenarioSemanticVisitor } from '@smartesting/alteration-scenario/dist/generators/AlterationScenarioSemanticVisitor'
+import { SemanticError } from '@smartesting/alteration-scenario/dist/generators/index'
 import {
   ASTListDeclaration,
   ASTRangeDeclaration,
@@ -27,10 +27,10 @@ import {
   isASTOffsetList,
   isASTRangeDeclaration,
   isASTStringList,
-} from '@smartesting/fdit-scenario/dist/language-server/generated/ast'
-import { RangeConstant } from '@smartesting/fdit-scenario/dist/generators/Memory/RangeConstant'
-import { ListConstant } from '@smartesting/fdit-scenario/dist/generators/Memory/ListConstant'
-import { Memory } from '@smartesting/fdit-scenario/dist/generators/Memory/Memory'
+} from '@smartesting/alteration-scenario/dist/language-server/generated/ast'
+import { RangeConstant } from '@smartesting/alteration-scenario/dist/generators/Memory/RangeConstant'
+import { ListConstant } from '@smartesting/alteration-scenario/dist/generators/Memory/ListConstant'
+import { Memory } from '@smartesting/alteration-scenario/dist/generators/Memory/Memory'
 
 export default async function alterRecording(
   scenario: string,
@@ -116,7 +116,7 @@ export default async function alterRecording(
  * @param recording Recording to alter
  * @param recordingToReplay Recording to replay
  * @param memory Memory
- * @returns Generated output from this FDI-T program
+ * @returns Generated output from this ALTERATION program
  */
 export const extractParameters = async (
   scenario: string,
@@ -185,7 +185,7 @@ export const extractParameters = async (
       }
     }
   }
-  const visitor = new FditScenarioSemanticVisitor(memory)
+  const visitor = new AlterationScenarioSemanticVisitor(memory)
   const result: SemanticError[] = visitor.visitScenario(value)
   const array_result: string[] = []
   for (const semanticError of result) {

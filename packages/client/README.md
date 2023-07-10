@@ -1,4 +1,4 @@
-# FDI-T Web Client
+# Alteration Client
 
 ## Run the client using langium
 

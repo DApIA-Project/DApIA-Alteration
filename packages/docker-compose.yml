@@ -13,36 +13,36 @@ services:
   #                           $$ |
   #                           \__|
 
-  fdit-install-server-dependencies:
+  alteration-install-server-dependencies:
     image: node:16-alpine
-    container_name: fdit-install-server-dependencies
+    container_name: alteration-install-server-dependencies
     volumes:
       - .:/app/packages
     working_dir: /app/packages/server
     entrypoint: npm install
 
-  fdit-install-client-dependencies:
+  alteration-install-client-dependencies:
     image: node:16-alpine
-    container_name: fdit-install-client-dependencies
+    container_name: alteration-install-client-dependencies
     volumes:
       - .:/app/packages
     working_dir: /app/packages/client
     entrypoint: npm install
 
-  fdit-build-server:
+  alteration-build-server:
     image: node:16-alpine
-    container_name: fdit-build-server
+    container_name: alteration-build-server
     volumes:
       - .:/app/packages
     working_dir: /app/packages/server
     entrypoint: npm run build
     depends_on:
-      fdit-install-server-dependencies:
+      alteration-install-server-dependencies:
         condition: service_completed_successfully
 
-  fdit-build-client:
+  alteration-build-client:
     image: node:16-alpine
-    container_name: fdit-build-client
+    container_name: alteration-build-client
     profiles:
       - production
     volumes:
@@ -50,7 +50,7 @@ services:
     working_dir: /app/packages/client
     entrypoint: npm run build
     depends_on:
-      fdit-install-client-dependencies:
+      alteration-install-client-dependencies:
         condition: service_completed_successfully
 
     #       $$$$$$$\                            $$\                                               $$\
@@ -62,30 +62,30 @@ services:
     #       $$ |      $$ |      \$$$$$$  |\$$$$$$$ |      $$$$$$$  |\$$$$$$$\ $$ |        \$  /   $$ |\$$$$$$$\ \$$$$$$$\ $$$$$$$  |
     #       \__|      \__|       \______/  \_______|      \_______/  \_______|\__|         \_/    \__| \_______| \_______|\_______/
 
-  fdit-prod-server:
+  alteration-prod-server:
     build: .
-    container_name: fdit-server-prod
+    container_name: alteration-server-prod
     volumes:
       - .:/app/packages
     working_dir: /app/packages/server
     entrypoint: npm run start
     depends_on:
-      fdit-build-server:
+      alteration-build-server:
         condition: service_completed_successfully
     ports:
       - '3001:3001'
 
-  fdit-prod-client:
+  alteration-prod-client:
     image: node:16-alpine
-    container_name: fdit-client-prod
+    container_name: alteration-client-prod
     volumes:
       - .:/app/packages
     working_dir: /app/packages/client
     entrypoint: npm run start
     depends_on:
-      fdit-build-client:
+      alteration-build-client:
         condition: service_completed_successfully
-      fdit-install-client-dependencies:
+      alteration-install-client-dependencies:
         condition: service_completed_successfully
     ports:
       - '3000:3000'

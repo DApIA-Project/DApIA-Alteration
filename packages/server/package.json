@@ -15,7 +15,7 @@
     "tsc-watch": "tsc --watch",
     "dev": "nodemon app.ts",
     "copy:fs": "npx shx cp -fr ./node_modules/fs/ ./public/fs",
-    "preinstall": "(cd ../fdit-scenario && npm i && npm run build) && (cd ../shared && npm i && npm run build)"
+    "preinstall": "(cd ../alteration-scenario && npm i && npm run build) && (cd ../shared && npm i && npm run build)"
   },
   "author": "",
   "license": "ISC",
@@ -39,7 +39,7 @@
   },
   "dependencies": {
     "@dapia-project/data-converter": "^2.0.0",
-    "@smartesting/fdit-scenario": "file:../fdit-scenario",
+    "@smartesting/alteration-scenario": "file:../alteration-scenario",
     "@smartesting/shared": "file:../shared",
     "cors": "^2.8.5",
     "esbuild": "^0.15.13",

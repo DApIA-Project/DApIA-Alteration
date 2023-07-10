@@ -8,7 +8,7 @@
     "@emotion/styled": "^11.10.6",
     "@monaco-editor/react": "^4.5.1",
     "@mui/material": "^5.11.15",
-    "@smartesting/fdit-scenario": "file:../fdit-scenario",
+    "@smartesting/alteration-scenario": "file:../alteration-scenario",
     "@smartesting/shared": "file:../shared",
     "@testing-library/jest-dom": "^5.16.5",
     "@types/node": "^16.18.12",

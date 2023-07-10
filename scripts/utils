@@ -45,7 +45,7 @@ run_in_all_packages() {
   local DIR
   DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
   (cd "$DIR/../packages/shared" && output_subtitle "Running \`$1\` in packages/shared" && $1)
-  (cd "$DIR/../packages/fdit-scenario" && output_subtitle "Running \`$1\` in packages/fdit-scenario" && $1)
+  (cd "$DIR/../packages/alteration-scenario" && output_subtitle "Running \`$1\` in packages/alteration-scenario" && $1)
   (cd "$DIR/../packages/client" && output_subtitle "Running \`$1\` in packages/client" && $1)
   (cd "$DIR/../packages/server" && output_subtitle "Running \`$1\` in packages/server" && $1)
 }

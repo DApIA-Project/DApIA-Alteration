@@ -1,0 +1,22 @@
+{
+  "projectName": "Alterationscenario",
+  "languages": [
+    {
+      "id": "alterationscenario",
+      "grammar": "src/language-server/alterationscenario.langium",
+      "fileExtensions": [".alterationscenario"],
+      "chevrotainParserConfig": {
+        "maxLookahead": 1,
+        "recoveryEnabled": true,
+        "nodeLocationTracking": "full"
+      },
+      "textMate": {
+        "out": "syntaxes/alterationscenario.tmLanguage.json"
+      },
+      "monarch": {
+        "out": "syntaxes/alterationscenario.monarch.ts"
+      }
+    }
+  ],
+  "out": "src/language-server/generated"
+}
