@@ -1,5 +1,5 @@
 build/
-tmp/
+temp/
 public/monaco-editor-workers/
 public/monaco-editor-wrapper/
 .nyc_output/
