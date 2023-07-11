@@ -145,10 +145,10 @@ public class BaseStationSaturationEngine extends BaseStationActionEngine {
         final AircraftTrajectory trajectory = trajectories.get(action).get(fakeMessage.getIcao());
         final long timestamp = fakeMessage.getTimestampGenerated();
         if (fakeMessage instanceof LatitudeParameter) {
-            trajectory.getLatitudeWithNoise(timestamp).ifPresent(((LatitudeParameter) fakeMessage)::setLatitude);
+            trajectory.getLatitude(timestamp, parameters.isLatitudeNoise()).ifPresent(((LatitudeParameter) fakeMessage)::setLatitude);
         }
         if (fakeMessage instanceof LongitudeParameter) {
-            trajectory.getLongitudeWithNoise(timestamp).ifPresent(((LongitudeParameter) fakeMessage)::setLongitude);
+            trajectory.getLongitude(timestamp,parameters.isLongitudeNoise()).ifPresent(((LongitudeParameter) fakeMessage)::setLongitude);
         }
         if (fakeMessage instanceof AltitudeParameter) {
             trajectory.getAltitude(timestamp).ifPresent(aDouble ->

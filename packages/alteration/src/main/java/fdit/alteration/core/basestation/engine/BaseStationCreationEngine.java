@@ -27,11 +27,11 @@ public class BaseStationCreationEngine extends BaseStationActionEngine {
         super(recording, superAction, logger, parameters);
     }
 
-    private static BaseStationMessage createMessageFromTrajectory(final long timestamp,
-                                                                  final int sessionID,
-                                                                  final int aircraftID,
-                                                                  final int flightID,
-                                                                  final AircraftTrajectory trajectory) {
+    private BaseStationMessage createMessageFromTrajectory(final long timestamp,
+                                                           final int sessionID,
+                                                           final int aircraftID,
+                                                           final int flightID,
+                                                           final AircraftTrajectory trajectory) {
         return new BaseStationMessageFull(
                 3,
                 sessionID,
@@ -44,8 +44,8 @@ public class BaseStationCreationEngine extends BaseStationActionEngine {
                 trajectory.getAltitude(timestamp).orElse(null),
                 trajectory.getGroundSpeed(timestamp).orElse(null),
                 trajectory.getTrack(timestamp).orElse(null),
-                trajectory.getLatitudeWithNoise(timestamp).orElse(null),
-                trajectory.getLongitudeWithNoise(timestamp).orElse(null),
+                trajectory.getLatitude(timestamp, parameters.isLatitudeNoise()).orElse(null),
+                trajectory.getLongitude(timestamp, parameters.isLongitudeNoise()).orElse(null),
                 trajectory.getVerticalRate(timestamp).orElse(null),
                 null,
                 null,

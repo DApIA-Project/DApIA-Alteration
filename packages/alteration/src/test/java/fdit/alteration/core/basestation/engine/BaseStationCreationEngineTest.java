@@ -6,8 +6,7 @@ import org.junit.Test;
 import java.io.File;
 
 import static com.google.common.io.Files.write;
-import static fdit.alteration.core.engine.EngineParametersHelper.engineParameters;
-import static fdit.alteration.core.engine.EngineParametersHelper.label;
+import static fdit.alteration.core.engine.EngineParametersHelper.*;
 import static fdit.alteration.core.engine.SuperActionHelper.superAction;
 import static fdit.alteration.core.incident.IncidentHelper.*;
 import static fdit.alteration.core.incident.Parameter.CHARAC_CALLSIGN;
@@ -51,7 +50,7 @@ public class BaseStationCreationEngineTest {
                         parameter(CHARAC_ICAO, "39AC47"),
                         parameter(CHARAC_CALLSIGN, "SAMU25")))),
                 new ActionLogger(),
-                engineParameters(label(false))));
+                engineParameters(label(false),latitudeNoise(true),longitudeNoise(true))));
         when(engine.getTimeOffset()).thenReturn(500);
         engine.preProcessing();
         assertEquals(100, engine.getMessages().size());
