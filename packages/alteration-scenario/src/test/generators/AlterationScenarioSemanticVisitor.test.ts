@@ -541,6 +541,29 @@ describe('AlterationScenarioSemanticVisitor', () => {
       assert.deepStrictEqual(semanticError[1].errors, '')
     })
 
+    it('returns error empty when scenario is valid with at in list constant with alter', async () => {
+      const scenario = await parseScenario(
+        'let $var = {2, 9, 7}, let $var2 = {2, 9, 7},alter all_planes at $var seconds with_values ALTITUDE = $var2'
+      )
+
+      let constant: ListConstant = new ListConstant('$var', [2, 9, 7])
+      let constant2: ListConstant = new ListConstant('$var2', [2, 9, 7])
+      let memory: Memory = new Memory()
+      memory.addConstant(constant)
+      memory.addConstant(constant2)
+      let f: AlterationScenarioSemanticVisitor =
+        new AlterationScenarioSemanticVisitor(memory)
+      let semanticError: SemanticError[] = f.visitInstruction(
+        scenario.value.instructions[0]
+      )
+      assert.deepStrictEqual(semanticError.length, 5)
+      assert.deepStrictEqual(semanticError[0].errors, '')
+      assert.deepStrictEqual(semanticError[1].errors, '')
+      assert.deepStrictEqual(semanticError[2].errors, '')
+      assert.deepStrictEqual(semanticError[3].errors, '')
+      assert.deepStrictEqual(semanticError[4].errors, '')
+    })
+
     it('returns error empty when scenario is valid with atFor in list constant', async () => {
       const scenario = await parseScenario(
         'let $var = {2, 9}, hide all_planes at 0 seconds for $var seconds'

@@ -102,5 +102,17 @@ function determineOptions(options: OptionsAlteration): string {
   if (options.haveRealism) {
     strOption = strOption + ' -gs -t -vr'
   }
+  if (options.haveNoise) {
+    strOption = strOption + ' -latn -lonn'
+  }
+  if (options.haveDisableLatitude) {
+    strOption = strOption + ' -dlat'
+  }
+  if (options.haveDisableLongitude) {
+    strOption = strOption + ' -dlon'
+  }
+  if (options.haveDisableAltitude) {
+    strOption = strOption + ' -dalt'
+  }
   return strOption
 }

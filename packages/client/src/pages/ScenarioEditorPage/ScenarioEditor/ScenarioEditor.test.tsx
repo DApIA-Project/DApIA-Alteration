@@ -96,6 +96,10 @@ describe('ScenarioEditor', () => {
     let optionsAlteration: OptionsAlteration = {
       haveLabel: false,
       haveRealism: false,
+      haveNoise: false,
+      haveDisableLatitude: false,
+      haveDisableLongitude: false,
+      haveDisableAltitude: false,
     }
     expect(spiedCallback).toBeCalledWith({
       scenario: 'hide all_planes at 0 seconds',
@@ -175,8 +179,24 @@ describe('ScenarioEditor', () => {
       ScenarioEditorTestIds.OPTION_REALISM
     )
 
+    const noiseCheck = screen.getByTestId(ScenarioEditorTestIds.OPTION_NOISE)
+
+    const disableLatitudeCheck = screen.getByTestId(
+      ScenarioEditorTestIds.OPTION_DISABLE_LATITUDE
+    )
+    const disableLongitudeCheck = screen.getByTestId(
+      ScenarioEditorTestIds.OPTION_DISABLE_LONGITUDE
+    )
+    const disableAltitudeCheck = screen.getByTestId(
+      ScenarioEditorTestIds.OPTION_DISABLE_ALTITUDE
+    )
+
     await userEvent.click(labelingCheck)
     await userEvent.click(realismCheck)
+    await userEvent.click(noiseCheck)
+    await userEvent.click(disableLatitudeCheck)
+    await userEvent.click(disableLongitudeCheck)
+    await userEvent.click(disableAltitudeCheck)
 
     await userEvent.click(generateButton)
     //expect(spiedCallback).toHaveBeenCalledTimes(1)
@@ -193,6 +213,10 @@ describe('ScenarioEditor', () => {
     let optionsAlteration: OptionsAlteration = {
       haveLabel: true,
       haveRealism: true,
+      haveNoise: true,
+      haveDisableLatitude: true,
+      haveDisableLongitude: true,
+      haveDisableAltitude: true,
     }
     expect(spiedCallback).toBeCalledWith({
       scenario: 'hide all_planes at 0 seconds',

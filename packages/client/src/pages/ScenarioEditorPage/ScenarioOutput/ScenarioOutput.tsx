@@ -55,12 +55,6 @@ const ScenarioOutput: React.FunctionComponent<ScenarioOutputProps> = ({
           className={'output'}
           data-testid={ScenarioOutputTestIds.SCENARIO_OUTPUT}
         >
-          <Alert
-            data-testid={ScenarioOutputTestIds.DISPLAY_SUCCESS}
-            severity='success'
-          >
-            <AlertTitle>Success</AlertTitle>
-          </Alert>
           <div
             data-testid={ScenarioOutputTestIds.DISPLAY_DOWNLOAD_RECORDING_ZONE}
             className={'downloadAlteredRecording'}
@@ -74,6 +68,13 @@ const ScenarioOutput: React.FunctionComponent<ScenarioOutputProps> = ({
               />
             ))}
           </div>
+
+          <Alert
+            data-testid={ScenarioOutputTestIds.DISPLAY_SUCCESS}
+            severity='success'
+          >
+            <AlertTitle>Success</AlertTitle>
+          </Alert>
         </div>
       )
     }

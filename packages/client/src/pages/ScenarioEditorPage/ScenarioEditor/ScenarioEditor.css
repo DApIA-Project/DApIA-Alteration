@@ -1,13 +1,28 @@
 .scenarioEditor {
-  height: 55%;
+  display: flex;
+  flex-direction: column;
+  flex: 3;
 }
 
+.composantOption {
+  display: flex;
+  flex-direction: column;
+  flex: 3;
+}
+
+.zoneButton {
+  flex: 1;
+}
+.allInputFiles {
+  display: flex;
+  flex-direction: column;
+  flex: 2;
+  margin-bottom: 1%;
+}
 .zone_input_files {
   align-items: center;
   display: flex;
   justify-content: center;
-  padding: 0.5%;
-  height: 5%;
 }
 
 .zone_input_files > img {
@@ -15,7 +30,23 @@
 }
 
 .zoneOptions {
+  align-items: center;
   display: flex;
-  flex-wrap: wrap;
   justify-content: center;
+  flex-direction: column;
+  flex: 4;
+  margin-bottom: 1%;
+  margin-top: 1%;
+}
+
+.option {
+  width: 17%;
+  display: flex;
+  align-items: center;
+  padding: 0.1%;
+}
+
+.tooltip {
+  padding-left: 2%;
+  cursor: pointer;
 }

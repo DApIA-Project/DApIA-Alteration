@@ -108,18 +108,15 @@ const AlterationScenarioEditor: React.FunctionComponent<
     )
 
     if (value.declarations.length !== 0) {
-      console.log(value.declarations)
       for (const decl of value.declarations) {
         if (isASTRangeDeclaration(decl)) {
           let rangeDecl: ASTRangeDeclaration = decl as ASTRangeDeclaration
-          console.log(decl.constant)
           let constant: RangeConstant = new RangeConstant(
             decl.constant,
             rangeDecl.range.range.start,
             rangeDecl.range.range.end
           )
           memory.addConstant(constant)
-          console.log(memory.getConstant('$var'))
         }
 
         if (isASTListDeclaration(decl)) {
@@ -145,7 +142,7 @@ const AlterationScenarioEditor: React.FunctionComponent<
         }
       }
     }
-
+    console.log(memory)
     const visitor = new AlterationScenarioSemanticVisitor(memory)
     const semanticErrors: SemanticError[] = visitor.visitScenario(value)
     markers.push(...getSemantic(model, semanticErrors))
@@ -170,15 +167,6 @@ const AlterationScenarioEditor: React.FunctionComponent<
         model: IModel,
         position: monaco.IPosition
       ): Promise<monaco.languages.CompletionList | null | undefined> {
-        window.localStorage.setItem(
-          'lastScenario',
-          model.getValueInRange({
-            startLineNumber: 1,
-            startColumn: 1,
-            endLineNumber: position.lineNumber,
-            endColumn: position.column,
-          })
-        )
         const suggestion: Suggestion = await parser.getSuggestions(
           model.getValueInRange({
             startLineNumber: 1,
@@ -189,8 +177,9 @@ const AlterationScenarioEditor: React.FunctionComponent<
           position.lineNumber,
           position.column
         )
-
+        console.log(suggestion)
         if (suggestion.errors.lexer.length !== 0) {
+          memory.clear()
           await validate(
             model,
             suggestion.errors.lexer[0].column || 0,
@@ -200,11 +189,13 @@ const AlterationScenarioEditor: React.FunctionComponent<
           )
         } else {
           if (suggestion.errors.parser.length !== 0) {
+            memory.clear()
             const { token } = suggestion.errors.parser[0]
             const length =
               token.startColumn !== undefined && token.endColumn !== undefined
                 ? token.endColumn - token.startColumn
                 : 0
+
             await validate(
               model,
               token.startColumn || 0,
@@ -213,6 +204,7 @@ const AlterationScenarioEditor: React.FunctionComponent<
               token.startLine || 0
             )
           } else {
+            memory.clear()
             const { value } = await parseScenario(
               model.getValueInRange({
                 startLineNumber: 1,
@@ -222,7 +214,44 @@ const AlterationScenarioEditor: React.FunctionComponent<
               })
             )
 
-            const visitor = new AlterationScenarioSemanticVisitor()
+            if (value.declarations.length !== 0) {
+              for (const decl of value.declarations) {
+                if (isASTRangeDeclaration(decl)) {
+                  let rangeDecl: ASTRangeDeclaration =
+                    decl as ASTRangeDeclaration
+                  let constant: RangeConstant = new RangeConstant(
+                    decl.constant,
+                    rangeDecl.range.range.start,
+                    rangeDecl.range.range.end
+                  )
+                  memory.addConstant(constant)
+                }
+
+                if (isASTListDeclaration(decl)) {
+                  let listDecl: ASTListDeclaration = decl as ASTListDeclaration
+                  console.log(listDecl)
+                  let valuesList = []
+                  if (isASTStringList(listDecl.list.list)) {
+                    for (const valuesListElement of listDecl.list.list.items) {
+                      valuesList.push(valuesListElement)
+                    }
+                  }
+                  if (isASTOffsetList(listDecl.list.list)) {
+                    for (const valuesListElement of listDecl.list.list.items) {
+                      valuesList.push(valuesListElement.content)
+                    }
+                  }
+
+                  let constant: ListConstant = new ListConstant(
+                    decl.constant,
+                    valuesList
+                  )
+                  memory.addConstant(constant)
+                }
+              }
+            }
+
+            const visitor = new AlterationScenarioSemanticVisitor(memory)
             const result: SemanticError[] = visitor.visitScenario(value)
             validateSemantic(model, result)
           }
@@ -277,6 +306,9 @@ const AlterationScenarioEditor: React.FunctionComponent<
       theme={'vs-dark'}
       value={value}
       options={options}
+      onChange={(text) => {
+        window.localStorage.setItem('lastScenario', text || '')
+      }}
       {...props}
     />
   )
