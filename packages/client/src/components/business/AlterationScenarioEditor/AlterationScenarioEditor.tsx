@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import Editor, { useMonaco } from '@monaco-editor/react'
 
 import * as monaco from 'monaco-editor'
-import { CancellationToken, editor, languages } from 'monaco-editor'
+import { editor } from 'monaco-editor'
 import * as parser from '@smartesting/alteration-scenario/dist/parser/parser'
 import {
   parseScenario,
@@ -32,7 +32,6 @@ import IModel = monaco.editor.IModel
 import CompletionItemProvider = monaco.languages.CompletionItemProvider
 import ILanguageExtensionPoint = monaco.languages.ILanguageExtensionPoint
 import IMarkerData = editor.IMarkerData
-import CompletionContext = languages.CompletionContext
 
 type AlterationScenarioEditorProps = {
   language: string

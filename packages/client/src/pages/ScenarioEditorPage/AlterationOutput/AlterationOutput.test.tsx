@@ -1,11 +1,11 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
-import ScenarioOutput, { ScenarioOutputTestIds } from './ScenarioOutput'
+import AlterationOutput, { ScenarioOutputTestIds } from './AlterationOutput'
 import { AlterRecordingError } from '@smartesting/shared/src'
-describe('ScenarioOutput', () => {
+describe('AlterationOutput', () => {
   it('displays an error if error is set', async () => {
     const error = AlterRecordingError.invalidSyntax
-    render(<ScenarioOutput response={{ error, alteredRecordings: [] }} />)
+    render(<AlterationOutput response={{ error, alteredRecordings: [] }} />)
 
     const displayError = screen.getByTestId(ScenarioOutputTestIds.DISPLAY_ERROR)
     expect(displayError).toHaveTextContent(error)
@@ -13,7 +13,7 @@ describe('ScenarioOutput', () => {
 
   it('displays an success and DownloadAlteredRecording if error is not set', async () => {
     render(
-      <ScenarioOutput
+      <AlterationOutput
         response={{
           error: null,
           alteredRecordings: [
@@ -41,7 +41,9 @@ describe('ScenarioOutput', () => {
   })
 
   it('displays nothing if error is not set and recording is empty', async () => {
-    render(<ScenarioOutput response={{ error: null, alteredRecordings: [] }} />)
+    render(
+      <AlterationOutput response={{ error: null, alteredRecordings: [] }} />
+    )
 
     screen.getByTestId(ScenarioOutputTestIds.DISPLAY_SUCCESS)
 

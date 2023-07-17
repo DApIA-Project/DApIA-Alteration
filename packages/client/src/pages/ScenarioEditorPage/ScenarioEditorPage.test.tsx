@@ -1,7 +1,5 @@
 import { render, screen } from '@testing-library/react'
-import ScenarioEditorPage, {
-  ScenarioEditorPageTestIds,
-} from './ScenarioEditorPage'
+import ScenarioEditorPage from './ScenarioEditorPage'
 
 jest.mock('./ScenarioEditor/ScenarioEditor', () => {
   return function MockedScenarioEditor() {
@@ -9,7 +7,7 @@ jest.mock('./ScenarioEditor/ScenarioEditor', () => {
   }
 })
 
-jest.mock('./ScenarioOutput/ScenarioOutput', () => {
+jest.mock('./AlterationOutput/AlterationOutput', () => {
   return function MockedScenarioOutput() {
     return <div data-testid='scenario-output-mock'>Mocked Scenario Output</div>
   }
@@ -18,7 +16,7 @@ describe('ScenarioEditorPage', () => {
   afterAll(() => {
     jest.clearAllMocks()
   })
-  it('calls ScenarioEditor and ScenarioOutput', async () => {
+  it('calls ScenarioEditor and AlterationOutput', async () => {
     render(<ScenarioEditorPage />)
 
     screen.getByTestId('scenario-editor-mock')

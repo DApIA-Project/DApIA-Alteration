@@ -4,7 +4,7 @@ import DownloadAlteredRecording, {
   DownloadAlteredRecordingTestIds,
 } from './DownloadAlteredRecording'
 import userEvent from '@testing-library/user-event'
-import { ScenarioOutputTestIds } from '../ScenarioOutput'
+import { ScenarioOutputTestIds } from '../AlterationOutput'
 
 describe('DownloadAlteredRecording', () => {
   afterAll(() => {

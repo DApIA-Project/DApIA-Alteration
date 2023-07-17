@@ -1,0 +1,6 @@
+.allInputFiles {
+  display: flex;
+  flex-direction: column;
+  flex: 2;
+  margin-bottom: 1%;
+}

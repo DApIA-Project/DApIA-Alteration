@@ -1,0 +1,9 @@
+.zone_input_files {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
+.zone_input_files > img {
+  width: 2%;
+}

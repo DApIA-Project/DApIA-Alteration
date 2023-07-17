@@ -3,7 +3,7 @@ import { Alert, AlertTitle } from '@mui/material'
 import { AlterRecordingResponse } from '@smartesting/shared/dist/responses'
 import '../../../styles.css'
 import DownloadAlteredRecording from './DownloadAlteredRecording/DownloadAlteredRecording'
-import './ScenarioOutput.css'
+import './AlterationOutput.css'
 import { Recording } from '@smartesting/shared/src'
 
 export enum ScenarioOutputTestIds {
@@ -34,7 +34,7 @@ function onDownloadAlteredRecordingClicked(recording: Recording) {
   link.click()
 }
 
-const ScenarioOutput: React.FunctionComponent<ScenarioOutputProps> = ({
+const AlterationOutput: React.FunctionComponent<ScenarioOutputProps> = ({
   response,
 }) => {
   if (response != null) {
@@ -83,4 +83,4 @@ const ScenarioOutput: React.FunctionComponent<ScenarioOutputProps> = ({
   return <div data-testid={ScenarioOutputTestIds.SCENARIO_OUTPUT}></div>
 }
 
-export default ScenarioOutput
+export default AlterationOutput
