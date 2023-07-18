@@ -1,8 +1,14 @@
-import React, { useState } from 'react'
+import React, { CSSProperties, useState } from 'react'
 import InputFile from '../../../../../components/ui/InputFile/InputFile'
 import { Recording } from '@smartesting/shared/dist'
 import './RecordInputFile.css'
 import { RecordInputFilesTestIds } from '../RecordInputFiles'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {
+  faXmark,
+  faCheck,
+  IconDefinition,
+} from '@fortawesome/free-solid-svg-icons'
 
 export type RecordInputFileProps = {
   onRead: (recording: Recording) => void
@@ -47,18 +53,20 @@ export const RecordInputFile: React.FunctionComponent<RecordInputFileProps> = ({
     }
   }
 
-  function imageSelection(state: boolean): string {
-    let colorImg: string
-    if (state) {
-      colorImg = '../../../../../assets/green_check.png'
-    } else {
-      colorImg = '../../../../../assets/red_cross.png'
-    }
-    return colorImg
+  function imageSelection(state: boolean): IconDefinition {
+    return state ? faCheck : faXmark
   }
 
-  function imageRecordingSelection(): string {
+  function imageRecordingSelection(): IconDefinition {
     return imageSelection(isRecordingPresent)
+  }
+
+  function styleSelection(state: boolean): CSSProperties {
+    return state ? { color: '#26b807' } : { color: '#ff060d' }
+  }
+
+  function styleImageSelection(): CSSProperties {
+    return styleSelection(isRecordingPresent)
   }
 
   return (
@@ -70,15 +78,16 @@ export const RecordInputFile: React.FunctionComponent<RecordInputFileProps> = ({
         }}
         data-testid={testIdInput}
       />
-      <img
+      <FontAwesomeIcon
+        icon={imageRecordingSelection()}
         data-testid={
           isRecordingPresent
             ? RecordInputFilesTestIds.RECORDING_IS_PRESENT
             : RecordInputFilesTestIds.RECORDING_IS_NOT_PRESENT
         }
-        src={imageRecordingSelection()}
-        alt={'recording_charged_or_not'}
         title={'Enregistrement requis'}
+        size={'2xl'}
+        style={styleImageSelection()}
       />
     </div>
   )
