@@ -2,10 +2,7 @@ import { parseScenario } from '../../parser/parser'
 import assert from 'assert'
 import { AlterationScenarioSemanticVisitor } from '../../generators/AlterationScenarioSemanticVisitor'
 import { SemanticError } from '../../generators'
-import { Memory } from '../../generators/Memory/Memory'
 import { ListConstant } from '../../generators/Memory/ListConstant'
-import { RangeConstant } from '../../generators/Memory/RangeConstant'
-import { ConstantTypes } from '../../generators/Memory/ConstantTypes'
 
 describe('AlterationScenarioSemanticVisitor', () => {
   context('Test visitScenario with no error', () => {
@@ -70,14 +67,12 @@ describe('AlterationScenarioSemanticVisitor', () => {
     })
   })
 
-  context('Test visitInstruction with no error', () => {
+  context('Test visitScenario with no error', () => {
     it('returns error empty when scenario is valid', async () => {
       const scenario = await parseScenario('hide all_planes at 0 seconds')
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
 
       assert.deepStrictEqual(semanticError.length, 1)
       assert.deepStrictEqual(semanticError[0].errors, '')
@@ -89,9 +84,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario('hide all_planes at 0 seconds')
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
 
       assert.deepStrictEqual(semanticError.length, 1)
       assert.deepStrictEqual(semanticError[0].errors, '')
@@ -103,9 +96,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
 
       assert.deepStrictEqual(semanticError.length, 2)
       assert.deepStrictEqual(semanticError[0].errors, '')
@@ -118,9 +109,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
 
       assert.deepStrictEqual(semanticError.length, 2)
       assert.deepStrictEqual(semanticError[0].errors, '')
@@ -133,9 +122,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
 
       assert.deepStrictEqual(semanticError.length, 2)
       assert.deepStrictEqual(semanticError[0].errors, '')
@@ -148,9 +135,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
 
       assert.deepStrictEqual(semanticError.length, 2)
       assert.deepStrictEqual(semanticError[0].errors, '')
@@ -161,14 +146,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = [2, 3], hide all_planes at 0 seconds with_frequency $var'
       )
-      let constant: RangeConstant = new RangeConstant('$var', 2, 3)
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
 
       assert.deepStrictEqual(semanticError.length, 2)
       assert.deepStrictEqual(semanticError[0].errors, '')
@@ -180,14 +160,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
         'let $var = {2, 3, 5}, hide all_planes at 0 seconds with_frequency $var'
       )
 
-      let constant: ListConstant = new ListConstant('$var', [2, 3, 5])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
 
       assert.deepStrictEqual(semanticError.length, 2)
       assert.deepStrictEqual(semanticError[0].errors, '')
@@ -198,15 +173,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = {"2", "3", "5"}, hide all_planes at 0 seconds with_frequency $var'
       )
-
-      let constant: ListConstant = new ListConstant('$var', ['2', '3', '5'])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
 
       assert.deepStrictEqual(semanticError.length, 2)
       assert.deepStrictEqual(semanticError[0].errors, '')
@@ -221,9 +190,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 2)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(
@@ -238,9 +205,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 2)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, 'error.offset\n')
@@ -252,9 +217,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 2)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(
@@ -269,9 +232,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 2)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(
@@ -286,9 +247,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 2)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(
@@ -303,9 +262,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 2)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(
@@ -316,14 +273,10 @@ describe('AlterationScenarioSemanticVisitor', () => {
 
     it('returns error frequency when frequency is double in range constant', async () => {
       const scenario = await parseScenario(
-        'let $var = [2.8, 9.5], hide all_planes at 0 seconds with_frequency $var'
+        'let $var = [4.7, 9.5], hide all_planes at 0 seconds with_frequency $var'
       )
-
-      let constant: RangeConstant = new RangeConstant('$var', 4.7, 9.5)
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
+        new AlterationScenarioSemanticVisitor()
       let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 2)
       assert.deepStrictEqual(semanticError[0].errors, '')
@@ -340,15 +293,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = {"2", "9.9"}, hide all_planes at 0 seconds with_frequency $var'
       )
-
-      let constant: ListConstant = new ListConstant('$var', ['2', '9.9'])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 2)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(
@@ -361,15 +308,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = {"2,9", "9"}, hide all_planes at 0 seconds with_frequency $var'
       )
-
-      let constant: ListConstant = new ListConstant('$var', ['2,9', '9'])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 2)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(
@@ -382,15 +323,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = {"test", "9"}, hide all_planes at 0 seconds with_frequency $var'
       )
-
-      let constant: ListConstant = new ListConstant('$var', ['test', '9'])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 2)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(
@@ -405,9 +340,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario('hide all_planes at 0 seconds')
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 1)
       assert.deepStrictEqual(semanticError[0].errors, '')
     })
@@ -418,9 +351,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 2)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -432,9 +363,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 2)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -445,14 +374,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
         'let $var = [2, 9], hide all_planes at $var seconds'
       )
 
-      let constant: RangeConstant = new RangeConstant('$var', 2, 9)
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 4)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -465,14 +389,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
         'let $var = [2, 9], hide all_planes at 0 seconds for $var seconds'
       )
 
-      let constant: RangeConstant = new RangeConstant('$var', 2, 9)
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 5)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -486,14 +405,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
         'let $var = [2, 9], hide all_planes from $var seconds until 2 seconds'
       )
 
-      let constant: RangeConstant = new RangeConstant('$var', 2, 9)
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 5)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -507,14 +421,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
         'let $var = [2, 9], hide all_planes from 0 seconds until $var seconds'
       )
 
-      let constant: RangeConstant = new RangeConstant('$var', 2, 9)
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 5)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -528,14 +437,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
         'let $var = {2, 9}, hide all_planes at $var seconds'
       )
 
-      let constant: ListConstant = new ListConstant('$var', [2, 9])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 2)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -545,17 +449,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = {2, 9, 7}, let $var2 = {2, 9, 7},alter all_planes at $var seconds with_values ALTITUDE = $var2'
       )
-
-      let constant: ListConstant = new ListConstant('$var', [2, 9, 7])
-      let constant2: ListConstant = new ListConstant('$var2', [2, 9, 7])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
-      memory.addConstant(constant2)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 5)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -569,14 +465,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
         'let $var = {2, 9}, hide all_planes at 0 seconds for $var seconds'
       )
 
-      let constant: ListConstant = new ListConstant('$var', [2, 9])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -588,14 +479,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
         'let $var = {2, 9}, hide all_planes from $var seconds until 2 seconds'
       )
 
-      let constant: ListConstant = new ListConstant('$var', [2, 9])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -607,14 +493,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
         'let $var = {2, 9}, hide all_planes from 0 seconds until $var seconds'
       )
 
-      let constant: ListConstant = new ListConstant('$var', [2, 9])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -627,9 +508,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario('hide all_planes at 2 seconds')
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 1)
       assert.deepStrictEqual(semanticError[0].errors, '')
     })
@@ -640,9 +519,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario('hide all_planes at "2" seconds')
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 1)
       assert.deepStrictEqual(
         semanticError[0].errors,
@@ -654,9 +531,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario('hide all_planes at 2.9 seconds')
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 1)
       assert.deepStrictEqual(
         semanticError[0].errors,
@@ -668,9 +543,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario('hide all_planes at >> 2 seconds')
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 1)
       assert.deepStrictEqual(
         semanticError[0].errors,
@@ -682,9 +555,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario('hide all_planes at << 2 seconds')
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 1)
       assert.deepStrictEqual(
         semanticError[0].errors,
@@ -696,9 +567,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario('hide all_planes at -2 seconds')
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 1)
       assert.deepStrictEqual(
         semanticError[0].errors,
@@ -710,14 +579,10 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = [2.0, 9.9], hide all_planes at $var seconds'
       )
-      let constant: RangeConstant = new RangeConstant('$var', 2.0, 9.9)
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
+
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 1)
       assert.deepStrictEqual(
         semanticError[0].errors,
@@ -729,14 +594,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = [-2, 9], hide all_planes at $var seconds'
       )
-      let constant: RangeConstant = new RangeConstant('$var', -2, 9)
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 4)
       assert.deepStrictEqual(
         semanticError[0].errors,
@@ -754,14 +614,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = {2, 9.9}, hide all_planes at $var seconds'
       )
-      let constant: ListConstant = new ListConstant('$var', [2, 9.9])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 1)
       assert.deepStrictEqual(
         semanticError[0].errors,
@@ -773,14 +628,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = {-2, 9}, hide all_planes at $var seconds'
       )
-      let constant: ListConstant = new ListConstant('$var', [-2, 9])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 2)
       assert.deepStrictEqual(
         semanticError[0].errors,
@@ -797,9 +647,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -812,9 +660,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -827,9 +673,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -842,9 +686,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -857,9 +699,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -872,9 +712,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -887,9 +725,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -902,9 +738,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -917,9 +751,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -932,9 +764,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -947,9 +777,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -962,9 +790,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -977,9 +803,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -991,9 +815,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -1005,9 +827,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -1020,9 +840,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -1035,9 +853,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -1050,9 +866,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 5)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -1067,9 +881,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -1082,9 +894,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -1097,9 +907,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -1112,9 +920,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -1127,9 +933,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -1142,9 +946,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -1157,9 +959,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -1171,9 +971,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -1186,9 +984,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -1201,9 +997,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -1216,9 +1010,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -1230,9 +1022,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -1245,9 +1035,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -1260,9 +1048,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -1275,9 +1061,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -1289,9 +1073,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -1303,9 +1085,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -1318,9 +1098,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -1333,9 +1111,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -1348,9 +1124,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -1363,9 +1137,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -1378,9 +1150,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -1393,9 +1163,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -1406,14 +1174,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = [2,9], alter all_planes at 0 seconds with_values ALTITUDE = $var'
       )
-      let constant: RangeConstant = new RangeConstant('$var', 2, 9)
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -1424,14 +1187,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = [2,9], alter all_planes at 0 seconds with_values ALTITUDE ++= $var'
       )
-      let constant: RangeConstant = new RangeConstant('$var', 2, 9)
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -1442,14 +1200,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = [2,9], alter all_planes at 0 seconds with_values ALTITUDE *= $var'
       )
-      let constant: RangeConstant = new RangeConstant('$var', 2, 9)
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -1460,14 +1213,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = [2,9], alter all_planes at 0 seconds with_values ALTITUDE += $var'
       )
-      let constant: RangeConstant = new RangeConstant('$var', 2, 9)
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -1478,14 +1226,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = [-2,9], alter all_planes at 0 seconds with_values ALTITUDE = $var'
       )
-      let constant: RangeConstant = new RangeConstant('$var', -2, 9)
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -1496,14 +1239,10 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = [2.0,9.1], alter all_planes at 0 seconds with_values ALTITUDE = $var'
       )
-      let constant: RangeConstant = new RangeConstant('$var', 2.0, 9.1)
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
+
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -1514,14 +1253,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = [2,9], alter all_planes at 0 seconds with_values GROUNDSPEED = $var'
       )
-      let constant: RangeConstant = new RangeConstant('$var', 2, 9)
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -1532,14 +1266,10 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = [2.1,9.7], alter all_planes at 0 seconds with_values GROUNDSPEED = $var'
       )
-      let constant: RangeConstant = new RangeConstant('$var', 2.1, 9.7)
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
+
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -1550,14 +1280,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = [2,9], alter all_planes at 0 seconds with_values LATITUDE = $var'
       )
-      let constant: RangeConstant = new RangeConstant('$var', 2, 9)
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -1568,14 +1293,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = [2.111,9.755], alter all_planes at 0 seconds with_values LATITUDE = $var'
       )
-      let constant: RangeConstant = new RangeConstant('$var', 2.111, 9.755)
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -1586,14 +1306,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = [2,9], alter all_planes at 0 seconds with_values LONGITUDE = $var'
       )
-      let constant: RangeConstant = new RangeConstant('$var', 2, 9)
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -1604,14 +1319,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = [2.111,9.733], alter all_planes at 0 seconds with_values LONGITUDE = $var'
       )
-      let constant: RangeConstant = new RangeConstant('$var', 2.111, 9.733)
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -1622,14 +1332,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = {2, 9}, alter all_planes at 0 seconds with_values ALTITUDE = $var'
       )
-      let constant: ListConstant = new ListConstant('$var', [2, 9])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -1640,14 +1345,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = {"2", "9"}, alter all_planes at 0 seconds with_values ALTITUDE = $var'
       )
-      let constant: ListConstant = new ListConstant('$var', ['2', '9'])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -1658,14 +1358,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = {"-2", "-9"}, alter all_planes at 0 seconds with_values ALTITUDE = $var'
       )
-      let constant: ListConstant = new ListConstant('$var', ['-2', '-9'])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -1676,14 +1371,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = {-2, -9}, alter all_planes at 0 seconds with_values ALTITUDE = $var'
       )
-      let constant: ListConstant = new ListConstant('$var', [-2, -9])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -1694,14 +1384,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = {2.8, 9.0}, alter all_planes at 0 seconds with_values ALTITUDE = $var'
       )
-      let constant: ListConstant = new ListConstant('$var', [2.8, 9.0])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -1712,14 +1397,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = {"2.9", "9.1"}, alter all_planes at 0 seconds with_values ALTITUDE = $var'
       )
-      let constant: ListConstant = new ListConstant('$var', ['2.9', '9.1'])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -1730,14 +1410,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = {10000, 20000}, alter all_planes at 0 seconds with_values CALLSIGN = $var'
       )
-      let constant: ListConstant = new ListConstant('$var', [10000, 20000])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -1748,17 +1423,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = {"SAMU28", "SAMU12"}, alter all_planes at 0 seconds with_values CALLSIGN = $var'
       )
-      let constant: ListConstant = new ListConstant('$var', [
-        'SAMU28',
-        'SAMU12',
-      ])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -1769,14 +1436,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = {0, 1}, alter all_planes at 0 seconds with_values EMERGENCY = $var'
       )
-      let constant: ListConstant = new ListConstant('$var', [0, 1])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -1787,14 +1449,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = {"0", "1"}, alter all_planes at 0 seconds with_values EMERGENCY = $var'
       )
-      let constant: ListConstant = new ListConstant('$var', ['0', '1'])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -1805,14 +1462,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = {2, 9}, alter all_planes at 0 seconds with_values GROUNDSPEED = $var'
       )
-      let constant: ListConstant = new ListConstant('$var', [2, 9])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -1823,14 +1475,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = {2.1, 9.9}, alter all_planes at 0 seconds with_values GROUNDSPEED = $var'
       )
-      let constant: ListConstant = new ListConstant('$var', [2.1, 9.9])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -1841,14 +1488,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = {"2", "9"}, alter all_planes at 0 seconds with_values GROUNDSPEED = $var'
       )
-      let constant: ListConstant = new ListConstant('$var', ['2', '9'])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -1859,14 +1501,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = {"2.8", "9.2"}, alter all_planes at 0 seconds with_values GROUNDSPEED = $var'
       )
-      let constant: ListConstant = new ListConstant('$var', ['2.8', '9.2'])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -1877,17 +1514,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = {"A4A4A4", "B1B1B1"}, alter all_planes at 0 seconds with_values ICAO = $var'
       )
-      let constant: ListConstant = new ListConstant('$var', [
-        'A4A4A4',
-        'B1B1B1',
-      ])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -1898,14 +1527,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = {234567, 541765}, alter all_planes at 0 seconds with_values ICAO = $var'
       )
-      let constant: ListConstant = new ListConstant('$var', [234567, 541765])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -1916,14 +1540,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = {22, 66}, alter all_planes at 0 seconds with_values LATITUDE = $var'
       )
-      let constant: ListConstant = new ListConstant('$var', [22, 66])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -1934,14 +1553,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = {22.123, 66.456}, alter all_planes at 0 seconds with_values LATITUDE = $var'
       )
-      let constant: ListConstant = new ListConstant('$var', [22.123, 66.456])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -1951,17 +1565,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = {"22.123", "66.456"}, alter all_planes at 0 seconds with_values LATITUDE = $var'
       )
-      let constant: ListConstant = new ListConstant('$var', [
-        '22.123',
-        '66.456',
-      ])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -1972,14 +1578,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = {"22", "66"}, alter all_planes at 0 seconds with_values LATITUDE = $var'
       )
-      let constant: ListConstant = new ListConstant('$var', ['22', '66'])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -1990,14 +1591,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = {160, 120}, alter all_planes at 0 seconds with_values LONGITUDE = $var'
       )
-      let constant: ListConstant = new ListConstant('$var', [160, 120])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -2008,14 +1604,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = {160.123, 120.456}, alter all_planes at 0 seconds with_values LONGITUDE = $var'
       )
-      let constant: ListConstant = new ListConstant('$var', [160.123, 120.456])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -2025,17 +1616,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = {"160.123", "120.456"}, alter all_planes at 0 seconds with_values LONGITUDE = $var'
       )
-      let constant: ListConstant = new ListConstant('$var', [
-        '160.123',
-        '120.456',
-      ])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -2046,14 +1629,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = {"160", "120"}, alter all_planes at 0 seconds with_values LONGITUDE = $var'
       )
-      let constant: ListConstant = new ListConstant('$var', ['160', '120'])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -2064,14 +1642,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = {0, 1}, alter all_planes at 0 seconds with_values SPI = $var'
       )
-      let constant: ListConstant = new ListConstant('$var', [0, 1])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -2082,14 +1655,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = {"0", "1"}, alter all_planes at 0 seconds with_values SPI = $var'
       )
-      let constant: ListConstant = new ListConstant('$var', ['0', '1'])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -2100,14 +1668,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = {"4667", "1234"}, alter all_planes at 0 seconds with_values SQUAWK = $var'
       )
-      let constant: ListConstant = new ListConstant('$var', ['4667', '1234'])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -2118,14 +1681,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = {4667, 1234}, alter all_planes at 0 seconds with_values SQUAWK = $var'
       )
-      let constant: ListConstant = new ListConstant('$var', [4667, 1234])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -2136,14 +1694,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = {3, 6}, alter all_planes at 0 seconds with_values TRACK = $var'
       )
-      let constant: ListConstant = new ListConstant('$var', [3, 6])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -2154,14 +1707,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = {3.7, 4.9}, alter all_planes at 0 seconds with_values TRACK = $var'
       )
-      let constant: ListConstant = new ListConstant('$var', [3.7, 4.9])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -2172,14 +1720,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = {"3", "4"}, alter all_planes at 0 seconds with_values TRACK = $var'
       )
-      let constant: ListConstant = new ListConstant('$var', ['3', '4'])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -2190,14 +1733,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = {"3.7", "4.9"}, alter all_planes at 0 seconds with_values TRACK = $var'
       )
-      let constant: ListConstant = new ListConstant('$var', ['3.7', '4.9'])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -2212,9 +1750,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -2230,9 +1766,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -2248,9 +1782,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -2266,9 +1798,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -2284,9 +1814,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -2302,9 +1830,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 4)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[2].errors, '')
@@ -2321,9 +1847,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -2339,9 +1863,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -2357,9 +1879,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -2375,9 +1895,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -2393,9 +1911,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -2413,9 +1929,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -2431,9 +1945,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -2449,9 +1961,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -2466,9 +1976,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -2484,9 +1992,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -2502,9 +2008,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -2520,9 +2024,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -2538,9 +2040,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -2556,9 +2056,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -2574,9 +2072,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -2591,9 +2087,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -2609,9 +2103,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -2627,9 +2119,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -2645,9 +2135,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -2663,9 +2151,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -2682,9 +2168,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -2701,9 +2185,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -2720,9 +2202,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -2738,9 +2218,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -2756,9 +2234,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -2774,9 +2250,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -2792,9 +2266,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -2810,9 +2282,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -2828,9 +2298,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -2846,9 +2314,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -2864,9 +2330,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -2882,9 +2346,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -2900,9 +2362,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -2918,9 +2378,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -2936,9 +2394,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -2954,9 +2410,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -2972,9 +2426,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -2990,9 +2442,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -3008,9 +2458,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -3028,9 +2476,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -3048,9 +2494,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -3067,9 +2511,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -3085,9 +2527,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -3103,9 +2543,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -3121,9 +2559,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -3138,9 +2574,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -3156,9 +2590,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -3174,9 +2606,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -3192,9 +2622,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 4)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[2].errors, '')
@@ -3209,14 +2637,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = [990, 100000], alter all_planes at 0 seconds with_values ALTITUDE = $var'
       )
-      let constant: RangeConstant = new RangeConstant('$var', 990, 100000)
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -3231,14 +2654,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = [-10000, 5000], alter all_planes at 0 seconds with_values ALTITUDE = $var'
       )
-      let constant: RangeConstant = new RangeConstant('$var', -10000, 5000)
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -3253,14 +2671,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = [1000.2, 1233.8], alter all_planes at 0 seconds with_values CALLSIGN = $var'
       )
-      let constant: RangeConstant = new RangeConstant('$var', 1000.2, 1233.8)
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -3274,14 +2687,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = [0, 1], alter all_planes at 0 seconds with_values EMERGENCY = $var'
       )
-      let constant: RangeConstant = new RangeConstant('$var', 0, 1)
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -3295,14 +2703,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = [-2, 2], alter all_planes at 0 seconds with_values GROUNDSPEED = $var'
       )
-      let constant: RangeConstant = new RangeConstant('$var', -2, 2)
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -3316,14 +2719,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = [1200, 1711], alter all_planes at 0 seconds with_values GROUNDSPEED = $var'
       )
-      let constant: RangeConstant = new RangeConstant('$var', 1200, 1711)
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -3338,14 +2736,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = [10.33, 14.2], alter all_planes at 0 seconds with_values GROUNDSPEED = $var'
       )
-      let constant: RangeConstant = new RangeConstant('$var', 10.33, 14)
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -3360,14 +2753,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = [222222, 111111], alter all_planes at 0 seconds with_values ICAO = $var'
       )
-      let constant: RangeConstant = new RangeConstant('$var', 222222, 111111)
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -3381,14 +2769,10 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = [-200, 30], alter all_planes at 0 seconds with_values LATITUDE = $var'
       )
-      let constant: RangeConstant = new RangeConstant('$var', -200, 30)
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
+
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -3403,14 +2787,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = [30, 200], alter all_planes at 0 seconds with_values LATITUDE = $var'
       )
-      let constant: RangeConstant = new RangeConstant('$var', 30, 200)
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -3425,21 +2804,16 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = [30.22, 200.900], alter all_planes at 0 seconds with_values LATITUDE = $var'
       )
-      let constant: RangeConstant = new RangeConstant('$var', 30.22, 200.901)
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
       assert.deepStrictEqual(
         semanticError[2].errors,
-        'LATITUDE must be between -90 and 90 : 199.901\n' +
-          'LATITUDE must be between -90 and 90 : 201.901\n'
+        'LATITUDE must be between -90 and 90 : 199.9\n' +
+          'LATITUDE must be between -90 and 90 : 201.9\n'
       )
     })
 
@@ -3447,14 +2821,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = [-180.8, 30.1], alter all_planes at 0 seconds with_values LATITUDE = $var'
       )
-      let constant: RangeConstant = new RangeConstant('$var', -180.8, 30.1)
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -3469,14 +2838,10 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = [-200, 30], alter all_planes at 0 seconds with_values LONGITUDE = $var'
       )
-      let constant: RangeConstant = new RangeConstant('$var', -200, 30)
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
+
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -3491,14 +2856,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = [30, 200], alter all_planes at 0 seconds with_values LONGITUDE = $var'
       )
-      let constant: RangeConstant = new RangeConstant('$var', 30, 200)
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -3513,14 +2873,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = [30.1, 200.12], alter all_planes at 0 seconds with_values LONGITUDE = $var'
       )
-      let constant: RangeConstant = new RangeConstant('$var', 30.1, 200.12)
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -3535,14 +2890,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = [30, 0], alter all_planes at 0 seconds with_values SPI = $var'
       )
-      let constant: RangeConstant = new RangeConstant('$var', 30, 0)
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -3556,14 +2906,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = [3011, 2005], alter all_planes at 0 seconds with_values SQUAWK = $var'
       )
-      let constant: RangeConstant = new RangeConstant('$var', 3011, 2005)
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -3577,14 +2922,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = [30, 200], alter all_planes at 0 seconds with_values TRACK = $var'
       )
-      let constant: RangeConstant = new RangeConstant('$var', 30, 200)
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -3600,14 +2940,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = {1200,100000}, alter all_planes at 0 seconds with_values ALTITUDE = $var'
       )
-      let constant: ListConstant = new ListConstant('$var', [1200, 100000])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -3621,14 +2956,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = {-10000,1200}, alter all_planes at 0 seconds with_values ALTITUDE = $var'
       )
-      let constant: ListConstant = new ListConstant('$var', [-10000, 1200])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -3642,14 +2972,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = {"1200","test"}, alter all_planes at 0 seconds with_values ALTITUDE = $var'
       )
-      let constant: ListConstant = new ListConstant('$var', ['1200', 'test'])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -3663,14 +2988,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = {2.8,1000.6}, alter all_planes at 0 seconds with_values CALLSIGN = $var'
       )
-      let constant: ListConstant = new ListConstant('$var', [2.8, 1000.6])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -3685,14 +3005,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = {121212,111111111}, alter all_planes at 0 seconds with_values CALLSIGN = $var'
       )
-      let constant: ListConstant = new ListConstant('$var', [121212, 111111111])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -3706,14 +3021,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = {11111,-111}, alter all_planes at 0 seconds with_values CALLSIGN = $var'
       )
-      let constant: ListConstant = new ListConstant('$var', [11111, -111])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -3727,14 +3037,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = {"SAMU12",""}, alter all_planes at 0 seconds with_values CALLSIGN = $var'
       )
-      let constant: ListConstant = new ListConstant('$var', ['SAMU12', ''])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -3750,17 +3055,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = {"SAMU12","SAMSAMSAM"}, alter all_planes at 0 seconds with_values CALLSIGN = $var'
       )
-      let constant: ListConstant = new ListConstant('$var', [
-        'SAMU12',
-        'SAMSAMSAM',
-      ])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -3774,17 +3071,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = {"SAMU12","samu13"}, alter all_planes at 0 seconds with_values CALLSIGN = $var'
       )
-      let constant: ListConstant = new ListConstant('$var', [
-        'SAMU12',
-        'samu13',
-      ])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -3798,17 +3087,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = {"SAMU12","SAMU-35"}, alter all_planes at 0 seconds with_values CALLSIGN = $var'
       )
-      let constant: ListConstant = new ListConstant('$var', [
-        'SAMU12',
-        'SAMU-35',
-      ])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -3821,17 +3102,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = {"SAMU12","SAMU 35"}, alter all_planes at 0 seconds with_values CALLSIGN = $var'
       )
-      let constant: ListConstant = new ListConstant('$var', [
-        'SAMU12',
-        'SAMU 35',
-      ])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -3845,17 +3118,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = {"SAMU12","SAMU\t35"}, alter all_planes at 0 seconds with_values CALLSIGN = $var'
       )
-      let constant: ListConstant = new ListConstant('$var', [
-        'SAMU12',
-        'SAMU\t35',
-      ])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -3869,17 +3134,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = {"SAMU12","SAMU\n35"}, alter all_planes at 0 seconds with_values CALLSIGN = $var'
       )
-      let constant: ListConstant = new ListConstant('$var', [
-        'SAMU12',
-        'SAMU\n35',
-      ])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -3893,14 +3150,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = {"0","test"}, alter all_planes at 0 seconds with_values EMERGENCY = $var'
       )
-      let constant: ListConstant = new ListConstant('$var', ['0', 'test'])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -3914,14 +3166,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = {0,2}, alter all_planes at 0 seconds with_values EMERGENCY = $var'
       )
-      let constant: ListConstant = new ListConstant('$var', [0, 2])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -3935,14 +3182,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = {0,0.8}, alter all_planes at 0 seconds with_values EMERGENCY = $var'
       )
-      let constant: ListConstant = new ListConstant('$var', [0, 0.8])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -3956,14 +3198,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = {-2,1}, alter all_planes at 0 seconds with_values GROUNDSPEED = $var'
       )
-      let constant: ListConstant = new ListConstant('$var', [-2, 1])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -3976,14 +3213,10 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = {0,1500}, alter all_planes at 0 seconds with_values GROUNDSPEED = $var'
       )
-      let constant: ListConstant = new ListConstant('$var', [0, 1500])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
+
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -3997,14 +3230,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = {0.1,12.89}, alter all_planes at 0 seconds with_values GROUNDSPEED = $var'
       )
-      let constant: ListConstant = new ListConstant('$var', [0.1, 12.89])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -4018,14 +3246,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = {"12.89","0.8"}, alter all_planes at 0 seconds with_values GROUNDSPEED = $var'
       )
-      let constant: ListConstant = new ListConstant('$var', ['12.89', '0.8'])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -4039,14 +3262,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = {1.1,12222}, alter all_planes at 0 seconds with_values ICAO = $var'
       )
-      let constant: ListConstant = new ListConstant('$var', [1.1, 12222])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -4062,14 +3280,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = {111111,1000000}, alter all_planes at 0 seconds with_values ICAO = 1000000'
       )
-      let constant: ListConstant = new ListConstant('$var', [111111, 1000000])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -4084,14 +3297,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = {111111,1000001}, alter all_planes at 0 seconds with_values ICAO = $var'
       )
-      let constant: ListConstant = new ListConstant('$var', [111111, 1000001])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -4106,14 +3314,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = {111111,99999}, alter all_planes at 0 seconds with_values ICAO = $var'
       )
-      let constant: ListConstant = new ListConstant('$var', [111111, 99999])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -4128,17 +3331,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = {"A2A2A2","aaaaaa"}, alter all_planes at 0 seconds with_values ICAO = $var'
       )
-      let constant: ListConstant = new ListConstant('$var', [
-        'A2A2A2',
-        'aaaaaa',
-      ])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -4152,17 +3347,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = {"A2A2A2","P3A3A3"}, alter all_planes at 0 seconds with_values ICAO = $var'
       )
-      let constant: ListConstant = new ListConstant('$var', [
-        'A2A2A2',
-        'P3A3A3',
-      ])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -4176,14 +3363,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = {-60,-92}, alter all_planes at 0 seconds with_values LATITUDE = $var'
       )
-      let constant: ListConstant = new ListConstant('$var', [-60, -92])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -4197,14 +3379,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = {60,92}, alter all_planes at 0 seconds with_values LATITUDE = $var'
       )
-      let constant: ListConstant = new ListConstant('$var', [60, 92])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -4218,14 +3395,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = {60.7,92.9}, alter all_planes at 0 seconds with_values LATITUDE = $var'
       )
-      let constant: ListConstant = new ListConstant('$var', [60.7, 92.9])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -4239,14 +3411,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = {"-60.1","-92.7"}, alter all_planes at 0 seconds with_values LATITUDE = $var'
       )
-      let constant: ListConstant = new ListConstant('$var', ['-60.1', '-92.7'])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -4256,39 +3423,13 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
     })
 
-    it('returns error when scenario alter latitude is not float in list constant', async () => {
-      const scenario = await parseScenario(
-        'let $var = {-60,"test"}, alter all_planes at 0 seconds with_values LATITUDE = $var'
-      )
-      let constant: ListConstant = new ListConstant('$var', ['-60', 'test'])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
-      let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
-      assert.deepStrictEqual(semanticError.length, 3)
-      assert.deepStrictEqual(semanticError[0].errors, '')
-      assert.deepStrictEqual(semanticError[1].errors, '')
-      assert.deepStrictEqual(
-        semanticError[2].errors,
-        'LATITUDE expected a float value : test\n'
-      )
-    })
-
     it('returns error when scenario alter longitude int < -180 in list constant', async () => {
       const scenario = await parseScenario(
         'let $var = {-160,-192}, alter all_planes at 0 seconds with_values LONGITUDE = $var'
       )
-      let constant: ListConstant = new ListConstant('$var', [-160, -192])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -4302,14 +3443,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = {160,192}, alter all_planes at 0 seconds with_values LONGITUDE = $var'
       )
-      let constant: ListConstant = new ListConstant('$var', [160, 192])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -4323,14 +3459,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = {160.1,192.9}, alter all_planes at 0 seconds with_values LONGITUDE = $var'
       )
-      let constant: ListConstant = new ListConstant('$var', [160.1, 192.9])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -4344,17 +3475,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = {"-160.2","-192.8"}, alter all_planes at 0 seconds with_values LONGITUDE = $var'
       )
-      let constant: ListConstant = new ListConstant('$var', [
-        '-160.2',
-        '-192.8',
-      ])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -4364,39 +3487,13 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
     })
 
-    it('returns error when scenario alter longitude is not float in list constant', async () => {
-      const scenario = await parseScenario(
-        'let $var = {-160,"test"}, alter all_planes at 0 seconds with_values LONGITUDE = $var'
-      )
-      let constant: ListConstant = new ListConstant('$var', ['-160', 'test'])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
-      let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
-      assert.deepStrictEqual(semanticError.length, 3)
-      assert.deepStrictEqual(semanticError[0].errors, '')
-      assert.deepStrictEqual(semanticError[1].errors, '')
-      assert.deepStrictEqual(
-        semanticError[2].errors,
-        'LONGITUDE expected a float value : test\n'
-      )
-    })
-
     it('returns error when scenario alter spi is string who is not 1 or 0 in list constant', async () => {
       const scenario = await parseScenario(
         'let $var = {"1","test"}, alter all_planes at 0 seconds with_values SPI = $var'
       )
-      let constant: ListConstant = new ListConstant('$var', ['1', 'test'])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -4410,14 +3507,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = {1,2}, alter all_planes at 0 seconds with_values SPI = $var'
       )
-      let constant: ListConstant = new ListConstant('$var', [1, 2])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -4431,14 +3523,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = {1,0.8}, alter all_planes at 0 seconds with_values SPI = $var'
       )
-      let constant: ListConstant = new ListConstant('$var', [1, 0.8])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -4452,14 +3539,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = {1111,22.7}, alter all_planes at 0 seconds with_values SQUAWK = $var'
       )
-      let constant: ListConstant = new ListConstant('$var', [1111, 22.7])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -4473,14 +3555,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = {1111,227}, alter all_planes at 0 seconds with_values SQUAWK = $var'
       )
-      let constant: ListConstant = new ListConstant('$var', [1111, 227])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -4496,14 +3573,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = {1111,999}, alter all_planes at 0 seconds with_values SQUAWK = $var'
       )
-      let constant: ListConstant = new ListConstant('$var', [1111, 999])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -4519,14 +3591,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = {1111,7778}, alter all_planes at 0 seconds with_values SQUAWK = $var'
       )
-      let constant: ListConstant = new ListConstant('$var', [1111, 7778])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -4541,14 +3608,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = {1111,5778}, alter all_planes at 0 seconds with_values SQUAWK = $var'
       )
-      let constant: ListConstant = new ListConstant('$var', [1111, 5778])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -4562,14 +3624,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = {"1111","777"}, alter all_planes at 0 seconds with_values SQUAWK = $var'
       )
-      let constant: ListConstant = new ListConstant('$var', ['1111', '777'])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -4583,14 +3640,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = {"1111","5789"}, alter all_planes at 0 seconds with_values SQUAWK = $var'
       )
-      let constant: ListConstant = new ListConstant('$var', ['1111', '5789'])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -4604,14 +3656,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = {50,-2}, alter all_planes at 0 seconds with_values TRACK = $var'
       )
-      let constant: ListConstant = new ListConstant('$var', [50, -2])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -4624,14 +3671,10 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = {50,361}, alter all_planes at 0 seconds with_values TRACK = $var'
       )
-      let constant: ListConstant = new ListConstant('$var', [50, 361])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
+
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -4645,14 +3688,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = {50,12.89}, alter all_planes at 0 seconds with_values TRACK = $var'
       )
-      let constant: ListConstant = new ListConstant('$var', [50, 12.89])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -4666,14 +3704,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = {"50","12.89"}, alter all_planes at 0 seconds with_values TRACK = $var'
       )
-      let constant: ListConstant = new ListConstant('$var', ['50', '12.89'])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -4687,14 +3720,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = {50,60}, alter all_planes at 0 seconds with_values TRACK = $var and TRACK = 18'
       )
-      let constant: ListConstant = new ListConstant('$var', [50, 60])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 4)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[3].errors, '')
@@ -4713,9 +3741,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
 
       assert.deepStrictEqual(semanticError.length, 6)
       assert.deepStrictEqual(semanticError[0].errors, '')
@@ -4730,14 +3756,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = [9 , 12], alter all_planes at 0 seconds with_waypoints [ ( $var, $var )  with_altitude $var at 1 seconds ]'
       )
-      let constant: RangeConstant = new RangeConstant('$var', 9, 12)
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 6)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -4751,14 +3772,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = {9 , 12}, alter all_planes at 0 seconds with_waypoints [ ( $var, $var )  with_altitude $var at 1 seconds ]'
       )
-      let constant: ListConstant = new ListConstant('$var', [9, 12])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 6)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -4776,9 +3792,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
 
       assert.deepStrictEqual(semanticError.length, 6)
       assert.deepStrictEqual(semanticError[0].errors, '')
@@ -4795,9 +3809,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
 
       assert.deepStrictEqual(semanticError.length, 8)
       assert.deepStrictEqual(semanticError[0].errors, '')
@@ -4816,9 +3828,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
 
       assert.deepStrictEqual(semanticError.length, 7)
       assert.deepStrictEqual(semanticError[0].errors, '')
@@ -4836,9 +3846,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
 
       assert.deepStrictEqual(semanticError.length, 8)
       assert.deepStrictEqual(semanticError[0].errors, '')
@@ -4857,9 +3865,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
 
       assert.deepStrictEqual(semanticError.length, 8)
       assert.deepStrictEqual(semanticError[0].errors, '')
@@ -4878,9 +3884,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
 
       assert.deepStrictEqual(semanticError.length, 8)
       assert.deepStrictEqual(semanticError[0].errors, '')
@@ -4899,9 +3903,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 8)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -4919,9 +3921,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 8)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -4938,9 +3938,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 8)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -4957,9 +3955,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 8)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -4975,14 +3971,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = [1, 8], create at 0 seconds with_waypoints [ ( $var, $var)  with_altitude $var at 1 seconds ] '
       )
-      let constant: RangeConstant = new RangeConstant('$var', 1, 8)
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 6)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -4996,14 +3987,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = {1, 8}, create at 0 seconds with_waypoints [ ( $var, $var)  with_altitude $var at 1 seconds ] '
       )
-      let constant: ListConstant = new ListConstant('$var', [1, 8])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 6)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -5017,17 +4003,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = {"A2A2A2", "111111"}, create at 0 seconds with_waypoints [ ( 3, 8 )  with_altitude 8 at 1 seconds ] with_values ICAO = $var'
       )
-      let constant: ListConstant = new ListConstant('$var', [
-        'A2A2A2',
-        '111111',
-      ])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 8)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -5043,14 +4021,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = {6666, 7676}, create at 0 seconds with_waypoints [ ( 3, 8)  with_altitude 8 at 1 seconds ] with_values SQUAWK = $var'
       )
-      let constant: ListConstant = new ListConstant('$var', [6666, 7676])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 7)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -5065,17 +4038,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = {"SAMU12", "SAMU89"}, create at 0 seconds with_waypoints [ ( 3, 8)  with_altitude 8 at 1 seconds ] with_values CALLSIGN = $var'
       )
-      let constant: ListConstant = new ListConstant('$var', [
-        'SAMU12',
-        'SAMU89',
-      ])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 8)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -5091,14 +4056,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = {"0", "1"}, create at 0 seconds with_waypoints [ ( 3, 8)  with_altitude 8 at 1 seconds ] with_values EMERGENCY = $var'
       )
-      let constant: ListConstant = new ListConstant('$var', ['0', '1'])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 8)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -5114,14 +4074,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = {1, 0}, create at 0 seconds with_waypoints [ ( 3, 8)  with_altitude 8 at 1 seconds ] with_values SPI = $var'
       )
-      let constant: ListConstant = new ListConstant('$var', [1, 0])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 8)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -5137,14 +4092,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = {1, 0}, create at 0 seconds with_waypoints [ ( 3, 8)  with_altitude 8 at 1 seconds ] with_values ALERT = $var'
       )
-      let constant: ListConstant = new ListConstant('$var', [1, 0])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 8)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -5160,14 +4110,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = {"1", "0"}, create at 0 seconds with_waypoints [ ( 3, 8)  with_altitude 8 at 1 seconds ] with_values ALERT = $var'
       )
-      let constant: ListConstant = new ListConstant('$var', ['1', '0'])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 8)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -5186,9 +4131,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 8)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -5209,9 +4152,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 8)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -5232,9 +4173,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 8)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -5255,9 +4194,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 8)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -5278,9 +4215,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 8)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -5298,14 +4233,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = [1,0], create at 0 seconds with_waypoints [ ( 3, 8)  with_altitude 8 at 1 seconds ] with_values ALERT = $var'
       )
-      let constant: RangeConstant = new RangeConstant('$var', 1, 0)
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 8)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -5324,14 +4254,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = {"1", "test"}, create at 0 seconds with_waypoints [ ( 3, 8)  with_altitude 8 at 1 seconds ] with_values ALERT = $var'
       )
-      let constant: ListConstant = new ListConstant('$var', ['1', 'test'])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 8)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -5350,14 +4275,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = {1, 2}, create at 0 seconds with_waypoints [ ( 3, 8)  with_altitude 8 at 1 seconds ] with_values ALERT = $var'
       )
-      let constant: ListConstant = new ListConstant('$var', [1, 2])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 8)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -5376,14 +4296,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = {1, 0.8}, create at 0 seconds with_waypoints [ ( 3, 8)  with_altitude 8 at 1 seconds ] with_values ALERT = $var'
       )
-      let constant: ListConstant = new ListConstant('$var', [1, 0.8])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 8)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -5406,9 +4321,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
 
       assert.deepStrictEqual(semanticError.length, 4)
       assert.deepStrictEqual(semanticError[0].errors, '')
@@ -5425,9 +4338,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 5)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[3].errors, '')
@@ -5445,9 +4356,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 4)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -5464,9 +4373,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 4)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -5483,9 +4390,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 4)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[3].errors, '')
@@ -5500,14 +4405,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = [111111,222222], saturate all_planes at 0 seconds with_values ICAO = $var and NUMBER = 2'
       )
-      let constant: RangeConstant = new RangeConstant('$var', 111111, 222222)
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 4)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -5522,14 +4422,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = [2,5], saturate all_planes at 0 seconds with_values ICAO = "A3A3A3" and NUMBER = $var'
       )
-      let constant: RangeConstant = new RangeConstant('$var', 2, 5)
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 4)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -5541,17 +4436,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = {"111111","222222"}, saturate all_planes at 0 seconds with_values ICAO = $var and NUMBER = 2'
       )
-      let constant: ListConstant = new ListConstant('$var', [
-        '111111',
-        '222222',
-      ])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 4)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -5563,14 +4450,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var = {2,5}, saturate all_planes at 0 seconds with_values ICAO = "A3A3A3" and NUMBER = $var'
       )
-      let constant: ListConstant = new ListConstant('$var', [2, 5])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 4)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -5586,9 +4468,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
 
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
@@ -5600,9 +4480,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario('replay all_planes at 0 seconds')
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
 
       assert.deepStrictEqual(semanticError.length, 1)
       assert.deepStrictEqual(semanticError[0].errors, '')
@@ -5616,9 +4494,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
 
       assert.deepStrictEqual(semanticError.length, 2)
       assert.deepStrictEqual(
@@ -5636,9 +4512,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
 
       assert.deepStrictEqual(semanticError.length, 2)
       assert.deepStrictEqual(semanticError[0].errors, '')
@@ -5649,14 +4523,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var=[2,9], delay all_planes at 0 seconds with_delay $var seconds'
       )
-      let constant: RangeConstant = new RangeConstant('$var', 2, 9)
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 5)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -5668,14 +4537,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var={2,9}, delay all_planes at 0 seconds with_delay $var seconds'
       )
-      let constant: ListConstant = new ListConstant('$var', [2, 9])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -5690,9 +4554,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
 
       assert.deepStrictEqual(semanticError.length, 2)
       assert.deepStrictEqual(semanticError[0].errors, '')
@@ -5706,14 +4568,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var=[-2,9], delay all_planes at 0 seconds with_delay $var seconds'
       )
-      let constant: RangeConstant = new RangeConstant('$var', -2, 9)
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 5)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(
@@ -5732,14 +4589,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var={-2,9}, delay all_planes at 0 seconds with_delay $var seconds'
       )
-      let constant: ListConstant = new ListConstant('$var', [-2, 9])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(
@@ -5757,9 +4609,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
 
       assert.deepStrictEqual(semanticError.length, 2)
       assert.deepStrictEqual(semanticError[0].errors, '')
@@ -5770,14 +4620,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var=[5,56], rotate all_planes at 0 seconds with_angle $var'
       )
-      let constant: RangeConstant = new RangeConstant('$var', 5, 56)
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 2)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(
@@ -5790,14 +4635,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var={5,56}, rotate all_planes at 0 seconds with_angle $var'
       )
-      let constant: ListConstant = new ListConstant('$var', [5, 56])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 2)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(semanticError[1].errors, '')
@@ -5811,9 +4651,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
 
       assert.deepStrictEqual(semanticError.length, 2)
       assert.deepStrictEqual(semanticError[0].errors, '')
@@ -5829,9 +4667,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
 
       assert.deepStrictEqual(semanticError.length, 2)
       assert.deepStrictEqual(semanticError[0].errors, '')
@@ -5845,14 +4681,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var={5,900}, rotate all_planes at 0 seconds with_angle $var'
       )
-      let constant: ListConstant = new ListConstant('$var', [5, 900])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 2)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(
@@ -5865,14 +4696,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var={5,56.898}, rotate all_planes at 0 seconds with_angle $var'
       )
-      let constant: ListConstant = new ListConstant('$var', [5, 56.898])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 2)
       assert.deepStrictEqual(semanticError[0].errors, '')
       assert.deepStrictEqual(
@@ -5887,9 +4713,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
 
       assert.deepStrictEqual(semanticError.length, 2)
       assert.deepStrictEqual(semanticError[0].errors, '')
@@ -5905,9 +4729,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
 
       assert.deepStrictEqual(semanticError.length, 2)
       assert.deepStrictEqual(semanticError[0].errors, '')
@@ -5923,9 +4745,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
 
       assert.deepStrictEqual(semanticError.length, 3)
       assert.deepStrictEqual(semanticError[0].errors, '')
@@ -5942,9 +4762,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario('cut all_planes at 0 seconds')
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
 
       assert.deepStrictEqual(semanticError.length, 1)
       assert.deepStrictEqual(semanticError[0].errors, '')
@@ -5958,9 +4776,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
       )
       let f: AlterationScenarioSemanticVisitor =
         new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
 
       assert.deepStrictEqual(semanticError.length, 2)
       assert.deepStrictEqual(semanticError[0].errors, '')
@@ -5977,9 +4793,7 @@ describe('AlterationScenarioSemanticVisitor', () => {
     )
     let f: AlterationScenarioSemanticVisitor =
       new AlterationScenarioSemanticVisitor()
-    let semanticError: SemanticError[] = f.visitInstruction(
-      scenario.value.instructions[0]
-    )
+    let semanticError: SemanticError[] = f.visitScenario(scenario.value)
 
     assert.deepStrictEqual(semanticError.length, 2)
     assert.deepStrictEqual(semanticError[1].errors, '')
@@ -5994,14 +4808,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
       const scenario = await parseScenario(
         'let $var={5,56}, rotate all_planes at $var2 seconds with_angle 3'
       )
-      let constant: ListConstant = new ListConstant('$var', [5, 56])
-      let memory: Memory = new Memory()
-      memory.addConstant(constant)
       let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor(memory)
-      let semanticError: SemanticError[] = f.visitInstruction(
-        scenario.value.instructions[0]
-      )
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
       assert.deepStrictEqual(semanticError.length, 2)
       assert.deepStrictEqual(
         semanticError[0].errors,
@@ -6015,14 +4824,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
     const scenario = await parseScenario(
       'let $var={"5","56"}, rotate all_planes at $var seconds with_angle 3'
     )
-    let constant: ListConstant = new ListConstant('$var', ['5', '56'])
-    let memory: Memory = new Memory()
-    memory.addConstant(constant)
     let f: AlterationScenarioSemanticVisitor =
-      new AlterationScenarioSemanticVisitor(memory)
-    let semanticError: SemanticError[] = f.visitInstruction(
-      scenario.value.instructions[0]
-    )
+      new AlterationScenarioSemanticVisitor()
+    let semanticError: SemanticError[] = f.visitScenario(scenario.value)
     assert.deepStrictEqual(semanticError.length, 2)
     assert.deepStrictEqual(semanticError[0].errors, 'Time must be an Integer\n')
     assert.deepStrictEqual(semanticError[1].errors, '')
@@ -6032,14 +4836,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
     const scenario = await parseScenario(
       'let $var={5,56}, saturate all_planes at 0 seconds with_values ICAO = "A2A2A2" and NUMBER = $var2'
     )
-    let constant: ListConstant = new ListConstant('$var', [5, 56])
-    let memory: Memory = new Memory()
-    memory.addConstant(constant)
     let f: AlterationScenarioSemanticVisitor =
-      new AlterationScenarioSemanticVisitor(memory)
-    let semanticError: SemanticError[] = f.visitInstruction(
-      scenario.value.instructions[0]
-    )
+      new AlterationScenarioSemanticVisitor()
+    let semanticError: SemanticError[] = f.visitScenario(scenario.value)
     assert.deepStrictEqual(semanticError.length, 4)
     assert.deepStrictEqual(semanticError[3].errors, 'Variable $var2 not found')
     assert.deepStrictEqual(semanticError[1].errors, '')
@@ -6051,14 +4850,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
     const scenario = await parseScenario(
       'let $var={5,56}, alter all_planes at 0 seconds with_values CALLSIGN = $var2'
     )
-    let constant: ListConstant = new ListConstant('$var', [5, 56])
-    let memory: Memory = new Memory()
-    memory.addConstant(constant)
     let f: AlterationScenarioSemanticVisitor =
-      new AlterationScenarioSemanticVisitor(memory)
-    let semanticError: SemanticError[] = f.visitInstruction(
-      scenario.value.instructions[0]
-    )
+      new AlterationScenarioSemanticVisitor()
+    let semanticError: SemanticError[] = f.visitScenario(scenario.value)
     assert.deepStrictEqual(semanticError.length, 3)
     assert.deepStrictEqual(semanticError[0].errors, '')
     assert.deepStrictEqual(semanticError[1].errors, '')
@@ -6069,14 +4863,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
     const scenario = await parseScenario(
       'let $var={5,56}, alter all_planes at 0 seconds with_values ALTITUDE = $var2'
     )
-    let constant: ListConstant = new ListConstant('$var', [5, 56])
-    let memory: Memory = new Memory()
-    memory.addConstant(constant)
     let f: AlterationScenarioSemanticVisitor =
-      new AlterationScenarioSemanticVisitor(memory)
-    let semanticError: SemanticError[] = f.visitInstruction(
-      scenario.value.instructions[0]
-    )
+      new AlterationScenarioSemanticVisitor()
+    let semanticError: SemanticError[] = f.visitScenario(scenario.value)
     assert.deepStrictEqual(semanticError.length, 3)
     assert.deepStrictEqual(semanticError[0].errors, '')
     assert.deepStrictEqual(semanticError[1].errors, '')
@@ -6087,14 +4876,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
     const scenario = await parseScenario(
       'let $var={5,56}, alter all_planes at 0 seconds with_values EMERGENCY = $var2'
     )
-    let constant: ListConstant = new ListConstant('$var', [5, 56])
-    let memory: Memory = new Memory()
-    memory.addConstant(constant)
     let f: AlterationScenarioSemanticVisitor =
-      new AlterationScenarioSemanticVisitor(memory)
-    let semanticError: SemanticError[] = f.visitInstruction(
-      scenario.value.instructions[0]
-    )
+      new AlterationScenarioSemanticVisitor()
+    let semanticError: SemanticError[] = f.visitScenario(scenario.value)
     assert.deepStrictEqual(semanticError.length, 3)
     assert.deepStrictEqual(semanticError[0].errors, '')
     assert.deepStrictEqual(semanticError[1].errors, '')
@@ -6105,14 +4889,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
     const scenario = await parseScenario(
       'let $var={5,56}, alter all_planes at 0 seconds with_values GROUNDSPEED = $var2'
     )
-    let constant: ListConstant = new ListConstant('$var', [5, 56])
-    let memory: Memory = new Memory()
-    memory.addConstant(constant)
     let f: AlterationScenarioSemanticVisitor =
-      new AlterationScenarioSemanticVisitor(memory)
-    let semanticError: SemanticError[] = f.visitInstruction(
-      scenario.value.instructions[0]
-    )
+      new AlterationScenarioSemanticVisitor()
+    let semanticError: SemanticError[] = f.visitScenario(scenario.value)
     assert.deepStrictEqual(semanticError.length, 3)
     assert.deepStrictEqual(semanticError[0].errors, '')
     assert.deepStrictEqual(semanticError[1].errors, '')
@@ -6123,14 +4902,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
     const scenario = await parseScenario(
       'let $var={5,56}, alter all_planes at 0 seconds with_values ICAO = $var2'
     )
-    let constant: ListConstant = new ListConstant('$var', [5, 56])
-    let memory: Memory = new Memory()
-    memory.addConstant(constant)
     let f: AlterationScenarioSemanticVisitor =
-      new AlterationScenarioSemanticVisitor(memory)
-    let semanticError: SemanticError[] = f.visitInstruction(
-      scenario.value.instructions[0]
-    )
+      new AlterationScenarioSemanticVisitor()
+    let semanticError: SemanticError[] = f.visitScenario(scenario.value)
     assert.deepStrictEqual(semanticError.length, 3)
     assert.deepStrictEqual(semanticError[0].errors, '')
     assert.deepStrictEqual(semanticError[1].errors, '')
@@ -6141,14 +4915,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
     const scenario = await parseScenario(
       'let $var={5,56}, alter all_planes at 0 seconds with_values LATITUDE = $var2'
     )
-    let constant: ListConstant = new ListConstant('$var', [5, 56])
-    let memory: Memory = new Memory()
-    memory.addConstant(constant)
     let f: AlterationScenarioSemanticVisitor =
-      new AlterationScenarioSemanticVisitor(memory)
-    let semanticError: SemanticError[] = f.visitInstruction(
-      scenario.value.instructions[0]
-    )
+      new AlterationScenarioSemanticVisitor()
+    let semanticError: SemanticError[] = f.visitScenario(scenario.value)
     assert.deepStrictEqual(semanticError.length, 3)
     assert.deepStrictEqual(semanticError[0].errors, '')
     assert.deepStrictEqual(semanticError[1].errors, '')
@@ -6159,14 +4928,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
     const scenario = await parseScenario(
       'let $var={5,56}, alter all_planes at 0 seconds with_values LONGITUDE = $var2'
     )
-    let constant: ListConstant = new ListConstant('$var', [5, 56])
-    let memory: Memory = new Memory()
-    memory.addConstant(constant)
     let f: AlterationScenarioSemanticVisitor =
-      new AlterationScenarioSemanticVisitor(memory)
-    let semanticError: SemanticError[] = f.visitInstruction(
-      scenario.value.instructions[0]
-    )
+      new AlterationScenarioSemanticVisitor()
+    let semanticError: SemanticError[] = f.visitScenario(scenario.value)
     assert.deepStrictEqual(semanticError.length, 3)
     assert.deepStrictEqual(semanticError[0].errors, '')
     assert.deepStrictEqual(semanticError[1].errors, '')
@@ -6177,14 +4941,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
     const scenario = await parseScenario(
       'let $var={5,56}, alter all_planes at 0 seconds with_values SPI = $var2'
     )
-    let constant: ListConstant = new ListConstant('$var', [5, 56])
-    let memory: Memory = new Memory()
-    memory.addConstant(constant)
     let f: AlterationScenarioSemanticVisitor =
-      new AlterationScenarioSemanticVisitor(memory)
-    let semanticError: SemanticError[] = f.visitInstruction(
-      scenario.value.instructions[0]
-    )
+      new AlterationScenarioSemanticVisitor()
+    let semanticError: SemanticError[] = f.visitScenario(scenario.value)
     assert.deepStrictEqual(semanticError.length, 3)
     assert.deepStrictEqual(semanticError[0].errors, '')
     assert.deepStrictEqual(semanticError[1].errors, '')
@@ -6195,14 +4954,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
     const scenario = await parseScenario(
       'let $var={5,56}, alter all_planes at 0 seconds with_values SQUAWK = $var2'
     )
-    let constant: ListConstant = new ListConstant('$var', [5, 56])
-    let memory: Memory = new Memory()
-    memory.addConstant(constant)
     let f: AlterationScenarioSemanticVisitor =
-      new AlterationScenarioSemanticVisitor(memory)
-    let semanticError: SemanticError[] = f.visitInstruction(
-      scenario.value.instructions[0]
-    )
+      new AlterationScenarioSemanticVisitor()
+    let semanticError: SemanticError[] = f.visitScenario(scenario.value)
     assert.deepStrictEqual(semanticError.length, 3)
     assert.deepStrictEqual(semanticError[0].errors, '')
     assert.deepStrictEqual(semanticError[1].errors, '')
@@ -6213,14 +4967,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
     const scenario = await parseScenario(
       'let $var={5,56}, alter all_planes at 0 seconds with_values TRACK = $var2'
     )
-    let constant: ListConstant = new ListConstant('$var', [5, 56])
-    let memory: Memory = new Memory()
-    memory.addConstant(constant)
     let f: AlterationScenarioSemanticVisitor =
-      new AlterationScenarioSemanticVisitor(memory)
-    let semanticError: SemanticError[] = f.visitInstruction(
-      scenario.value.instructions[0]
-    )
+      new AlterationScenarioSemanticVisitor()
+    let semanticError: SemanticError[] = f.visitScenario(scenario.value)
     assert.deepStrictEqual(semanticError.length, 3)
     assert.deepStrictEqual(semanticError[0].errors, '')
     assert.deepStrictEqual(semanticError[1].errors, '')
@@ -6231,14 +4980,9 @@ describe('AlterationScenarioSemanticVisitor', () => {
     const scenario = await parseScenario(
       'let $var={5,56}, create at 0 seconds with_waypoints [ ( 3, 8)  with_altitude 8 at 1 seconds ] with_values ALERT = $var2'
     )
-    let constant: ListConstant = new ListConstant('$var', [5, 56])
-    let memory: Memory = new Memory()
-    memory.addConstant(constant)
     let f: AlterationScenarioSemanticVisitor =
-      new AlterationScenarioSemanticVisitor(memory)
-    let semanticError: SemanticError[] = f.visitInstruction(
-      scenario.value.instructions[0]
-    )
+      new AlterationScenarioSemanticVisitor()
+    let semanticError: SemanticError[] = f.visitScenario(scenario.value)
     assert.deepStrictEqual(semanticError.length, 8)
     assert.deepStrictEqual(semanticError[0].errors, '')
     assert.deepStrictEqual(semanticError[1].errors, '')

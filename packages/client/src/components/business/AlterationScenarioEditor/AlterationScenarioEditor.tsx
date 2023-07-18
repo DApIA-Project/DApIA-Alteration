@@ -16,17 +16,6 @@ import { TextEdit } from 'vscode-languageserver-types'
 import { InsertReplaceEdit } from 'vscode-languageserver'
 import { AlterationScenarioSemanticVisitor } from '@smartesting/alteration-scenario/dist/generators/AlterationScenarioSemanticVisitor'
 import { SemanticError } from '@smartesting/alteration-scenario/dist/generators'
-import { Memory } from '@smartesting/alteration-scenario/dist/generators/Memory/Memory'
-import { RangeConstant } from '@smartesting/alteration-scenario/dist/generators/Memory/RangeConstant'
-import { ListConstant } from '@smartesting/alteration-scenario/dist/generators/Memory/ListConstant'
-import {
-  ASTListDeclaration,
-  ASTRangeDeclaration,
-  isASTListDeclaration,
-  isASTOffsetList,
-  isASTRangeDeclaration,
-  isASTStringList,
-} from '@smartesting/alteration-scenario/dist/language-server/generated/ast'
 import { getSemantic } from './utils/getSemantic'
 import IModel = monaco.editor.IModel
 import CompletionItemProvider = monaco.languages.CompletionItemProvider
@@ -42,7 +31,6 @@ const AlterationScenarioEditor: React.FunctionComponent<
   AlterationScenarioEditorProps
 > = ({ language, value, options, ...props }) => {
   const monaco = useMonaco()
-  let memory: Memory = new Memory()
 
   useEffect(
     () => {
@@ -106,43 +94,7 @@ const AlterationScenarioEditor: React.FunctionComponent<
       })
     )
 
-    if (value.declarations.length !== 0) {
-      for (const decl of value.declarations) {
-        if (isASTRangeDeclaration(decl)) {
-          let rangeDecl: ASTRangeDeclaration = decl as ASTRangeDeclaration
-          let constant: RangeConstant = new RangeConstant(
-            decl.constant,
-            rangeDecl.range.range.start,
-            rangeDecl.range.range.end
-          )
-          memory.addConstant(constant)
-        }
-
-        if (isASTListDeclaration(decl)) {
-          let listDecl: ASTListDeclaration = decl as ASTListDeclaration
-          console.log(listDecl)
-          let valuesList = []
-          if (isASTStringList(listDecl.list.list)) {
-            for (const valuesListElement of listDecl.list.list.items) {
-              valuesList.push(valuesListElement)
-            }
-          }
-          if (isASTOffsetList(listDecl.list.list)) {
-            for (const valuesListElement of listDecl.list.list.items) {
-              valuesList.push(valuesListElement.content)
-            }
-          }
-
-          let constant: ListConstant = new ListConstant(
-            decl.constant,
-            valuesList
-          )
-          memory.addConstant(constant)
-        }
-      }
-    }
-    console.log(memory)
-    const visitor = new AlterationScenarioSemanticVisitor(memory)
+    const visitor = new AlterationScenarioSemanticVisitor()
     const semanticErrors: SemanticError[] = visitor.visitScenario(value)
     markers.push(...getSemantic(model, semanticErrors))
 
@@ -178,7 +130,6 @@ const AlterationScenarioEditor: React.FunctionComponent<
         )
         console.log(suggestion)
         if (suggestion.errors.lexer.length !== 0) {
-          memory.clear()
           await validate(
             model,
             suggestion.errors.lexer[0].column || 0,
@@ -188,7 +139,6 @@ const AlterationScenarioEditor: React.FunctionComponent<
           )
         } else {
           if (suggestion.errors.parser.length !== 0) {
-            memory.clear()
             const { token } = suggestion.errors.parser[0]
             const length =
               token.startColumn !== undefined && token.endColumn !== undefined
@@ -203,7 +153,6 @@ const AlterationScenarioEditor: React.FunctionComponent<
               token.startLine || 0
             )
           } else {
-            memory.clear()
             const { value } = await parseScenario(
               model.getValueInRange({
                 startLineNumber: 1,
@@ -212,45 +161,7 @@ const AlterationScenarioEditor: React.FunctionComponent<
                 endColumn: position.column,
               })
             )
-
-            if (value.declarations.length !== 0) {
-              for (const decl of value.declarations) {
-                if (isASTRangeDeclaration(decl)) {
-                  let rangeDecl: ASTRangeDeclaration =
-                    decl as ASTRangeDeclaration
-                  let constant: RangeConstant = new RangeConstant(
-                    decl.constant,
-                    rangeDecl.range.range.start,
-                    rangeDecl.range.range.end
-                  )
-                  memory.addConstant(constant)
-                }
-
-                if (isASTListDeclaration(decl)) {
-                  let listDecl: ASTListDeclaration = decl as ASTListDeclaration
-                  console.log(listDecl)
-                  let valuesList = []
-                  if (isASTStringList(listDecl.list.list)) {
-                    for (const valuesListElement of listDecl.list.list.items) {
-                      valuesList.push(valuesListElement)
-                    }
-                  }
-                  if (isASTOffsetList(listDecl.list.list)) {
-                    for (const valuesListElement of listDecl.list.list.items) {
-                      valuesList.push(valuesListElement.content)
-                    }
-                  }
-
-                  let constant: ListConstant = new ListConstant(
-                    decl.constant,
-                    valuesList
-                  )
-                  memory.addConstant(constant)
-                }
-              }
-            }
-
-            const visitor = new AlterationScenarioSemanticVisitor(memory)
+            const visitor = new AlterationScenarioSemanticVisitor()
             const result: SemanticError[] = visitor.visitScenario(value)
             validateSemantic(model, result)
           }

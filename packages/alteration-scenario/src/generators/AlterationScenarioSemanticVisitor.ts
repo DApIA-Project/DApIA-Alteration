@@ -52,8 +52,10 @@ import {
   isASTDoubleValue,
   isASTIntegerValue,
   isASTLeftShift,
+  isASTOffsetList,
   isASTParameters,
   isASTRightShift,
+  isASTStringList,
   isASTStringValue,
 } from '../language-server/generated/ast'
 import { SemanticError } from './index'
@@ -63,19 +65,17 @@ import { Constant } from './Memory/Constant'
 import { ConstantTypes } from './Memory/ConstantTypes'
 import { isRangeConstant } from './Memory/isRangeConstant'
 import { isListConstant } from './Memory/isListConstant'
+import { ListConstant } from './Memory/ListConstant'
+import { RangeConstant } from './Memory/RangeConstant'
 
 export class AlterationScenarioSemanticVisitor extends AlterationScenarioVisitor<
   SemanticError[]
 > {
   private memory: Memory
 
-  constructor(memory?: Memory) {
+  constructor() {
     super()
-    if (memory != undefined) {
-      this.memory = memory
-    } else {
-      this.memory = new Memory()
-    }
+    this.memory = new Memory()
   }
 
   visitScenario(node: ASTScenario): SemanticError[] {
@@ -94,6 +94,24 @@ export class AlterationScenarioSemanticVisitor extends AlterationScenarioVisitor
     let semanticError: SemanticError[] = []
     let list = this.visitList(node.list)
     semanticError.push()
+
+    let valuesList = []
+    if (isASTStringList(node.list.list)) {
+      for (const valuesListElement of node.list.list.items) {
+        valuesList.push(
+          valuesListElement.slice(1, valuesListElement.length - 1)
+        )
+      }
+    }
+    if (isASTOffsetList(node.list.list)) {
+      for (const valuesListElement of node.list.list.items) {
+        valuesList.push(valuesListElement.content)
+      }
+    }
+
+    let constant: ListConstant = new ListConstant(node.constant, valuesList)
+    this.memory.addConstant(constant)
+
     return semanticError
   }
 
@@ -102,6 +120,13 @@ export class AlterationScenarioSemanticVisitor extends AlterationScenarioVisitor
     if (node.range != undefined) {
       semanticError.push(...this.doSwitch(node.range))
     }
+
+    let constant: RangeConstant = new RangeConstant(
+      node.constant,
+      node.range.range.start,
+      node.range.range.end
+    )
+    this.memory.addConstant(constant)
     return semanticError
   }
 
