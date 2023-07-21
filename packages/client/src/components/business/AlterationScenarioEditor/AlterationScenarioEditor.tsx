@@ -21,6 +21,7 @@ import IModel = monaco.editor.IModel
 import CompletionItemProvider = monaco.languages.CompletionItemProvider
 import ILanguageExtensionPoint = monaco.languages.ILanguageExtensionPoint
 import IMarkerData = editor.IMarkerData
+import ITextModel = editor.ITextModel
 
 type AlterationScenarioEditorProps = {
   language: string
@@ -62,6 +63,25 @@ const AlterationScenarioEditor: React.FunctionComponent<
     [monaco]
   )
 
+  async function callParseScenario(
+    model: ITextModel,
+    startLineNumber: number,
+    startColumn: number,
+    endLineNumber: number,
+    endColumn: number
+  ) {
+    const { value } = await parseScenario(
+      model.getValueInRange({
+        startLineNumber: startLineNumber,
+        startColumn: startColumn,
+        endLineNumber: endLineNumber,
+        endColumn: endColumn,
+      })
+    )
+
+    return { value }
+  }
+
   async function validate(
     model: IModel,
     column: number,
@@ -85,14 +105,7 @@ const AlterationScenarioEditor: React.FunctionComponent<
       endColumn: range.endColumn,
     })
 
-    const { value } = await parseScenario(
-      model.getValueInRange({
-        startLineNumber: 1,
-        startColumn: 1,
-        endLineNumber: line,
-        endColumn: column,
-      })
-    )
+    const { value } = await callParseScenario(model, 1, 1, line, column)
 
     const visitor = new AlterationScenarioSemanticVisitor()
     const semanticErrors: SemanticError[] = visitor.visitScenario(value)
@@ -153,17 +166,16 @@ const AlterationScenarioEditor: React.FunctionComponent<
               token.startLine || 0
             )
           } else {
-            const { value } = await parseScenario(
-              model.getValueInRange({
-                startLineNumber: 1,
-                startColumn: 1,
-                endLineNumber: position.lineNumber,
-                endColumn: position.column,
-              })
+            const { value } = await callParseScenario(
+              model,
+              1,
+              1,
+              position.lineNumber,
+              position.column
             )
             const visitor = new AlterationScenarioSemanticVisitor()
-            const result: SemanticError[] = visitor.visitScenario(value)
-            validateSemantic(model, result)
+            const semanticErrors: SemanticError[] = visitor.visitScenario(value)
+            validateSemantic(model, semanticErrors)
           }
         }
 

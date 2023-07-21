@@ -1,0 +1,94 @@
+#!/bin/bash
+
+set -o errexit
+set -e
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+source "$DIR/utils"
+
+DESTINATION=$1
+
+SERVER_APP_NAME=""
+CLIENT_APP_NAME=""
+ALTERATION_FRONTEND_URL=""
+ALTERATION_PRODUCTION_COLLECTION_KEY=""
+
+if [ "$DESTINATION" == "production" ]; then
+  SERVER_APP_NAME=dapiaalterationserver
+  CLIENT_APP_NAME=dapiaalterationclient
+  ALTERATION_FRONTEND_URL="https://app.dapia-alteration.com"
+  ALTERATION_PRODUCTION_COLLECTION_KEY="dd08d18b-ff35-488c-9d8c-a62f4eb5f714"
+fi
+
+if [ "$SERVER_APP_NAME" == "" ] || [ "$CLIENT_APP_NAME" == "" ]; then
+  output_error "Invalid destination provided"
+  echo ""
+  echo "Usage: ./scripts/deploy <canary|staging|production>"
+  exit 1
+fi
+
+if [ "$DESTINATION" == "production" ] && [ "$GIT_BRANCH" != "main" ]; then
+  output_error "Deploying on production is only allowed from the main branch"
+  echo "Your current branch is '${GIT_BRANCH}'"
+  exit 2
+fi
+
+TMP_DIR=$(mktemp -d -t deploy-XXXXXXXXXX)
+
+output_title "Checking ENV variables for server"
+
+check_and_set_env_var "$TMP_DIR" $SERVER_APP_NAME "APP_BASE" "packages/server"
+check_and_set_env_var "$TMP_DIR" $SERVER_APP_NAME "APP_START_COMMAND" "npm run start"
+check_and_set_env_var "$TMP_DIR" $SERVER_APP_NAME "PGSSLMODE" "no-verify"
+check_and_set_env_var "$TMP_DIR" $SERVER_APP_NAME "SSL_CONFIGURATION" "true"
+check_and_set_env_var "$TMP_DIR" $SERVER_APP_NAME "ALTERATION_FRONTEND_URL" $ALTERATION_FRONTEND_URL
+check_and_set_env_var "$TMP_DIR" $SERVER_APP_NAME "SESSION_NUMBER_LIMIT" "100"
+check_and_set_env_var "$TMP_DIR" $SERVER_APP_NAME "NODE_ENV" "production"
+check_and_set_env_var "$TMP_DIR" $SERVER_APP_NAME "BUILDPACK_URL" "https://bitbucket.org/smartesting/gravity-backend-buildpack.git#scalingo"
+
+#output_title "Checking ENV variables for client"
+
+check_and_set_env_var "$TMP_DIR" $CLIENT_APP_NAME "APP_BASE" "packages/client"
+check_and_set_env_var "$TMP_DIR" $CLIENT_APP_NAME "APP_START_COMMAND" "npm run start"
+check_and_set_env_var "$TMP_DIR" $CLIENT_APP_NAME "NODE_MODULES_CACHE" "false"
+check_and_set_env_var "$TMP_DIR" $CLIENT_APP_NAME "REACT_APP_SERVER_URL"
+check_and_set_env_var "$TMP_DIR" $CLIENT_APP_NAME "REACT_APP_ALTERATION_PRODUCTION_COLLECTION_KEY" $ALTERATION_PRODUCTION_COLLECTION_KEY
+#check_and_set_env_var "$TMP_DIR" $CLIENT_APP_NAME "REACT_APP_RECAPTCHA_KEY" "6LcDv5MaAAAAAEXzPUAOhInQFHtMgMgI0D8-XXs1"
+check_and_set_env_var "$TMP_DIR" $CLIENT_APP_NAME "BUILDPACK_URL" "https://bitbucket.org/smartesting/gravity-backend-buildpack.git#eb6c33bbb5081636493349953242064e768071f0"
+
+
+#output_title "Checking Redis MaxMemory Strategy"
+
+#check_and_set_redis_maxmemory_strategy "$TMP_DIR" $SERVER_APP_NAME
+
+rm -rf "$TMP_DIR"
+
+if [ "$FORCE_DEPLOY" == "1" ]; then
+  output_warning "You are going to force a deployment and might lose commits, are you sure ?"
+  read -p "Type YES to validate force deployment: " VALIDATED
+
+  if [ "$VALIDATED" == "YES" ]; then
+    echo "Running forced deploy"
+
+    output_title "Deploying server to ${DESTINATION}"
+    git push -f "server-$DESTINATION" ${GIT_BRANCH}:master
+
+    #output_title "Deploying client to ${DESTINATION}"
+    #git push -f "client-$DESTINATION" ${GIT_BRANCH}:master
+  else
+    echo "Cancelling forced deploy"
+  fi
+else
+  output_title "Deploying server to ${DESTINATION}"
+  git push "server-$DESTINATION" ${GIT_BRANCH}:master
+
+  #output_title "Deploying client to ${DESTINATION}"
+  #git push "client-$DESTINATION" ${GIT_BRANCH}:master
+
+  if [ "$DESTINATION" == "production" ]; then
+    curl https://api.atatus.com/v2/projects/$ATATUS_PROJECT_ID/deployments \
+      -F api_key=$ATATUS_DEPLOY_API_KEY \
+      -F revision=$BITBUCKET_COMMIT \
+      -F release_stage="production"
+  fi
+fi
