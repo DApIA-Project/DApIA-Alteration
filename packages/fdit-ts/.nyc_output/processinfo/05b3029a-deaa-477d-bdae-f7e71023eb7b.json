@@ -1,0 +1,23 @@
+{
+  "parent": null,
+  "pid": 24664,
+  "argv": [
+    "C:\\Program Files\\nodejs\\node.exe",
+    "C:\\Users\\redhk\\Version_simplifie\\node_modules\\mocha\\bin\\mocha.js",
+    "--ui",
+    "bdd",
+    "--reporter",
+    "C:\\Program Files\\JetBrains\\WebStorm 2023.1.3\\plugins\\nodeJS\\js\\mocha-intellij\\lib\\mochaIntellijReporter.js",
+    "C:\\Users\\redhk\\Version_simplifie\\src\\test.ts",
+    "--grep",
+    "^BaseStationParser "
+  ],
+  "execArgv": [],
+  "cwd": "C:\\Users\\redhk\\Version_simplifie",
+  "time": 1689054028523,
+  "ppid": 61556,
+  "coverageFilename": "C:\\Users\\redhk\\Version_simplifie\\.nyc_output\\05b3029a-deaa-477d-bdae-f7e71023eb7b.json",
+  "externalId": "",
+  "uuid": "05b3029a-deaa-477d-bdae-f7e71023eb7b",
+  "files": []
+}
