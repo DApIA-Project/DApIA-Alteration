@@ -1,0 +1,46 @@
+.tabList {
+  list-style: none;
+  display: flex;
+  margin: 0;
+  padding: 0;
+}
+
+.tab {
+  padding: 8px 16px;
+  background-color: #272d2f;
+  margin-right: 4px;
+  cursor: pointer;
+  border-radius: 4px 4px 0 0;
+}
+
+.tab.selected {
+  background-color: rgb(85, 92, 93);
+  color: white;
+}
+
+.tab.selected > .tabCloseButton {
+  background-color: rgb(85, 92, 93);
+}
+
+.tab.active {
+  background-color: #fff;
+}
+
+.tabCloseButton {
+  background-color: #272d2f;
+  color: #dfe6e9;
+  margin-left: 15px;
+  border-radius: 35%;
+  cursor: pointer;
+  border-color: #dfe6e9;
+  border-style: solid;
+  padding: 0px;
+}
+
+.tabCloseButton:hover {
+  background-color: #999;
+}
+
+.tab.selected > .tabCloseButton:hover {
+  background-color: #999;
+}

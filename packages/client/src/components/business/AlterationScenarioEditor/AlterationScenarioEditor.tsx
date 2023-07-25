@@ -2,26 +2,16 @@ import React, { useEffect } from 'react'
 import Editor, { useMonaco } from '@monaco-editor/react'
 
 import * as monaco from 'monaco-editor'
-import { editor } from 'monaco-editor'
 import * as parser from '@smartesting/alteration-scenario/dist/parser/parser'
-import {
-  parseScenario,
-  Suggestion,
-} from '@smartesting/alteration-scenario/dist/parser/parser'
-import ALTERATION_SCENARIO_FORMAT, {
-  getDocumentationLabel,
-} from '../../../alterationscenario'
+import { Suggestion } from '@smartesting/alteration-scenario/dist/parser/parser'
+import ALTERATION_SCENARIO_FORMAT from '../../../alterationscenario'
 import './AlterationScenarioEditor.css'
-import { TextEdit } from 'vscode-languageserver-types'
-import { InsertReplaceEdit } from 'vscode-languageserver'
-import { AlterationScenarioSemanticVisitor } from '@smartesting/alteration-scenario/dist/generators/AlterationScenarioSemanticVisitor'
-import { SemanticError } from '@smartesting/alteration-scenario/dist/generators'
-import { getSemantic } from './utils/getSemantic'
 import IModel = monaco.editor.IModel
 import CompletionItemProvider = monaco.languages.CompletionItemProvider
 import ILanguageExtensionPoint = monaco.languages.ILanguageExtensionPoint
-import IMarkerData = editor.IMarkerData
-import ITextModel = editor.ITextModel
+import { showSuggestions } from '../../../utils/showSuggestions/showSuggestions'
+import { checkSemantic } from '../../../utils/checkSemantic/checkSemantic'
+import { ScenariosStorage } from '../../../pages/ScenarioEditorPage/types'
 
 type AlterationScenarioEditorProps = {
   language: string
@@ -36,91 +26,38 @@ const AlterationScenarioEditor: React.FunctionComponent<
   useEffect(
     () => {
       if (!monaco) return
-      monaco.languages.typescript.javascriptDefaults.setEagerModelSync(true)
-      const languages: ILanguageExtensionPoint[] =
-        monaco.languages.getLanguages()
-      let haveLanguage = false
-      for (const language of languages) {
-        if (language.id === 'alterationscenario') {
-          haveLanguage = true
-        }
-      }
-      if (haveLanguage) return
-      monaco.languages.register({ id: 'alterationscenario' })
-      monaco.languages.setMonarchTokensProvider(
-        'alterationscenario',
-        ALTERATION_SCENARIO_FORMAT
-      )
-
-      const completionProvider = createCompletionProvider()
-      if (!completionProvider) return
-      monaco.languages.registerCompletionItemProvider(
-        'alterationscenario',
-        completionProvider
-      )
+      initLanguage()
+      initCompletionProvider()
     },
     // eslint-disable-next-line
     [monaco]
   )
 
-  async function callParseScenario(
-    model: ITextModel,
-    startLineNumber: number,
-    startColumn: number,
-    endLineNumber: number,
-    endColumn: number
-  ) {
-    const { value } = await parseScenario(
-      model.getValueInRange({
-        startLineNumber: startLineNumber,
-        startColumn: startColumn,
-        endLineNumber: endLineNumber,
-        endColumn: endColumn,
-      })
-    )
-
-    return { value }
-  }
-
-  async function validate(
-    model: IModel,
-    column: number,
-    length: number,
-    message: string,
-    line: number
-  ) {
-    const range = {
-      startLineNumber: line,
-      startColumn: column,
-      endLineNumber: line,
-      endColumn: column + length,
+  function initLanguage() {
+    monaco!.languages.typescript.javascriptDefaults.setEagerModelSync(true)
+    const languages: ILanguageExtensionPoint[] =
+      monaco!.languages.getLanguages()
+    let haveLanguage = false
+    for (const language of languages) {
+      if (language.id === 'alterationscenario') {
+        haveLanguage = true
+      }
     }
-    const markers: IMarkerData[] = []
-    markers.push({
-      message: message,
-      severity: monaco!.MarkerSeverity.Error,
-      startLineNumber: range.startLineNumber,
-      startColumn: range.startColumn,
-      endLineNumber: range.endLineNumber,
-      endColumn: range.endColumn,
-    })
-
-    const { value } = await callParseScenario(model, 1, 1, line, column)
-
-    const visitor = new AlterationScenarioSemanticVisitor()
-    const semanticErrors: SemanticError[] = visitor.visitScenario(value)
-    markers.push(...getSemantic(model, semanticErrors))
-
-    monaco!.editor.setModelMarkers(model, 'owner', markers)
+    if (haveLanguage) return
+    monaco!.languages.register({ id: 'alterationscenario' })
+    monaco!.languages.setMonarchTokensProvider(
+      'alterationscenario',
+      ALTERATION_SCENARIO_FORMAT
+    )
   }
 
-  function validateSemantic(model: IModel, semanticErrors: SemanticError[]) {
-    const markers = getSemantic(model, semanticErrors)
-    monaco!.editor.setModelMarkers(model, 'owner', markers)
-  }
-
-  function isTextEdit(edit: any): edit is TextEdit {
-    return 'range' in edit && 'newText' in edit
+  function initCompletionProvider() {
+    const completionProvider = createCompletionProvider()
+    if (!completionProvider) return
+    monaco!.languages.registerCompletionItemProvider(
+      'alterationscenario',
+      completionProvider
+    )
   }
 
   function createCompletionProvider(): CompletionItemProvider | undefined {
@@ -141,71 +78,17 @@ const AlterationScenarioEditor: React.FunctionComponent<
           position.lineNumber,
           position.column
         )
-        console.log(suggestion)
-        if (suggestion.errors.lexer.length !== 0) {
-          await validate(
-            model,
-            suggestion.errors.lexer[0].column || 0,
-            suggestion.errors.lexer[0].length,
-            suggestion.errors.lexer[0].message,
-            suggestion.errors.lexer[0].line || 0
-          )
-        } else {
-          if (suggestion.errors.parser.length !== 0) {
-            const { token } = suggestion.errors.parser[0]
-            const length =
-              token.startColumn !== undefined && token.endColumn !== undefined
-                ? token.endColumn - token.startColumn
-                : 0
 
-            await validate(
-              model,
-              token.startColumn || 0,
-              length,
-              suggestion.errors.parser[0].message,
-              token.startLine || 0
-            )
-          } else {
-            const { value } = await callParseScenario(
-              model,
-              1,
-              1,
-              position.lineNumber,
-              position.column
-            )
-            const visitor = new AlterationScenarioSemanticVisitor()
-            const semanticErrors: SemanticError[] = visitor.visitScenario(value)
-            validateSemantic(model, semanticErrors)
-          }
-        }
-
+        await checkSemantic(monaco, model, suggestion, position)
         if (suggestion.suggestions?.items.length === 0) {
           return {
             suggestions: [],
           }
         }
-        const suggestions: monaco.languages.CompletionItem[] = []
-        if (suggestion?.suggestions!.items !== undefined) {
-          for (const resultElement of suggestion?.suggestions.items) {
-            const textEdit: TextEdit | InsertReplaceEdit | undefined =
-              resultElement.textEdit
-            if (isTextEdit(textEdit)) {
-              suggestions.push({
-                label: resultElement.label,
-                kind:
-                  resultElement.kind ||
-                  monaco.languages.CompletionItemKind.Text,
-                insertText: resultElement.label,
-                range: monaco.Range.fromPositions({
-                  lineNumber: textEdit.range.start.line + 1,
-                  column: textEdit.range.start.character + 1,
-                }),
-                documentation: getDocumentationLabel(resultElement.label),
-                detail: resultElement.detail,
-              })
-            }
-          }
-        }
+        const suggestions: monaco.languages.CompletionItem[] = showSuggestions(
+          monaco,
+          suggestion
+        )
         suggestion.suggestions!.items = []
         return {
           suggestions: suggestions,
@@ -216,10 +99,22 @@ const AlterationScenarioEditor: React.FunctionComponent<
   }
 
   if (value === '') {
-    if (window.localStorage.getItem('lastScenario') == null) {
-      value = ''
-    } else {
-      value = window.localStorage.getItem('lastScenario') ?? ''
+    const selectedNavItem = window.localStorage.getItem('selectedItem')
+    if (selectedNavItem != null) {
+      console.log(selectedNavItem)
+
+      let actualStorage: ScenariosStorage = JSON.parse(
+        window.localStorage.getItem('scenarios')!
+      )
+      if (actualStorage == null) {
+        value = ''
+      } else {
+        if (actualStorage['scenario' + selectedNavItem] == null) {
+          value = ''
+        } else {
+          value = actualStorage['scenario' + selectedNavItem]
+        }
+      }
     }
   }
   return (
@@ -229,7 +124,17 @@ const AlterationScenarioEditor: React.FunctionComponent<
       value={value}
       options={options}
       onChange={(text) => {
-        window.localStorage.setItem('lastScenario', text || '')
+        const selectedNavItem = window.localStorage.getItem('selectedItem')
+        if (selectedNavItem != null) {
+          let actualStorage: ScenariosStorage = JSON.parse(
+            window.localStorage.getItem('scenarios')!
+          )
+          actualStorage['scenario' + selectedNavItem] = text || ''
+          window.localStorage.setItem(
+            'scenarios',
+            JSON.stringify(actualStorage)
+          )
+        }
       }}
       {...props}
     />

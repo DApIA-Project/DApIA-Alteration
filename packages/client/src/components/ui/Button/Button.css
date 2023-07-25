@@ -21,3 +21,23 @@
 .build:hover {
   background-color: rgba(255, 255, 255, 0.2);
 }
+
+.addTabButton {
+  margin-left: auto;
+  padding: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  background-color: #dfe6e9;
+  color: #2d3436;
+  border: none;
+  border-radius: 4px;
+}
+.addTabButton:hover {
+  background-color: white;
+}
+
+.disabled {
+  cursor: default;
+  pointer-events: none;
+  opacity: 0.5;
+}

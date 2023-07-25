@@ -1,5 +1,6 @@
 import { AlterRecordingResponse } from '@smartesting/shared/dist/responses/alterRecordingResponse'
 import { OptionsAlteration, Recording } from '@smartesting/shared/dist'
+import apiUrl from './config'
 
 export default class Client {
   static async alteration(
@@ -8,7 +9,7 @@ export default class Client {
     optionsAlteration: OptionsAlteration,
     recordingToReplay?: Recording
   ): Promise<AlterRecordingResponse> {
-    const response = await fetch('http://localhost:3001/recording/alteration', {
+    const response = await fetch(`${apiUrl}/recording/alteration`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

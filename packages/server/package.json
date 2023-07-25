@@ -21,7 +21,7 @@
   "license": "ISC",
   "devDependencies": {
     "@types/cors": "^2.8.13",
-    "@types/express": "^4.17.16",
+    "@types/express": "^4.17.17",
     "@types/mocha": "^10.0.1",
     "@types/node": "^18.11.18",
     "@types/react": "^18.0.27",
@@ -42,6 +42,7 @@
     "@smartesting/alteration-scenario": "file:../alteration-scenario",
     "@smartesting/shared": "file:../shared",
     "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
     "esbuild": "^0.15.13",
     "express": "^4.18.2",
     "monaco-editor": "^0.34.1",

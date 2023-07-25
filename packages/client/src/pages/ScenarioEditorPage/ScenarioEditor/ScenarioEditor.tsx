@@ -9,6 +9,7 @@ import {
 } from './GenerateAlterationButton/GenerateAlterationButton'
 import { ScenarioOptions } from './ScenarioOptions/ScenarioOptions'
 import { RecordInputFiles } from './RecordInputFiles/RecordInputFiles'
+import EditorTabSelection from './EditorTabSelection/EditorTabSelection'
 
 export enum ScenarioEditorTestIds {
   COMPONENT = 'ScenarioEditor',
@@ -40,12 +41,18 @@ const ScenarioEditor: React.FunctionComponent<ScenarioEditorProps> = ({
       haveLabel: false,
     }
   )
+  const [selectedItem, setSelectedItem] = useState(null)
 
   return (
     <div
       className={'scenarioEditor'}
       data-testid={ScenarioEditorTestIds.COMPONENT}
     >
+      <div className={'selectionEditor'}>
+        <EditorTabSelection
+          setSelectedItem={setSelectedItem}
+        ></EditorTabSelection>
+      </div>
       <div id={'monaco-editor-root'} className={'alterationeditor'}>
         <AlterationScenarioEditor language={'alterationscenario'} value={''} />
       </div>

@@ -9,3 +9,8 @@
   flex-direction: column;
   flex: 3;
 }
+
+.selectionEditor {
+  display: flex;
+  align-items: center;
+}
