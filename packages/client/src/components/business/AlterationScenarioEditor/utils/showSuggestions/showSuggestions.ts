@@ -1,6 +1,6 @@
 import { TextEdit } from 'vscode-languageserver-types'
 import { InsertReplaceEdit } from 'vscode-languageserver'
-import { getDocumentationLabel } from '../../alterationscenario'
+import { getDocumentationLabel } from '../../../../../alterationscenario'
 import { Suggestion } from '@smartesting/alteration-scenario/dist/parser/parser'
 import * as monaco from 'monaco-editor'
 

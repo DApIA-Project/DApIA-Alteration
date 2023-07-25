@@ -2,7 +2,6 @@ import React from 'react'
 import '../../styles.css'
 import './HeaderMenu.css'
 import { NavLink } from 'react-router-dom'
-import { ScenarioEditorTestIds } from '../ScenarioEditorPage/ScenarioEditor/ScenarioEditor'
 
 export enum HeaderMenuTestIds {
   NAVIGATION_ACCUEIL = 'HeaderMenu.action.isNavigationAccueil',

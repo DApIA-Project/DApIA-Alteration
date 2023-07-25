@@ -77,7 +77,8 @@
     "socket.io": "^4.5.4",
     "vscode-languageclient": "^8.0.2",
     "vscode-languageserver": "^8.0.2",
-    "vscode-uri": "^3.0.2"
+    "vscode-uri": "^3.0.2",
+    "@smartesting/shared": "file:../shared"
   },
   "devDependencies": {
     "@babel/core": "^7.20.12",

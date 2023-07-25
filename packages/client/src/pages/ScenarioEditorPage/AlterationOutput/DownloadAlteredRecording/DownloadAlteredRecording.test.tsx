@@ -1,8 +1,6 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
-import DownloadAlteredRecording, {
-  DownloadAlteredRecordingTestIds,
-} from './DownloadAlteredRecording'
+import DownloadAlteredRecording from './DownloadAlteredRecording'
 import userEvent from '@testing-library/user-event'
 import { ScenarioOutputTestIds } from '../AlterationOutput'
 

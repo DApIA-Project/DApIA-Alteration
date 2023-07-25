@@ -7,9 +7,7 @@ import './ScenarioOption.css'
 export type ScenarioOptionProps = {
   value: boolean
   onChange: (newValue: boolean) => void
-
   name: string
-
   description?: string
 }
 

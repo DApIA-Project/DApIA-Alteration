@@ -7,8 +7,6 @@ import './AlterationOutput.css'
 import { Recording } from '@smartesting/shared/src'
 
 export enum ScenarioOutputTestIds {
-  COMPONENT = 'ScenarioOutput',
-  DOWNLOAD_RECORDING = 'ScenarioOutput.action.downloadRecording',
   DISPLAY_ERROR = 'ScenarioOutput.action.displayError',
   DISPLAY_SUCCESS = 'ScenarioOutput.action.displaySuccess',
   DISPLAY_DOWNLOAD_RECORDINGS = 'ScenarioOutput.action.displayDownloadRecordings',
@@ -22,12 +20,9 @@ type ScenarioOutputProps = {
 }
 
 function onDownloadAlteredRecordingClicked(recording: Recording) {
-  console.log(recording.name)
-
   const fileBlob = new Blob([recording.content], { type: 'text/plain' })
   const fileUrl = URL.createObjectURL(fileBlob)
   const link = document.createElement('a')
-
   link.href = fileUrl
   link.download = recording.name
   document.body.appendChild(link)

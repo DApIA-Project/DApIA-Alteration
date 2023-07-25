@@ -83,7 +83,6 @@ function executeAlterationJar(
   options: string,
   scenarioPath: string
 ): void {
-  console.log(scenarioPath)
   execSync(
     'java -jar ../alteration/out/artifacts/alteration_atc_jar/alteration-atc.jar ' +
       scenarioPath +

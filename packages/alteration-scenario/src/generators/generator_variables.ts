@@ -210,7 +210,7 @@ export function createAllScenario(
   }
   let tab_combinaison = recursePermutation(map_to_tab)
 
-  /** Creation de tous les scenarios en focntion des mélanges de variables **/
+  /** Creation de tous les scenarios en fonction des mélanges de variables **/
   let one_scenario = ''
   for (let i = 0; i < nb_scenario; i++) {
     one_scenario = scenario_without_decls

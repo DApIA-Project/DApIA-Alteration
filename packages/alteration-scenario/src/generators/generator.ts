@@ -65,37 +65,32 @@ import {
   Vertex,
   Waypoint,
 } from '../types'
+import { Recording } from '@smartesting/shared/dist/models/index'
 
 export function generateStatements(
   astScenario: ASTScenario,
-  fileName: string,
-  fileContent: string,
-  fileNameReplay: string
+  file: Recording,
+  fileToReplay?: Recording
 ): Parameters {
   return {
-    sensors: evalScenario(astScenario, fileName, fileContent, fileNameReplay),
+    sensors: evalScenario(astScenario, file, fileToReplay),
   }
 }
 
 function evalScenario(
   astScenario: ASTScenario,
-  fileName: string,
-  fileContent: string,
-  fileNameReplay: string
+  file: Recording,
+  fileToReplay?: Recording
 ): Sensors {
   return {
     sensor: [
       {
         sensorType: 'SBS',
         sID: '',
-        record: fileName,
-        firstDate: evalFirstDate(fileContent),
+        record: file.name,
+        firstDate: evalFirstDate(file),
         filter: '',
-        action: evalInstructions(
-          astScenario.instructions,
-          fileContent,
-          fileNameReplay
-        ),
+        action: evalInstructions(astScenario.instructions, file, fileToReplay),
       },
     ],
   }
@@ -151,24 +146,24 @@ enum RecordingParametreType {
 
 function evalInstructions(
   instrs: ASTInstruction[],
-  fileContent: string,
-  fileNameReplay: string
+  file: Recording,
+  fileToReplay?: Recording
 ): Action[] {
   return instrs
-    .flatMap((i) => evalInstr(i, fileContent, fileNameReplay))
+    .flatMap((i) => evalInstr(i, file, fileToReplay))
     .filter((i) => i !== undefined) as Action[]
 }
 
 function evalInstr(
   instr: ASTInstruction,
-  fileContent: string,
-  fileNameReplay: string
+  file: Recording,
+  fileToReplay?: Recording
 ): Action | undefined {
   if (isASTHide(instr)) {
     if (!isASTHideParameter(instr.frequency)) {
       return {
         alterationType: ActionType.deletion,
-        scope: evalTimeScope(instr.timeScope, fileContent),
+        scope: evalTimeScope(instr.timeScope, file),
         parameters: {
           target: evalTarget(instr.target),
         },
@@ -176,7 +171,7 @@ function evalInstr(
     } else {
       return {
         alterationType: ActionType.deletion,
-        scope: evalTimeScope(instr.timeScope, fileContent),
+        scope: evalTimeScope(instr.timeScope, file),
         parameters: {
           target: evalTarget(instr.target),
           parameter: [
@@ -192,7 +187,7 @@ function evalInstr(
     if (isASTAlter(instr.mode)) {
       return {
         alterationType: ActionType.alteration,
-        scope: evalTimeScope(instr.timeScope, fileContent),
+        scope: evalTimeScope(instr.timeScope, file),
         parameters: {
           target: evalTarget(instr.target),
           parameter: evalParameters(instr.mode.parameters),
@@ -201,7 +196,7 @@ function evalInstr(
     } else {
       return {
         alterationType: ActionType.trajectory,
-        scope: evalTimeScope(instr.timeScope, fileContent),
+        scope: evalTimeScope(instr.timeScope, file),
         parameters: {
           target: evalTarget(instr.target),
           trajectory: evalTrajectory(instr.mode.trajectory),
@@ -212,7 +207,7 @@ function evalInstr(
     if (!isASTCreationParameters(instr.parameters)) {
       return {
         alterationType: ActionType.creation,
-        scope: evalTimeScope(instr.timeScope, fileContent),
+        scope: evalTimeScope(instr.timeScope, file),
         parameters: {
           target: {
             identifier: 'hexIdent',
@@ -224,7 +219,7 @@ function evalInstr(
     } else {
       return {
         alterationType: ActionType.creation,
-        scope: evalTimeScope(instr.timeScope, fileContent),
+        scope: evalTimeScope(instr.timeScope, file),
         parameters: {
           target: {
             identifier: 'hexIdent',
@@ -238,7 +233,7 @@ function evalInstr(
   } else if (isASTSaturate(instr)) {
     return {
       alterationType: ActionType.saturation,
-      scope: evalTimeScope(instr.timeScope, fileContent),
+      scope: evalTimeScope(instr.timeScope, file),
       parameters: {
         target: evalTarget(instr.target),
         parameter: evalSaturationParameters(instr.parameters),
@@ -246,21 +241,29 @@ function evalInstr(
     }
   } else if (isASTReplay(instr)) {
     if (!isASTParameters(instr.parameters)) {
+      let nameFileReplay = ''
+      if (fileToReplay !== undefined) {
+        nameFileReplay = fileToReplay.name
+      }
       return {
         alterationType: ActionType.replay,
-        scope: evalTimeScope(instr.timeScope, fileContent),
+        scope: evalTimeScope(instr.timeScope, file),
         parameters: {
           target: evalTarget(instr.target),
-          recordPath: 'temp/' + fileNameReplay,
+          recordPath: 'temp/' + nameFileReplay,
         },
       }
     } else {
+      let nameFileReplay = ''
+      if (fileToReplay !== undefined) {
+        nameFileReplay = fileToReplay.name
+      }
       return {
         alterationType: ActionType.replay,
-        scope: evalTimeScope(instr.timeScope, fileContent),
+        scope: evalTimeScope(instr.timeScope, file),
         parameters: {
           target: evalTarget(instr.target),
-          recordPath: 'temp/' + fileNameReplay,
+          recordPath: 'temp/' + nameFileReplay,
           parameter: evalParameters(instr.parameters),
         },
       }
@@ -268,7 +271,7 @@ function evalInstr(
   } else if (isASTDelay(instr)) {
     return {
       alterationType: ActionType.timestamp,
-      scope: evalTimeScope(instr.timeScope, fileContent),
+      scope: evalTimeScope(instr.timeScope, file),
       parameters: {
         target: evalTarget(instr.target),
         parameter: evalDelayParameter(instr.delay),
@@ -277,7 +280,7 @@ function evalInstr(
   } else if (isASTRotate(instr)) {
     return {
       alterationType: ActionType.rotation,
-      scope: evalTimeScope(instr.timeScope, fileContent),
+      scope: evalTimeScope(instr.timeScope, file),
       parameters: {
         target: evalTarget(instr.target),
         parameter: evalRotateParameter(instr.angle),
@@ -286,7 +289,7 @@ function evalInstr(
   } else {
     return {
       alterationType: ActionType.cut,
-      scope: evalTimeScope(instr.timeScope, fileContent),
+      scope: evalTimeScope(instr.timeScope, file),
       parameters: {
         target: evalTarget(instr.target),
       },
@@ -294,7 +297,7 @@ function evalInstr(
   }
 }
 
-function evalTimeScope(ts: ASTTimeScope, fileContent: string): Scope {
+function evalTimeScope(ts: ASTTimeScope, file: Recording): Scope {
   if (isASTAt(ts)) {
     if (isASTAtFor(ts.for)) {
       return {
@@ -309,10 +312,7 @@ function evalTimeScope(ts: ASTTimeScope, fileContent: string): Scope {
       return {
         type: 'timeWindow',
         lowerBound: (parseInt(evalTime(ts.time)) * 1000).toString(),
-        upperBound: evalLastDate(
-          parseInt(evalTime(ts.time)),
-          fileContent
-        ).toString(),
+        upperBound: evalLastDate(parseInt(evalTime(ts.time)), file).toString(),
       }
     }
   } else {
@@ -629,16 +629,16 @@ function evalFrequency(hp: ASTHideParameter): string {
   return evalValue(hp.value)
 }
 
-function evalFirstDate(fileContent: string) {
-  const lines = fileContent.split('\n')
+function evalFirstDate(file: Recording) {
+  const lines = file.content.split('\n')
   const firstLine = lines[0]
   const parts = firstLine.split(',')
   return Date.parse(parts[6] + ',' + parts[7] + ' GMT')
 }
 
-function evalLastDate(atSeconds: number, fileContent: string) {
+function evalLastDate(atSeconds: number, file: Recording) {
   // Lire le fichier .sbs
-  const lines = fileContent.trim().split('\n')
+  const lines = file.content.trim().split('\n')
 
   // Extraire la ligne contenant la date et l'heure
   let lastLine = lines[lines.length - 1]
@@ -649,7 +649,7 @@ function evalLastDate(atSeconds: number, fileContent: string) {
 
   const timestamp = Date.parse(parts[6] + ',' + parts[7] + ' GMT')
 
-  const timeRecording = timestamp - evalFirstDate(fileContent)
+  const timeRecording = timestamp - evalFirstDate(file)
 
   return timeRecording - atSeconds * 1000
 }

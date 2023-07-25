@@ -1,5 +1,4 @@
 import React from 'react'
-import { ScenarioEditorTestIds } from '../ScenarioEditor'
 import { RecordInputFile } from './RecordInputFile/RecordInputFile'
 import { Recording } from '@smartesting/shared/dist'
 import './RecordInputFiles.css'
@@ -34,31 +33,3 @@ export const RecordInputFiles: React.FunctionComponent<
     </div>
   )
 }
-
-/**
- <div className={'zone_input_files'}>
- <InputFile
- name={'recording'}
- onChange={onRecordingSelected}
- data-testid={ScenarioEditorTestIds.INPUT_FILE_RECORDING}
- />
- <img
- data-testid={datatestRecordingSelection()}
- src={imageRecordingSelection()}
- alt={'recording_charged_or_not'}
- title={'Enregistrement requis'}
- />
- </div>
- <div className={'zone_input_files'}>
- <InputFile
- name={'recordingToReplay'}
- onChange={onRecordingToReplaySelected}
- data-testid={ScenarioEditorTestIds.INPUT_FILE_RECORDING_REPLAY}
- />
- <img
- data-testid={datatestRecordingReplaySelection()}
- src={imageRecordingReplaySelection()}
- alt={'recording_replay_charged_or_not'}
- title={'Enregistrement requis en cas de replay'}
- />
- </div>**/

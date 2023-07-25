@@ -6,10 +6,6 @@ import { AlterRecordingResponse } from '@smartesting/shared/dist'
 import '../../styles.css'
 import './ScenarioEditorPage.css'
 
-export enum ScenarioEditorPageTestIds {
-  COMPONENT = 'ScenarioEditorPage',
-}
-
 const ScenarioEditorPage: React.FunctionComponent = () => {
   const [alteredRecordings, setAlteredRecordings] =
     useState<AlterRecordingResponse | null>(null)

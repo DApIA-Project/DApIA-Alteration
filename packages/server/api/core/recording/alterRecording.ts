@@ -157,21 +157,12 @@ export const extractParameters = async (
   if (declarations.declarations.length === 0)
     if (recordingToReplay === undefined) {
       return {
-        parameters: [
-          generateStatements(value, recording.name, recording.content, ''),
-        ],
+        parameters: [generateStatements(value, recording)],
         errors: [],
       }
     } else {
       return {
-        parameters: [
-          generateStatements(
-            value,
-            recording.name,
-            recording.content,
-            recordingToReplay.name
-          ),
-        ],
+        parameters: [generateStatements(value, recording, recordingToReplay)],
         errors: [],
       }
     }
@@ -188,18 +179,9 @@ export const extractParameters = async (
     )
     if (parserErrors.length === 0 && lexerErrors.length === 0) {
       if (recordingToReplay === undefined) {
-        parameters.push(
-          generateStatements(value, recording.name, recording.content, '')
-        )
+        parameters.push(generateStatements(value, recording))
       } else {
-        parameters.push(
-          generateStatements(
-            value,
-            recording.name,
-            recording.content,
-            recordingToReplay.name
-          )
-        )
+        parameters.push(generateStatements(value, recording, recordingToReplay))
       }
     }
   }

@@ -9,8 +9,8 @@ import './AlterationScenarioEditor.css'
 import IModel = monaco.editor.IModel
 import CompletionItemProvider = monaco.languages.CompletionItemProvider
 import ILanguageExtensionPoint = monaco.languages.ILanguageExtensionPoint
-import { showSuggestions } from '../../../utils/showSuggestions/showSuggestions'
-import { checkSemantic } from '../../../utils/checkSemantic/checkSemantic'
+import { showSuggestions } from './utils/showSuggestions/showSuggestions'
+import { checkSemantic } from './utils/checkSemantic/checkSemantic'
 import { ScenariosStorage } from '../../../pages/ScenarioEditorPage/types'
 
 type AlterationScenarioEditorProps = {

@@ -5,7 +5,7 @@ import {
   Suggestion,
 } from '@smartesting/alteration-scenario/dist/parser/parser'
 import * as monaco from 'monaco-editor'
-import { getSemantic } from '../../components/business/AlterationScenarioEditor/utils/getSemantic'
+import { getSemantic } from '../getSemantic/getSemantic'
 import { SemanticError } from '@smartesting/alteration-scenario/dist/generators'
 import { AlterationScenarioSemanticVisitor } from '@smartesting/alteration-scenario/dist/generators/AlterationScenarioSemanticVisitor'
 import IMarkerData = editor.IMarkerData
