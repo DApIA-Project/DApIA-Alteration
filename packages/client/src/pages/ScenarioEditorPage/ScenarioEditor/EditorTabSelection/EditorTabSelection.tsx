@@ -6,6 +6,10 @@ import { ScenariosStorage } from '../../types'
 type EditorTabSelectionProps = {
   setSelectedItem: any
 }
+export enum EditorTabSelectionTestIds {
+  ADD_BUTTON = 'AddTabButton',
+  REMOVE_BUTTON = 'RemoveTabButton',
+}
 const EditorTabSelection: React.FunctionComponent<EditorTabSelectionProps> = ({
   setSelectedItem,
 }) => {
@@ -29,7 +33,10 @@ const EditorTabSelection: React.FunctionComponent<EditorTabSelectionProps> = ({
     window.localStorage.getItem('scenarios') === null ||
     window.localStorage.getItem('scenarios') === ''
   ) {
-    window.localStorage.setItem('scenarios', JSON.stringify({ scenario1: '' }))
+    window.localStorage.setItem(
+      'scenarios',
+      JSON.stringify({ scenarios: [''] })
+    )
   }
 
   const initialLength = Number(window.localStorage.getItem('lengthEditor'))
@@ -52,7 +59,6 @@ const EditorTabSelection: React.FunctionComponent<EditorTabSelectionProps> = ({
   const removeTab = (index: any) => {
     if (tabs.length > 1) {
       const selectedItem = index + 1
-      console.log(selectedItem)
       const selectedIndex = tabs.indexOf(selectedItem)
       const updatedItems = tabs.filter((tab) => tab !== selectedItem)
       const updatedItemsWithAdjustedNumbers = updatedItems.map(
@@ -63,27 +69,15 @@ const EditorTabSelection: React.FunctionComponent<EditorTabSelectionProps> = ({
           return item - 1
         }
       )
-
       setTabs(updatedItemsWithAdjustedNumbers)
       window.localStorage.setItem(
         'lengthEditor',
         String(updatedItemsWithAdjustedNumbers.length)
       )
-
       let actualStorage: ScenariosStorage = JSON.parse(
         window.localStorage.getItem('scenarios')!
       )
-      for (
-        let i: number = Number(selectedItem);
-        i <= updatedItemsWithAdjustedNumbers.length;
-        i++
-      ) {
-        actualStorage['scenario' + i] = actualStorage['scenario' + (i + 1)]
-      }
-      // Supprimer le contenu associé à l'élément supprimé
-      actualStorage[
-        'scenario' + String(updatedItemsWithAdjustedNumbers.length + 1)
-      ] = ''
+      actualStorage['scenarios'].splice(index, 1)
       window.localStorage.setItem('scenarios', JSON.stringify(actualStorage))
       // Mise à jour de l'élément sélectionné dans localStorage (si nécessaire)
       const newSelectedItem =
@@ -97,7 +91,6 @@ const EditorTabSelection: React.FunctionComponent<EditorTabSelectionProps> = ({
   const handleItemClick = (item: number) => {
     setSelectedItem(item)
     window.localStorage.setItem('selectedItem', String(item))
-    // Ajoutez ici la logique pour gérer l'action associée au clic sur l'élément de la barre de navigation.
   }
 
   return (
@@ -115,6 +108,9 @@ const EditorTabSelection: React.FunctionComponent<EditorTabSelectionProps> = ({
           >
             {title}
             <Button
+              data-testid={
+                EditorTabSelectionTestIds.REMOVE_BUTTON + String(index + 1)
+              }
               text={'x'}
               onClick={() => removeTab(index)}
               className={'tabCloseButton'}
@@ -124,6 +120,7 @@ const EditorTabSelection: React.FunctionComponent<EditorTabSelectionProps> = ({
       </ul>
       <div className='addTabContainerButton'>
         <Button
+          data-testid={EditorTabSelectionTestIds.ADD_BUTTON}
           text={'+'}
           onClick={addTab}
           className={'addTabButton'}

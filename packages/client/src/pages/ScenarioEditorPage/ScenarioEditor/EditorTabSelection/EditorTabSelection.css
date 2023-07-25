@@ -11,6 +11,11 @@
   margin-right: 4px;
   cursor: pointer;
   border-radius: 4px 4px 0 0;
+  display: flex;
+}
+
+.tab:hover {
+  background-color: #999;
 }
 
 .tab.selected {
@@ -30,11 +35,10 @@
   background-color: #272d2f;
   color: #dfe6e9;
   margin-left: 15px;
-  border-radius: 35%;
+  border-radius: 25%;
   cursor: pointer;
   border-color: #dfe6e9;
   border-style: solid;
-  padding: 0px;
 }
 
 .tabCloseButton:hover {

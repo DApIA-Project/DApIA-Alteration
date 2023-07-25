@@ -16,7 +16,7 @@ import { ScenariosStorage } from '../../../pages/ScenarioEditorPage/types'
 type AlterationScenarioEditorProps = {
   language: string
   value: string
-  options?: {}
+  options?: { readOnly: boolean; hideCursorInOverviewRuler: boolean }
 }
 const AlterationScenarioEditor: React.FunctionComponent<
   AlterationScenarioEditorProps
@@ -101,18 +101,16 @@ const AlterationScenarioEditor: React.FunctionComponent<
   if (value === '') {
     const selectedNavItem = window.localStorage.getItem('selectedItem')
     if (selectedNavItem != null) {
-      console.log(selectedNavItem)
-
       let actualStorage: ScenariosStorage = JSON.parse(
         window.localStorage.getItem('scenarios')!
       )
       if (actualStorage == null) {
         value = ''
       } else {
-        if (actualStorage['scenario' + selectedNavItem] == null) {
+        if (actualStorage['scenarios'][Number(selectedNavItem) - 1] == null) {
           value = ''
         } else {
-          value = actualStorage['scenario' + selectedNavItem]
+          value = actualStorage['scenarios'][Number(selectedNavItem) - 1]
         }
       }
     }
@@ -124,16 +122,21 @@ const AlterationScenarioEditor: React.FunctionComponent<
       value={value}
       options={options}
       onChange={(text) => {
-        const selectedNavItem = window.localStorage.getItem('selectedItem')
-        if (selectedNavItem != null) {
-          let actualStorage: ScenariosStorage = JSON.parse(
-            window.localStorage.getItem('scenarios')!
-          )
-          actualStorage['scenario' + selectedNavItem] = text || ''
-          window.localStorage.setItem(
-            'scenarios',
-            JSON.stringify(actualStorage)
-          )
+        if (
+          (options !== undefined && options.readOnly !== true) ||
+          options === undefined
+        ) {
+          const selectedNavItem = window.localStorage.getItem('selectedItem')
+          if (selectedNavItem != null) {
+            let actualStorage: ScenariosStorage = JSON.parse(
+              window.localStorage.getItem('scenarios')!
+            )
+            actualStorage['scenarios'][Number(selectedNavItem) - 1] = text || ''
+            window.localStorage.setItem(
+              'scenarios',
+              JSON.stringify(actualStorage)
+            )
+          }
         }
       }}
       {...props}

@@ -1,3 +1,3 @@
 export type ScenariosStorage = {
-  [key: string]: string
+  scenarios: string[]
 }
