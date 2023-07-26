@@ -15,7 +15,7 @@
     "tsc-watch": "tsc --watch",
     "dev": "nodemon app.ts",
     "copy:fs": "npx shx cp -fr ./node_modules/fs/ ./public/fs",
-    "preinstall": "(cd ../alteration-scenario && npm i && npm run build) && (cd ../shared && npm i && npm run build)"
+    "preinstall": "cd ../alteration-scenario && npm i && npm run build"
   },
   "author": "",
   "license": "ISC",

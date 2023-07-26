@@ -39,7 +39,7 @@
     "watch": "tsc --watch",
     "test": "react-scripts test --watchAll=false",
     "eject": "react-scripts eject",
-    "preinstall": "(cd ../alteration-scenario && npm i && npm run build) && (cd ../shared && npm i && npm run build)"
+    "preinstall": "cd ../alteration-scenario && npm i && npm run build"
   },
   "eslintConfig": {
     "extends": [
