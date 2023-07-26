@@ -12,7 +12,7 @@ import IMarkerData = editor.IMarkerData
 import ITextModel = editor.ITextModel
 
 type Monaco =
-  typeof import('C:/Users/morga/Documents/Programmation/DApIA-Alteration/packages/client/node_modules/monaco-editor/esm/vs/editor/editor.api')
+  typeof import('../../../../../../../client/node_modules/monaco-editor/esm/vs/editor/editor.api')
 
 async function validate(
   monaco: Monaco,

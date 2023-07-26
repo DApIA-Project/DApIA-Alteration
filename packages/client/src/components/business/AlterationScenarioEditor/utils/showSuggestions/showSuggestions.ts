@@ -8,7 +8,7 @@ function isTextEdit(edit: any): edit is TextEdit {
   return 'range' in edit && 'newText' in edit
 }
 type Monaco =
-  typeof import('C:/Users/morga/Documents/Programmation/DApIA-Alteration/packages/client/node_modules/monaco-editor/esm/vs/editor/editor.api')
+  typeof import('../../../../../../../client/node_modules/monaco-editor/esm/vs/editor/editor.api')
 
 export function showSuggestions(
   monaco: Monaco,

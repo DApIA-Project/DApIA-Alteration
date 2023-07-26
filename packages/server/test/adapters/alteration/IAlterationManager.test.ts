@@ -77,7 +77,14 @@ const IAlterationContractTest: IContractTest = (
             },
           ],
           { name: 'zigzag.sbs', content: content },
-          { haveLabel: false, haveRealism: false }
+          {
+            haveLabel: false,
+            haveRealism: false,
+            haveNoise: false,
+            haveDisableLatitude: false,
+            haveDisableLongitude: false,
+            haveDisableAltitude: false,
+          }
         )
 
       assert.deepStrictEqual(
@@ -122,7 +129,14 @@ const IAlterationContractTest: IContractTest = (
             },
           ],
           { name: 'zigzag.sbs', content: content },
-          { haveLabel: false, haveRealism: false }
+          {
+            haveLabel: false,
+            haveRealism: false,
+            haveNoise: false,
+            haveDisableLatitude: false,
+            haveDisableLongitude: false,
+            haveDisableAltitude: false,
+          }
         )
 
       assert.deepStrictEqual(
@@ -185,7 +199,14 @@ const IAlterationContractTest: IContractTest = (
             },
           ],
           { name: 'zigzag2.sbs', content: content },
-          { haveLabel: false, haveRealism: false }
+          {
+            haveLabel: false,
+            haveRealism: false,
+            haveNoise: false,
+            haveDisableLatitude: false,
+            haveDisableLongitude: false,
+            haveDisableAltitude: false,
+          }
         )
 
       assert.deepStrictEqual(
@@ -333,7 +354,14 @@ const IAlterationContractTest: IContractTest = (
             },
           ],
           { name: 'zigzag2.sbs', content: content },
-          { haveLabel: false, haveRealism: false }
+          {
+            haveLabel: false,
+            haveRealism: false,
+            haveNoise: false,
+            haveDisableLatitude: false,
+            haveDisableLongitude: false,
+            haveDisableAltitude: false,
+          }
         )
 
       assert.deepStrictEqual(
@@ -404,7 +432,14 @@ const IAlterationContractTest: IContractTest = (
             },
           ],
           { name: 'zigzag2.sbs', content: content },
-          { haveLabel: false, haveRealism: false }
+          {
+            haveLabel: false,
+            haveRealism: false,
+            haveNoise: false,
+            haveDisableLatitude: false,
+            haveDisableLongitude: false,
+            haveDisableAltitude: false,
+          }
         )
 
       assert.deepStrictEqual(
@@ -454,7 +489,14 @@ const IAlterationContractTest: IContractTest = (
           ],
           { name: 'zigzag2.sbs', content: content },
 
-          { haveLabel: false, haveRealism: false },
+          {
+            haveLabel: false,
+            haveRealism: false,
+            haveNoise: false,
+            haveDisableLatitude: false,
+            haveDisableLongitude: false,
+            haveDisableAltitude: false,
+          },
           { name: 'testReplay.sbs', content: contentReplay }
         )
 
@@ -533,7 +575,14 @@ const IAlterationContractTest: IContractTest = (
           ],
           { name: 'zigzag2.sbs', content: content },
 
-          { haveLabel: false, haveRealism: false }
+          {
+            haveLabel: false,
+            haveRealism: false,
+            haveNoise: false,
+            haveDisableLatitude: false,
+            haveDisableLongitude: false,
+            haveDisableAltitude: false,
+          }
         )
 
       assert.deepStrictEqual(
@@ -600,7 +649,14 @@ const IAlterationContractTest: IContractTest = (
           ],
           { name: 'zigzag2.sbs', content: content },
 
-          { haveLabel: false, haveRealism: false }
+          {
+            haveLabel: false,
+            haveRealism: false,
+            haveNoise: false,
+            haveDisableLatitude: false,
+            haveDisableLongitude: false,
+            haveDisableAltitude: false,
+          }
         )
 
       assert.deepStrictEqual(
@@ -660,7 +716,14 @@ const IAlterationContractTest: IContractTest = (
           ],
           { name: 'zigzag2.sbs', content: content },
 
-          { haveLabel: false, haveRealism: false }
+          {
+            haveLabel: false,
+            haveRealism: false,
+            haveNoise: false,
+            haveDisableLatitude: false,
+            haveDisableLongitude: false,
+            haveDisableAltitude: false,
+          }
         )
 
       assert.deepStrictEqual(
@@ -742,7 +805,14 @@ const IAlterationContractTest: IContractTest = (
           ],
           { name: 'zigzag2.sbs', content: content },
 
-          { haveLabel: false, haveRealism: false }
+          {
+            haveLabel: false,
+            haveRealism: false,
+            haveNoise: false,
+            haveDisableLatitude: false,
+            haveDisableLongitude: false,
+            haveDisableAltitude: false,
+          }
         )
 
       assert.deepStrictEqual(

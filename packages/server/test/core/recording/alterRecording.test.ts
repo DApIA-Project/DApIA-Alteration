@@ -24,7 +24,14 @@ describe(`core/alterRecording`, () => {
           name: 'myfile.sbs',
         },
         undefined,
-        { haveLabel: false, haveRealism: false },
+        {
+          haveLabel: false,
+          haveRealism: false,
+          haveNoise: false,
+          haveDisableLatitude: false,
+          haveDisableLongitude: false,
+          haveDisableAltitude: false,
+        },
         alterationManager
       )
 
@@ -41,7 +48,14 @@ describe(`core/alterRecording`, () => {
           name: 'myfile.sbs',
         },
         undefined,
-        { haveLabel: false, haveRealism: false },
+        {
+          haveLabel: false,
+          haveRealism: false,
+          haveNoise: false,
+          haveDisableLatitude: false,
+          haveDisableLongitude: false,
+          haveDisableAltitude: false,
+        },
         alterationManager
       )
 
@@ -60,7 +74,14 @@ describe(`core/alterRecording`, () => {
           name: 'myfile.sbs',
         },
         undefined,
-        { haveLabel: false, haveRealism: false },
+        {
+          haveLabel: false,
+          haveRealism: false,
+          haveNoise: false,
+          haveDisableLatitude: false,
+          haveDisableLongitude: false,
+          haveDisableAltitude: false,
+        },
         alterationManager
       )
 
@@ -77,7 +98,14 @@ describe(`core/alterRecording`, () => {
           name: 'myfile.sbs',
         },
         undefined,
-        { haveLabel: false, haveRealism: false },
+        {
+          haveLabel: false,
+          haveRealism: false,
+          haveNoise: false,
+          haveDisableLatitude: false,
+          haveDisableLongitude: false,
+          haveDisableAltitude: false,
+        },
         alterationManager
       )
 
@@ -98,7 +126,14 @@ describe(`core/alterRecording`, () => {
             'MSG,4,3,5022202,4CA1FA,5022202,2018/11/25,11:30:48.179,2018/11/25,11:30:48.179,,,474.53,295.86,,,0.0,,,,,',
           name: 'myfile2.sbs',
         },
-        { haveLabel: false, haveRealism: false },
+        {
+          haveLabel: false,
+          haveRealism: false,
+          haveNoise: false,
+          haveDisableLatitude: false,
+          haveDisableLongitude: false,
+          haveDisableAltitude: false,
+        },
         alterationManager
       )
 
