@@ -65,7 +65,7 @@ import {
   Vertex,
   Waypoint,
 } from '../types'
-import { Recording } from '@smartesting/shared/dist/models/index'
+import { Recording } from '@smartesting/shared/dist'
 
 export function generateStatements(
   astScenario: ASTScenario,

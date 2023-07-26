@@ -1,7 +1,7 @@
 import { EmptyFileSystem, LangiumServices } from 'langium'
 import { createAlterationscenarioServices } from '../../language-server/alterationscenario-module'
 import { generateStatements, parseScenario } from '../../web'
-import { Recording } from '@smartesting/shared/dist/models/index'
+import { Recording } from '@smartesting/shared/dist'
 import assert from 'assert'
 
 describe('generator', () => {

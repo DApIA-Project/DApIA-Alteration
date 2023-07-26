@@ -26,8 +26,10 @@ enum RecordingParameterType {
 export function evalDeclarations(decls: ASTDeclaration[]): Declarations {
   return {
     declarations: decls
-      .flatMap((i) => evalDecl(i))
-      .filter((i) => i !== undefined) as Declaration[],
+      .map((i: ASTDeclaration) => evalDecl(i))
+      .filter(
+        (i: Declaration | undefined): i is Declaration => i !== undefined
+      ),
   }
 }
 
