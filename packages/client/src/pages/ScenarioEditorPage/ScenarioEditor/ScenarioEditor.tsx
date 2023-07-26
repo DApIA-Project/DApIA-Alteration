@@ -41,7 +41,7 @@ const ScenarioEditor: React.FunctionComponent<ScenarioEditorProps> = ({
       haveLabel: false,
     }
   )
-  const [selectedItem, setSelectedItem] = useState(null)
+  const setSelectedItem = useState(null)
 
   return (
     <div

@@ -9,10 +9,10 @@ security:
 paths:
   /recording/alteration:
     post:
-      summary: Alterer un enregistrement
-      description: Altere un enregistrement existant dans l'application
+      summary: Alter a record
+      description: Alter an existing record in the application
       requestBody:
-        description: Représentation JSON de l'enregistrement à alterer
+        description: JSON representation of the record to alter
         required: true
         content:
           application/json:
@@ -21,22 +21,27 @@ paths:
               properties:
                 scenario:
                   type: string
-                  description: Le scénario d'altération de l'enregistrement
+                  description: The recording's alteration scenario
                   example: 'hide all_planes at 2 seconds'
                 recording:
                   type: object
                   $ref: '#/components/schemas/Recording'
-                  description: L'enregistrement à alterer contenant un nom et un contenu de fichier
+                  description: The record to alter containing a file name and content
                 recordingToReplay:
                   type: object
                   $ref: '#/components/schemas/Recording'
-                  description: L'enregistrement à utiliser pour alterer recording contenant un nom et un contenu de fichier en cas de replay
+                  description: The recording to use for alterer recording containing file name and content in case of replay
+                optionsAlteration:
+                  type: object
+                  $ref: '#/components/schemas/OptionsAlteration'
+                  description: Options to apply when altering
               required:
                 - scenario
                 - recording
+                - optionsAlteration
       responses:
         200:
-          description: Enregistrement altéré avec succès
+          description: Successfully altered record
           content:
             application/json:
               schema:
@@ -47,13 +52,13 @@ paths:
                     items:
                       type: object
                       $ref: '#/components/schemas/Recording'
-                    description: Les enregistrements altérés sous forme de tableau
+                    description: Altered records in array form
                   error:
                     type: string
                     nullable: true
                     example: null
         422:
-          description: Format invalide ou erreur de syntaxe
+          description: Invalid format or syntax error
           content:
             application/json:
               schema:
@@ -66,10 +71,10 @@ paths:
                       type: object
                       $ref: '#/components/schemas/Recording'
                     maxItems: 0
-                    description: Les enregistrements altérés sous forme de tableau vide
+                    description: Altered records as an empty array
                   error:
                     type: string
-                    description: Une description de l'erreur (format invalide ou syntaxe invalide)
+                    description: A description of the error (invalid format or invalid syntax)
                     example: 'invalid_format'
 
 components:
@@ -84,3 +89,25 @@ components:
       example:
         name: 'nomFichierValide.sbs'
         content: 'MSG,5,1,4837,A4A445,18147,2016/12/09,09:13:34.120,2016/12/09,09:13:35.077,,7250,,,,,,,0,,0,0'
+    OptionsAlteration:
+      properties:
+        haveLabel:
+          type: boolean
+        haveRealism:
+          type: boolean
+        haveNoise:
+          type: boolean
+        haveDisableLatitude:
+          type: boolean
+        haveDisableLongitude:
+          type: boolean
+        haveDisableAltitude:
+          type: boolean
+      type: object
+      example:
+        haveLabel: true
+        haveRealism: true
+        haveNoise: true
+        haveDisableLatitude: true
+        haveDisableLongitude: true
+        haveDisableAltitude: true

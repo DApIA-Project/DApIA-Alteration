@@ -15,7 +15,11 @@ function DownloadAlteredRecording({
 }: DownloadAlteredRecordingProps) {
   return (
     <figure {...props} onClick={() => onClick(recording)}>
-      <img className={'imageDownload'} src={'../assets/logo_file.png'} />
+      <img
+        className={'imageDownload'}
+        src={'../assets/logo_file.png'}
+        alt={'logo file download'}
+      />
       <figcaption>{recording.name}</figcaption>
     </figure>
   )
