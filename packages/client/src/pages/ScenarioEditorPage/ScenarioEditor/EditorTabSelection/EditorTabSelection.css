@@ -7,20 +7,34 @@
 
 .tab {
   padding: 8px 16px;
-  background-color: #272d2f;
   margin-right: 4px;
   cursor: pointer;
-  border-radius: 4px 4px 0 0;
+
   display: flex;
+  pointer-events: all;
 }
 
-.tab:hover {
+.li {
+  background-color: #272d2f;
+  border-radius: 4px 4px 0 0;
+  margin-right: 4px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.li.selected {
+  background-color: rgb(85, 92, 93);
+  color: white;
+  border-radius: 4px 4px 0 0;
+}
+
+.li:hover {
   background-color: #999;
 }
 
-.tab.selected {
-  background-color: rgb(85, 92, 93);
-  color: white;
+.tab:hover {
+  border-radius: 4px 4px 0 0;
 }
 
 .tab.selected > .tabCloseButton {
@@ -34,7 +48,6 @@
 .tabCloseButton {
   background-color: #272d2f;
   color: #dfe6e9;
-  margin-left: 15px;
   border-radius: 25%;
   cursor: pointer;
   border-color: #dfe6e9;

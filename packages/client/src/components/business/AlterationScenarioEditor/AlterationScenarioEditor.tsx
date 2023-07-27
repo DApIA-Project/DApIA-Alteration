@@ -6,23 +6,29 @@ import * as parser from '@smartesting/alteration-scenario/dist/parser/parser'
 import { Suggestion } from '@smartesting/alteration-scenario/dist/parser/parser'
 import ALTERATION_SCENARIO_FORMAT from '../../../alterationscenario'
 import './AlterationScenarioEditor.css'
-import IModel = monaco.editor.IModel
-import CompletionItemProvider = monaco.languages.CompletionItemProvider
-import ILanguageExtensionPoint = monaco.languages.ILanguageExtensionPoint
 import { showSuggestions } from './utils/showSuggestions/showSuggestions'
 import { checkSemantic } from './utils/checkSemantic/checkSemantic'
 import { ScenariosStorage } from '../../../pages/ScenarioEditorPage/types'
+import IModel = monaco.editor.IModel
+import CompletionItemProvider = monaco.languages.CompletionItemProvider
+import ILanguageExtensionPoint = monaco.languages.ILanguageExtensionPoint
 
 type AlterationScenarioEditorProps = {
   language: string
   value: string
+  onChange?: (value: string) => void
   options?: { readOnly: boolean; hideCursorInOverviewRuler: boolean }
 }
 const AlterationScenarioEditor: React.FunctionComponent<
   AlterationScenarioEditorProps
-> = ({ language, value, options, ...props }) => {
+> = ({
+  language,
+  value,
+  onChange,
+  options = { readOnly: false, hideCursorInOverviewRuler: false },
+  ...props
+}) => {
   const monaco = useMonaco()
-
   useEffect(
     () => {
       if (!monaco) return
@@ -98,23 +104,23 @@ const AlterationScenarioEditor: React.FunctionComponent<
     }
   }
 
-  if (value === '') {
-    const selectedNavItem = window.localStorage.getItem('selectedItem')
-    if (selectedNavItem != null) {
-      let actualStorage: ScenariosStorage = JSON.parse(
-        window.localStorage.getItem('scenarios')!
-      )
-      if (actualStorage == null) {
-        value = ''
-      } else {
-        if (actualStorage['scenarios'][Number(selectedNavItem) - 1] == null) {
-          value = ''
-        } else {
-          value = actualStorage['scenarios'][Number(selectedNavItem) - 1]
+  /* if (value === '') {
+        const selectedNavItem = window.localStorage.getItem('selectedItem')
+        if (selectedNavItem != null) {
+            let actualStorage: ScenariosStorage = JSON.parse(
+                window.localStorage.getItem('scenarios')!
+            )
+            if (actualStorage == null) {
+                value = ''
+            } else {
+                if (actualStorage['scenarios'][Number(selectedNavItem) - 1] == null) {
+                    value = ''
+                } else {
+                    value = actualStorage['scenarios'][Number(selectedNavItem) - 1]
+                }
+            }
         }
-      }
-    }
-  }
+    }*/
   return (
     <Editor
       defaultLanguage={language}
@@ -122,22 +128,20 @@ const AlterationScenarioEditor: React.FunctionComponent<
       value={value}
       options={options}
       onChange={(text) => {
-        if (
-          (options !== undefined && options.readOnly !== true) ||
-          options === undefined
-        ) {
-          const selectedNavItem = window.localStorage.getItem('selectedItem')
-          if (selectedNavItem != null) {
-            let actualStorage: ScenariosStorage = JSON.parse(
-              window.localStorage.getItem('scenarios')!
-            )
-            actualStorage['scenarios'][Number(selectedNavItem) - 1] = text || ''
-            window.localStorage.setItem(
-              'scenarios',
-              JSON.stringify(actualStorage)
-            )
-          }
+        if (onChange) {
+          onChange(text || '')
         }
+        /*  const selectedNavItem = window.localStorage.getItem('selectedItem')
+                    if (selectedNavItem != null) {
+                        const actualStorage: ScenariosStorage = JSON.parse(
+                            window.localStorage.getItem('scenarios')
+                        ) || []
+                        actualStorage['scenarios'][Number(selectedNavItem) - 1] = text || ''
+                        window.localStorage.setItem(
+                            'scenarios',
+                            JSON.stringify(actualStorage)
+                        )
+                    }*/
       }}
       {...props}
     />

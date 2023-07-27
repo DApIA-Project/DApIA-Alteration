@@ -1,3 +1,1 @@
-export type ScenariosStorage = {
-  scenarios: string[]
-}
+export type ScenariosStorage = string[]
