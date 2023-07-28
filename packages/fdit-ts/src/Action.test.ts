@@ -3,13 +3,15 @@ import { BaseStationMessage } from './BaseStationMessage'
 import { Action, ActionType, ActionParameters } from './Action'
 import { SinonMock, SinonSandbox, SinonSpy } from 'sinon'
 import sinon = require('sinon')
+import { ActionLogger } from './ActionLogger'
 
 describe('Action', () => {
   let action: Action
   let sandbox: SinonSandbox
+  let actionLog: ActionLogger
 
   beforeEach(() => {
-    action = new Action()
+    action = new Action(actionLog)
     sandbox = sinon.createSandbox()
   })
 

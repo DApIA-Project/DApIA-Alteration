@@ -1,6 +1,7 @@
 import { BaseStationMessage } from './BaseStationMessage'
 import * as fs from 'fs'
 import { FlightParameter } from './flightParameter'
+import { ActionLogger } from './ActionLogger'
 
 export class UnknownActionException extends Error {
   constructor(actionType: string) {
@@ -29,45 +30,60 @@ export interface ActionParameters<T> {
 export class Action {
   private counters: Map<ActionType, number> = new Map()
   private frequencies: Map<ActionType, number> = new Map()
+  private actionLogger: ActionLogger
+  private messages: BaseStationMessage[] = []
 
-  constructor() {
+  constructor(actionLogger: ActionLogger) {
     for (const actionType of Object.values(ActionType)) {
       this.counters.set(actionType, this.frequencies.get(actionType) || 0)
     }
+    this.actionLogger = actionLogger
   }
-  //
-  doSwitch(
-    type: ActionType,
-    message: BaseStationMessage,
-    parameters: any
-  ): void {
+
+  // modifier messages  => messages []
+  doSwitch(type: ActionType, filePath: string, parameters: any): void {
+    const messages = extractAllMessageFromFile(
+      filePath,
+      parameters.start,
+      parameters.end
+    )
+
     switch (type) {
       case ActionType.ALTERATION:
-        this.applyAlteration(message, parameters)
+        this.applyAlteration(messages, parameters)
+        this.actionLogger.incrementAlteredMessage()
         break
       case ActionType.CREATION:
-        this.applyCreation(message, parameters)
+        this.applyCreation(messages, parameters)
+        this.actionLogger.incrementCreatedMessage()
         break
       case ActionType.DELAY:
-        this.applyDelay(message, parameters)
+        this.applyDelay(messages, parameters)
+        this.actionLogger.incrementAlteredMessage()
         break
       case ActionType.DELETION:
-        this.applyDeletion(message, type)
+        this.applyDeletion(messages, parameters)
+        this.actionLogger.incrementDeletedMessage()
         break
       case ActionType.SATURATION:
-        this.applySaturation(message, parameters)
+        this.applySaturation(messages, parameters)
+        this.actionLogger.incrementAlteredMessage()
         break
       case ActionType.REPLAY:
-        this.applyReplay(message, parameters)
+        this.applyReplay(messages, parameters)
+        this.actionLogger.incrementModifiedMessage()
         break
       case ActionType.TRAJECTORY_MODIFICATION:
-        this.applyTrajectoryModification(message, parameters)
+        this.applyTrajectoryModification(messages, parameters)
+        this.actionLogger.incrementModifiedMessage()
         break
       case ActionType.ROTATION:
-        this.applyRotation(message, parameters)
+        this.applyRotation(messages, parameters)
+        this.actionLogger.incrementModifiedMessage()
         break
       case ActionType.CUT:
-        this.applyCut(message, parameters)
+        this.applyCut(messages, parameters)
+        this.actionLogger.incrementDeletedMessage()
         break
       default:
         throw new UnknownActionException(type)
@@ -75,162 +91,153 @@ export class Action {
   }
 
   private applyAlteration(
-    message: BaseStationMessage,
+    messages: BaseStationMessage[],
     parameters: ActionParameters<string>
   ): void {
     if (parameters.data) {
-      switch (parameters.data) {
-        case 'callsign':
-          message.alterCallsign(parameters.data)
-          break
-        case 'altitude':
-          message.alterAltitude(Number(parameters.data))
-          break
-        case 'groundSpeed':
-          message.alterGroundSpeed(Number(parameters.data))
-          break
-        case 'track':
-          message.alterTrack(Number(parameters.data))
-          break
-        case 'latitude':
-          message.alterLatitude(Number(parameters.data))
-          break
-        case 'longitude':
-          message.alterLongitude(Number(parameters.data))
-          break
-        case 'verticalRate':
-          message.alterVerticalRate(Number(parameters.data))
-          break
-        case 'squawk':
-          message.alterSquawk(Number(parameters.data))
-          break
-        case 'alert':
-          message.alterAlert(parameters.data === 'alert')
-          break
-        case 'emergency':
-          message.alterEmergency(parameters.data === 'emergency')
-          break
-        case 'spi':
-          message.alterSpi(parameters.data === 'spi')
-          break
-        case 'onGround':
-          message.alterOnGround(parameters.data === 'onGround')
-          break
-        default:
-          break
+      for (const message of messages) {
+        switch (parameters.data) {
+          case 'callsign':
+            message.alterCallsign(parameters.data)
+            break
+          case 'altitude':
+            message.alterAltitude(Number(parameters.data))
+            break
+          case 'groundSpeed':
+            message.alterGroundSpeed(Number(parameters.data))
+          case 'groundSpeed':
+            message.alterGroundSpeed(Number(parameters.data))
+            break
+          case 'track':
+            message.alterTrack(Number(parameters.data))
+            break
+          case 'latitude':
+            message.alterLatitude(Number(parameters.data))
+            break
+          case 'longitude':
+            message.alterLongitude(Number(parameters.data))
+            break
+          case 'verticalRate':
+            message.alterVerticalRate(Number(parameters.data))
+            break
+          case 'squawk':
+            message.alterSquawk(Number(parameters.data))
+            break
+          case 'alert':
+            message.alterAlert(parameters.data === 'alert')
+            break
+          case 'emergency':
+            message.alterEmergency(parameters.data === 'emergency')
+            break
+          case 'spi':
+            message.alterSpi(parameters.data === 'spi')
+            break
+          case 'onGround':
+            message.alterOnGround(parameters.data === 'onGround')
+            break
+          default:
+            break
+        }
       }
     }
   }
 
   private applyCreation(
-    message: BaseStationMessage,
+    messages: BaseStationMessage[],
     parameters: ActionParameters<any>
   ): void {
-    const newMessage = new BaseStationMessage(
-      message.transmissionType,
-      message.sessionID,
-      message.aircraftID,
-      message.icao,
-      message.flightID,
-      message.timestampGenerated,
-      message.timestampLogged,
-      message.callSign ?? null,
-      message.altitude ?? null,
-      message.groundSpeed ?? null,
-      message.track ?? null,
-      message.latitude ?? null,
-      message.longitude ?? null,
-      message.verticalRate ?? null,
-      message.squawk ?? null,
-      message.alert,
-      message.emergency,
-      message.spi,
-      message.onGround,
-      message.extraField
-    )
+    const newMessages: BaseStationMessage[] = []
+    for (const message of messages) {
+      const newMessage = new BaseStationMessage(
+        message.transmissionType,
+        message.sessionID,
+        message.aircraftID,
+        message.icao,
+        message.flightID,
+        message.timestampGenerated,
+        message.timestampLogged,
+        message.callSign ?? null,
+        message.altitude ?? null,
+        message.groundSpeed ?? null,
+        message.track ?? null,
+        message.latitude ?? null,
+        message.longitude ?? null,
+        message.verticalRate ?? null,
+        message.squawk ?? null,
+        message.alert,
+        message.emergency,
+        message.spi,
+        message.onGround,
+        message.extraField
+      )
 
-    Object.assign(message, newMessage)
+      newMessages.push(newMessage)
+    }
+
+    messages.push(...newMessages)
   }
 
   private applyDelay(
-    message: BaseStationMessage,
+    messages: BaseStationMessage[],
     parameters: ActionParameters<string>
   ): void {
     if (parameters.data) {
       const delay = parseInt(parameters.data)
-      message.setTimestampGenerated(message.getTimestampGenerated() + delay)
-      message.setTimestampLogged(message.getTimestampLogged() + delay)
+      for (const message of messages) {
+        message.setTimestampGenerated(message.getTimestampGenerated() + delay)
+        message.setTimestampLogged(message.getTimestampLogged() + delay)
+      }
+    }
+  }
+  private applyDeletion(
+    messages: BaseStationMessage[],
+    parameters: ActionParameters<number>
+  ): void {
+    const frequency = parameters.data
+
+    if (frequency <= 0) {
+      // If frequency is 0 or negative, delete all messages
+      this.deleteAllMessages(messages)
+    } else {
+      messages = messages.filter((_, index) => (index + 1) % frequency !== 0)
     }
   }
 
-  private applyDeletion(message: BaseStationMessage, action: ActionType): void {
-    const actionType = action
-    const counter = this.counters.get(actionType)
-    //console.log(actionType)
-    const frequency = this.frequencies.get(actionType) || 0
-
-    if (!counter || frequency === 0) {
-      return
-    }
-
-    this.counters.set(actionType, counter + 1)
-
-    if (counter === frequency) {
-      this.counters.set(actionType, 0)
-
-      message.setTransmissionType(null)
-      message.setSessionID(null)
-      message.setAircraftID(null)
-      message.setIcao(null)
-      message.setFlightID(null)
-      message.setTimestampGenerated(null)
-      message.setTimestampLogged(null)
-      message.setCallsign(null)
-      message.setAltitude(null)
-      message.setGroundSpeed(null)
-      message.setTrack(null)
-      message.setLatitude(null)
-      message.setLongitude(null)
-      message.setVerticalRate(null)
-      message.setSquawk(null)
-      message.setAlert(false)
-      message.setEmergency(false)
-      message.setSpi(false)
-      message.setOnGround(false)
-      message.setExtraField(null)
-    }
+  private deleteAllMessages(messages: BaseStationMessage[]): void {
+    // Remove all messages
+    messages.length = 0
   }
 
   private applySaturation(
-    message: BaseStationMessage,
+    messages: BaseStationMessage[],
     parameters: ActionParameters<number>
   ): string {
     const numberOfMessages = parameters.data
-    const icao = message.getIcao()
+    const icao = messages[0].getIcao()
     const generatedMessages: BaseStationMessage[] = []
 
     for (let i = 0; i < numberOfMessages; i++) {
-      const fakeMessage = message.copy()
-
-      generatedMessages.push(fakeMessage)
+      for (const message of messages) {
+        const fakeMessage = message.copy()
+        generatedMessages.push(fakeMessage)
+      }
     }
+
     return messagesToLines(generatedMessages)
   }
-
   private applyReplay(
-    message: BaseStationMessage,
+    messages: BaseStationMessage[],
     parameters: ActionParameters<string>
   ): string {
     const sourceRecordingPath = parameters.data
-
-    const sourceMessages = extractMessagesFromFile(
+    const sourceMessages = extractAllMessageFromFile(
       sourceRecordingPath,
-      message.getTimestampGenerated(),
-      message.getTimestampGenerated()
+      messages[0].getTimestampGenerated(),
+      messages[messages.length - 1].getTimestampGenerated()
     )
 
     const messagesToInsert = sourceMessages.map((sourceMessage) => {
-      const insertedMessage = message.copy()
+      const insertedMessage = sourceMessage.copy()
       insertedMessage.setAircraftID(sourceMessage.getAircraftID())
       insertedMessage.setAltitude(sourceMessage.getAltitude())
       insertedMessage.setGroundSpeed(sourceMessage.getGroundSpeed())
@@ -244,25 +251,33 @@ export class Action {
       return insertedMessage
     })
 
-    const allMessages = [...messagesToInsert, message]
+    const allMessages = [...messagesToInsert, ...messages]
 
     return messagesToLines(allMessages)
   }
 
   private applyTrajectoryModification(
-    message: BaseStationMessage,
+    message: BaseStationMessage[],
     parameters: ActionParameters<string>
   ): void {}
 
   private applyRotation(
-    message: BaseStationMessage,
+    message: BaseStationMessage[],
     parameters: ActionParameters<string>
   ): void {}
 
   private applyCut(
-    message: BaseStationMessage,
+    messages: BaseStationMessage[],
     parameters: ActionParameters<string>
-  ): void {}
+  ): void {
+    const targetIcaos = parameters.data.toLowerCase().split(',')
+    const filteredMessages = messages.filter(
+      (message) => !targetIcaos.includes(message.getIcao().toLowerCase())
+    )
+
+    messages.length = 0
+    messages.push(...filteredMessages)
+  }
 }
 function messagesToLines(messages: BaseStationMessage[]): string {
   messages.sort((a, b) => a.getTimestampGenerated() - b.getTimestampGenerated())
@@ -276,40 +291,25 @@ function messagesToLines(messages: BaseStationMessage[]): string {
   return lines.join('\n')
 }
 
-function extractMessagesFromFile(
+export function extractAllMessageFromFile(
   filePath: string,
-  start: number,
-  end: number
+  start?: number,
+  end?: number
 ): BaseStationMessage[] {
+  const lines = fs.readFileSync(filePath, 'utf-8').split('\n')
   const messages: BaseStationMessage[] = []
-  const fileContent = fs.readFileSync(filePath, 'utf-8')
-  const lines = fileContent.split('\n')
+
+  if (start && end && start > end) {
+    ;[start, end] = [end, start]
+  }
 
   for (const line of lines) {
-    const messageParts = line.split(',')
-    //
-    if (messageParts.length >= 22) {
-      const transmissionType = parseInt(messageParts[0])
-      const sessionID = parseInt(messageParts[1])
-      const aircraftID = parseInt(messageParts[2])
-      const icao = messageParts[3]
-      const flightID = parseInt(messageParts[4])
-      const timestampGenerated = new Date(messageParts[6]).getTime()
-      const timestampLogged = new Date(messageParts[8]).getTime()
-      const callSign = messageParts[9] || null
-      const altitude = parseFloat(messageParts[10]) || null
-      const groundSpeed = parseFloat(messageParts[11]) || null
-      const track = parseFloat(messageParts[12]) || null
-      const latitude = parseFloat(messageParts[13]) || null
-      const longitude = parseFloat(messageParts[14]) || null
-      const verticalRate = parseFloat(messageParts[15]) || null
-      const squawk = parseFloat(messageParts[16]) || null
-      const alert = messageParts[17] === '1'
-      const emergency = messageParts[18] === '1'
-      const spi = messageParts[19] === '1'
-      const onGround = messageParts[20] === '1'
+    const values = line.split(',')
 
-      const message = new BaseStationMessage(
+    const messageType = values[0]
+
+    if (messageType === 'MSG' && values.length >= 22) {
+      const [
         transmissionType,
         sessionID,
         aircraftID,
@@ -328,13 +328,61 @@ function extractMessagesFromFile(
         alert,
         emergency,
         spi,
-        onGround
-      )
+        onGround,
+        extraField,
+        ...rest // Rest of the fields, if any
+      ] = values
 
-      if (timestampGenerated >= start && timestampGenerated <= end) {
+      // The 'extraField' here will capture all remaining fields beyond the 21st field.
+
+      const messageTimestamp = parseInt(timestampGenerated)
+
+      // Check if the message is within the specified time range (start and end parameters)
+      if (
+        (!start || messageTimestamp >= start) &&
+        (!end || messageTimestamp <= end)
+      ) {
+        const message = new BaseStationMessage(
+          parseInt(transmissionType),
+          parseInt(sessionID),
+          parseInt(aircraftID),
+          icao,
+          parseInt(flightID),
+          messageTimestamp,
+          parseInt(timestampLogged),
+          callSign !== '' ? callSign : null,
+          altitude !== '' ? parseInt(altitude) : null,
+          groundSpeed !== '' ? parseInt(groundSpeed) : null,
+          track !== '' ? parseInt(track) : null,
+          latitude !== '' ? parseFloat(latitude) : null,
+          longitude !== '' ? parseFloat(longitude) : null,
+          verticalRate !== '' ? parseInt(verticalRate) : null,
+          squawk !== '' ? parseInt(squawk) : null,
+          alert === '1' ? true : null,
+          emergency === '1' ? true : null,
+          spi === '1' ? true : null,
+          onGround === '1' ? true : null,
+          extraField !== '' ? JSON.parse(extraField) : null
+        )
+
         messages.push(message)
       }
     }
   }
+
   return messages
+}
+
+//
+function isMessageTargeted(
+  message: BaseStationMessage,
+  targetsStr: string
+): boolean {
+  return (
+    targetsStr.localeCompare('ALL') === 0 ||
+    targetsStr
+      .toLowerCase()
+      .split(',')
+      .includes(message.getIcao().toLowerCase())
+  )
 }
