@@ -5,10 +5,13 @@ import Client from '../../Client'
 import { AlterRecordingResponse } from '@smartesting/shared/dist'
 import '../../styles.css'
 import './ScenarioEditorPage.css'
+import { CircularProgress } from '@mui/material'
+import { unstable_batchedUpdates } from 'react-dom'
 
 const ScenarioEditorPage: React.FunctionComponent = () => {
   const [alteredRecordings, setAlteredRecordings] =
     useState<AlterRecordingResponse | null>(null)
+  const [isLoading, setIsLoading] = useState<boolean>(false)
 
   return (
     <div id={'root'}>
@@ -20,17 +23,28 @@ const ScenarioEditorPage: React.FunctionComponent = () => {
             optionsAlteration,
             recordingToReplay,
           }) => {
-            setAlteredRecordings(
-              await Client.alteration(
-                scenario,
-                recording,
-                optionsAlteration,
-                recordingToReplay
-              )
-            )
+            setAlteredRecordings(null)
+            setIsLoading(true)
+            Client.alteration(
+              scenario,
+              recording,
+              optionsAlteration,
+              recordingToReplay
+            ).then((response) => {
+              unstable_batchedUpdates(() => {
+                setAlteredRecordings(response)
+                setIsLoading(false)
+              })
+            })
           }}
         />
-        <AlterationOutput response={alteredRecordings} />
+        {alteredRecordings ? (
+          <AlterationOutput response={alteredRecordings} />
+        ) : (
+          isLoading && (
+            <CircularProgress className={'circularProgress'} color='inherit' />
+          )
+        )}
       </div>
     </div>
   )
