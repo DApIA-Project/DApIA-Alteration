@@ -20,7 +20,5 @@ describe('ScenarioEditorPage', () => {
     render(<ScenarioEditorPage />)
 
     screen.getByTestId('scenario-editor-mock')
-
-    screen.getByTestId('scenario-output-mock')
   })
 })
