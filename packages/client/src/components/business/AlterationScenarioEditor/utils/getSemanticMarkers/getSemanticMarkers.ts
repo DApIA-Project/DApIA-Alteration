@@ -1,10 +1,8 @@
 import { SemanticError } from '@smartesting/alteration-scenario/dist/generators'
 import { editor, MarkerSeverity } from 'monaco-editor'
-import IModel = editor.IModel
 import IMarkerData = editor.IMarkerData
 
-export function getSemantic(
-  model: IModel,
+export function getSemanticMarkers(
   semanticErrors: SemanticError[]
 ): IMarkerData[] {
   const markers: IMarkerData[] = []

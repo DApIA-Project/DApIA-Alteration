@@ -2,14 +2,13 @@ import React, { useEffect } from 'react'
 import Editor, { useMonaco } from '@monaco-editor/react'
 
 import * as monaco from 'monaco-editor'
+import { editor } from 'monaco-editor'
 import * as parser from '@smartesting/alteration-scenario/dist/parser/parser'
 import { Suggestion } from '@smartesting/alteration-scenario/dist/parser/parser'
 import ALTERATION_SCENARIO_FORMAT from '../../../alterationscenario'
 import './AlterationScenarioEditor.css'
 import { showSuggestions } from './utils/showSuggestions/showSuggestions'
-import { checkSemantic } from './utils/checkSemantic/checkSemantic'
-import { ScenariosStorage } from '../../../pages/ScenarioEditorPage/types'
-import IModel = monaco.editor.IModel
+import { applyErrorColoring } from './utils/applyErrorColoring/applyErrorColoring'
 import CompletionItemProvider = monaco.languages.CompletionItemProvider
 import ILanguageExtensionPoint = monaco.languages.ILanguageExtensionPoint
 
@@ -18,6 +17,12 @@ type AlterationScenarioEditorProps = {
   value: string
   onChange?: (value: string) => void
   options?: { readOnly: boolean; hideCursorInOverviewRuler: boolean }
+}
+
+declare global {
+  interface Window {
+    timer: NodeJS.Timeout | undefined
+  }
 }
 const AlterationScenarioEditor: React.FunctionComponent<
   AlterationScenarioEditorProps
@@ -29,6 +34,7 @@ const AlterationScenarioEditor: React.FunctionComponent<
   ...props
 }) => {
   const monaco = useMonaco()
+
   useEffect(
     () => {
       if (!monaco) return
@@ -71,9 +77,10 @@ const AlterationScenarioEditor: React.FunctionComponent<
     return {
       triggerCharacters: [' ', '\b'],
       provideCompletionItems: async function (
-        model: IModel,
+        model: editor.ITextModel,
         position: monaco.IPosition
       ): Promise<monaco.languages.CompletionList | null | undefined> {
+        // await initSemantic(model, position)
         const suggestion: Suggestion = await parser.getSuggestions(
           model.getValueInRange({
             startLineNumber: 1,
@@ -85,7 +92,6 @@ const AlterationScenarioEditor: React.FunctionComponent<
           position.column
         )
 
-        await checkSemantic(monaco, model, suggestion, position)
         if (suggestion.suggestions?.items.length === 0) {
           return {
             suggestions: [],
@@ -104,44 +110,24 @@ const AlterationScenarioEditor: React.FunctionComponent<
     }
   }
 
-  /* if (value === '') {
-        const selectedNavItem = window.localStorage.getItem('selectedItem')
-        if (selectedNavItem != null) {
-            let actualStorage: ScenariosStorage = JSON.parse(
-                window.localStorage.getItem('scenarios')!
-            )
-            if (actualStorage == null) {
-                value = ''
-            } else {
-                if (actualStorage['scenarios'][Number(selectedNavItem) - 1] == null) {
-                    value = ''
-                } else {
-                    value = actualStorage['scenarios'][Number(selectedNavItem) - 1]
-                }
-            }
-        }
-    }*/
   return (
     <Editor
       defaultLanguage={language}
       theme={'vs-dark'}
       value={value}
       options={options}
-      onChange={(text) => {
+      onChange={async (text) => {
         if (onChange) {
           onChange(text || '')
+          if (monaco !== null) {
+            if (window.timer) {
+              clearTimeout(window.timer)
+            }
+            window.timer = setTimeout(async () => {
+              await applyErrorColoring(monaco, text || '')
+            }, 1000)
+          }
         }
-        /*  const selectedNavItem = window.localStorage.getItem('selectedItem')
-                    if (selectedNavItem != null) {
-                        const actualStorage: ScenariosStorage = JSON.parse(
-                            window.localStorage.getItem('scenarios')
-                        ) || []
-                        actualStorage['scenarios'][Number(selectedNavItem) - 1] = text || ''
-                        window.localStorage.setItem(
-                            'scenarios',
-                            JSON.stringify(actualStorage)
-                        )
-                    }*/
       }}
       {...props}
     />

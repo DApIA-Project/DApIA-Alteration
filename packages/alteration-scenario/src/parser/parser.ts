@@ -36,6 +36,11 @@ export type Suggestion = {
   errors: { parser: IRecognitionException[]; lexer: ILexingError[] }
 }
 
+export type ParserErrors = {
+  lexer: ILexingError[]
+  parser: IRecognitionException[]
+}
+
 export async function getSuggestions(
   content: string,
   line: number,
@@ -61,5 +66,20 @@ export async function getSuggestions(
       lexer: document.parseResult.lexerErrors,
       parser: document.parseResult.parserErrors,
     },
+  }
+}
+
+export async function getParserErrors(content: string): Promise<ParserErrors> {
+  const services =
+    createAlterationscenarioServices(EmptyFileSystem).Alterationscenario
+  const document: LangiumDocument =
+    services.shared.workspace.LangiumDocumentFactory.fromString(
+      content,
+      URI.parse('memory://alterationscenario.document')
+    )
+
+  return {
+    lexer: document.parseResult.lexerErrors,
+    parser: document.parseResult.parserErrors,
   }
 }

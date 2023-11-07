@@ -30,6 +30,7 @@
     "uuid": "^9.0.0",
     "vscode-languageclient": "^8.1.0",
     "vscode-languageserver": "^8.1.0",
+    "vscode-uri": "^3.0.2",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
