@@ -27,10 +27,5 @@ header > span {
 }
 
 #root {
-  height: 100%;
   margin: 1%;
-}
-
-iframe#webpack-dev-server-client-overlay {
-  display: none !important;
 }

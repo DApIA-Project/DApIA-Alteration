@@ -14,10 +14,7 @@ import {
 import { Parameters } from '@smartesting/alteration-scenario/dist/types'
 import assert from 'assert'
 import IAlterationManager from '../../adapters/IAlterationManager'
-import {
-  convertCSVtoSBS,
-  convertSBStoCSV,
-} from '@dapia-project/data-converter/dist/src'
+import { csvToSbs, sbsToCsv } from '@dapia-project/data-converter/dist/src'
 import { AlterationScenarioSemanticVisitor } from '@smartesting/alteration-scenario/dist/generators/AlterationScenarioSemanticVisitor'
 import { SemanticError } from '@smartesting/alteration-scenario/dist/generators/index'
 
@@ -33,7 +30,7 @@ export default async function alterRecording(
   const regex = /.csv$/i
   if (regex.test(recording.name)) {
     fileIsCsv = true
-    recording.content = convertCSVtoSBS(recording.content)
+    recording.content = csvToSbs(recording.content)
 
     if (recording.content === 'Error content file') {
       return {
@@ -45,7 +42,7 @@ export default async function alterRecording(
   }
   if (recordingToReplay !== undefined) {
     if (regex.test(recordingToReplay.name)) {
-      recordingToReplay.content = convertCSVtoSBS(recordingToReplay.content)
+      recordingToReplay.content = csvToSbs(recordingToReplay.content)
       if (recordingToReplay.content === 'Error content file') {
         return {
           error: recordingToReplay.content,
@@ -79,7 +76,7 @@ export default async function alterRecording(
   if (fileIsCsv) {
     let alteredRecordingsCsv: Recording[] = []
     for (const recordingSbs of alteredRecordings) {
-      let contentCsv: string = convertSBStoCSV(recordingSbs.content)
+      let contentCsv: string = sbsToCsv(recordingSbs.content)
       let contentName: string = recordingSbs.name.replace('.sbs', '.csv')
       let recordingCsv: Recording = { content: contentCsv, name: contentName }
       alteredRecordingsCsv.push(recordingCsv)

@@ -1,9 +1,5 @@
 .scenario-options {
-  align-items: center;
   display: flex;
-  justify-content: center;
   flex-direction: column;
-  flex: 4;
-  margin-bottom: 1%;
-  margin-top: 1%;
+  align-self: center;
 }

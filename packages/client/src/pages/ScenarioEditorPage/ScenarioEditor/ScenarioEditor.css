@@ -1,16 +1,28 @@
 .scenarioEditor {
   display: flex;
-  flex-direction: column;
-  flex: 3;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  -webkit-box-pack: center;
+  justify-content: center;
+  -webkit-box-align: stretch;
+  align-items: stretch;
 }
 
 .composantOption {
+  flex: 0 1 40%;
+  max-width: 40%;
   display: flex;
   flex-direction: column;
-  flex: 3;
+  flex-wrap: nowrap;
+  justify-content: space-evenly;
+  align-items: normal;
+  align-content: normal;
 }
 
 .selectionEditor {
   display: flex;
-  align-items: center;
+  flex: 0 1 100%;
 }

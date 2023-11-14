@@ -1,5 +1,6 @@
 .alterationeditor {
-  flex: 2;
+  flex: 0 1 60%;
+  max-width: 60%;
 }
 
 .examples-editor {
