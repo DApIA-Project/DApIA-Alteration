@@ -105,7 +105,7 @@ public class BaseStationAlterationEngineTest {
                 engineParameters(label(false)));
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("baroaltitude", "-45.72");
-        jsonObject.addProperty("lastposupdate", "1672575670.76");
+        jsonObject.addProperty("last_position", "1672575670.76");
         jsonObject.addProperty("lastcontact", "1672575670.797");
         jsonObject.addProperty("hour", "1672574400");
         final BaseStationMessageFull message = bstMessageFull(
@@ -126,7 +126,7 @@ public class BaseStationAlterationEngineTest {
                 extraField(jsonObject));
         final String result = engine.applyAction(message);
         assertEquals(
-                "MSG,0,0,0,4B1613,0,2019/04/19,17:29:45.200,2019/04/19,17:29:45.200,BAW256,20350,442.2,358.1,1.1,8.4823,0,4022,0,0,0,0,{\"baroaltitude\":\"-45.72\",\"lastposupdate\":\"1672575670.76\",\"lastcontact\":\"1672575670.797\",\"hour\":\"1672574400\"}",
+                "MSG,0,0,0,4B1613,0,2019/04/19,17:29:45.200,2019/04/19,17:29:45.200,BAW256,20350,442.2,358.1,1.1,8.4823,0,4022,0,0,0,0,{\"baroaltitude\":\"-45.72\",\"last_position\":\"1672575670.76\",\"lastcontact\":\"1672575670.797\",\"hour\":\"1672574400\"}",
                 result);
     }
 
@@ -533,7 +533,7 @@ public class BaseStationAlterationEngineTest {
                 engineParameters(label(true)));
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("baroaltitude", "-45.72");
-        jsonObject.addProperty("lastposupdate", "1672575670.76");
+        jsonObject.addProperty("last_position", "1672575670.76");
         jsonObject.addProperty("lastcontact", "1672575670.797");
         jsonObject.addProperty("hour", "1672574400");
         final BaseStationMessageFull message = bstMessageFull(
@@ -554,24 +554,24 @@ public class BaseStationAlterationEngineTest {
                 extraField(jsonObject));
         final String result = engine.applyAction(message);
         assertEquals(
-                "MSG,0,0,0,4B1613,0,2019/04/19,17:29:45.035,2019/04/19,17:29:45.035,BAW256,20350,492.6,358.1,49.6684,8.4823,0,4022,0,0,0,0,1,512,{\"baroaltitude\":\"-45.72\",\"lastposupdate\":\"1672575670.76\",\"lastcontact\":\"1672575670.797\",\"hour\":\"1672574400\"}",
+                "MSG,0,0,0,4B1613,0,2019/04/19,17:29:45.035,2019/04/19,17:29:45.035,BAW256,20350,492.6,358.1,49.6684,8.4823,0,4022,0,0,0,0,1,512,{\"baroaltitude\":\"-45.72\",\"last_position\":\"1672575670.76\",\"lastcontact\":\"1672575670.797\",\"hour\":\"1672574400\"}",
                 result);
     }
 
     @Test
     public void applyActionEngineWithWithExtraField() throws Exception {
         final File recordingFile = createTempFile("initial", ".sbs");
-        write("MSG,0,30,1105,300065,3839,2018/02/28,16:04:30.987,2018/02/28,16:04:31.888,,,414.1,333.0,,,64,,,,,,{\"baroaltitude\":\"-45.72\",\"lastposupdate\":\"1672575670.76\",\"lastcontact\":\"1672575670.797\",\"hour\":\"1672574400\"}\n" +
-                        "MSG,0,30,1105,300065,3839,2018/02/28,16:04:31.987,2018/02/28,16:04:32.888,,36025,,,47.33528,4.16787,,,0,0,0,0,{\"baroaltitude\":\"-45.72\",\"lastposupdate\":\"1672575670.76\",\"lastcontact\":\"1672575670.797\",\"hour\":\"1672574400\"}\n" +
-                        "MSG,0,30,1105,300065,3839,2018/02/28,16:04:32.391,2018/02/28,16:04:33.888,,36025,,,47.33606,4.16732,,,0,0,0,0,{\"baroaltitude\":\"-45.72\",\"lastposupdate\":\"1672575670.76\",\"lastcontact\":\"1672575670.797\",\"hour\":\"1672574400\"}\n" +
-                        "MSG,0,30,1105,300065,3839,2018/02/28,16:04:32.590,2018/02/28,16:04:34.888,,,415.0,333.1,,,0,,,,,,{\"baroaltitude\":\"-45.72\",\"lastposupdate\":\"1672575670.76\",\"lastcontact\":\"1672575670.797\",\"hour\":\"1672574400\"}\n" +
-                        "MSG,0,30,1105,300065,3839,2018/02/28,16:04:33.801,2018/02/28,16:04:35.888,,36025,,,47.33678,4.16678,,,0,0,0,0,{\"baroaltitude\":\"-45.72\",\"lastposupdate\":\"1672575670.76\",\"lastcontact\":\"1672575670.797\",\"hour\":\"1672574400\"}\n" +
-                        "MSG,0,30,1105,300065,3839,2018/02/28,16:04:33.998,2018/02/28,16:04:36.894,,,415.0,333.1,,,0,,,,,,{\"baroaltitude\":\"-45.72\",\"lastposupdate\":\"1672575670.76\",\"lastcontact\":\"1672575670.797\",\"hour\":\"1672574400\"}\n" +
-                        "MSG,0,30,1105,300065,3839,2018/02/28,16:04:34.404,2018/02/28,16:04:37.894,,36025,,,47.33752,4.16622,,,0,0,0,0,{\"baroaltitude\":\"-45.72\",\"lastposupdate\":\"1672575670.76\",\"lastcontact\":\"1672575670.797\",\"hour\":\"1672574400\"}\n" +
-                        "MSG,0,30,1105,300065,3839,2018/02/28,16:04:34.607,2018/02/28,16:04:38.894,,,415.0,333.1,,,0,,,,,,{\"baroaltitude\":\"-45.72\",\"lastposupdate\":\"1672575670.76\",\"lastcontact\":\"1672575670.797\",\"hour\":\"1672574400\"}\n" +
-                        "MSG,0,30,1105,300065,3839,2018/02/28,16:04:35.608,2018/02/28,16:04:39.894,,36025,,,47.33821,4.16567,,,0,0,0,0,{\"baroaltitude\":\"-45.72\",\"lastposupdate\":\"1672575670.76\",\"lastcontact\":\"1672575670.797\",\"hour\":\"1672574400\"}\n" +
-                        "MSG,0,30,1105,300065,3839,2018/02/28,16:04:36.017,2018/02/28,16:04:40.889,,,415.0,333.1,,,0,,,,,,{\"baroaltitude\":\"-45.72\",\"lastposupdate\":\"1672575670.76\",\"lastcontact\":\"1672575670.797\",\"hour\":\"1672574400\"}\n" +
-                        "MSG,0,30,1105,300065,3839,2018/02/28,16:04:36.217,2018/02/28,16:04:41.889,,36025,,,47.33926,4.16492,,,0,0,0,0,{\"baroaltitude\":\"-45.72\",\"lastposupdate\":\"1672575670.76\",\"lastcontact\":\"1672575670.797\",\"hour\":\"1672574400\"}",
+        write("MSG,0,30,1105,300065,3839,2018/02/28,16:04:30.987,2018/02/28,16:04:31.888,,,414.1,333.0,,,64,,,,,,{\"baroaltitude\":\"-45.72\",\"last_position\":\"1672575670.76\",\"lastcontact\":\"1672575670.797\",\"hour\":\"1672574400\"}\n" +
+                        "MSG,0,30,1105,300065,3839,2018/02/28,16:04:31.987,2018/02/28,16:04:32.888,,36025,,,47.33528,4.16787,,,0,0,0,0,{\"baroaltitude\":\"-45.72\",\"last_position\":\"1672575670.76\",\"lastcontact\":\"1672575670.797\",\"hour\":\"1672574400\"}\n" +
+                        "MSG,0,30,1105,300065,3839,2018/02/28,16:04:32.391,2018/02/28,16:04:33.888,,36025,,,47.33606,4.16732,,,0,0,0,0,{\"baroaltitude\":\"-45.72\",\"last_position\":\"1672575670.76\",\"lastcontact\":\"1672575670.797\",\"hour\":\"1672574400\"}\n" +
+                        "MSG,0,30,1105,300065,3839,2018/02/28,16:04:32.590,2018/02/28,16:04:34.888,,,415.0,333.1,,,0,,,,,,{\"baroaltitude\":\"-45.72\",\"last_position\":\"1672575670.76\",\"lastcontact\":\"1672575670.797\",\"hour\":\"1672574400\"}\n" +
+                        "MSG,0,30,1105,300065,3839,2018/02/28,16:04:33.801,2018/02/28,16:04:35.888,,36025,,,47.33678,4.16678,,,0,0,0,0,{\"baroaltitude\":\"-45.72\",\"last_position\":\"1672575670.76\",\"lastcontact\":\"1672575670.797\",\"hour\":\"1672574400\"}\n" +
+                        "MSG,0,30,1105,300065,3839,2018/02/28,16:04:33.998,2018/02/28,16:04:36.894,,,415.0,333.1,,,0,,,,,,{\"baroaltitude\":\"-45.72\",\"last_position\":\"1672575670.76\",\"lastcontact\":\"1672575670.797\",\"hour\":\"1672574400\"}\n" +
+                        "MSG,0,30,1105,300065,3839,2018/02/28,16:04:34.404,2018/02/28,16:04:37.894,,36025,,,47.33752,4.16622,,,0,0,0,0,{\"baroaltitude\":\"-45.72\",\"last_position\":\"1672575670.76\",\"lastcontact\":\"1672575670.797\",\"hour\":\"1672574400\"}\n" +
+                        "MSG,0,30,1105,300065,3839,2018/02/28,16:04:34.607,2018/02/28,16:04:38.894,,,415.0,333.1,,,0,,,,,,{\"baroaltitude\":\"-45.72\",\"last_position\":\"1672575670.76\",\"lastcontact\":\"1672575670.797\",\"hour\":\"1672574400\"}\n" +
+                        "MSG,0,30,1105,300065,3839,2018/02/28,16:04:35.608,2018/02/28,16:04:39.894,,36025,,,47.33821,4.16567,,,0,0,0,0,{\"baroaltitude\":\"-45.72\",\"last_position\":\"1672575670.76\",\"lastcontact\":\"1672575670.797\",\"hour\":\"1672574400\"}\n" +
+                        "MSG,0,30,1105,300065,3839,2018/02/28,16:04:36.017,2018/02/28,16:04:40.889,,,415.0,333.1,,,0,,,,,,{\"baroaltitude\":\"-45.72\",\"last_position\":\"1672575670.76\",\"lastcontact\":\"1672575670.797\",\"hour\":\"1672574400\"}\n" +
+                        "MSG,0,30,1105,300065,3839,2018/02/28,16:04:36.217,2018/02/28,16:04:41.889,,36025,,,47.33926,4.16492,,,0,0,0,0,{\"baroaltitude\":\"-45.72\",\"last_position\":\"1672575670.76\",\"lastcontact\":\"1672575670.797\",\"hour\":\"1672574400\"}",
                 recordingFile,
                 UTF_8);
 
@@ -587,7 +587,7 @@ public class BaseStationAlterationEngineTest {
         System.out.println(engine);
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("baroaltitude", "-45.72");
-        jsonObject.addProperty("lastposupdate", "1672575670.76");
+        jsonObject.addProperty("last_position", "1672575670.76");
         jsonObject.addProperty("lastcontact", "1672575670.797");
         jsonObject.addProperty("hour", "1672574400");
         final BaseStationMessageFull message = bstMessageFull(
@@ -608,7 +608,7 @@ public class BaseStationAlterationEngineTest {
                 extraField(jsonObject));
         final String result = invokeMethod(engine, "applyAction", message);
         assertEquals(
-                "MSG,0,0,0,300065,0,2018/02/28,16:04:34.987,2018/02/28,16:04:34.987,SAMU25,36025,442.2,333.1,47.33821,4.16492,0,4022,0,0,0,0,{\"baroaltitude\":\"-45.72\",\"lastposupdate\":\"1672575670.76\",\"lastcontact\":\"1672575670.797\",\"hour\":\"1672574400\"}",
+                "MSG,0,0,0,300065,0,2018/02/28,16:04:34.987,2018/02/28,16:04:34.987,SAMU25,36025,442.2,333.1,47.33821,4.16492,0,4022,0,0,0,0,{\"baroaltitude\":\"-45.72\",\"last_position\":\"1672575670.76\",\"lastcontact\":\"1672575670.797\",\"hour\":\"1672574400\"}",
                 result);
 
 

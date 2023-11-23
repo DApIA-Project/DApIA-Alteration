@@ -66,15 +66,16 @@ export default async function alterRecording(
     }
 
   assert(parameters)
+  recording.content = recording.content.replace(/\n\s*$/, '')
+  if (recordingToReplay !== undefined) {
+    recordingToReplay.content = recordingToReplay.content.replace(/\n\s*$/, '')
+  }
   const alteredRecordings = await alterationManager.runAlterations(
     parameters,
     recording,
     optionsAlteration,
     recordingToReplay
   )
-  for (const alteredRecording of alteredRecordings) {
-    alteredRecording.content = alteredRecording.content.replace(/\n+$/, '\n')
-  }
   console.log(parameters)
   if (fileIsCsv) {
     let alteredRecordingsCsv: Recording[] = []

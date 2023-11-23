@@ -140,5 +140,33 @@ describe(`core/alterRecording`, () => {
       assert(!error, 'Error is defined')
       assert.equal(alteredRecordings.length, 2)
     })
+
+    it('returns altered recording if end of file have double \\n', async () => {
+      const { error, alteredRecordings } = await alterRecording(
+        'replay all_planes from 0 seconds until 1000 seconds ',
+        {
+          content:
+            'MSG,4,3,5022202,4CA1FA,5022202,2018/11/25,11:30:48.179,2018/11/25,11:30:48.179,,,474.53,295.86,,,0.0,,,,,\n\n',
+          name: 'myfile.sbs',
+        },
+        {
+          content:
+            'MSG,4,3,5022202,4CA1FA,5022202,2018/11/25,11:30:48.179,2018/11/25,11:30:48.179,,,474.53,295.86,,,0.0,,,,,\n\n',
+          name: 'myfile2.sbs',
+        },
+        {
+          haveLabel: false,
+          haveRealism: false,
+          haveNoise: false,
+          haveDisableLatitude: false,
+          haveDisableLongitude: false,
+          haveDisableAltitude: false,
+        },
+        alterationManager
+      )
+
+      assert(!error, 'Error is defined')
+      assert.equal(alteredRecordings.length, 1)
+    })
   })
 })
