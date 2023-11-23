@@ -1,16 +1,13 @@
 .documentationPage {
-  margin: 1%;
-  height: 100%;
+  display: flex;
 }
 
 .examples {
-  width: 75%;
-  height: 30%;
-  float: left;
+  flex: 0 1 70%;
+  max-width: 70%;
 }
 
 .grammar {
-  width: 25%;
-  height: 100%;
-  float: right;
+  flex: 0 1 30%;
+  max-width: 30%;
 }
