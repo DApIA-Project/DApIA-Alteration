@@ -44,6 +44,15 @@ public class Parameters {
         return parameterList;
     }
 
+    public Parameter getParameterByName(String type){
+        for(Parameter parameter : getParameterList()){
+            if(parameter.getCharacteristic().equals(type)){
+                return parameter;
+            }
+        }
+        return null;
+    }
+
     public void setParameterList(final Collection<Parameter> parameterList) {
         this.parameterList = parameterList;
     }
