@@ -40,10 +40,11 @@ public class BaseStationReplayEngine extends BaseStationActionEngine {
             final File sourceRecording = new File(actions.getParameters().getRecordPath());
             final Scope scope = actions.getScope();
             final Target target = actions.getParameters().getTarget();
-            extractMessages(sourceRecording, target, (scope.getUpperBound() - scope.getLowerBound()));
-            adjustTimestamp(scope.getLowerBound(),actions.getParameters().getParameterByName("hexIdent").getValue());
-            sortByTimestamp();
+            List<BaseStationMessage> extractedMessage = extractMessages(sourceRecording, target, (scope.getUpperBound() - scope.getLowerBound()));
+            adjustTimestamp(scope.getLowerBound(),actions.getParameters().getParameterByName("hexIdent").getValue(),extractedMessage);
+
         }
+        sortByTimestamp();
         for (final Message message : messages) {
             updateLogger(message);
         }
@@ -88,13 +89,13 @@ public class BaseStationReplayEngine extends BaseStationActionEngine {
         messages.addAll(sortedQueue);
     }
 
-    private void adjustTimestamp(final long scopeTimeOffset,String icaoValue) {
+    private void adjustTimestamp(final long scopeTimeOffset,String icaoValue, List<BaseStationMessage> extractedMessages) {
         long oldTimestamp = 0;
-        if (!messages.isEmpty()) {
-            oldTimestamp = messages.peek().getTimestampGenerated();
+        if (!extractedMessages.isEmpty()) {
+            oldTimestamp = extractedMessages.get(0).getTimestampGenerated();
         }
         Map<String,List<BaseStationMessage>> messagesPassed = new HashMap<>();
-        for (final BaseStationMessage message : messages) {
+        for (final BaseStationMessage message : extractedMessages) {
             messagesAlreadyPassed.computeIfAbsent(icaoValue, k -> new ArrayList<>());
             boolean messageInOtherIcao = false;
             for(String key : messagesAlreadyPassed.keySet()){
@@ -104,19 +105,19 @@ public class BaseStationReplayEngine extends BaseStationActionEngine {
             }
             messagesPassed.computeIfAbsent(icaoValue, k -> new ArrayList<>());
 
-
-            if(!messagesAlreadyPassed.get(icaoValue).contains(message) && !messageInOtherIcao){
                 message.setTimestampGenerated(recording.getFirstDate() + message.getTimestampGenerated() - oldTimestamp + scopeTimeOffset);
                 message.setTimestampLogged(recording.getFirstDate() + message.getTimestampLogged() - oldTimestamp + scopeTimeOffset);
                 messagesPassed.get(icaoValue).add(message);
-            }
+                messages.add(message);
+
 
         }
 
         messagesAlreadyPassed.putAll(messagesPassed);
     }
 
-    private void extractMessages(final File recording, final Target target, final long timeInterval) throws IOException {
+    private List<BaseStationMessage> extractMessages(final File recording, final Target target, final long timeInterval) throws IOException {
+        List<BaseStationMessage> messagesList = new ArrayList<>();
         try (final FileReader fileReader = new FileReader(recording);
              final BufferedReader bufferedReader = new BufferedReader(fileReader)) {
             String currentMessage = bufferedReader.readLine();
@@ -128,15 +129,16 @@ public class BaseStationReplayEngine extends BaseStationActionEngine {
                     if (isMessageTargeted(message, target.getContent())) {
                         if (firstTimestamp == -1) {
                             firstTimestamp = message.getTimestampGenerated();
-                            messages.add(message);
+                            messagesList.add(message);
                         } else if (message.getTimestampGenerated() - firstTimestamp <= timeInterval) {
-                            messages.add(message);
+                            messagesList.add(message);
                         }
                     }
                 }
                 currentMessage = bufferedReader.readLine();
             }
         }
+        return messagesList;
     }
 
     @Override

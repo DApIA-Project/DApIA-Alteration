@@ -302,8 +302,8 @@ public class BaseStationReplayEngineTest {
                 "MSG,3,3,5022202,39ac45,5022202,2022/07/01,05:09:06.000,2022/07/01,05:09:06.000,SAMUCF,625,83,271.4,43.61498,1.39454,384,7015,0,0,0,0\n" +
                 "MSG,3,3,5022202,DDDDDD,5022202,2022/07/01,05:09:06.000,2022/07/01,05:09:06.000,SAMU25,575,74,288.9,43.61472,1.39699,448,7015,0,0,0,0\n" +
                 "MSG,3,3,5022202,39ac45,5022202,2022/07/01,05:09:07.000,2022/07/01,05:09:07.000,SAMUCF,625,85,267.3,43.61494,1.39392,384,7015,0,0,0,0\n" +
-                "MSG,3,3,5022202,DDDDDD,5022202,2022/07/01,05:09:07.000,2022/07/01,05:09:07.000,SAMU25,600,76,285.3,43.61479,1.39657,448,7015,0,0,0,0\n" +
                 "MSG,3,3,5022202,AAAAAA,5022202,2022/07/01,05:09:07.000,2022/07/01,05:09:07.000,SAMU70,550,66,303.2,43.61419,1.3986,192,7015,0,0,0,0\n" +
+                "MSG,3,3,5022202,DDDDDD,5022202,2022/07/01,05:09:07.000,2022/07/01,05:09:07.000,SAMU25,600,76,285.3,43.61479,1.39657,448,7015,0,0,0,0\n" +
                 "MSG,3,3,5022202,39ac45,5022202,2022/07/01,05:09:08.000,2022/07/01,05:09:08.000,SAMUCF,625,86,264,43.6149,1.39341,384,7015,0,0,0,0\n" +
                 "MSG,3,3,5022202,AAAAAA,5022202,2022/07/01,05:09:08.000,2022/07/01,05:09:08.000,SAMU70,550,67,300.4,43.61428,1.39847,192,7015,0,0,0,0\n" +
                 "MSG,3,3,5022202,DDDDDD,5022202,2022/07/01,05:09:08.000,2022/07/01,05:09:08.000,SAMU25,600,78,282.6,43.6149,1.39609,448,7015,0,0,0,0\n";
@@ -335,6 +335,65 @@ public class BaseStationReplayEngineTest {
 
         String[] firstResultMsg2 = allReplayedMsg2.get(0).split(",");
         assertEquals(strDateToTimestamp("2022/07/01,05:08:57.000000") + 10000, strDateToTimestamp(firstResultMsg2[6] + "," + firstResultMsg2[7]));
+
+        //Comparaison sale (pour non-regression on va dire)
+        assertEquals(expectedRecording.trim(), resultRecording.trim());
+    }
+
+    @Test
+    public void applyAction_replay_SBS_With_Full_File() throws Exception {
+        final File initialRecording = new File("C:\\Users\\morga\\Documents\\Programmation\\DApIA-Alteration\\packages\\alteration\\src\\test\\resources\\fdit\\alteration\\api\\recordings\\2022_07_toulouse_SAMUCF_1h.sbs");
+        final File sourceRecording = new File("C:\\Users\\morga\\Documents\\Programmation\\DApIA-Alteration\\packages\\alteration\\src\\test\\resources\\fdit\\alteration\\api\\recordings\\2022_07_toulouse_SAMUCF_1h.sbs");
+
+        final String expectedRecording = "MSG,3,3,5022202,39ac45,5022202,2022/07/01,05:08:57.000,2022/07/01,05:08:57.000,SAMUCF,550,66,303.2,43.61419,1.3986,192,7015,0,0,0,0\n" +
+                "MSG,3,3,5022202,39ac45,5022202,2022/07/01,05:08:58.000,2022/07/01,05:08:58.000,SAMUCF,550,67,300.4,43.61428,1.39847,192,7015,0,0,0,0\n" +
+                "MSG,3,3,5022202,39ac45,5022202,2022/07/01,05:08:59.000,2022/07/01,05:08:59.000,SAMUCF,575,69,296.6,43.61451,1.39788,320,7015,0,0,0,0\n" +
+                "MSG,3,3,5022202,39ac45,5022202,2022/07/01,05:09:00.000,2022/07/01,05:09:00.000,SAMUCF,575,71,292.2,43.61461,1.39749,384,7015,0,0,0,0\n" +
+                "MSG,3,3,5022202,39ac45,5022202,2022/07/01,05:09:01.000,2022/07/01,05:09:01.000,SAMUCF,575,74,288.9,43.61472,1.39699,448,7015,0,0,0,0\n" +
+                "MSG,3,3,5022202,39ac45,5022202,2022/07/01,05:09:02.000,2022/07/01,05:09:02.000,SAMUCF,600,76,285.3,43.61479,1.39657,448,7015,0,0,0,0\n" +
+                "MSG,3,3,5022202,DDDDDD,5022202,2022/07/01,05:09:02.000,2022/07/01,05:09:02.000,SAMU25,550,66,303.2,43.61419,1.3986,192,7015,0,0,0,0\n" +
+                "MSG,3,3,5022202,39ac45,5022202,2022/07/01,05:09:03.000,2022/07/01,05:09:03.000,SAMUCF,600,78,282.6,43.6149,1.39609,448,7015,0,0,0,0\n" +
+                "MSG,3,3,5022202,DDDDDD,5022202,2022/07/01,05:09:03.000,2022/07/01,05:09:03.000,SAMU25,550,67,300.4,43.61428,1.39847,192,7015,0,0,0,0\n" +
+                "MSG,3,3,5022202,39ac45,5022202,2022/07/01,05:09:04.000,2022/07/01,05:09:04.000,SAMUCF,600,80,278.6,43.61493,1.39559,448,7015,0,0,0,0\n" +
+                "MSG,3,3,5022202,DDDDDD,5022202,2022/07/01,05:09:04.000,2022/07/01,05:09:04.000,SAMU25,575,69,296.6,43.61451,1.39788,320,7015,0,0,0,0\n" +
+                "MSG,3,3,5022202,39ac45,5022202,2022/07/01,05:09:05.000,2022/07/01,05:09:05.000,SAMUCF,600,81,274.9,43.61498,1.39507,384,7015,0,0,0,0\n" +
+                "MSG,3,3,5022202,DDDDDD,5022202,2022/07/01,05:09:05.000,2022/07/01,05:09:05.000,SAMU25,575,71,292.2,43.61461,1.39749,384,7015,0,0,0,0\n" +
+                "MSG,3,3,5022202,39ac45,5022202,2022/07/01,05:09:06.000,2022/07/01,05:09:06.000,SAMUCF,625,83,271.4,43.61498,1.39454,384,7015,0,0,0,0\n" +
+                "MSG,3,3,5022202,DDDDDD,5022202,2022/07/01,05:09:06.000,2022/07/01,05:09:06.000,SAMU25,575,74,288.9,43.61472,1.39699,448,7015,0,0,0,0\n" +
+                "MSG,3,3,5022202,39ac45,5022202,2022/07/01,05:09:07.000,2022/07/01,05:09:07.000,SAMUCF,625,85,267.3,43.61494,1.39392,384,7015,0,0,0,0\n" +
+                "MSG,3,3,5022202,DDDDDD,5022202,2022/07/01,05:09:07.000,2022/07/01,05:09:07.000,SAMU25,600,76,285.3,43.61479,1.39657,448,7015,0,0,0,0\n" +
+                "MSG,3,3,5022202,AAAAAA,5022202,2022/07/01,05:09:07.000,2022/07/01,05:09:07.000,SAMU70,550,66,303.2,43.61419,1.3986,192,7015,0,0,0,0\n" +
+                "MSG,3,3,5022202,39ac45,5022202,2022/07/01,05:09:08.000,2022/07/01,05:09:08.000,SAMUCF,625,86,264,43.6149,1.39341,384,7015,0,0,0,0\n" +
+                "MSG,3,3,5022202,AAAAAA,5022202,2022/07/01,05:09:08.000,2022/07/01,05:09:08.000,SAMU70,550,67,300.4,43.61428,1.39847,192,7015,0,0,0,0\n" +
+                "MSG,3,3,5022202,DDDDDD,5022202,2022/07/01,05:09:08.000,2022/07/01,05:09:08.000,SAMU25,600,78,282.6,43.6149,1.39609,448,7015,0,0,0,0\n";
+
+
+        final EngineManager engineManager = new EngineManager(
+                recording(initialRecording, 1656652002000L),
+                newArrayList(replay(timeWindow(5000,4149000),
+                                parameters(bstTarget("39ac45"), sourceRecording.getPath(),parameter("hexIdent","DDDDDD"),parameter("callsign","SAMU25"))),
+                        replay(timeWindow(10000,4149000),
+                                parameters(bstTarget("39ac45"), sourceRecording.getPath(),parameter("hexIdent","AAAAAA"),parameter("callsign","SAMU70")))),
+                new ActionLogger());
+        final String resultRecording = Files.toString(engineManager.run(), UTF_8);
+        final Pattern pattern = Pattern.compile("^MSG,3,3,5022202,DDDDDD,5022202.*$");
+        List<String> allReplayedMsg =
+                stream(resultRecording.split("\\r?\\n")).filter(s -> pattern.matcher(s).matches()).collect(Collectors.toList());
+
+        final Pattern pattern2 = Pattern.compile("^MSG,3,3,5022202,AAAAAA,5022202.*$");
+        List<String> allReplayedMsg2 =
+                stream(resultRecording.split("\\r?\\n")).filter(s -> pattern2.matcher(s).matches()).collect(Collectors.toList());
+
+        // Le bon nombre de messages de la bonne target ont été extraits du recording source
+        assertEquals(1054, allReplayedMsg.size());
+        assertEquals(1049, allReplayedMsg2.size());
+
+        // La date du premier message rejoué a bien été readaptée
+        String[] firstResultMsg = allReplayedMsg.get(0).split(",");
+        assertEquals(strDateToTimestamp("2022/07/01,05:06:42.000000") + 5000, strDateToTimestamp(firstResultMsg[6] + "," + firstResultMsg[7]));
+
+        String[] firstResultMsg2 = allReplayedMsg2.get(0).split(",");
+        assertEquals(strDateToTimestamp("2022/07/01,05:06:42.000000") + 10000, strDateToTimestamp(firstResultMsg2[6] + "," + firstResultMsg2[7]));
 
         //Comparaison sale (pour non-regression on va dire)
         assertEquals(expectedRecording.trim(), resultRecording.trim());
