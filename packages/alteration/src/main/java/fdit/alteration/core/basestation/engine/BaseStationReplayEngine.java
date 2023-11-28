@@ -15,6 +15,9 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.lang.reflect.Array;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.*;
 
 import static com.google.common.collect.Queues.newPriorityQueue;
@@ -36,12 +39,21 @@ public class BaseStationReplayEngine extends BaseStationActionEngine {
 
     @Override
     public void preProcessing() throws IOException {
+        String recordPath = "";
+        for(Action actions : superAction.getActions()){
+            recordPath = actions.getParameters().getRecordPath();
+        }
+        final File sourceRecording = new File(recordPath);
+        List<BaseStationMessage> extractedAllMessage = extractAllMessages(sourceRecording);
         for (final Action actions : superAction.getActions()) {
-            final File sourceRecording = new File(actions.getParameters().getRecordPath());
             final Scope scope = actions.getScope();
             final Target target = actions.getParameters().getTarget();
-            List<BaseStationMessage> extractedMessage = extractMessages(sourceRecording, target, (scope.getUpperBound() - scope.getLowerBound()));
-            adjustTimestamp(scope.getLowerBound(),actions.getParameters().getParameterByName("hexIdent").getValue(),extractedMessage);
+            List<BaseStationMessage> extractedMessagesToAlter = extractMessagesToAlter(extractedAllMessage, target, (scope.getUpperBound() - scope.getLowerBound()));
+            if(actions.getParameters().getParameterList().size() != 0 && actions.getParameters().getParameterByName("hexIdent") != null){
+                adjustTimestamp(scope.getLowerBound(),actions.getParameters().getParameterByName("hexIdent").getValue(),extractedMessagesToAlter);
+            }else{
+                adjustTimestamp(scope.getLowerBound(),target.getIdentifier(),extractedMessagesToAlter);
+               }
 
         }
         sortByTimestamp();
@@ -59,8 +71,13 @@ public class BaseStationReplayEngine extends BaseStationActionEngine {
                         requireNonNull(messages.peek()).getTimestampGenerated()) {
             final Message fakeMessage = messages.poll();
             superAction.getActions().forEach(action -> {
-                if (isMessageTargeted(fakeMessage, action.getParameters().getTarget().getContent()) && isMessageTargetedIfManyReplay(fakeMessage, messagesAlreadyPassed, action))
-                    alterMessage(action, fakeMessage);
+                if(action.getParameters().getParameterList().size() != 0 && action.getParameters().getParameterByName("hexIdent") != null) {
+                    if (isMessageTargeted(fakeMessage, action.getParameters().getTarget().getContent()) && isMessageTargetedIfManyReplay(fakeMessage, messagesAlreadyPassed, action))
+                        alterMessage(action, fakeMessage);
+                }else{
+                    if (isMessageTargeted(fakeMessage, action.getParameters().getTarget().getContent()))
+                        alterMessage(action, fakeMessage);
+                }
             });
             builder.append(fakeMessage).append("\n");
         }
@@ -74,8 +91,13 @@ public class BaseStationReplayEngine extends BaseStationActionEngine {
         while (!messages.isEmpty()) {
             final Message fakeMessage = messages.poll();
             superAction.getActions().forEach(action -> {
-                if (isMessageTargeted(fakeMessage, action.getParameters().getTarget().getContent()) && isMessageTargetedIfManyReplay(fakeMessage, messagesAlreadyPassed, action))
-                    alterMessage(action, fakeMessage);
+                if(action.getParameters().getParameterList().size() != 0 && action.getParameters().getParameterByName("hexIdent") != null) {
+                    if (isMessageTargeted(fakeMessage, action.getParameters().getTarget().getContent()) && isMessageTargetedIfManyReplay(fakeMessage, messagesAlreadyPassed, action))
+                        alterMessage(action, fakeMessage);
+                }else{
+                    if (isMessageTargeted(fakeMessage, action.getParameters().getTarget().getContent()))
+                        alterMessage(action, fakeMessage);
+                }
             });
             builder.append(fakeMessage).append("\n");
         }
@@ -105,10 +127,10 @@ public class BaseStationReplayEngine extends BaseStationActionEngine {
             }
             messagesPassed.computeIfAbsent(icaoValue, k -> new ArrayList<>());
 
-                message.setTimestampGenerated(recording.getFirstDate() + message.getTimestampGenerated() - oldTimestamp + scopeTimeOffset);
-                message.setTimestampLogged(recording.getFirstDate() + message.getTimestampLogged() - oldTimestamp + scopeTimeOffset);
-                messagesPassed.get(icaoValue).add(message);
-                messages.add(message);
+            message.setTimestampGenerated(recording.getFirstDate() + message.getTimestampGenerated() - oldTimestamp + scopeTimeOffset);
+            message.setTimestampLogged(recording.getFirstDate() + message.getTimestampLogged() - oldTimestamp + scopeTimeOffset);
+            messagesPassed.get(icaoValue).add(message);
+            messages.add(message);
 
 
         }
@@ -139,6 +161,56 @@ public class BaseStationReplayEngine extends BaseStationActionEngine {
             }
         }
         return messagesList;
+    }
+
+
+    private List<BaseStationMessage> extractMessagesToAlter(final List<BaseStationMessage> recording, final Target target, final long timeInterval) throws IOException {
+        List<BaseStationMessage> messagesList = new ArrayList<>();
+        long firstTimestamp = -1;
+        for (BaseStationMessage messageOfList : recording){
+
+            if (isMessageTargeted(messageOfList, target.getContent())) {
+                if (firstTimestamp == -1) {
+                    firstTimestamp = messageOfList.getTimestampGenerated();
+                    messagesList.add((BaseStationMessage) messageOfList.copy());
+                } else if (messageOfList.getTimestampGenerated() - firstTimestamp <= timeInterval) {
+                    messagesList.add((BaseStationMessage) messageOfList.copy());
+                }
+            }
+        }
+        return messagesList;
+    }
+
+    private List<BaseStationMessage> extractAllMessages(final File recording) throws IOException {
+        List<BaseStationMessage> messagesList = new ArrayList<>();
+        Path filePath = recording.toPath();
+        List<String> allLines = Files.readAllLines(filePath, StandardCharsets.UTF_8);
+
+        for (String currentMessage : allLines) {
+            final Optional<Message> messageOptional = parseMessage(currentMessage);
+            if (messageOptional.isPresent() && messageOptional.get() instanceof BaseStationMessage) {
+                final BaseStationMessage message = (BaseStationMessage) messageOptional.get();
+                messagesList.add(message);
+            }
+        }
+
+        return messagesList;
+
+
+        /*List<BaseStationMessage> messagesList = new ArrayList<>();
+        try (final FileReader fileReader = new FileReader(recording);
+             final BufferedReader bufferedReader = new BufferedReader(fileReader)) {
+            String currentMessage = bufferedReader.readLine();
+            while (currentMessage != null) {
+                final Optional<Message> messageOptional = parseMessage(currentMessage);
+                if (messageOptional.isPresent() && messageOptional.get() instanceof BaseStationMessage) {
+                    final BaseStationMessage message = (BaseStationMessage) messageOptional.get();
+                    messagesList.add(message);
+                }
+                currentMessage = bufferedReader.readLine();
+            }
+        }
+        return messagesList;*/
     }
 
     @Override
