@@ -66,10 +66,6 @@ export default async function alterRecording(
     }
 
   assert(parameters)
-  recording.content = recording.content.replace(/\n\s*$/, '')
-  if (recordingToReplay !== undefined) {
-    recordingToReplay.content = recordingToReplay.content.replace(/\n\s*$/, '')
-  }
   const alteredRecordings = await alterationManager.runAlterations(
     parameters,
     recording,
