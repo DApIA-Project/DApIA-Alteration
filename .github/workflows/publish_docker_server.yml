@@ -17,6 +17,9 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
+      - name: LS
+        run: ls
+
       - name: Build image
         run: docker build -t ${{ env.IMAGE_TAG }} -f packages/server/Dockerfile .
 
