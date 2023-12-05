@@ -5,7 +5,7 @@
     "serve": "cd packages/server ; npm run start",
     "docker:build:client": "echo 'Not yet implemented'",
     "docker:build:server": "echo 'Not yet implemented'",
-    "copy:dependencies:m": "mkdir -p $HOME/.m2/repository/com/fdit/ && cp -r packages/alteration/libs/com/fdit/tools $HOME/.m2/repository/com/fdit/",
+    "copy:dependencies:m2": "mkdir -p $HOME/.m2/repository/com/fdit/ && cp -r packages/alteration/libs/com/fdit/tools $HOME/.m2/repository/com/fdit/",
     "docker:compose:up": "cd packages && docker-compose up",
     "prettier-check": "prettier --check .",
     "prettier-write": "prettier --write ."
