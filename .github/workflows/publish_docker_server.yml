@@ -18,10 +18,13 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: LS
-        run: ls
+        run: ls .
+
+      - name: Change to packages/client directory
+        run: cd packages
 
       - name: Build image
-        run: docker build -t ${{ env.IMAGE_TAG }} -f packages/server/Dockerfile .
+        run: docker build -t ${{ env.IMAGE_TAG }} -f Dockerfile .
 
       - name: push image
         run: docker push ${{ env.IMAGE_TAG }}
