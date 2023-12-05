@@ -7,6 +7,8 @@ env:
 jobs:
   push-docker:
     runs-on: ubuntu-latest
+    env:
+      working-directory: ./packages
     steps:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
@@ -18,10 +20,12 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: LS
-        run: ls client
+        run: ls -R
+        working-directory: ${{env.working-directory}}
 
       - name: Build image
         run: docker build -t ${{ env.IMAGE_TAG }} -f client/Dockerfile .
+        working-directory: ${{env.working-directory}}
 
       - name: push image
         run: docker push ${{ env.IMAGE_TAG }}
