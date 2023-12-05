@@ -1,6 +1,7 @@
 name: Publish Docker Image Client Alteration
 
-on: push
+on:
+  workflow_dispatch:
 
 env:
   IMAGE_TAG: dapiaproject/alteration-client:0.${{github.run_number}}

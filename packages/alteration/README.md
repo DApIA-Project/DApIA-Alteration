@@ -3,7 +3,11 @@
 
 ## Develop
 
-# TODO: add libs copy instructions
+## Copy tools directory in .m2 directory (do this in git bash on windows)
+
+```shell
+mkdir -p $HOME/.m2/repository/com/fdit/ && cp -r ./libs/com/fdit/tools $HOME/.m2/repository/com/fdit/
+```
 
 Compile the package:
 ```shell
