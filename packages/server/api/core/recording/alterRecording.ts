@@ -76,7 +76,7 @@ export default async function alterRecording(
   if (fileIsCsv) {
     let alteredRecordingsCsv: Recording[] = []
     for (const recordingSbs of alteredRecordings) {
-      let contentCsv: string = sbsToCsv(recordingSbs.content)
+      let contentCsv: string = sbsToCsv(recordingSbs.content, false)
       let contentName: string = recordingSbs.name.replace('.sbs', '.csv')
       let recordingCsv: Recording = { content: contentCsv, name: contentName }
       alteredRecordingsCsv.push(recordingCsv)

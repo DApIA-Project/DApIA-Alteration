@@ -1,6 +1,6 @@
 {
   "name": "server",
-  "version": "1.0.0",
+  "version": "0.14",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -38,7 +38,7 @@
     "typescript": "^5.1.3"
   },
   "dependencies": {
-    "@dapia-project/data-converter": "^3.2.1",
+    "@dapia-project/data-converter": "^3.3.0",
     "@smartesting/alteration-scenario": "file:../alteration-scenario",
     "@smartesting/shared": "file:../shared",
     "cors": "^2.8.5",
