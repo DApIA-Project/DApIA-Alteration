@@ -1191,7 +1191,7 @@ export class AlterationScenarioSemanticVisitor extends AlterationScenarioVisitor
     }
     if (isASTStringValue(value)) {
       content = value.content.replace(/"/g, '')
-      if (!/^(([0-9A-F]{6})|RANDOM)$/.test(content)) {
+      if (!/^(([0-9A-F]{6})|RANDOM|([0-9a-f]{6}))$/.test(content)) {
         errors +=
           'ICAO value must be 6 symbol hexadecimal or RANDOM in the case of a string: "' +
           content +

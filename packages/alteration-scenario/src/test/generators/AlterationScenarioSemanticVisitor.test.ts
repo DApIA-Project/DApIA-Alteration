@@ -888,6 +888,19 @@ describe('AlterationScenarioSemanticVisitor', () => {
       assert.deepStrictEqual(semanticError[2].errors, '')
     })
 
+    it('returns error empty when scenario alter icao with lowercase', async () => {
+      const scenario = await parseScenario(
+        'alter all_planes at 0 seconds with_values ICAO = "aaaaaa"'
+      )
+      let f: AlterationScenarioSemanticVisitor =
+        new AlterationScenarioSemanticVisitor()
+      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
+      assert.deepStrictEqual(semanticError.length, 3)
+      assert.deepStrictEqual(semanticError[0].errors, '')
+      assert.deepStrictEqual(semanticError[1].errors, '')
+      assert.deepStrictEqual(semanticError[2].errors, '')
+    })
+
     it('returns error empty when scenario alter groundspeed with double in string', async () => {
       const scenario = await parseScenario(
         'alter all_planes at 0 seconds with_values GROUNDSPEED = "3.7"'
@@ -2193,22 +2206,6 @@ describe('AlterationScenarioSemanticVisitor', () => {
         semanticError[2].errors,
         'ICAO length must be 6 in the case of an integer: 99999\n' +
           'ICAO value must be between 100000 and 999999 inclusive in the case of an integer: 99999\n'
-      )
-    })
-
-    it('returns error when scenario alter icao with lowercase', async () => {
-      const scenario = await parseScenario(
-        'alter all_planes at 0 seconds with_values ICAO = "aaaaaa"'
-      )
-      let f: AlterationScenarioSemanticVisitor =
-        new AlterationScenarioSemanticVisitor()
-      let semanticError: SemanticError[] = f.visitScenario(scenario.value)
-      assert.deepStrictEqual(semanticError.length, 3)
-      assert.deepStrictEqual(semanticError[0].errors, '')
-      assert.deepStrictEqual(semanticError[1].errors, '')
-      assert.deepStrictEqual(
-        semanticError[2].errors,
-        'ICAO value must be 6 symbol hexadecimal or RANDOM in the case of a string: "aaaaaa"\n'
       )
     })
 
