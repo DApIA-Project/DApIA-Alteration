@@ -108,7 +108,7 @@ describe('generator', () => {
                   scope: {
                     type: 'timeWindow',
                     lowerBound: '67000',
-                    upperBound: '1133610',
+                    upperBound: '1200610',
                   },
                   parameters: {
                     target: {
@@ -157,6 +157,54 @@ describe('generator', () => {
           ],
         },
       })
+    })
+
+    it('returns json with action when content is hide all_planes at 2 seconds ', async () => {
+      const scenario = await parseScenario('hide all_planes at 2 seconds')
+      assert.deepStrictEqual(
+        generateStatements(scenario.value, {
+          name: 'example.sbs',
+          content:
+            'MSG,4,3,5022202,4CA1FA,5022202,2018/11/25,11:30:48.179,2018/11/25,11:30:48.179,,,474.53,295.86,,,0.0,,,,,\n' +
+            'MSG,4,3,5022202,4CA1FA,5022202,2018/11/25,11:30:49.179,2018/11/25,11:30:49.179,,,474.53,295.86,,,0.0,,,,,\n' +
+            'MSG,4,3,5022202,4CA1FA,5022202,2018/11/25,11:30:50.179,2018/11/25,11:30:50.179,,,474.53,295.86,,,0.0,,,,,\n' +
+            'MSG,4,3,5022202,4CA1FA,5022202,2018/11/25,11:30:51.179,2018/11/25,11:30:51.179,,,474.53,295.86,,,0.0,,,,,\n' +
+            'MSG,4,3,5022202,4CA1FA,5022202,2018/11/25,11:30:52.179,2018/11/25,11:30:52.179,,,474.53,295.86,,,0.0,,,,,\n' +
+            'MSG,4,3,5022202,4CA1FA,5022202,2018/11/25,11:30:53.179,2018/11/25,11:30:53.179,,,474.53,295.86,,,0.0,,,,,\n' +
+            'MSG,4,3,5022202,4CA1FA,5022202,2018/11/25,11:30:54.179,2018/11/25,11:30:54.179,,,474.53,295.86,,,0.0,,,,,\n' +
+            'MSG,4,3,5022202,4CA1FA,5022202,2018/11/25,11:30:55.179,2018/11/25,11:30:55.179,,,474.53,295.86,,,0.0,,,,,\n' +
+            'MSG,4,3,5022202,4CA1FA,5022202,2018/11/25,11:30:56.179,2018/11/25,11:30:56.179,,,474.53,295.86,,,0.0,,,,,\n',
+        }),
+        {
+          sensors: {
+            sensor: [
+              {
+                sensorType: 'SBS',
+                sID: '',
+                record: 'example.sbs',
+                firstDate: 1543145448179,
+                filter: '',
+                action: [
+                  {
+                    alterationType: 'DELETION',
+                    scope: {
+                      type: 'timeWindow',
+                      lowerBound: '2000',
+                      upperBound: '8000',
+                    },
+                    parameters: {
+                      target: {
+                        identifier: 'hexIdent',
+                        value: 'ALL',
+                      },
+                    },
+                  },
+                ],
+              },
+            ],
+          },
+        }
+      )
     })
 
     it('returns json with action when content is alter all_planes with_values 1', async () => {

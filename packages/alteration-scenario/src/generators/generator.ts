@@ -651,5 +651,6 @@ function evalLastDate(atSeconds: number, file: Recording) {
 
   const timeRecording = timestamp - evalFirstDate(file)
 
-  return timeRecording - atSeconds * 1000
+  return timeRecording
+  //return timeRecording - atSeconds * 1000
 }
