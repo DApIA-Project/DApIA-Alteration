@@ -75,7 +75,7 @@ const DocumentationPage: React.FunctionComponent = () => {
           text={'SATURATION'}
           onClick={() =>
             editContentExample(
-              'saturate all_planes from 56 seconds until 90 seconds with_values \n' +
+              'saturate all_planes from 56 seconds until 90 seconds with_values\n' +
                 'ICAO = 78 and NUMBER = 45'
             )
           }

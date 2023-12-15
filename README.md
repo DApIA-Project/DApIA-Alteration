@@ -2,6 +2,7 @@
 ![Java Tests workflow](https://github.com/DApIA-Project/FDI-T-Web/actions/workflows/java.yml/badge.svg)
 ![FditScenario Tests workflow](https://github.com/DApIA-Project/FDI-T-Web/actions/workflows/fditscenario.yml/badge.svg)
 ![Client Components React Tests workflow](https://github.com/DApIA-Project/FDI-T-Web/actions/workflows/components.yml/badge.svg)
+![Cypress Tests workflow](https://github.com/DApIA-Project/FDI-T-Web/actions/workflows/cypress.yml/badge.svg)
 
 # FDI-T Web
 

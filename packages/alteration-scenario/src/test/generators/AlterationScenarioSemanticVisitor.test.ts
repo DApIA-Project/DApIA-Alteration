@@ -1,5 +1,5 @@
 import { parseScenario } from '../../parser/parser'
-import assert from 'assert'
+import * as assert from 'assert'
 import { AlterationScenarioSemanticVisitor } from '../../generators/AlterationScenarioSemanticVisitor'
 import { SemanticError } from '../../generators'
 import { ListConstant } from '../../generators/Memory/ListConstant'
