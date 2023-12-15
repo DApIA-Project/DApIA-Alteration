@@ -6,7 +6,7 @@
 # Node artifact files
 node_modules/
 dist/
-packages/client/cypress/screenshots
+packages/client/cypress/screenshots/
 
 # Compiled Java class files
 *.class
@@ -44,7 +44,3 @@ Thumbs.db
 *.flv
 *.mov
 *.wmv
-
-
-
-
