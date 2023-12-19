@@ -15,7 +15,8 @@
     "tsc-watch": "tsc --watch",
     "dev": "nodemon app.ts",
     "copy:fs": "npx shx cp -fr ./node_modules/fs/ ./public/fs",
-    "preinstall": "cd ../alteration-scenario && npm i && npm run build"
+    "preinstall": "cd ../alteration-scenario && npm i && npm run build",
+    "migrate": "node-pg-migrate --tsconfig=tsconfig.json --ignore-pattern=\".*(js|md)\""
   },
   "author": "",
   "license": "ISC",
@@ -27,11 +28,14 @@
     "@types/react": "^18.0.27",
     "@types/react-dom": "^18.0.10",
     "@types/supertest": "^2.0.12",
+    "dotenv": "^16.3.1",
     "fs": "^0.0.1-security",
     "mocha": "^10.2.0",
     "nodemon": "^2.0.20",
     "nyc": "^15.1.0",
+    "pg": "^8.11.3",
     "react-dom": "^18.2.0",
+    "sequelize": "^6.35.2",
     "supertest": "^6.3.3",
     "ts-mocha": "^10.0.0",
     "ts-node": "^10.9.1",
@@ -42,11 +46,11 @@
     "@smartesting/alteration-scenario": "file:../alteration-scenario",
     "@smartesting/shared": "file:../shared",
     "cors": "^2.8.5",
-    "dotenv": "^16.3.1",
     "esbuild": "^0.15.13",
     "express": "^4.18.2",
     "monaco-editor": "^0.34.1",
     "monaco-languageclient": "^4.0.3",
+    "node-pg-migrate": "^6.2.2",
     "react": "^18.2.0"
   }
 }
