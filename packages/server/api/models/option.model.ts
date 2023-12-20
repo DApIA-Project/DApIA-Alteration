@@ -14,16 +14,16 @@ export default class Option extends Model<
   InferCreationAttributes<Option>
 > {
   declare id: CreationOptional<Identifier>
-  declare userId: CreationOptional<number>
-  declare isActiveRealism: CreationOptional<boolean>
-  declare isActiveNoise: CreationOptional<boolean>
-  declare isActiveLabeling: CreationOptional<boolean>
-  declare isDisableLatitude: CreationOptional<boolean>
-  declare isDisableLongitude: CreationOptional<boolean>
-  declare isDisableAltitude: CreationOptional<boolean>
+  declare user_id: CreationOptional<number>
+  declare is_active_realism: CreationOptional<boolean>
+  declare is_active_noise: CreationOptional<boolean>
+  declare is_active_labeling: CreationOptional<boolean>
+  declare is_disable_latitude: CreationOptional<boolean>
+  declare is_disable_longitude: CreationOptional<boolean>
+  declare is_disable_altitude: CreationOptional<boolean>
 
   static associate() {
-    Option.belongsTo(User, { foreignKey: 'userId' })
+    Option.belongsTo(User, { foreignKey: 'user_id', as: 'userOption' })
   }
 }
 
@@ -34,7 +34,7 @@ Option.init(
       primaryKey: true,
       autoIncrement: true,
     },
-    userId: {
+    user_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
@@ -42,27 +42,27 @@ Option.init(
         key: 'id',
       },
     },
-    isActiveRealism: {
+    is_active_realism: {
       type: DataTypes.BOOLEAN,
       defaultValue: false,
     },
-    isActiveNoise: {
+    is_active_noise: {
       type: DataTypes.BOOLEAN,
       defaultValue: false,
     },
-    isActiveLabeling: {
+    is_active_labeling: {
       type: DataTypes.BOOLEAN,
       defaultValue: false,
     },
-    isDisableLatitude: {
+    is_disable_latitude: {
       type: DataTypes.BOOLEAN,
       defaultValue: false,
     },
-    isDisableLongitude: {
+    is_disable_longitude: {
       type: DataTypes.BOOLEAN,
       defaultValue: false,
     },
-    isDisableAltitude: {
+    is_disable_altitude: {
       type: DataTypes.BOOLEAN,
       defaultValue: false,
     },

@@ -6,7 +6,7 @@ export const shorthands: ColumnDefinitions | undefined = undefined
 export async function up(pgm: MigrationBuilder): Promise<void> {
   pgm.createTable('users', {
     id: { type: 'serial', primaryKey: true },
-    isAdmin: { type: 'boolean', default: false },
+    is_admin: { type: 'boolean', default: false },
     email: { type: 'varchar(255)', notNull: true, unique: true },
     password: { type: 'varchar(255)' },
     firstname: { type: 'varchar(255)' },

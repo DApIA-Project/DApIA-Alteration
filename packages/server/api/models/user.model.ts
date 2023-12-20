@@ -7,17 +7,25 @@ import {
   Model,
 } from 'sequelize'
 import { sequelize } from '../database/connection'
+import Option from './option.model'
+import Historic from './historic.model'
+import Favorite from './favorite.model'
 
 export default class User extends Model<
   InferAttributes<User>,
   InferCreationAttributes<User>
 > {
   declare id: CreationOptional<Identifier>
-  declare isAdmin: CreationOptional<boolean>
+  declare is_admin: CreationOptional<boolean>
   declare firstname: string
   declare lastname: string
   declare email: string
   declare password: CreationOptional<string>
+  static associate() {
+    User.hasOne(Option, { foreignKey: 'user_id', as: 'userOption' })
+    User.hasMany(Historic, { foreignKey: 'user_id', as: 'userHistoric' })
+    User.hasMany(Favorite, { foreignKey: 'user_id', as: 'userFavorite' })
+  }
 }
 
 User.init(
@@ -27,7 +35,7 @@ User.init(
       primaryKey: true,
       autoIncrement: true,
     },
-    isAdmin: {
+    is_admin: {
       type: DataTypes.BOOLEAN,
       defaultValue: false,
     },
