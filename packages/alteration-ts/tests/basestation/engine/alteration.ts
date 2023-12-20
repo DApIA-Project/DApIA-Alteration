@@ -1,11 +1,10 @@
 
-import { alteration, AlterationMode, parse } from "../../../src"
+import { alteration, AlterationMode, parse, always } from "../../../src"
 
 describe("Property alteration engine", () => {
 	it("should work", () => {
 		let action = alteration({
-			scope: (_) => true,
-			target: "A1E67B",
+			scope: always,
 			property: "altitude",
 			value: "1000",
 			mode: AlterationMode.OFFSET,

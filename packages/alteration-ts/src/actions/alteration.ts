@@ -11,7 +11,6 @@ export enum AlterationMode {
 
 export function alteration(config : {
 	scope: Scope,
-	target: Icao,
 	property: string, 
 	value: string | number | boolean,
 	mode: AlterationMode
@@ -19,11 +18,10 @@ export function alteration(config : {
 	return {
 		processing: function(recording: Message[]): Message[] {
 			return recording.map((msg, idx) => 
-													 (config.scope(msg) && config.target == msg.hexIdent)
-													 ? this.apply(msg,idx)
-													 : msg);
+													 (config.scope(msg) ? this.apply(msg,idx) : msg));
 		},
 
+		//TODO: as number ne permet pas de crash si le type n'est pas bon :C 
 		apply: function(msg: Message, idx: number): Message {
 			let new_msg = msg;
 
