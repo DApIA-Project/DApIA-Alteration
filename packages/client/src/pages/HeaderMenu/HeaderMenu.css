@@ -11,14 +11,17 @@
 .menu ul {
   display: flex;
   list-style: none;
+  width: 100%;
 }
 
 .menu li {
   margin-right: 20px;
+  display: flex;
+  align-items: center;
 }
 
 .menu li:last-child {
-  margin-right: 0;
+  margin-left: auto;
 }
 
 .menu a {
