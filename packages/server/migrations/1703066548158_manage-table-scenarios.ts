@@ -6,13 +6,11 @@ export const shorthands: ColumnDefinitions | undefined = undefined
 export async function up(pgm: MigrationBuilder): Promise<void> {
   pgm.createTable('scenarios', {
     id: { type: 'serial', primaryKey: true },
-    historical_id: {
-      type: 'integer',
-      notNull: true,
-      references: 'historical(id)',
-      onDelete: 'CASCADE',
+    name: {
+      type: 'string',
     },
     text: { type: 'string' },
+    options: { type: 'json' },
     created_at: {
       type: 'timestamptz',
       notNull: true,
