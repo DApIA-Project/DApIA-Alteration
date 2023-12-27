@@ -1,4 +1,4 @@
-import {Scope, Icao, Action, Message} from "../types"
+import {Scope, Icao, Action, Message, XOR} from "../types"
 
 
 export enum AlterationMode {
@@ -8,36 +8,52 @@ export enum AlterationMode {
 	DRIFT,
 }
 
+type Modification = {
+	property: string, 
+	value: string | number | boolean,
+	mode: AlterationMode,
+}
 
-export function alteration(config : {
+type Config_1 = {
 	scope: Scope,
 	property: string, 
 	value: string | number | boolean,
-	mode: AlterationMode
-}) {
+	mode: AlterationMode,
+}
+
+
+type Config_2 = { scope: Scope, modifications: Modification[] }
+
+export function alteration(config: XOR<Config_1, Config_2>) {
+	const mods: Modification[] = "modifications" in config ?
+		[...config.modifications!] : 
+		[{property: config.property, value: config.value, mode: config.mode}];
+
 	return {
 		processing: function(recording: Message[]): Message[] {
 			return recording.map((msg, idx) => 
 													 (config.scope(msg) ? this.apply(msg,idx) : msg));
 		},
 
-		//TODO: as number ne permet pas de crash si le type n'est pas bon :C 
 		apply: function(msg: Message, idx: number): Message {
 			let new_msg = msg;
 
-			switch (config.mode) {
-				case AlterationMode.REPLACE : 
-					new_msg[config.property] = config.value;
+			for(let mod of mods) {
+				const {property, value, mode} = mod;
+				switch (mode) {
+					case AlterationMode.REPLACE : 
+						new_msg[property] = value;
 					break;
-				case AlterationMode.OFFSET : 
-					(new_msg[config.property] as number) += config.value as number;
+					case AlterationMode.OFFSET : 
+						(new_msg[property] as number) += value as number;
 					break;
-				case AlterationMode.NOISE : 
-					(new_msg[config.property] as number) += rand(0, config.value as number);
+					case AlterationMode.NOISE : 
+						(new_msg[property] as number) += rand(0, value as number);
 					break;
-				case AlterationMode.DRIFT : 
-					(new_msg[config.property] as number) += idx * (config.value as number);
+					case AlterationMode.DRIFT : 
+						(new_msg[property] as number) += idx * (value as number);
 					break;
+				}
 			}
 
 			return new_msg;

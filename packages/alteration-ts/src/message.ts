@@ -9,6 +9,7 @@ export function parse(recording: string): Message[] {
 
 function parseOne(msg: string) : Message | null {
 	let fields = msg.split(',');
+	let extra_fields = fields.length > 22 ? JSON.parse(fields.slice(22).join(",")) : {};
 
 	return validate({
 		messageType:					fields[0],
@@ -31,6 +32,7 @@ function parseOne(msg: string) : Message | null {
 		emergency: 						fields[19] == '1',
 		spi: 									fields[20] == '1',
 		onGround: 						fields[21] == '1',
+		...extra_fields,
 	});
 }
 
