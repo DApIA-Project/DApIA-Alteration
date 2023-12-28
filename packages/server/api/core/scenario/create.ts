@@ -10,9 +10,10 @@ export default async function create(
   scenarioManager: IScenarioManager
 ): Promise<CreateScenarioResponse> {
   const name = scenarioAttributes.name.trim()
-  if (!name) return { scenario: null, error: CreateScenarioError.emptyName }
+  if (name === '')
+    return { scenario: null, error: CreateScenarioError.emptyName }
   const text = scenarioAttributes.text.trim()
-  if (!text)
+  if (text === '')
     return { scenario: null, error: CreateScenarioError.emptyTextScenario }
 
   return {

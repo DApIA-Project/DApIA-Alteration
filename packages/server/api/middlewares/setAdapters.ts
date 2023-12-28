@@ -2,7 +2,7 @@ import { RequestHandler } from 'express'
 import makeAlterationRequest from '../utils/makeAlterationRequest'
 import { AlterationAdapters } from '../AlterationAdapters'
 
-function makeAdapters(adapters: AlterationAdapters): RequestHandler {
+function setAdapters(adapters: AlterationAdapters): RequestHandler {
   return (req, _, next) => {
     const alterationRequest = makeAlterationRequest(req)
     alterationRequest.adapters = adapters
@@ -10,4 +10,4 @@ function makeAdapters(adapters: AlterationAdapters): RequestHandler {
   }
 }
 
-export default makeAdapters
+export default setAdapters

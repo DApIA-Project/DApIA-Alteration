@@ -6,8 +6,7 @@ import {
 } from '@smartesting/shared/dist/models/Scenario'
 
 export default class MemoryScenarioManager implements IScenarioManager {
-  public id = uuid()
-  private scenariosById = new Map<string, Scenario>()
+  constructor(private readonly scenariosById = new Map<string, Scenario>()) {}
 
   async createScenario(scenario: ScenarioAttributes): Promise<Scenario> {
     const id = uuid()

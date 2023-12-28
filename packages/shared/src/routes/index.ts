@@ -6,4 +6,8 @@ export class ApiRoutes {
   static streamRecording() {
     return '/recording/stream'
   }
+
+  static createScenario() {
+    return '/scenario/create'
+  }
 }
