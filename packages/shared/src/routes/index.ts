@@ -10,4 +10,12 @@ export class ApiRoutes {
   static createScenario() {
     return '/scenario/create'
   }
+
+  static updateScenario() {
+    return '/scenario/update'
+  }
+
+  static deleteScenario() {
+    return '/scenario/delete'
+  }
 }

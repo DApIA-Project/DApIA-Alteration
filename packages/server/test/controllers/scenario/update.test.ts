@@ -7,7 +7,7 @@ import { CreateScenarioError } from '@smartesting/shared/dist/responses/createSc
 import makeTestAdapters from '../../makeTestAdapters'
 import { OptionsAlteration } from '@smartesting/shared/dist/index'
 
-describe(`POST ${ApiRoutes.createScenario()}`, () => {
+describe(`POST ${ApiRoutes.updateScenario()}`, () => {
   let server: express.Express
 
   beforeEach(() => {
@@ -42,11 +42,19 @@ describe(`POST ${ApiRoutes.createScenario()}`, () => {
 
   context('when scenario name is invalid', () => {
     it('returns 422 if the name is not specified', async () => {
-      const response = await request(server)
+      const createScenarioReq = await request(server)
         .post(ApiRoutes.createScenario())
+        .send(validScenarioAttributes)
+      const scenarioCreate = createScenarioReq.body.scenario
+
+      const response = await request(server)
+        .post(ApiRoutes.updateScenario())
         .send({
           ...validScenarioAttributesMissingName,
           name: '',
+          id: scenarioCreate.id,
+          create_at: scenarioCreate.create_at,
+          update_at: scenarioCreate.update_at,
         })
 
       const { error, scenario } = response.body
@@ -55,9 +63,20 @@ describe(`POST ${ApiRoutes.createScenario()}`, () => {
     })
 
     it('returns 422 if the name is blank', async () => {
-      const response = await request(server)
+      const createScenarioReq = await request(server)
         .post(ApiRoutes.createScenario())
-        .send({ ...validScenarioAttributesMissingName, name: '   ' })
+        .send(validScenarioAttributes)
+      const scenarioCreate = createScenarioReq.body.scenario
+
+      const response = await request(server)
+        .post(ApiRoutes.updateScenario())
+        .send({
+          ...validScenarioAttributesMissingName,
+          name: '   ',
+          id: scenarioCreate.id,
+          create_at: scenarioCreate.create_at,
+          update_at: scenarioCreate.update_at,
+        })
 
       const { error, scenario } = response.body
       assert.deepStrictEqual(scenario, null)
@@ -65,9 +84,19 @@ describe(`POST ${ApiRoutes.createScenario()}`, () => {
     })
 
     it('returns 422 if the name is not set', async () => {
-      const response = await request(server)
+      const createScenarioReq = await request(server)
         .post(ApiRoutes.createScenario())
-        .send({ ...validScenarioAttributesMissingName })
+        .send(validScenarioAttributes)
+      const scenarioCreate = createScenarioReq.body.scenario
+
+      const response = await request(server)
+        .post(ApiRoutes.updateScenario())
+        .send({
+          ...validScenarioAttributesMissingName,
+          id: scenarioCreate.id,
+          create_at: scenarioCreate.create_at,
+          update_at: scenarioCreate.update_at,
+        })
 
       const { error, scenario } = response.body
       assert.deepStrictEqual(scenario, null)
@@ -77,9 +106,20 @@ describe(`POST ${ApiRoutes.createScenario()}`, () => {
 
   context('when scenario text is invalid', () => {
     it('returns 422 if the text is not specified', async () => {
-      const response = await request(server)
+      const createScenarioReq = await request(server)
         .post(ApiRoutes.createScenario())
-        .send({ ...validScenarioAttributesMissingText, text: '' })
+        .send(validScenarioAttributes)
+      const scenarioCreate = createScenarioReq.body.scenario
+
+      const response = await request(server)
+        .post(ApiRoutes.updateScenario())
+        .send({
+          ...validScenarioAttributesMissingText,
+          text: '',
+          id: scenarioCreate.id,
+          create_at: scenarioCreate.create_at,
+          update_at: scenarioCreate.update_at,
+        })
 
       const { error, scenario } = response.body
       assert.deepStrictEqual(scenario, null)
@@ -87,9 +127,20 @@ describe(`POST ${ApiRoutes.createScenario()}`, () => {
     })
 
     it('returns 422 if the text is blank', async () => {
-      const response = await request(server)
+      const createScenarioReq = await request(server)
         .post(ApiRoutes.createScenario())
-        .send({ ...validScenarioAttributesMissingText, text: '   ' })
+        .send(validScenarioAttributes)
+      const scenarioCreate = createScenarioReq.body.scenario
+
+      const response = await request(server)
+        .post(ApiRoutes.updateScenario())
+        .send({
+          ...validScenarioAttributesMissingText,
+          text: '   ',
+          id: scenarioCreate.id,
+          create_at: scenarioCreate.create_at,
+          update_at: scenarioCreate.update_at,
+        })
 
       const { error, scenario } = response.body
       assert.deepStrictEqual(scenario, null)
@@ -97,9 +148,19 @@ describe(`POST ${ApiRoutes.createScenario()}`, () => {
     })
 
     it('returns 422 if the text is not set', async () => {
-      const response = await request(server)
+      const createScenarioReq = await request(server)
         .post(ApiRoutes.createScenario())
-        .send(validScenarioAttributesMissingText)
+        .send(validScenarioAttributes)
+      const scenarioCreate = createScenarioReq.body.scenario
+
+      const response = await request(server)
+        .post(ApiRoutes.updateScenario())
+        .send({
+          ...validScenarioAttributesMissingText,
+          id: scenarioCreate.id,
+          create_at: scenarioCreate.create_at,
+          update_at: scenarioCreate.update_at,
+        })
 
       const { error, scenario } = response.body
       assert.deepStrictEqual(scenario, null)
@@ -109,8 +170,13 @@ describe(`POST ${ApiRoutes.createScenario()}`, () => {
 
   context('when scenario option are invalid', () => {
     it('returns 422 if the option haveRealism is not boolean', async () => {
-      const response = await request(server)
+      const createScenarioReq = await request(server)
         .post(ApiRoutes.createScenario())
+        .send(validScenarioAttributes)
+      const scenarioCreate = createScenarioReq.body.scenario
+
+      const response = await request(server)
+        .post(ApiRoutes.updateScenario())
         .send({
           ...validScenarioAttributesMissingOption,
           options: {
@@ -121,6 +187,9 @@ describe(`POST ${ApiRoutes.createScenario()}`, () => {
             haveDisableLatitude: false,
             haveDisableAltitude: false,
           },
+          id: scenarioCreate.id,
+          create_at: scenarioCreate.create_at,
+          update_at: scenarioCreate.update_at,
         })
 
       const { error, scenario } = response.body
@@ -129,8 +198,13 @@ describe(`POST ${ApiRoutes.createScenario()}`, () => {
     })
 
     it('returns 422 if the option haveNoise is not boolean', async () => {
-      const response = await request(server)
+      const createScenarioReq = await request(server)
         .post(ApiRoutes.createScenario())
+        .send(validScenarioAttributes)
+      const scenarioCreate = createScenarioReq.body.scenario
+
+      const response = await request(server)
+        .post(ApiRoutes.updateScenario())
         .send({
           ...validScenarioAttributesMissingOption,
           options: {
@@ -141,6 +215,9 @@ describe(`POST ${ApiRoutes.createScenario()}`, () => {
             haveDisableLatitude: false,
             haveDisableAltitude: false,
           },
+          id: scenarioCreate.id,
+          create_at: scenarioCreate.create_at,
+          update_at: scenarioCreate.update_at,
         })
 
       const { error, scenario } = response.body
@@ -149,8 +226,13 @@ describe(`POST ${ApiRoutes.createScenario()}`, () => {
     })
 
     it('returns 422 if the option haveLabel is not boolean', async () => {
-      const response = await request(server)
+      const createScenarioReq = await request(server)
         .post(ApiRoutes.createScenario())
+        .send(validScenarioAttributes)
+      const scenarioCreate = createScenarioReq.body.scenario
+
+      const response = await request(server)
+        .post(ApiRoutes.updateScenario())
         .send({
           ...validScenarioAttributesMissingOption,
           options: {
@@ -161,6 +243,9 @@ describe(`POST ${ApiRoutes.createScenario()}`, () => {
             haveDisableLatitude: false,
             haveDisableAltitude: false,
           },
+          id: scenarioCreate.id,
+          create_at: scenarioCreate.create_at,
+          update_at: scenarioCreate.update_at,
         })
 
       const { error, scenario } = response.body
@@ -169,8 +254,13 @@ describe(`POST ${ApiRoutes.createScenario()}`, () => {
     })
 
     it('returns 422 if the option haveDisableLongitude is not boolean', async () => {
-      const response = await request(server)
+      const createScenarioReq = await request(server)
         .post(ApiRoutes.createScenario())
+        .send(validScenarioAttributes)
+      const scenarioCreate = createScenarioReq.body.scenario
+
+      const response = await request(server)
+        .post(ApiRoutes.updateScenario())
         .send({
           ...validScenarioAttributesMissingOption,
           options: {
@@ -181,6 +271,9 @@ describe(`POST ${ApiRoutes.createScenario()}`, () => {
             haveDisableLatitude: false,
             haveDisableAltitude: false,
           },
+          id: scenarioCreate.id,
+          create_at: scenarioCreate.create_at,
+          update_at: scenarioCreate.update_at,
         })
 
       const { error, scenario } = response.body
@@ -189,8 +282,13 @@ describe(`POST ${ApiRoutes.createScenario()}`, () => {
     })
 
     it('returns 422 if the option haveDisableLatitude is not boolean', async () => {
-      const response = await request(server)
+      const createScenarioReq = await request(server)
         .post(ApiRoutes.createScenario())
+        .send(validScenarioAttributes)
+      const scenarioCreate = createScenarioReq.body.scenario
+
+      const response = await request(server)
+        .post(ApiRoutes.updateScenario())
         .send({
           ...validScenarioAttributesMissingOption,
           options: {
@@ -201,6 +299,9 @@ describe(`POST ${ApiRoutes.createScenario()}`, () => {
             haveDisableLatitude: 'salut',
             haveDisableAltitude: false,
           },
+          id: scenarioCreate.id,
+          create_at: scenarioCreate.create_at,
+          update_at: scenarioCreate.update_at,
         })
 
       const { error, scenario } = response.body
@@ -209,8 +310,13 @@ describe(`POST ${ApiRoutes.createScenario()}`, () => {
     })
 
     it('returns 422 if the option haveDisableAltitude is not boolean', async () => {
-      const response = await request(server)
+      const createScenarioReq = await request(server)
         .post(ApiRoutes.createScenario())
+        .send(validScenarioAttributes)
+      const scenarioCreate = createScenarioReq.body.scenario
+
+      const response = await request(server)
+        .post(ApiRoutes.updateScenario())
         .send({
           ...validScenarioAttributesMissingOption,
           options: {
@@ -221,6 +327,9 @@ describe(`POST ${ApiRoutes.createScenario()}`, () => {
             haveDisableLatitude: false,
             haveDisableAltitude: 'salut',
           },
+          id: scenarioCreate.id,
+          create_at: scenarioCreate.create_at,
+          update_at: scenarioCreate.update_at,
         })
 
       const { error, scenario } = response.body
@@ -231,14 +340,27 @@ describe(`POST ${ApiRoutes.createScenario()}`, () => {
 
   context('when scenario all is valid', () => {
     it('returns 201 when all is valid', async () => {
-      const response = await request(server)
+      const createScenarioReq = await request(server)
         .post(ApiRoutes.createScenario())
         .send(validScenarioAttributes)
 
+      const scenarioCreate = createScenarioReq.body.scenario
+
+      const response = await request(server)
+        .post(ApiRoutes.updateScenario())
+        .send({
+          ...validScenarioAttributes,
+          name: 'ScenarioW',
+          text: 'Other Text',
+          id: scenarioCreate.id,
+          create_at: scenarioCreate.create_at,
+          update_at: scenarioCreate.update_at,
+        })
+
       const { error, scenario } = response.body
       assert.deepStrictEqual(error, null)
-      assert.equal(scenario.name, 'ScenarioA')
-      assert.equal(scenario.text, 'hide all_planes at 6 seconds')
+      assert.equal(scenario.name, 'ScenarioW')
+      assert.equal(scenario.text, 'Other Text')
     })
   })
 })

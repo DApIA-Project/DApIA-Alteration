@@ -14,6 +14,7 @@ export enum NotFound {
 
 export enum BadType {
   optionsBadType = 'options_bad_type',
+  idBadType = 'id_bad_type',
 }
 
 export type ResponseError =
