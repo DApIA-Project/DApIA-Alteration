@@ -17,11 +17,18 @@ export enum BadType {
   idBadType = 'id_bad_type',
 }
 
+export enum Invalid {
+  invalidFormat = 'invalid_format',
+  invalidSyntax = 'invalid_syntax',
+  invalidContentFile = 'invalid_content_file',
+}
+
 export type ResponseError =
   | Unauthorized
   | UnprocessableContent
   | NotFound
   | BadType
+  | Invalid
 
 export function getStatusCode<E extends ResponseError>(error: E): number {
   if (isError(error, Object.values(Unauthorized))) {
@@ -32,7 +39,8 @@ export function getStatusCode<E extends ResponseError>(error: E): number {
   }
   if (
     isError(error, Object.values(UnprocessableContent)) ||
-    isError(error, Object.values(BadType))
+    isError(error, Object.values(BadType)) ||
+    isError(error, Object.values(Invalid))
   ) {
     return 422
   }
