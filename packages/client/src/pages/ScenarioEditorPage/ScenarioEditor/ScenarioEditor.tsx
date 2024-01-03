@@ -11,9 +11,16 @@ import { ScenarioOptions } from './ScenarioOptions/ScenarioOptions'
 import { RecordInputFiles } from './RecordInputFiles/RecordInputFiles'
 import EditorTabSelection from './EditorTabSelection/EditorTabSelection'
 import { unstable_batchedUpdates } from 'react-dom'
+import IconButton from '../../../components/ui/Button/IconButton/IconButton'
+import FloatingSquare from './FloatingSquare/FloatingSquare'
+import StarBorderIcon from '@mui/icons-material/StarBorder'
 
 export enum ScenarioEditorTestIds {
   COMPONENT = 'ScenarioEditor',
+}
+
+export enum SaveScenarioButtonTestIds {
+  COMPONENT = 'SaveScenarioButton',
 }
 
 type ScenarioEditorProps = {
@@ -51,6 +58,16 @@ const ScenarioEditor: React.FunctionComponent<ScenarioEditorProps> = ({
   useEffect(() => {
     window.localStorage.setItem('scenarios', JSON.stringify(scenarios))
   }, [scenarios, selectedScenario])
+
+  const [isSquareVisible, setIsSquareVisible] = useState<boolean>(false)
+
+  const handleSquareClose = () => {
+    setIsSquareVisible(false)
+  }
+
+  const handleSquareOpen = () => {
+    setIsSquareVisible(true)
+  }
 
   function handleOnAdd() {
     unstable_batchedUpdates(() => {
@@ -97,6 +114,17 @@ const ScenarioEditor: React.FunctionComponent<ScenarioEditorProps> = ({
           value={scenario}
           onChange={handleOnChange}
         />
+      </div>
+
+      <div className={'divSaveScenarioButton'}>
+        <IconButton
+          data-testid={SaveScenarioButtonTestIds.COMPONENT}
+          text={''}
+          icon={<StarBorderIcon />}
+          onClick={handleSquareOpen}
+          className='saveScenarioButton'
+        />
+        {isSquareVisible && <FloatingSquare onClose={handleSquareClose} />}
       </div>
       <div className={'composantOption'}>
         <GenerateAlterationButton
