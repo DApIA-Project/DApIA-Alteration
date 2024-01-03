@@ -5,6 +5,7 @@ import streamRecording from './api/controllers/recording/streamRecording'
 import makeCreateRequestHandler from './api/controllers/scenario/create'
 import makeUpdateRequestHandler from './api/controllers/scenario/update'
 import makeDeleteRequestHandler from './api/controllers/scenario/delete'
+import makeListRequestHandler from './api/controllers/scenario/listScenario'
 const router = express.Router()
 
 function setRoutes(): Router {
@@ -13,6 +14,7 @@ function setRoutes(): Router {
   router.post(ApiRoutes.createScenario(), makeCreateRequestHandler)
   router.post(ApiRoutes.updateScenario(), makeUpdateRequestHandler)
   router.post(ApiRoutes.deleteScenario(), makeDeleteRequestHandler)
+  router.post(ApiRoutes.listScenario(), makeListRequestHandler)
   return router
 }
 

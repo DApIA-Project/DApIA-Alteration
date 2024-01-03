@@ -18,4 +18,8 @@ export class ApiRoutes {
   static deleteScenario() {
     return '/scenario/delete'
   }
+
+  static listScenario() {
+    return '/scenario/list'
+  }
 }
