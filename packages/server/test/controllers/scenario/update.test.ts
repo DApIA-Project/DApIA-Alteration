@@ -3,7 +3,7 @@ import { setupExpress } from '../../helpers/setupExpress'
 import request from 'supertest'
 import { ApiRoutes } from '@smartesting/shared/src/routes'
 import assert from 'assert'
-import { CreateScenarioError } from '@smartesting/shared/dist/responses/createScenario'
+import { UpdateScenarioError } from '@smartesting/shared/dist/responses/updateScenario'
 import makeTestAdapters from '../../makeTestAdapters'
 import { OptionsAlteration } from '@smartesting/shared/dist/index'
 
@@ -53,13 +53,11 @@ describe(`POST ${ApiRoutes.updateScenario()}`, () => {
           ...validScenarioAttributesMissingName,
           name: '',
           id: scenarioCreate.id,
-          create_at: scenarioCreate.create_at,
-          update_at: scenarioCreate.update_at,
         })
 
       const { error, scenario } = response.body
       assert.deepStrictEqual(scenario, null)
-      assert.equal(error, CreateScenarioError.emptyName)
+      assert.equal(error, UpdateScenarioError.emptyName)
     })
 
     it('returns 422 if the name is blank', async () => {
@@ -74,13 +72,11 @@ describe(`POST ${ApiRoutes.updateScenario()}`, () => {
           ...validScenarioAttributesMissingName,
           name: '   ',
           id: scenarioCreate.id,
-          create_at: scenarioCreate.create_at,
-          update_at: scenarioCreate.update_at,
         })
 
       const { error, scenario } = response.body
       assert.deepStrictEqual(scenario, null)
-      assert.equal(error, CreateScenarioError.emptyName)
+      assert.equal(error, UpdateScenarioError.emptyName)
     })
 
     it('returns 422 if the name is not set', async () => {
@@ -94,13 +90,11 @@ describe(`POST ${ApiRoutes.updateScenario()}`, () => {
         .send({
           ...validScenarioAttributesMissingName,
           id: scenarioCreate.id,
-          create_at: scenarioCreate.create_at,
-          update_at: scenarioCreate.update_at,
         })
 
       const { error, scenario } = response.body
       assert.deepStrictEqual(scenario, null)
-      assert.equal(error, CreateScenarioError.emptyName)
+      assert.equal(error, UpdateScenarioError.emptyName)
     })
   })
 
@@ -117,13 +111,11 @@ describe(`POST ${ApiRoutes.updateScenario()}`, () => {
           ...validScenarioAttributesMissingText,
           text: '',
           id: scenarioCreate.id,
-          create_at: scenarioCreate.create_at,
-          update_at: scenarioCreate.update_at,
         })
 
       const { error, scenario } = response.body
       assert.deepStrictEqual(scenario, null)
-      assert.equal(error, CreateScenarioError.emptyTextScenario)
+      assert.equal(error, UpdateScenarioError.emptyTextScenario)
     })
 
     it('returns 422 if the text is blank', async () => {
@@ -138,13 +130,11 @@ describe(`POST ${ApiRoutes.updateScenario()}`, () => {
           ...validScenarioAttributesMissingText,
           text: '   ',
           id: scenarioCreate.id,
-          create_at: scenarioCreate.create_at,
-          update_at: scenarioCreate.update_at,
         })
 
       const { error, scenario } = response.body
       assert.deepStrictEqual(scenario, null)
-      assert.equal(error, CreateScenarioError.emptyTextScenario)
+      assert.equal(error, UpdateScenarioError.emptyTextScenario)
     })
 
     it('returns 422 if the text is not set', async () => {
@@ -158,13 +148,11 @@ describe(`POST ${ApiRoutes.updateScenario()}`, () => {
         .send({
           ...validScenarioAttributesMissingText,
           id: scenarioCreate.id,
-          create_at: scenarioCreate.create_at,
-          update_at: scenarioCreate.update_at,
         })
 
       const { error, scenario } = response.body
       assert.deepStrictEqual(scenario, null)
-      assert.equal(error, CreateScenarioError.emptyTextScenario)
+      assert.equal(error, UpdateScenarioError.emptyTextScenario)
     })
   })
 
@@ -188,13 +176,11 @@ describe(`POST ${ApiRoutes.updateScenario()}`, () => {
             haveDisableAltitude: false,
           },
           id: scenarioCreate.id,
-          create_at: scenarioCreate.create_at,
-          update_at: scenarioCreate.update_at,
         })
 
       const { error, scenario } = response.body
       assert.deepStrictEqual(scenario, null)
-      assert.equal(error, CreateScenarioError.optionsBadType)
+      assert.equal(error, UpdateScenarioError.optionsBadType)
     })
 
     it('returns 422 if the option haveNoise is not boolean', async () => {
@@ -216,13 +202,11 @@ describe(`POST ${ApiRoutes.updateScenario()}`, () => {
             haveDisableAltitude: false,
           },
           id: scenarioCreate.id,
-          create_at: scenarioCreate.create_at,
-          update_at: scenarioCreate.update_at,
         })
 
       const { error, scenario } = response.body
       assert.deepStrictEqual(scenario, null)
-      assert.equal(error, CreateScenarioError.optionsBadType)
+      assert.equal(error, UpdateScenarioError.optionsBadType)
     })
 
     it('returns 422 if the option haveLabel is not boolean', async () => {
@@ -244,13 +228,11 @@ describe(`POST ${ApiRoutes.updateScenario()}`, () => {
             haveDisableAltitude: false,
           },
           id: scenarioCreate.id,
-          create_at: scenarioCreate.create_at,
-          update_at: scenarioCreate.update_at,
         })
 
       const { error, scenario } = response.body
       assert.deepStrictEqual(scenario, null)
-      assert.equal(error, CreateScenarioError.optionsBadType)
+      assert.equal(error, UpdateScenarioError.optionsBadType)
     })
 
     it('returns 422 if the option haveDisableLongitude is not boolean', async () => {
@@ -272,13 +254,11 @@ describe(`POST ${ApiRoutes.updateScenario()}`, () => {
             haveDisableAltitude: false,
           },
           id: scenarioCreate.id,
-          create_at: scenarioCreate.create_at,
-          update_at: scenarioCreate.update_at,
         })
 
       const { error, scenario } = response.body
       assert.deepStrictEqual(scenario, null)
-      assert.equal(error, CreateScenarioError.optionsBadType)
+      assert.equal(error, UpdateScenarioError.optionsBadType)
     })
 
     it('returns 422 if the option haveDisableLatitude is not boolean', async () => {
@@ -300,13 +280,11 @@ describe(`POST ${ApiRoutes.updateScenario()}`, () => {
             haveDisableAltitude: false,
           },
           id: scenarioCreate.id,
-          create_at: scenarioCreate.create_at,
-          update_at: scenarioCreate.update_at,
         })
 
       const { error, scenario } = response.body
       assert.deepStrictEqual(scenario, null)
-      assert.equal(error, CreateScenarioError.optionsBadType)
+      assert.equal(error, UpdateScenarioError.optionsBadType)
     })
 
     it('returns 422 if the option haveDisableAltitude is not boolean', async () => {
@@ -328,13 +306,28 @@ describe(`POST ${ApiRoutes.updateScenario()}`, () => {
             haveDisableAltitude: 'salut',
           },
           id: scenarioCreate.id,
-          create_at: scenarioCreate.create_at,
-          update_at: scenarioCreate.update_at,
         })
 
       const { error, scenario } = response.body
       assert.deepStrictEqual(scenario, null)
-      assert.equal(error, CreateScenarioError.optionsBadType)
+      assert.equal(error, UpdateScenarioError.optionsBadType)
+    })
+  })
+
+  context('when scenario not exists', () => {
+    it('returns 404 when scenario not exists', async () => {
+      const response = await request(server)
+        .post(ApiRoutes.updateScenario())
+        .send({
+          ...validScenarioAttributes,
+          name: 'ScenarioW',
+          text: 'Other Text',
+          id: '31',
+        })
+
+      const { error, scenario } = response.body
+      assert.deepStrictEqual(error, UpdateScenarioError.scenarioNotFound)
+      assert.equal(scenario, null)
     })
   })
 
@@ -353,8 +346,6 @@ describe(`POST ${ApiRoutes.updateScenario()}`, () => {
           name: 'ScenarioW',
           text: 'Other Text',
           id: scenarioCreate.id,
-          create_at: scenarioCreate.create_at,
-          update_at: scenarioCreate.update_at,
         })
 
       const { error, scenario } = response.body

@@ -5,13 +5,18 @@ import {
 import { makeRequestHandler } from '../utils/makeRequestHandler'
 import { Scenario } from '@smartesting/shared/dist/models/Scenario'
 import update from '../../core/scenario/update'
+import request from 'supertest'
+import IScenarioManager from '../../adapters/scenario/IScenarioManager'
 
 type Body = Record<string, any>
 
 export default makeRequestHandler<UpdateScenarioResponse>(
   async (req): Promise<UpdateScenarioResponse> => {
     const { scenarioManager } = req.adapters
-    const { error, scenario } = validateScenario(req.body)
+    const { error, scenario } = await validateScenario(
+      req.body,
+      scenarioManager
+    )
     if (error || !scenario) return { error, scenario: null }
     return await update(
       scenario.id,
@@ -22,10 +27,13 @@ export default makeRequestHandler<UpdateScenarioResponse>(
   }
 )
 
-function validateScenario(body: Body): {
+async function validateScenario(
+  body: Body,
+  scenarioManager: IScenarioManager
+): Promise<{
   error: UpdateScenarioError | null
   scenario: Scenario | null
-} {
+}> {
   if (!body.name || typeof body.name !== 'string')
     return {
       error: UpdateScenarioError.emptyName,
@@ -50,14 +58,25 @@ function validateScenario(body: Body): {
       scenario: null,
     }
   }
+
+  const scenarioBefore: Scenario | null = await scenarioManager.findScenario(
+    body.id
+  )
+  if (!scenarioBefore) {
+    return {
+      error: UpdateScenarioError.scenarioNotFound,
+      scenario: null,
+    }
+  }
+
   return {
     scenario: {
       id: body.id,
       name: body.name,
       text: body.text,
       options: body.options,
-      create_at: body.create_at,
-      update_at: body.update_at,
+      create_at: scenarioBefore.create_at,
+      update_at: scenarioBefore.update_at,
     },
     error: null,
   }
