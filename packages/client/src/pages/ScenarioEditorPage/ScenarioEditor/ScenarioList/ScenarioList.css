@@ -1,0 +1,8 @@
+.divListScenario {
+  flex: 0 1 25%;
+  max-width: 25%;
+  display: flex;
+  overflow-y: auto;
+  flex-direction: column;
+  max-height: 250px;
+}

@@ -10,7 +10,15 @@ import {
 import { RecordInputFilesTestIds } from './RecordInputFiles/RecordInputFiles'
 import { GenerateAlterationButtonTestIds } from './GenerateAlterationButton/GenerateAlterationButton'
 import * as getMonacoEditorContentModule from '../../../utils/getMonacoEditorContent/getMonacoEditorContent'
+import {
+  ListScenarioError,
+  ListScenarioResponse,
+} from '@smartesting/shared/dist/responses/listScenario'
+import { Scenario } from '@smartesting/shared/dist/models/Scenario'
+import { ScenarioListTestIds } from './ScenarioList/ScenarioList'
 
+jest.mock('../../../Client')
+//jest.mock('./ScenarioList/ScenarioList')
 jest.mock(
   '../../../components/business/AlterationScenarioEditor/AlterationScenarioEditor',
   () => () => <div />
@@ -35,7 +43,6 @@ describe('ScenarioEditor', () => {
     length: files.length,
     item: (index: number) => files[index],
   }
-
   beforeEach(() => {
     jest
       .spyOn(getMonacoEditorContentModule, 'getMonacoEditorContent')
@@ -134,4 +141,88 @@ describe('ScenarioEditor', () => {
       })
     })
   })
+
+  it('show scenario list', async () => {
+    let scenarioA: Scenario = {
+      name: 'Scenario 1',
+      text: 'Texte du scenario 1',
+      options: {
+        haveLabel: false,
+        haveNoise: false,
+        haveRealism: false,
+        haveDisableAltitude: false,
+        haveDisableLatitude: false,
+        haveDisableLongitude: false,
+      },
+      id: '1',
+      create_at: new Date(),
+      update_at: new Date(),
+    }
+    let scenarioB: Scenario = {
+      name: 'Scenario 2',
+      text: 'Texte du scenario 2',
+      options: {
+        haveLabel: false,
+        haveNoise: false,
+        haveRealism: false,
+        haveDisableAltitude: false,
+        haveDisableLatitude: false,
+        haveDisableLongitude: false,
+      },
+      id: '2',
+      create_at: new Date(),
+      update_at: new Date(),
+    }
+
+    let listScenario: Scenario[] = []
+    listScenario.push(scenarioA)
+    listScenario.push(scenarioB)
+    const mockScenarios: ListScenarioResponse = {
+      scenarios: listScenario,
+      error: null,
+    }
+
+    require('../../../Client').default.listScenario.mockResolvedValue(
+      mockScenarios
+    )
+
+    render(<ScenarioEditor onGenerate={spiedCallback} />)
+    await waitFor(async () => {
+      const scenarioButtons = await screen.findAllByTestId(
+        ScenarioListTestIds.BUTTON
+      )
+      expect(scenarioButtons).toHaveLength(mockScenarios.scenarios!.length)
+    })
+  })
+  /*
+  it('click on scenario on scenario list', async () => {
+    let scenarioA : Scenario = { name: 'Scenario 1', text: 'Texte du scenario 1', options : { haveLabel : false, haveNoise : false, haveRealism : false, haveDisableAltitude : false, haveDisableLatitude : false, haveDisableLongitude : false}, id : '1', create_at : new Date(), update_at : new Date()}
+    let scenarioB : Scenario = { name: 'Scenario 2', text: 'Texte du scenario 2', options : { haveLabel : false, haveNoise : false, haveRealism : false, haveDisableAltitude : false, haveDisableLatitude : false, haveDisableLongitude : false}, id : '2' , create_at : new Date(), update_at : new Date()}
+
+    let listScenario : Scenario[] = []
+    listScenario.push(scenarioA)
+    listScenario.push(scenarioB)
+    const mockScenarios : ListScenarioResponse = {scenarios : listScenario,error : null}
+    const mockOnClick = () => {}
+    require('../../../Client').default.listScenario.mockResolvedValue(mockScenarios)
+    require('./ScenarioList/ScenarioList.tsx').default.listScenario.mockResolvedValue(mockOnClick)
+
+    render(<ScenarioEditor onGenerate={spiedCallback} />);
+    await waitFor(async() => {
+      const scenarioButtons = await screen.findAllByTestId(ScenarioListTestIds.BUTTON);
+      await userEvent.click(scenarioButtons[0]);
+
+    });
+
+    expect(mockOnClick).toHaveBeenCalledWith(mockScenarios.scenarios![0].text);
+    await waitFor(async() => {
+      const scenarioButtons = await screen.findAllByTestId(ScenarioListTestIds.BUTTON);
+      await userEvent.click(scenarioButtons[1]);
+
+    });
+
+    expect(mockOnClick).toHaveBeenCalledWith(mockScenarios.scenarios![1].text);
+  });
+
+ */
 })

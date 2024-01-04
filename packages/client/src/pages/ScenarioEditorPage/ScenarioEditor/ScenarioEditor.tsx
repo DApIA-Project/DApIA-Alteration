@@ -14,6 +14,12 @@ import { unstable_batchedUpdates } from 'react-dom'
 import IconButton from '../../../components/ui/Button/IconButton/IconButton'
 import FloatingSquare from './FloatingSquare/FloatingSquare'
 import StarBorderIcon from '@mui/icons-material/StarBorder'
+import {
+  ListScenarioError,
+  ListScenarioResponse,
+} from '@smartesting/shared/dist/responses/listScenario'
+import Client from '../../../Client'
+import ScenarioList from './ScenarioList/ScenarioList'
 
 export enum ScenarioEditorTestIds {
   COMPONENT = 'ScenarioEditor',
@@ -59,6 +65,21 @@ const ScenarioEditor: React.FunctionComponent<ScenarioEditorProps> = ({
     window.localStorage.setItem('scenarios', JSON.stringify(scenarios))
   }, [scenarios, selectedScenario])
 
+  const [scenariosSaved, setScenariosSaved] = useState<ListScenarioResponse>({
+    scenarios: null,
+    error: ListScenarioError.emptyListScenario,
+  })
+
+  useEffect(() => {
+    async function fetchScenarios() {
+      const listScenario = await Client.listScenario()
+      setScenariosSaved(listScenario)
+    }
+
+    fetchScenarios()
+  }, [])
+
+  /*
   const [isSquareVisible, setIsSquareVisible] = useState<boolean>(false)
 
   const handleSquareClose = () => {
@@ -67,7 +88,7 @@ const ScenarioEditor: React.FunctionComponent<ScenarioEditorProps> = ({
 
   const handleSquareOpen = () => {
     setIsSquareVisible(true)
-  }
+  }*/
 
   function handleOnAdd() {
     unstable_batchedUpdates(() => {
@@ -115,17 +136,24 @@ const ScenarioEditor: React.FunctionComponent<ScenarioEditorProps> = ({
           onChange={handleOnChange}
         />
       </div>
-
+      {/*
       <div className={'divSaveScenarioButton'}>
         <IconButton
           data-testid={SaveScenarioButtonTestIds.COMPONENT}
           text={''}
-          icon={<StarBorderIcon />}
+          icon={<StarBorderIcon fontSize='medium'/>}
           onClick={handleSquareOpen}
           className='saveScenarioButton'
         />
-        {isSquareVisible && <FloatingSquare onClose={handleSquareClose} />}
+        {isSquareVisible && <FloatingSquare onClose={handleSquareClose} scenarios={scenarios} optionsAlteration={optionsAlteration}/>}
       </div>
+      */}
+
+      <ScenarioList
+        scenarios={scenariosSaved || null}
+        onClick={handleOnChange}
+      />
+
       <div className={'composantOption'}>
         <GenerateAlterationButton
           optionsAlteration={optionsAlteration}
