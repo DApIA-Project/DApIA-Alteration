@@ -9,9 +9,17 @@
   padding: 8px 16px;
   margin-right: 4px;
   cursor: pointer;
-
   display: flex;
   pointer-events: all;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tab.selected {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .li {
@@ -60,4 +68,13 @@
 
 .tab.selected > .tabCloseButton:hover {
   background-color: #999;
+}
+
+.input.selected {
+  color: white;
+  border-radius: 4px 4px 0 0;
+  display: flex;
+  border: none;
+  outline: none;
+  background-color: transparent;
 }

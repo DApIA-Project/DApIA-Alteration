@@ -61,6 +61,11 @@ const ScenarioEditor: React.FunctionComponent<ScenarioEditorProps> = ({
   )
   const scenario = scenarios[selectedScenario]
 
+  async function fetchScenarios() {
+    const listScenario = await Client.listScenario()
+    setScenariosSaved(listScenario)
+  }
+
   useEffect(() => {
     window.localStorage.setItem('scenarios', JSON.stringify(scenarios))
   }, [scenarios, selectedScenario])
@@ -71,25 +76,23 @@ const ScenarioEditor: React.FunctionComponent<ScenarioEditorProps> = ({
   })
 
   useEffect(() => {
-    async function fetchScenarios() {
-      const listScenario = await Client.listScenario()
-      setScenariosSaved(listScenario)
-    }
-
-    fetchScenarios()
+    fetchScenarios().catch((e) => {
+      console.error('Erreur lors de la récupération des scénarios :', e)
+    })
   }, [])
 
   /*
   const [isSquareVisible, setIsSquareVisible] = useState<boolean>(false)
 
-  const handleSquareClose = () => {
+  const handleSquareClose = async () => {
     setIsSquareVisible(false)
+    await fetchScenarios()
   }
 
   const handleSquareOpen = () => {
     setIsSquareVisible(true)
-  }*/
-
+  }
+*/
   function handleOnAdd() {
     unstable_batchedUpdates(() => {
       const newScenarios = scenarios.slice()
@@ -145,9 +148,9 @@ const ScenarioEditor: React.FunctionComponent<ScenarioEditorProps> = ({
           onClick={handleSquareOpen}
           className='saveScenarioButton'
         />
-        {isSquareVisible && <FloatingSquare onClose={handleSquareClose} scenarios={scenarios} optionsAlteration={optionsAlteration}/>}
+        {isSquareVisible && <FloatingSquare onClose={handleSquareClose} scenarios={scenarios} optionsAlteration={optionsAlteration} selectedScenario={selectedScenario}/>}
       </div>
-      */}
+*/}
 
       <ScenarioList
         scenarios={scenariosSaved || null}

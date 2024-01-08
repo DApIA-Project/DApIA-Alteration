@@ -6,12 +6,14 @@ import Client from '../../../../Client'
 import { unstable_batchedUpdates } from 'react-dom'
 interface FloatingSquareProps {
   scenarios: string[]
+  selectedScenario: number
   optionsAlteration: OptionsAlteration
   onClose: () => void
 }
 
 const FloatingSquare: React.FunctionComponent<FloatingSquareProps> = ({
   scenarios,
+  selectedScenario,
   optionsAlteration,
   onClose,
 }) => {
@@ -23,13 +25,15 @@ const FloatingSquare: React.FunctionComponent<FloatingSquareProps> = ({
     setScenarioName(event.target.value)
   }
   function onSaveScenario() {
-    Client.createScenario(scenarioName, scenarios[0], optionsAlteration).then(
-      (response) => {
-        unstable_batchedUpdates(() => {
-          console.log(response)
-        })
-      }
-    )
+    Client.createScenario(
+      scenarioName,
+      scenarios[selectedScenario],
+      optionsAlteration
+    ).then((response) => {
+      unstable_batchedUpdates(() => {
+        console.log(response)
+      })
+    })
 
     onClose()
   }
@@ -45,7 +49,12 @@ const FloatingSquare: React.FunctionComponent<FloatingSquareProps> = ({
         </div>
         <div className={'textAreaText'}>
           <label>Scenario's text :</label>{' '}
-          <textarea name={'text'} value={scenarios[0]} rows={5} cols={22} />
+          <textarea
+            name={'text'}
+            value={scenarios[selectedScenario]}
+            rows={5}
+            cols={22}
+          />
         </div>
         <div className={'optionsAlteration'}>
           <label>Options :</label> Labeling :{' '}

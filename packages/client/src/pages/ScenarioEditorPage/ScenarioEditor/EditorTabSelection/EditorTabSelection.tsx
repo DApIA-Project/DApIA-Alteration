@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef, useState } from 'react'
 import './EditorTabSelection.css'
 import Button from '../../../../components/ui/Button/Button'
 
@@ -22,7 +22,35 @@ const EditorTabSelection: React.FunctionComponent<EditorTabSelectionProps> = ({
   tabsLength,
   selected,
 }) => {
-  const tabs = Array.from({ length: tabsLength }, () => null)
+  const [tabs, setTabs] = useState(() =>
+    Array.from({ length: tabsLength }, (_, index) => `New scenario`)
+  )
+  const [editableText, setEditableText] = useState<string>(tabs[selected])
+  const [isUpdateName, setIsUpdateName] = useState<boolean>(false)
+  const handleTabClick = (index: number) => {
+    if (selected === index) {
+      setIsUpdateName(true)
+    } else {
+      onSelect(index)
+      setEditableText(tabs[index])
+      setIsUpdateName(false)
+    }
+  }
+
+  const handleTextChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setEditableText(event.target.value)
+  }
+
+  const handleTextBlur = (index: number) => {
+    console.log(isUpdateName)
+    setIsUpdateName(false)
+    console.log(isUpdateName)
+    setTabs((prevTabs) => {
+      const newTabs = [...prevTabs]
+      newTabs[index] = editableText
+      return newTabs
+    })
+  }
 
   return (
     <>
@@ -33,11 +61,22 @@ const EditorTabSelection: React.FunctionComponent<EditorTabSelectionProps> = ({
             className={`li ${index === selected ? 'selected' : ''}`}
           >
             <div
-              onClick={() => onSelect(index)}
+              onClick={(event) => handleTabClick(index)}
               role='button'
               className={`tab ${index === selected ? 'selected' : ''}`}
             >
-              {`Tab ${index + 1}`}
+              {editableText !== null && selected === index && isUpdateName ? (
+                <input
+                  autoFocus={true}
+                  type='text'
+                  value={editableText}
+                  onChange={handleTextChange}
+                  onBlur={() => handleTextBlur(index)}
+                  className={`input ${index === selected ? 'selected' : ''}`}
+                />
+              ) : (
+                'New scenario'
+              )}
             </div>
             {tabs.length > 1 && (
               <Button
