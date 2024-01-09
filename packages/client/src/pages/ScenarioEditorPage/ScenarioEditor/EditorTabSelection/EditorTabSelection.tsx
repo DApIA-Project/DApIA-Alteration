@@ -1,6 +1,9 @@
 import React, { useState } from 'react'
 import './EditorTabSelection.css'
 import Button from '../../../../components/ui/Button/Button'
+import Client from '../../../../Client'
+import { unstable_batchedUpdates } from 'react-dom'
+import { OptionsAlteration } from '@smartesting/shared/dist/models'
 
 export enum EditorTabSelectionTestIds {
   ADD_BUTTON = 'AddTabButton',
@@ -9,26 +12,43 @@ export enum EditorTabSelectionTestIds {
 }
 
 type EditorTabSelectionProps = {
-  tabsLength: number
+  scenarios: string[]
   selected: number
+  optionsAlteration: OptionsAlteration
   onSelect: (index: number) => void
   onRemove: (index: number) => void
   onAdd: () => void
+  onEditorUpdate: () => void
 }
 
 const EditorTabSelection: React.FunctionComponent<EditorTabSelectionProps> = ({
   onSelect,
   onRemove,
   onAdd,
-  tabsLength,
+  onEditorUpdate,
+  scenarios,
   selected,
+  optionsAlteration,
 }) => {
+  const tabsLength: number = scenarios.length === 0 ? 1 : scenarios.length
   const [tabs, setTabs] = useState(() =>
     Array.from({ length: tabsLength }, (_, index) => `New scenario`)
   )
 
   const [editableText, setEditableText] = useState<string>(tabs[selected])
   const [isUpdateName, setIsUpdateName] = useState<boolean>(false)
+
+  function onSaveScenario(scenarioName: string) {
+    Client.createScenario(
+      scenarioName,
+      scenarios[selected],
+      optionsAlteration
+    ).then((response) => {
+      unstable_batchedUpdates(() => {
+        console.log(response)
+      })
+    })
+  }
 
   const handleTabClick = (index: number) => {
     if (selected === index) {
@@ -46,11 +66,13 @@ const EditorTabSelection: React.FunctionComponent<EditorTabSelectionProps> = ({
 
   const handleTextBlur = (index: number) => {
     setIsUpdateName(false)
+    onSaveScenario(editableText)
     setTabs((prevTabs) => {
       const newTabs = [...prevTabs]
       newTabs[index] = editableText
       return newTabs
     })
+    onEditorUpdate()
   }
 
   const removeTabAtIndex = (indexToRemove: number) => {

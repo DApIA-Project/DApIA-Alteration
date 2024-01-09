@@ -11,9 +11,6 @@ import { ScenarioOptions } from './ScenarioOptions/ScenarioOptions'
 import { RecordInputFiles } from './RecordInputFiles/RecordInputFiles'
 import EditorTabSelection from './EditorTabSelection/EditorTabSelection'
 import { unstable_batchedUpdates } from 'react-dom'
-import IconButton from '../../../components/ui/Button/IconButton/IconButton'
-import FloatingSquare from './FloatingSquare/FloatingSquare'
-import StarBorderIcon from '@mui/icons-material/StarBorder'
 import {
   ListScenarioError,
   ListScenarioResponse,
@@ -82,18 +79,11 @@ const ScenarioEditor: React.FunctionComponent<ScenarioEditorProps> = ({
     })
   }, [])
 
-  /*
-  const [isSquareVisible, setIsSquareVisible] = useState<boolean>(false)
-
-  const handleSquareClose = async () => {
-    setIsSquareVisible(false)
-    await fetchScenarios()
+  const handleScenarioNameUpdate = () => {
+    fetchScenarios().catch((e) => {
+      console.error('Erreur lors de la récupération des scénarios :', e)
+    })
   }
-
-  const handleSquareOpen = () => {
-    setIsSquareVisible(true)
-  }
-*/
   function handleOnAdd() {
     unstable_batchedUpdates(() => {
       const newScenarios = scenarios.slice()
@@ -126,11 +116,13 @@ const ScenarioEditor: React.FunctionComponent<ScenarioEditorProps> = ({
     >
       <div className={'selectionEditor'}>
         <EditorTabSelection
-          tabsLength={scenarios.length === 0 ? 1 : scenarios.length}
+          scenarios={scenarios}
           selected={selectedScenario}
+          optionsAlteration={optionsAlteration}
           onSelect={setSelectedScenario}
           onAdd={handleOnAdd}
           onRemove={handleOnDelete}
+          onEditorUpdate={handleScenarioNameUpdate}
         />
       </div>
       <div id={'monaco-editor-root'} className={'alterationeditor'}>
@@ -140,19 +132,6 @@ const ScenarioEditor: React.FunctionComponent<ScenarioEditorProps> = ({
           onChange={handleOnChange}
         />
       </div>
-      {/*
-      <div className={'divSaveScenarioButton'}>
-        <IconButton
-          data-testid={SaveScenarioButtonTestIds.COMPONENT}
-          text={''}
-          icon={<StarBorderIcon fontSize='medium'/>}
-          onClick={handleSquareOpen}
-          className='saveScenarioButton'
-        />
-        {isSquareVisible && <FloatingSquare onClose={handleSquareClose} scenarios={scenarios} optionsAlteration={optionsAlteration} selectedScenario={selectedScenario}/>}
-      </div>
-*/}
-
       <ScenarioList
         scenarios={scenariosSaved || null}
         onClick={handleOnChange}

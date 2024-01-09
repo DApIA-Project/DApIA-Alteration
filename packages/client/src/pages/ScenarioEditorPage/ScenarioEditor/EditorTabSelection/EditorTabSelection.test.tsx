@@ -4,8 +4,17 @@ import EditorTabSelection, {
 } from './EditorTabSelection'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { OptionsAlteration } from '@smartesting/shared/dist/models'
 
 describe('EditorTabSelection', () => {
+  let options: OptionsAlteration = {
+    haveLabel: false,
+    haveDisableAltitude: false,
+    haveDisableLongitude: false,
+    haveNoise: false,
+    haveRealism: false,
+    haveDisableLatitude: false,
+  }
   beforeEach(() => {
     // Reset local storage before each test to isolate the tests
     localStorage.clear()
@@ -18,7 +27,9 @@ describe('EditorTabSelection', () => {
         onAdd={() => {}}
         onRemove={() => {}}
         selected={0}
-        tabsLength={1}
+        scenarios={['hide all_planes at 6 seconds']}
+        optionsAlteration={options}
+        onEditorUpdate={() => {}}
       />
     )
     const tab1 = screen.getByText('New scenario')
@@ -33,7 +44,9 @@ describe('EditorTabSelection', () => {
         onAdd={onAddItemMock}
         onRemove={() => {}}
         selected={0}
-        tabsLength={1}
+        scenarios={['hide all_planes at 6 seconds']}
+        optionsAlteration={options}
+        onEditorUpdate={() => {}}
       />
     )
     const addButton = screen.getByTestId(EditorTabSelectionTestIds.ADD_BUTTON)
@@ -49,7 +62,9 @@ describe('EditorTabSelection', () => {
         onAdd={onAddItemMock}
         onRemove={() => {}}
         selected={0}
-        tabsLength={1}
+        scenarios={['hide all_planes at 6 seconds']}
+        optionsAlteration={options}
+        onEditorUpdate={() => {}}
       />
     )
     const addButton = screen.getByTestId(EditorTabSelectionTestIds.ADD_BUTTON)
@@ -67,7 +82,13 @@ describe('EditorTabSelection', () => {
         onAdd={() => {}}
         onRemove={onRemoveItemMock}
         selected={0}
-        tabsLength={3}
+        scenarios={[
+          'hide all_planes at 6 seconds',
+          'cut all_planes at 18 seconds',
+          'hide all_planes at 652 seconds',
+        ]}
+        optionsAlteration={options}
+        onEditorUpdate={() => {}}
       />
     )
 
@@ -93,7 +114,20 @@ describe('EditorTabSelection', () => {
         onAdd={onAddItemMock}
         onRemove={() => {}}
         selected={0}
-        tabsLength={10}
+        scenarios={[
+          'hide all_planes at 60 seconds',
+          'hide all_planes at 61 seconds',
+          'hide all_planes at 62 seconds',
+          'hide all_planes at 63 seconds',
+          'hide all_planes at 64 seconds',
+          'hide all_planes at 65 seconds',
+          'hide all_planes at 66 seconds',
+          'hide all_planes at 67 seconds',
+          'hide all_planes at 68 seconds',
+          'hide all_planes at 69 seconds',
+        ]}
+        optionsAlteration={options}
+        onEditorUpdate={() => {}}
       />
     )
     const addButton = screen.getByTestId(EditorTabSelectionTestIds.ADD_BUTTON)
@@ -112,7 +146,14 @@ describe('EditorTabSelection', () => {
         onAdd={() => {}}
         onRemove={() => {}}
         selected={0}
-        tabsLength={4}
+        scenarios={[
+          'hide all_planes at 6 seconds',
+          'hide all_planes at 61 seconds',
+          'hide all_planes at 62 seconds',
+          'hide all_planes at 63 seconds',
+        ]}
+        optionsAlteration={options}
+        onEditorUpdate={() => {}}
       />
     )
 
