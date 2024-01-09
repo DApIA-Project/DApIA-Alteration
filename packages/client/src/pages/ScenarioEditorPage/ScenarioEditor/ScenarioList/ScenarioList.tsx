@@ -18,14 +18,19 @@ const ScenarioList: React.FunctionComponent<ScenarioListProps> = ({
   return (
     <div className={'divListScenario'}>
       {scenarios &&
-        scenarios.scenarios?.map((scenario, index) => (
-          <Button
-            key={index}
-            text={scenario.name}
-            onClick={() => onClick(scenario.text)}
-            data-testid={ScenarioListTestIds.BUTTON}
-          />
-        ))}
+        scenarios.scenarios &&
+        [...scenarios.scenarios]
+          .sort((scenarioA, scenarioB) =>
+            scenarioA.name.localeCompare(scenarioB.name)
+          )
+          .map((scenario, index) => (
+            <Button
+              key={index}
+              text={scenario.name}
+              onClick={() => onClick(scenario.text)}
+              data-testid={ScenarioListTestIds.BUTTON}
+            />
+          ))}
     </div>
   )
 }
