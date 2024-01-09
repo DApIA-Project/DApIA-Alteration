@@ -56,6 +56,7 @@ const ScenarioEditor: React.FunctionComponent<ScenarioEditorProps> = ({
     }
   )
   const [selectedScenario, setSelectedScenario] = useState(0)
+  const [lastRemovedTab, setLastRemovedTab] = useState<number | null>(null)
   const [scenarios, setScenarios] = useState<string[]>(
     JSON.parse(window.localStorage.getItem('scenarios') || '[]')
   )

@@ -21,7 +21,7 @@ describe('EditorTabSelection', () => {
         tabsLength={1}
       />
     )
-    const tab1 = screen.getByText('Tab 1')
+    const tab1 = screen.getByText('New scenario')
     expect(tab1).toBeInTheDocument()
   })
 
@@ -116,16 +116,20 @@ describe('EditorTabSelection', () => {
       />
     )
 
-    const tab3 = screen.getByText('Tab 3')
-    await userEvent.click(tab3)
+    const tab3 = await screen.findAllByTestId(
+      EditorTabSelectionTestIds.DIV_TAB + '-2'
+    )
+    await userEvent.click(tab3[0])
 
     // Check if the setSelectedItem function was called with the correct argument
     expect(setSelectedItemMock).toHaveBeenCalledTimes(1)
     expect(setSelectedItemMock).toHaveBeenCalledWith(2)
 
     // Select a different tab
-    const tab2 = screen.getByText('Tab 2')
-    await userEvent.click(tab2)
+    const tab2 = await screen.findAllByTestId(
+      EditorTabSelectionTestIds.DIV_TAB + '-1'
+    )
+    await userEvent.click(tab2[0])
 
     // Check if the setSelectedItem function was called with the correct argument
     expect(setSelectedItemMock).toHaveBeenCalledTimes(2)

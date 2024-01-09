@@ -1,10 +1,11 @@
-import React, { useRef, useState } from 'react'
+import React, { useState } from 'react'
 import './EditorTabSelection.css'
 import Button from '../../../../components/ui/Button/Button'
 
 export enum EditorTabSelectionTestIds {
   ADD_BUTTON = 'AddTabButton',
   REMOVE_BUTTON = 'RemoveTabButton',
+  DIV_TAB = 'DivTab',
 }
 
 type EditorTabSelectionProps = {
@@ -25,8 +26,10 @@ const EditorTabSelection: React.FunctionComponent<EditorTabSelectionProps> = ({
   const [tabs, setTabs] = useState(() =>
     Array.from({ length: tabsLength }, (_, index) => `New scenario`)
   )
+
   const [editableText, setEditableText] = useState<string>(tabs[selected])
   const [isUpdateName, setIsUpdateName] = useState<boolean>(false)
+
   const handleTabClick = (index: number) => {
     if (selected === index) {
       setIsUpdateName(true)
@@ -42,14 +45,51 @@ const EditorTabSelection: React.FunctionComponent<EditorTabSelectionProps> = ({
   }
 
   const handleTextBlur = (index: number) => {
-    console.log(isUpdateName)
     setIsUpdateName(false)
-    console.log(isUpdateName)
     setTabs((prevTabs) => {
       const newTabs = [...prevTabs]
       newTabs[index] = editableText
       return newTabs
     })
+  }
+
+  const removeTabAtIndex = (indexToRemove: number) => {
+    setTabs((prevTabs) => {
+      return [
+        ...prevTabs.slice(0, indexToRemove),
+        ...prevTabs.slice(indexToRemove + 1),
+      ]
+    })
+  }
+
+  const addTab = () => {
+    setTabs((prevTabs) => {
+      return [...prevTabs, 'New scenario']
+    })
+  }
+
+  const handleAdd = () => {
+    setEditableText('New scenario')
+    addTab()
+    onAdd()
+  }
+
+  const handleTabClose = (index: number) => {
+    removeTabAtIndex(index)
+    if (index !== 0) {
+      setEditableText(tabs[index - 1])
+    }
+
+    onRemove(index)
+  }
+
+  const handleTabClickMol = (
+    index: number,
+    event: React.MouseEvent<HTMLDivElement>
+  ) => {
+    if (event.button === 1 && tabsLength > 1) {
+      handleTabClose(index)
+    }
   }
 
   return (
@@ -61,7 +101,9 @@ const EditorTabSelection: React.FunctionComponent<EditorTabSelectionProps> = ({
             className={`li ${index === selected ? 'selected' : ''}`}
           >
             <div
+              data-testid={`${EditorTabSelectionTestIds.DIV_TAB}-${index}`}
               onClick={(event) => handleTabClick(index)}
+              onAuxClick={(event) => handleTabClickMol(index, event)}
               role='button'
               className={`tab ${index === selected ? 'selected' : ''}`}
             >
@@ -75,14 +117,14 @@ const EditorTabSelection: React.FunctionComponent<EditorTabSelectionProps> = ({
                   className={`input ${index === selected ? 'selected' : ''}`}
                 />
               ) : (
-                'New scenario'
+                tabs[index]
               )}
             </div>
             {tabs.length > 1 && (
               <Button
                 data-testid={`${EditorTabSelectionTestIds.REMOVE_BUTTON}-${index}`}
                 text={'x'}
-                onClick={() => onRemove(index)}
+                onClick={() => handleTabClose(index)}
                 className={'tabCloseButton'}
               />
             )}
@@ -93,7 +135,7 @@ const EditorTabSelection: React.FunctionComponent<EditorTabSelectionProps> = ({
         <Button
           data-testid={EditorTabSelectionTestIds.ADD_BUTTON}
           text={'+'}
-          onClick={() => onAdd()}
+          onClick={() => handleAdd()}
           className={'addTabButton'}
           disabled={tabsLength >= 10}
         />
