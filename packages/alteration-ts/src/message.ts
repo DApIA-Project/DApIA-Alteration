@@ -7,6 +7,7 @@ export function parse(recording: string): Message[] {
 									.filter(notEmpty);
 }
 
+
 function parseOne(msg: string) : Message | null {
 	let fields = msg.split(',');
 	let extra_fields = fields.length > 22 ? JSON.parse(fields.slice(22).join(",")) : {};
@@ -40,7 +41,7 @@ function validate(msg: Message): Message | null {
 	if( isNaN(msg.transmissionType)
 	 || isNaN(msg.sessionID)
 	 || isNaN(msg.aircraftID)
-	 || msg.hexIdent.match(/[A-F0-9]{6}/) == null
+	 || msg.hexIdent.match(/[A-F0-9]{6}/i) == null
 	 || isNaN(msg.flightID)
 	 || isNaN(msg.timestampGenerated)
 	 || isNaN(msg.timestampLogged)

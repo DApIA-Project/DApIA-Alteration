@@ -36,6 +36,7 @@ export type Message = {
 	emergency?: 				boolean, 
 	spi?: 							boolean,
 	onGround?: 					boolean,
+
 }
 
 

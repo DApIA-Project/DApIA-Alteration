@@ -22,7 +22,7 @@ type Config_1 = {
 }
 
 
-type Config_2 = { scope: Scope, modifications: Modification[] }
+type Config_2 = { scope: Scope, modifications: readonly Modification[] }
 
 export function alteration(config: XOR<Config_1, Config_2>) {
 	const mods: Modification[] = "modifications" in config ?
@@ -36,10 +36,15 @@ export function alteration(config: XOR<Config_1, Config_2>) {
 		},
 
 		apply: function(msg: Message, idx: number): Message {
-			let new_msg = msg;
+			let new_msg = {...msg};
 
 			for(let mod of mods) {
 				const {property, value, mode} = mod;
+
+				if(mode != AlterationMode.REPLACE && !msg[property]) {
+					break;
+				}
+
 				switch (mode) {
 					case AlterationMode.REPLACE : 
 						new_msg[property] = value;

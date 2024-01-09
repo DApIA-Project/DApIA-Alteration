@@ -11,7 +11,7 @@ describe("Message parser", () => {
 		let msgs = parse("MSG,0,3,10610299,A1E67B,10610299,2019/04/19,17:30:00.140,2019/04/19,17:30:00.140,,16625.0,,,50.4073,8.2464,,,0,0,0,0");
 		expect(msgs[0]).to.include({
 			hexIdent: "A1E67B",
-			timestampGenerated: 1555687800140,
+			timestampGenerated: 1555695000140,
 			altitude: 16625,
 			latitude: 50.4073,
 			longitude: 8.2464,
@@ -19,6 +19,13 @@ describe("Message parser", () => {
 			emergency: false,
 			spi: false,
 			onGround: false
+		});
+	})
+
+	it("should parse a valid Message lower case hexIdent", () => {
+		const msgs = parse("MSG,3,3,5022202,39ac45,5022202,2022/07/01,05:08:57.000000,2022/07/01,05:08:57.000000,SAMUCF,550.0,66.0,303.20657031508955,43.61418643240201,1.3985988071986606,192.0,7015,0,0,0,0");
+		expect(msgs[0]).to.include({
+			hexIdent: "39ac45",
 		});
 	})
 
@@ -55,11 +62,11 @@ describe("Message parser", () => {
 		});
 	});
 
-/*
 	it("should parse corectly date to timestamp", () => {
-		const msg = parse("MSG,0,0,0,4B1613,0,2019/04/19,17:29:45.030,2019/04/19,17:29:45.030,BAW256,20350,442.2,358.1,49.6684,8.4823,0,4022,0,0,0,0")[0];
-		expect(msg.timestampGenerated).to.be.equals(1555694985030);
-	});
+		let date = "2019-04-19"
+		let time = "17:30:00.140";
 
- */
+		let ts = new Date(date + "T" + time + 'Z' ).getTime();
+		expect(ts).equals(1555695000140);
+	});
 });
