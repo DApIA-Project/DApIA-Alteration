@@ -9,14 +9,11 @@ import {
 } from './GenerateAlterationButton/GenerateAlterationButton'
 import { ScenarioOptions } from './ScenarioOptions/ScenarioOptions'
 import { RecordInputFiles } from './RecordInputFiles/RecordInputFiles'
-import EditorTabSelection from './EditorTabSelection/EditorTabSelection'
+import EditorTabList from './EditorTabList/EditorTabList'
 import { unstable_batchedUpdates } from 'react-dom'
-import {
-  ListScenarioError,
-  ListScenarioResponse,
-} from '@smartesting/shared/dist/responses/listScenario'
 import Client from '../../../Client'
 import ScenarioList from './ScenarioList/ScenarioList'
+import { Scenario } from '@smartesting/shared/dist/models/Scenario'
 
 export enum ScenarioEditorTestIds {
   COMPONENT = 'ScenarioEditor',
@@ -53,60 +50,62 @@ const ScenarioEditor: React.FunctionComponent<ScenarioEditorProps> = ({
     }
   )
   const [selectedScenario, setSelectedScenario] = useState(0)
-  const [lastRemovedTab, setLastRemovedTab] = useState<number | null>(null)
-  const [scenarios, setScenarios] = useState<string[]>(
-    JSON.parse(window.localStorage.getItem('scenarios') || '[]')
+  const [openedScenarios, setOpenedScenarios] = useState<string[]>([])
+  const [savedScenarios, setSavedScenarios] = useState<ReadonlyArray<Scenario>>(
+    []
   )
-  const scenario = scenarios[selectedScenario]
-
-  async function fetchScenarios() {
-    const listScenario = await Client.listScenario()
-    setScenariosSaved(listScenario)
-  }
+  const scenario = openedScenarios[selectedScenario]
 
   useEffect(() => {
-    window.localStorage.setItem('scenarios', JSON.stringify(scenarios))
-  }, [scenarios, selectedScenario])
-
-  const [scenariosSaved, setScenariosSaved] = useState<ListScenarioResponse>({
-    scenarios: null,
-    error: ListScenarioError.emptyListScenario,
-  })
-
-  useEffect(() => {
-    fetchScenarios().catch((e) => {
-      console.error('Erreur lors de la récupération des scénarios :', e)
-    })
+    Client.listScenario()
+      .then(({ scenarios, error }) => {
+        if (error)
+          return console.error(
+            `Erreur lors de la récupération des scénarios : ${error}`
+          )
+        setSavedScenarios(scenarios ?? [])
+      })
+      .catch((e) => {
+        console.error('Erreur lors de la récupération des scénarios :', e)
+      })
   }, [])
 
-  const handleScenarioNameUpdate = () => {
-    fetchScenarios().catch((e) => {
-      console.error('Erreur lors de la récupération des scénarios :', e)
+  const handleScenarioNameUpdate = () => {}
+
+  function updateScenario(scenario: Scenario) {
+    Client.updateScenario(
+      scenario.id,
+      scenario.name,
+      scenario.text,
+      scenario.options
+    ).then(({ scenario, error }) => {
+      if (error) return
     })
   }
+
   function handleOnAdd() {
     unstable_batchedUpdates(() => {
-      const newScenarios = scenarios.slice()
-      setSelectedScenario(newScenarios.length)
-      newScenarios.push('')
-      setScenarios(newScenarios)
+      let newScenarios = openedScenarios.slice()
+      newScenarios.push('New scenario')
+      setOpenedScenarios(newScenarios)
+      setSelectedScenario(newScenarios.length - 1)
     })
   }
 
   function handleOnDelete(index: number) {
-    const newScenarios = scenarios.slice()
+    const newScenarios = openedScenarios.slice()
     newScenarios.splice(index, 1)
 
     if (selectedScenario >= newScenarios.length) {
       setSelectedScenario(newScenarios.length - 1)
     }
-    setScenarios(newScenarios)
+    setOpenedScenarios(newScenarios)
   }
 
   function handleOnChange(newScenario: string) {
-    const newScenarios = scenarios.slice()
+    const newScenarios = openedScenarios.slice()
     newScenarios[selectedScenario] = newScenario
-    setScenarios(newScenarios)
+    setOpenedScenarios(newScenarios)
   }
 
   return (
@@ -115,14 +114,13 @@ const ScenarioEditor: React.FunctionComponent<ScenarioEditorProps> = ({
       data-testid={ScenarioEditorTestIds.COMPONENT}
     >
       <div className={'selectionEditor'}>
-        <EditorTabSelection
-          scenarios={scenarios}
+        <EditorTabList
+          tabs={openedScenarios}
           selected={selectedScenario}
-          optionsAlteration={optionsAlteration}
           onSelect={setSelectedScenario}
           onAdd={handleOnAdd}
-          onRemove={handleOnDelete}
-          onEditorUpdate={handleScenarioNameUpdate}
+          onChange={handleScenarioNameUpdate}
+          onClose={handleOnDelete}
         />
       </div>
       <div id={'monaco-editor-root'} className={'alterationeditor'}>
@@ -133,7 +131,7 @@ const ScenarioEditor: React.FunctionComponent<ScenarioEditorProps> = ({
         />
       </div>
       <ScenarioList
-        scenarios={scenariosSaved || null}
+        scenarios={savedScenarios || null}
         onClick={handleOnChange}
       />
 

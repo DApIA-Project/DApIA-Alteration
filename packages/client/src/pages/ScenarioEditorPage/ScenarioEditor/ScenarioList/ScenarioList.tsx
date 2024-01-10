@@ -1,13 +1,13 @@
 import React from 'react'
-import { ListScenarioResponse } from '@smartesting/shared/dist/responses/listScenario'
 import Button from '../../../../components/ui/Button/Button'
 import './ScenarioList.css'
+import { Scenario } from '@smartesting/shared/dist/models/Scenario'
 export enum ScenarioListTestIds {
   BUTTON = 'ScenarioList.button',
 }
 
 type ScenarioListProps = {
-  scenarios: ListScenarioResponse
+  scenarios: ReadonlyArray<Scenario>
   onClick: (text: string) => void
 }
 
@@ -18,8 +18,7 @@ const ScenarioList: React.FunctionComponent<ScenarioListProps> = ({
   return (
     <div className={'divListScenario'}>
       {scenarios &&
-        scenarios.scenarios &&
-        [...scenarios.scenarios]
+        [...scenarios]
           .sort((scenarioA, scenarioB) =>
             scenarioA.name.localeCompare(scenarioB.name)
           )

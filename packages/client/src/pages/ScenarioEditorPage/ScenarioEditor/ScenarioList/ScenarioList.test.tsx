@@ -44,30 +44,24 @@ let scenarioB: Scenario = {
 let listScenario: Scenario[] = []
 listScenario.push(scenarioA)
 listScenario.push(scenarioB)
-const mockScenarios: ListScenarioResponse = {
-  scenarios: listScenario,
-  error: null,
-}
+const mockScenarios: Scenario[] = listScenario
 
-const mockScenariosEmpty: ListScenarioResponse = {
-  scenarios: null,
-  error: ListScenarioError.emptyListScenario,
-}
+const mockScenariosEmpty: Scenario[] = []
 
 describe('ScenarioList', () => {
   it('show scenario list', async () => {
     render(<ScenarioList scenarios={mockScenarios} onClick={mockOnClick} />)
     const scenarioButtons = screen.getAllByRole('button')
-    expect(scenarioButtons).toHaveLength(mockScenarios.scenarios!.length)
+    expect(scenarioButtons).toHaveLength(mockScenarios!.length)
   })
 
   it('click on button of scenario', async () => {
     render(<ScenarioList scenarios={mockScenarios} onClick={mockOnClick} />)
     const scenarioButtons = screen.getAllByRole('button')
     await userEvent.click(scenarioButtons[0])
-    expect(mockOnClick).toHaveBeenCalledWith(mockScenarios.scenarios![0].text)
+    expect(mockOnClick).toHaveBeenCalledWith(mockScenarios![0].text)
     await userEvent.click(scenarioButtons[1])
-    expect(mockOnClick).toHaveBeenCalledWith(mockScenarios.scenarios![1].text)
+    expect(mockOnClick).toHaveBeenCalledWith(mockScenarios![1].text)
   })
 
   it('scenario list empty', async () => {
