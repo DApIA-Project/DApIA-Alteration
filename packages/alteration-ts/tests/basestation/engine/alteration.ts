@@ -21,7 +21,7 @@ describe("Alteration engine", () => {
 
 
 	it("should replace latitude with time window", () => {
-		const start_date = 1555687785200;
+		const start_date = 1555694985200;
 		const msg = parse("MSG,0,0,0,4B1613,0,2019/04/19,17:29:45.200,2019/04/19,17:29:45.200,BAW256,20350,442.2,358.1,49.6684,8.4823,0,4022,0,0,0,0")[0];
 		const expected = [{ ...msg, latitude: 1.1 }];
 
@@ -38,7 +38,7 @@ describe("Alteration engine", () => {
 
 
 	it("sould replace latitude with time window and extra field", () => {
-		const start_date = 1555687785200;
+		const start_date = 1555694985200;
 		const msg = parse("MSG,0,0,0,4B1613,0,2019/04/19,17:29:45.200,2019/04/19,17:29:45.200,BAW256,20350,442.2,358.1,123.1,8.4823,0,4022,0,0,0,0,{\"baroaltitude\":\"-45.72\",\"last_position\":\"1672575670.76\",\"lastcontact\":\"1672575670.797\",\"hour\":\"1672574400\"}")[0];
 
 		const expected : Message[] = [{
@@ -63,7 +63,7 @@ describe("Alteration engine", () => {
 
 
 	it("should replace longitude with upper time limite", () => {
-		const start_date = 1555687785200;
+		const start_date = 1555694985200;
 		const msg = parse("MSG,0,0,0,4B1613,0,2019/04/19,17:29:45.200,2019/04/19,17:29:45.200,BAW256,20350,442.2,358.1,49.6684,8.4823,0,4022,0,0,0,0")[0];
 		const expected = [{ ...msg, longitude: 10.7}];
 
