@@ -16,6 +16,10 @@ import {
 } from '@smartesting/shared/dist/responses/listScenario'
 import { Scenario } from '@smartesting/shared/dist/models/Scenario'
 import { ScenarioListTestIds } from './ScenarioList/ScenarioList'
+import { EditorTabTestIds } from './EditorTabList/EditorTab/EditorTab'
+import EditorTabList, {
+  EditorTabListTestIds,
+} from './EditorTabList/EditorTabList'
 
 jest.mock('../../../Client')
 //jest.mock('./ScenarioList/ScenarioList')
@@ -193,6 +197,82 @@ describe('ScenarioEditor', () => {
       )
       expect(scenarioButtons).toHaveLength(mockScenarios.scenarios!.length)
     })
+  })
+
+  it('remove one tab middle', async () => {
+    let scenarioA: Scenario = {
+      name: 'Scenario 1',
+      text: 'Texte du scenario 1',
+      options: {
+        haveLabel: false,
+        haveNoise: false,
+        haveRealism: false,
+        haveDisableAltitude: false,
+        haveDisableLatitude: false,
+        haveDisableLongitude: false,
+      },
+      id: '1',
+      create_at: new Date(),
+      update_at: new Date(),
+    }
+    let scenarioB: Scenario = {
+      name: 'Scenario 2',
+      text: 'Texte du scenario 2',
+      options: {
+        haveLabel: false,
+        haveNoise: false,
+        haveRealism: false,
+        haveDisableAltitude: false,
+        haveDisableLatitude: false,
+        haveDisableLongitude: false,
+      },
+      id: '2',
+      create_at: new Date(),
+      update_at: new Date(),
+    }
+    let scenarioC: Scenario = {
+      name: 'Scenario 3',
+      text: 'Texte du scenario 3',
+      options: {
+        haveLabel: false,
+        haveNoise: false,
+        haveRealism: false,
+        haveDisableAltitude: false,
+        haveDisableLatitude: false,
+        haveDisableLongitude: false,
+      },
+      id: '3',
+      create_at: new Date(),
+      update_at: new Date(),
+    }
+
+    let listScenario: Scenario[] = []
+    listScenario.push(scenarioA)
+    listScenario.push(scenarioB)
+    const mockScenarios: ListScenarioResponse = {
+      scenarios: listScenario,
+      error: null,
+    }
+
+    require('../../../Client').default.listScenario.mockResolvedValue(
+      mockScenarios
+    )
+
+    render(<ScenarioEditor onGenerate={spiedCallback} />)
+
+    await userEvent.click(screen.getByTestId(EditorTabListTestIds.ADD_BUTTON))
+    await userEvent.click(screen.getByTestId(EditorTabTestIds.DIV_TAB + '-0'))
+
+    await userEvent.type(screen.getByRole('input'), scenarioA.name)
+
+    await userEvent.click(screen.getByTestId(EditorTabListTestIds.ADD_BUTTON))
+    await userEvent.click(screen.getByTestId(EditorTabTestIds.DIV_TAB + '-1'))
+
+    await userEvent.type(screen.getByRole('input'), scenarioB.name)
+    await userEvent.click(screen.getByTestId(EditorTabListTestIds.ADD_BUTTON))
+    await userEvent.click(screen.getByTestId(EditorTabTestIds.DIV_TAB + '-2'))
+
+    await userEvent.type(screen.getByRole('input'), scenarioC.name)
   })
   /*
   it('click on scenario on scenario list', async () => {

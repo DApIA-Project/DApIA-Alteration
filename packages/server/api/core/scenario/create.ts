@@ -13,8 +13,8 @@ export default async function create(
   if (name === '')
     return { scenario: null, error: CreateScenarioError.emptyName }
   const text = scenarioAttributes.text.trim()
-  if (text === '')
-    return { scenario: null, error: CreateScenarioError.emptyTextScenario }
+  /*if (text === null)
+    return { scenario: null, error: CreateScenarioError.emptyTextScenario }*/
 
   return {
     scenario: await scenarioManager.createScenario({

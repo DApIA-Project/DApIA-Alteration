@@ -4,6 +4,7 @@ import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { OptionsAlteration } from '@smartesting/shared/dist/models'
 import { EditorTabTestIds } from './EditorTab/EditorTab'
+import { Scenario } from '@smartesting/shared/dist/models/Scenario'
 
 describe('EditorTabList', () => {
   let options: OptionsAlteration = {
@@ -14,20 +15,100 @@ describe('EditorTabList', () => {
     haveRealism: false,
     haveDisableLatitude: false,
   }
+  let scenario: Scenario = {
+    id: 'id1',
+    name: 'New scenario',
+    text: 'hide all_planes at 6 seconds',
+    options: options,
+    update_at: new Date(),
+    create_at: new Date(),
+  }
+  let scenario2: Scenario = {
+    id: 'id2',
+    name: 'New scenario A',
+    text: 'cut all_planes at 6 seconds',
+    options: options,
+    update_at: new Date(),
+    create_at: new Date(),
+  }
+  let scenario3: Scenario = {
+    id: 'id3',
+    name: 'New scenario B',
+    text: 'alter all_planes at 6 seconds',
+    options: options,
+    update_at: new Date(),
+    create_at: new Date(),
+  }
+  let scenario4: Scenario = {
+    id: 'id4',
+    name: 'New scenario C',
+    text: 'alter all_planes at 7 seconds',
+    options: options,
+    update_at: new Date(),
+    create_at: new Date(),
+  }
+  let scenario5: Scenario = {
+    id: 'id5',
+    name: 'New scenario D',
+    text: 'alter all_planes at 8 seconds',
+    options: options,
+    update_at: new Date(),
+    create_at: new Date(),
+  }
+  let scenario6: Scenario = {
+    id: 'id6',
+    name: 'New scenario E',
+    text: 'alter all_planes at 9 seconds',
+    options: options,
+    update_at: new Date(),
+    create_at: new Date(),
+  }
+  let scenario7: Scenario = {
+    id: 'id7',
+    name: 'New scenario F',
+    text: 'alter all_planes at 19 seconds',
+    options: options,
+    update_at: new Date(),
+    create_at: new Date(),
+  }
+  let scenario8: Scenario = {
+    id: 'id8',
+    name: 'New scenario G',
+    text: 'alter all_planes at 20 seconds',
+    options: options,
+    update_at: new Date(),
+    create_at: new Date(),
+  }
+  let scenario9: Scenario = {
+    id: 'id9',
+    name: 'New scenario H',
+    text: 'alter all_planes at 21 seconds',
+    options: options,
+    update_at: new Date(),
+    create_at: new Date(),
+  }
+  let scenario10: Scenario = {
+    id: 'id10',
+    name: 'New scenario I',
+    text: 'alter all_planes at 22 seconds',
+    options: options,
+    update_at: new Date(),
+    create_at: new Date(),
+  }
+
   beforeEach(() => {
     // Reset local storage before each test to isolate the tests
     localStorage.clear()
   })
-  /*
+
   it('renders tab', async () => {
     render(
       <EditorTabList
         onSelect={() => {}}
         onAdd={() => {}}
-        onRemove={() => {}}
+        onClose={() => {}}
         selected={0}
-        scenarios={['hide all_planes at 6 seconds']}
-        optionsAlteration={options}
+        tabs={[scenario]}
         onChange={() => {}}
       />
     )
@@ -41,10 +122,9 @@ describe('EditorTabList', () => {
       <EditorTabList
         onSelect={() => {}}
         onAdd={onAddItemMock}
-        onRemove={() => {}}
+        onClose={() => {}}
         selected={0}
-        scenarios={['hide all_planes at 6 seconds']}
-        optionsAlteration={options}
+        tabs={[scenario]}
         onChange={() => {}}
       />
     )
@@ -59,10 +139,9 @@ describe('EditorTabList', () => {
       <EditorTabList
         onSelect={() => {}}
         onAdd={onAddItemMock}
-        onRemove={() => {}}
+        onClose={() => {}}
         selected={0}
-        scenarios={['hide all_planes at 6 seconds']}
-        optionsAlteration={options}
+        tabs={[scenario]}
         onChange={() => {}}
       />
     )
@@ -79,14 +158,9 @@ describe('EditorTabList', () => {
       <EditorTabList
         onSelect={() => {}}
         onAdd={() => {}}
-        onRemove={onRemoveItemMock}
+        onClose={onRemoveItemMock}
         selected={0}
-        scenarios={[
-          'hide all_planes at 6 seconds',
-          'cut all_planes at 18 seconds',
-          'hide all_planes at 652 seconds',
-        ]}
-        optionsAlteration={options}
+        tabs={[scenario, scenario2, scenario3]}
         onChange={() => {}}
       />
     )
@@ -105,27 +179,47 @@ describe('EditorTabList', () => {
     expect(onRemoveItemMock).lastCalledWith(1)
   })
 
+  it('remove tab middle', async () => {
+    const onRemoveItemMock = jest.fn()
+    render(
+      <EditorTabList
+        onSelect={() => {}}
+        onAdd={() => {}}
+        onClose={onRemoveItemMock}
+        selected={0}
+        tabs={[scenario, scenario2, scenario3]}
+        onChange={() => {}}
+      />
+    )
+
+    // Remove the second tab
+    const closeButton2 = screen.getByTestId(
+      EditorTabTestIds.REMOVE_BUTTON + '-1'
+    )
+    await userEvent.click(closeButton2)
+    expect(onRemoveItemMock).toBeCalledWith(1)
+  })
+
   it('add 11 tabs is not possible', async () => {
     const onAddItemMock = jest.fn()
     render(
       <EditorTabList
         onSelect={() => {}}
         onAdd={onAddItemMock}
-        onRemove={() => {}}
+        onClose={() => {}}
         selected={0}
-        scenarios={[
-          'hide all_planes at 60 seconds',
-          'hide all_planes at 61 seconds',
-          'hide all_planes at 62 seconds',
-          'hide all_planes at 63 seconds',
-          'hide all_planes at 64 seconds',
-          'hide all_planes at 65 seconds',
-          'hide all_planes at 66 seconds',
-          'hide all_planes at 67 seconds',
-          'hide all_planes at 68 seconds',
-          'hide all_planes at 69 seconds',
+        tabs={[
+          scenario,
+          scenario2,
+          scenario3,
+          scenario4,
+          scenario5,
+          scenario6,
+          scenario7,
+          scenario8,
+          scenario9,
+          scenario10,
         ]}
-        optionsAlteration={options}
         onChange={() => {}}
       />
     )
@@ -143,22 +237,14 @@ describe('EditorTabList', () => {
       <EditorTabList
         onSelect={setSelectedItemMock}
         onAdd={() => {}}
-        onRemove={() => {}}
+        onClose={() => {}}
         selected={0}
-        scenarios={[
-          'hide all_planes at 6 seconds',
-          'hide all_planes at 61 seconds',
-          'hide all_planes at 62 seconds',
-          'hide all_planes at 63 seconds',
-        ]}
-        optionsAlteration={options}
+        tabs={[scenario, scenario2, scenario3, scenario4]}
         onChange={() => {}}
       />
     )
 
-    const tab3 = await screen.findAllByTestId(
-      EditorTabTestIds.DIV_TAB + '-2'
-    )
+    const tab3 = await screen.findAllByTestId(EditorTabTestIds.DIV_TAB + '-2')
     await userEvent.click(tab3[0])
 
     // Check if the setSelectedItem function was called with the correct argument
@@ -166,13 +252,11 @@ describe('EditorTabList', () => {
     expect(setSelectedItemMock).toHaveBeenCalledWith(2)
 
     // Select a different tab
-    const tab2 = await screen.findAllByTestId(
-      EditorTabTestIds.DIV_TAB + '-1'
-    )
+    const tab2 = await screen.findAllByTestId(EditorTabTestIds.DIV_TAB + '-1')
     await userEvent.click(tab2[0])
 
     // Check if the setSelectedItem function was called with the correct argument
     expect(setSelectedItemMock).toHaveBeenCalledTimes(2)
     expect(setSelectedItemMock).toHaveBeenCalledWith(1)
-  })*/
+  })
 })

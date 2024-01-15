@@ -12,7 +12,7 @@ type EditorTabProps = {
   isSelected: boolean
   closable: boolean
   onSelect: (index: number) => void
-  onChange: (index: number, name: string) => void
+  onChange: (name: string) => void
   onClose: (index: number) => void
 }
 
@@ -44,7 +44,7 @@ const EditorTab: React.FunctionComponent<EditorTabProps> = ({
 
   function handleOnBlur() {
     setIsUpdated(false)
-    onChange(index, name)
+    onChange(name)
   }
 
   return (

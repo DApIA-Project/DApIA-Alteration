@@ -15,8 +15,8 @@ export default async function updateScenario(
   if (newName.length === 0)
     return { error: UnprocessableContent.emptyName, scenario: null }
   const newText = text.trim()
-  if (newText.length === 0)
-    return { error: UnprocessableContent.emptyTextScenario, scenario: null }
+  /*if (newText.length === 0)
+    return { error: UnprocessableContent.emptyTextScenario, scenario: null }*/
   const updatedScenario = await scenarioManager.updateScenario(scenarioId, {
     name: newName,
     text: newText,

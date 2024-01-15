@@ -26,12 +26,13 @@ function validateScenario(body: Body): {
       error: CreateScenarioError.emptyName,
       scenarioAttributes: null,
     }
+  /*
   if (!body.text || typeof body.text !== 'string')
     return {
       error: CreateScenarioError.emptyTextScenario,
       scenarioAttributes: null,
     }
-
+*/
   if (
     typeof body.options.haveNoise !== 'boolean' ||
     typeof body.options.haveLabel !== 'boolean' ||

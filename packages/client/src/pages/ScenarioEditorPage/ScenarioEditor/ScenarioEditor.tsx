@@ -14,6 +14,7 @@ import { unstable_batchedUpdates } from 'react-dom'
 import Client from '../../../Client'
 import ScenarioList from './ScenarioList/ScenarioList'
 import { Scenario } from '@smartesting/shared/dist/models/Scenario'
+import { CreateScenarioResponse } from '@smartesting/shared/dist/responses/createScenario'
 
 export enum ScenarioEditorTestIds {
   COMPONENT = 'ScenarioEditor',
@@ -49,13 +50,14 @@ const ScenarioEditor: React.FunctionComponent<ScenarioEditorProps> = ({
       haveLabel: false,
     }
   )
+
   const [selectedScenario, setSelectedScenario] = useState(0)
-  const [openedScenarios, setOpenedScenarios] = useState<string[]>([])
+  const [openedScenarios, setOpenedScenarios] = useState<Scenario[]>([])
   const [savedScenarios, setSavedScenarios] = useState<ReadonlyArray<Scenario>>(
     []
   )
   const scenario = openedScenarios[selectedScenario]
-
+  console.log(scenario)
   useEffect(() => {
     Client.listScenario()
       .then(({ scenarios, error }) => {
@@ -68,46 +70,93 @@ const ScenarioEditor: React.FunctionComponent<ScenarioEditorProps> = ({
       .catch((e) => {
         console.error('Erreur lors de la récupération des scénarios :', e)
       })
-  }, [])
+  }, [openedScenarios])
 
-  const handleScenarioNameUpdate = () => {}
+  function updateScenario(
+    id: string,
+    newName: string,
+    newText: string,
+    newOptions: OptionsAlteration
+  ) {
+    Client.updateScenario(id, newName, newText, newOptions).then(
+      ({ scenario, error }) => {
+        if (error) console.log(error)
+      }
+    )
+  }
 
-  function updateScenario(scenario: Scenario) {
-    Client.updateScenario(
-      scenario.id,
-      scenario.name,
-      scenario.text,
-      scenario.options
-    ).then(({ scenario, error }) => {
-      if (error) return
-    })
+  async function createScenario(
+    name: string,
+    text: string,
+    options: OptionsAlteration
+  ) {
+    try {
+      const { scenario, error } = await Client.createScenario(
+        name,
+        text,
+        options
+      )
+      if (error) {
+        return
+      }
+
+      return scenario
+    } catch (err) {
+      throw err
+    }
   }
 
   function handleOnAdd() {
-    unstable_batchedUpdates(() => {
+    unstable_batchedUpdates(async () => {
       let newScenarios = openedScenarios.slice()
-      newScenarios.push('New scenario')
-      setOpenedScenarios(newScenarios)
-      setSelectedScenario(newScenarios.length - 1)
+      let scenarioCreation = await createScenario(
+        'New scenario',
+        '',
+        optionsAlteration
+      )
+      if (scenarioCreation) {
+        newScenarios.push(scenarioCreation)
+        setOpenedScenarios(newScenarios)
+        setSelectedScenario(newScenarios.length - 1)
+      }
+    }).then(() => {
+      return
     })
   }
 
   function handleOnDelete(index: number) {
-    const newScenarios = openedScenarios.slice()
-    newScenarios.splice(index, 1)
-
+    const newScenarios = openedScenarios.filter(
+      (scenario, indexScenario) => indexScenario !== index
+    )
     if (selectedScenario >= newScenarios.length) {
       setSelectedScenario(newScenarios.length - 1)
     }
     setOpenedScenarios(newScenarios)
   }
 
-  function handleOnChange(newScenario: string) {
-    const newScenarios = openedScenarios.slice()
-    newScenarios[selectedScenario] = newScenario
-    setOpenedScenarios(newScenarios)
+  function handleOnChange(newText: string) {
+    updateScenario(
+      openedScenarios[selectedScenario].id,
+      openedScenarios[selectedScenario].name,
+      newText,
+      optionsAlteration
+    )
+    let newOpenedScenarios = openedScenarios.slice()
+    newOpenedScenarios[selectedScenario].text = newText
+    setOpenedScenarios(newOpenedScenarios)
   }
 
+  const handleScenarioNameUpdate = (newName: string) => {
+    updateScenario(
+      openedScenarios[selectedScenario].id,
+      newName,
+      openedScenarios[selectedScenario].text,
+      optionsAlteration
+    )
+    let newOpenedScenarios = openedScenarios.slice()
+    newOpenedScenarios[selectedScenario].name = newName
+    setOpenedScenarios(newOpenedScenarios)
+  }
   return (
     <div
       className={'scenarioEditor'}
@@ -126,7 +175,7 @@ const ScenarioEditor: React.FunctionComponent<ScenarioEditorProps> = ({
       <div id={'monaco-editor-root'} className={'alterationeditor'}>
         <AlterationScenarioEditor
           language={'alterationscenario'}
-          value={scenario}
+          value={scenario ? scenario.text : ''}
           onChange={handleOnChange}
         />
       </div>
