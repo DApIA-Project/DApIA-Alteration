@@ -165,16 +165,13 @@ describe('EditorTabList', () => {
       />
     )
 
+    const tabs = await screen.findAllByTestId(EditorTabTestIds.REMOVE_BUTTON)
     // Remove the second tab
-    const closeButton2 = screen.getByTestId(
-      EditorTabTestIds.REMOVE_BUTTON + '-2'
-    )
-    await userEvent.click(closeButton2)
+
+    await userEvent.click(tabs[2])
     expect(onRemoveItemMock).toBeCalledWith(2)
-    const closeButton = screen.getByTestId(
-      EditorTabTestIds.REMOVE_BUTTON + '-1'
-    )
-    await userEvent.click(closeButton)
+
+    await userEvent.click(tabs[1])
     expect(onRemoveItemMock).toBeCalledTimes(2)
     expect(onRemoveItemMock).lastCalledWith(1)
   })
@@ -193,11 +190,27 @@ describe('EditorTabList', () => {
     )
 
     // Remove the second tab
-    const closeButton2 = screen.getByTestId(
-      EditorTabTestIds.REMOVE_BUTTON + '-1'
-    )
-    await userEvent.click(closeButton2)
+    const tabs = await screen.findAllByTestId(EditorTabTestIds.REMOVE_BUTTON)
+    await userEvent.click(tabs[1])
     expect(onRemoveItemMock).toBeCalledWith(1)
+  })
+
+  it('remove tab when tab is alone is not possible', async () => {
+    const onRemoveItemMock = jest.fn()
+    render(
+      <EditorTabList
+        onSelect={() => {}}
+        onAdd={() => {}}
+        onClose={onRemoveItemMock}
+        selected={0}
+        tabs={[scenario]}
+        onChange={() => {}}
+      />
+    )
+
+    // Remove the second tab
+    let removeButtons = screen.queryAllByTestId(EditorTabTestIds.REMOVE_BUTTON)
+    expect(removeButtons).toHaveLength(0)
   })
 
   it('add 11 tabs is not possible', async () => {
@@ -244,16 +257,16 @@ describe('EditorTabList', () => {
       />
     )
 
-    const tab3 = await screen.findAllByTestId(EditorTabTestIds.DIV_TAB + '-2')
-    await userEvent.click(tab3[0])
+    let tabs = await screen.findAllByTestId(EditorTabTestIds.DIV_TAB)
+    await userEvent.click(tabs[2])
 
     // Check if the setSelectedItem function was called with the correct argument
     expect(setSelectedItemMock).toHaveBeenCalledTimes(1)
     expect(setSelectedItemMock).toHaveBeenCalledWith(2)
 
     // Select a different tab
-    const tab2 = await screen.findAllByTestId(EditorTabTestIds.DIV_TAB + '-1')
-    await userEvent.click(tab2[0])
+    tabs = await screen.findAllByTestId(EditorTabTestIds.DIV_TAB)
+    await userEvent.click(tabs[1])
 
     // Check if the setSelectedItem function was called with the correct argument
     expect(setSelectedItemMock).toHaveBeenCalledTimes(2)

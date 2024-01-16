@@ -11,10 +11,9 @@ import { ScenarioOptions } from './ScenarioOptions/ScenarioOptions'
 import { RecordInputFiles } from './RecordInputFiles/RecordInputFiles'
 import EditorTabList from './EditorTabList/EditorTabList'
 import { unstable_batchedUpdates } from 'react-dom'
-import Client from '../../../Client'
 import ScenarioList from './ScenarioList/ScenarioList'
 import { Scenario } from '@smartesting/shared/dist/models/Scenario'
-import { CreateScenarioResponse } from '@smartesting/shared/dist/responses/createScenario'
+import { useClient } from '../../../providers/ClientProvider/ClientProvider'
 
 export enum ScenarioEditorTestIds {
   COMPONENT = 'ScenarioEditor',
@@ -31,6 +30,7 @@ type ScenarioEditorProps = {
 const ScenarioEditor: React.FunctionComponent<ScenarioEditorProps> = ({
   onGenerate,
 }) => {
+  const client = useClient()
   const [recording, setRecording] = useState<Recording>({
     name: '',
     content: '',
@@ -57,9 +57,10 @@ const ScenarioEditor: React.FunctionComponent<ScenarioEditorProps> = ({
     []
   )
   const scenario = openedScenarios[selectedScenario]
-  console.log(scenario)
   useEffect(() => {
-    Client.listScenario()
+    if (!client) return
+    client
+      .listScenario()
       .then(({ scenarios, error }) => {
         if (error)
           return console.error(
@@ -78,11 +79,12 @@ const ScenarioEditor: React.FunctionComponent<ScenarioEditorProps> = ({
     newText: string,
     newOptions: OptionsAlteration
   ) {
-    Client.updateScenario(id, newName, newText, newOptions).then(
-      ({ scenario, error }) => {
+    if (!client) return
+    client
+      .updateScenario(id, newName, newText, newOptions)
+      .then(({ scenario, error }) => {
         if (error) console.log(error)
-      }
-    )
+      })
   }
 
   async function createScenario(
@@ -90,8 +92,9 @@ const ScenarioEditor: React.FunctionComponent<ScenarioEditorProps> = ({
     text: string,
     options: OptionsAlteration
   ) {
+    if (!client) return
     try {
-      const { scenario, error } = await Client.createScenario(
+      const { scenario, error } = await client.createScenario(
         name,
         text,
         options
@@ -134,6 +137,22 @@ const ScenarioEditor: React.FunctionComponent<ScenarioEditorProps> = ({
     setOpenedScenarios(newScenarios)
   }
 
+  function handleOnRemove(scenario: Scenario) {
+    if (!client) return
+    client.deleteScenario(scenario.id).then(({ error }) => {
+      if (error) console.log(error)
+    })
+    const newScenariosSaved = savedScenarios.filter(
+      (scenarioSaved, indexScenario) => scenarioSaved.id !== scenario.id
+    )
+    setSavedScenarios(newScenariosSaved)
+
+    const newScenariosOpened = openedScenarios.filter(
+      (scenarioOpened, indexScenario) => scenarioOpened.id !== scenario.id
+    )
+    setOpenedScenarios(newScenariosOpened)
+  }
+
   function handleOnChange(newText: string) {
     updateScenario(
       openedScenarios[selectedScenario].id,
@@ -157,6 +176,26 @@ const ScenarioEditor: React.FunctionComponent<ScenarioEditorProps> = ({
     newOpenedScenarios[selectedScenario].name = newName
     setOpenedScenarios(newOpenedScenarios)
   }
+
+  function handleOnOpen(openingScenario: Scenario) {
+    unstable_batchedUpdates(async () => {
+      let newScenarios = openedScenarios.slice()
+      let isAlreadyOpen = false
+      for (const newScenario of newScenarios) {
+        if (newScenario.id === openingScenario.id) {
+          isAlreadyOpen = true
+        }
+      }
+      if (openingScenario && !isAlreadyOpen) {
+        newScenarios.push(openingScenario)
+        setOpenedScenarios(newScenarios)
+        setSelectedScenario(newScenarios.length - 1)
+      }
+    }).then(() => {
+      return
+    })
+  }
+
   return (
     <div
       className={'scenarioEditor'}
@@ -181,7 +220,8 @@ const ScenarioEditor: React.FunctionComponent<ScenarioEditorProps> = ({
       </div>
       <ScenarioList
         scenarios={savedScenarios || null}
-        onClick={handleOnChange}
+        onClick={handleOnOpen}
+        onRemove={handleOnRemove}
       />
 
       <div className={'composantOption'}>

@@ -1,34 +1,54 @@
 import React from 'react'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
-import ScenarioEditor, { ScenarioEditorTestIds } from './ScenarioEditor'
+import ScenarioEditor from './ScenarioEditor'
 import userEvent from '@testing-library/user-event'
-import {
-  OptionsAlteration,
-  OptionsAlterationName,
-  Recording,
-} from '@smartesting/shared/src'
+import { OptionsAlteration, Recording } from '@smartesting/shared/src'
+import { uuid } from '@smartesting/shared/dist/uuid/uuid'
 import { RecordInputFilesTestIds } from './RecordInputFiles/RecordInputFiles'
 import { GenerateAlterationButtonTestIds } from './GenerateAlterationButton/GenerateAlterationButton'
 import * as getMonacoEditorContentModule from '../../../utils/getMonacoEditorContent/getMonacoEditorContent'
-import {
-  ListScenarioError,
-  ListScenarioResponse,
-} from '@smartesting/shared/dist/responses/listScenario'
 import { Scenario } from '@smartesting/shared/dist/models/Scenario'
 import { ScenarioListTestIds } from './ScenarioList/ScenarioList'
 import { EditorTabTestIds } from './EditorTabList/EditorTab/EditorTab'
-import EditorTabList, {
-  EditorTabListTestIds,
-} from './EditorTabList/EditorTabList'
+import { EditorTabListTestIds } from './EditorTabList/EditorTabList'
+import Client from '../../../Client'
+import { mockUseClient } from '../../../mocks/mockUseClient'
 
-jest.mock('../../../Client')
-//jest.mock('./ScenarioList/ScenarioList')
 jest.mock(
   '../../../components/business/AlterationScenarioEditor/AlterationScenarioEditor',
   () => () => <div />
 )
 
 describe('ScenarioEditor', () => {
+  let scenarioAttributes = {
+    text: '',
+    options: {
+      haveLabel: false,
+      haveNoise: false,
+      haveRealism: false,
+      haveDisableAltitude: false,
+      haveDisableLatitude: false,
+      haveDisableLongitude: false,
+    },
+    create_at: new Date(),
+    update_at: new Date(),
+  }
+  let scenario1: Scenario = {
+    ...scenarioAttributes,
+    name: 'Scenario A',
+    id: uuid(),
+  }
+  let scenario2: Scenario = {
+    ...scenarioAttributes,
+    name: 'Scenario B',
+    id: uuid(),
+  }
+  let scenario3: Scenario = {
+    ...scenarioAttributes,
+    name: 'Scenario C',
+    id: uuid(),
+  }
+  let client: Client
   let spiedCallback: jest.Mock
   const files = [
     new File(
@@ -52,10 +72,235 @@ describe('ScenarioEditor', () => {
       .spyOn(getMonacoEditorContentModule, 'getMonacoEditorContent')
       .mockReturnValue('hide all_planes at 0 seconds')
     spiedCallback = jest.fn()
+    client = new Client()
+    mockUseClient(client)
+    client.updateScenario = jest.fn()
+    jest.spyOn(client, 'listScenario').mockReturnValue(
+      Promise.resolve({
+        error: null,
+        scenarios: [scenario1, scenario2, scenario3],
+      })
+    )
+    jest.spyOn(client, 'createScenario').mockReturnValue(
+      Promise.resolve({
+        error: null,
+        scenario: scenario1,
+      })
+    )
+    jest.spyOn(client, 'updateScenario').mockReturnValue(
+      Promise.resolve({
+        error: null,
+        scenario: scenario1,
+      })
+    )
+    jest.spyOn(client, 'deleteScenario').mockReturnValue(
+      Promise.resolve({
+        error: null,
+      })
+    )
   })
 
   afterEach(() => {
     jest.clearAllMocks()
+  })
+
+  it('displays scenarios returned by client', async () => {
+    render(<ScenarioEditor onGenerate={() => null} />)
+    const scenarioButtons = await screen.findAllByTestId(
+      ScenarioListTestIds.BUTTON
+    )
+    expect(scenarioButtons).toHaveLength(3)
+    expect(scenarioButtons[0]).toHaveTextContent(scenario1.name)
+    expect(scenarioButtons[1]).toHaveTextContent(scenario2.name)
+    expect(scenarioButtons[2]).toHaveTextContent(scenario3.name)
+    expect(client.listScenario).toHaveBeenCalledTimes(1)
+  })
+
+  it('opens scenarios in tab', async () => {
+    render(<ScenarioEditor onGenerate={() => null} />)
+    const scenarioButtons = await screen.findAllByTestId(
+      ScenarioListTestIds.BUTTON
+    )
+
+    await userEvent.click(scenarioButtons[2])
+
+    let tabs = await screen.findAllByTestId(EditorTabTestIds.DIV_TAB)
+    expect(tabs).toHaveLength(1)
+    expect(tabs[0]).toHaveTextContent(scenario3.name)
+
+    await userEvent.click(scenarioButtons[0])
+
+    tabs = await screen.findAllByTestId(EditorTabTestIds.DIV_TAB)
+    expect(tabs).toHaveLength(2)
+    expect(tabs[0]).toHaveTextContent(scenario3.name)
+    expect(tabs[1]).toHaveTextContent(scenario1.name)
+  })
+
+  it('does not open scenario tab twice', async () => {
+    render(<ScenarioEditor onGenerate={() => null} />)
+    const scenarioButtons = await screen.findAllByTestId(
+      ScenarioListTestIds.BUTTON
+    )
+
+    await userEvent.click(scenarioButtons[2])
+    await userEvent.click(scenarioButtons[2])
+
+    let tabs = await screen.findAllByTestId(EditorTabTestIds.DIV_TAB)
+    expect(tabs).toHaveLength(1)
+    expect(tabs[0]).toHaveTextContent(scenario3.name)
+  })
+
+  it('removes scenario from tabs', async () => {
+    render(<ScenarioEditor onGenerate={() => null} />)
+    const scenarioButtons = await screen.findAllByTestId(
+      ScenarioListTestIds.BUTTON
+    )
+
+    await userEvent.click(scenarioButtons[0])
+    await userEvent.click(scenarioButtons[1])
+    await userEvent.click(scenarioButtons[2])
+
+    const removeButtons = await screen.findAllByTestId(
+      EditorTabTestIds.REMOVE_BUTTON
+    )
+    expect(removeButtons).toHaveLength(3)
+    await userEvent.click(removeButtons[1])
+
+    const tabs = await screen.findAllByTestId(EditorTabTestIds.DIV_TAB)
+    expect(tabs).toHaveLength(2)
+    expect(tabs[0]).toHaveTextContent(scenario1.name)
+    expect(tabs[1]).toHaveTextContent(scenario3.name)
+  })
+
+  it('rename scenario from tabs', async () => {
+    render(<ScenarioEditor onGenerate={() => null} />)
+    const scenarioButtons = await screen.findAllByTestId(
+      ScenarioListTestIds.BUTTON
+    )
+
+    await userEvent.click(scenarioButtons[0])
+    await userEvent.click(scenarioButtons[1])
+    await userEvent.click(scenarioButtons[2])
+
+    let tabs = await screen.findAllByTestId(EditorTabTestIds.DIV_TAB)
+    expect(tabs).toHaveLength(3)
+
+    await userEvent.click(tabs[2])
+
+    const input1 = await screen.findByTestId(EditorTabTestIds.INPUT_NAME)
+    expect(input1).toHaveValue(scenario3.name)
+
+    await userEvent.clear(input1)
+    await userEvent.type(input1, 'Scenario A')
+    await userEvent.click(tabs[1])
+
+    expect(client.updateScenario).toHaveBeenCalledTimes(1)
+    expect(client.updateScenario).toHaveBeenCalledWith(
+      scenario3.id,
+      scenario1.name,
+      scenario3.text,
+      scenario3.options
+    )
+    tabs = await screen.findAllByTestId(EditorTabTestIds.DIV_TAB)
+    expect(tabs[0]).toHaveTextContent('Scenario A')
+  })
+
+  it('create scenario', async () => {
+    render(<ScenarioEditor onGenerate={() => null} />)
+    const addButton = await screen.findByTestId(EditorTabListTestIds.ADD_BUTTON)
+
+    await userEvent.click(addButton)
+    expect(client.createScenario).toHaveBeenCalledWith('New scenario', '', {
+      haveLabel: false,
+      haveNoise: false,
+      haveRealism: false,
+      haveDisableAltitude: false,
+      haveDisableLatitude: false,
+      haveDisableLongitude: false,
+    })
+    let tabs = await screen.findAllByTestId(EditorTabTestIds.DIV_TAB)
+    expect(tabs).toHaveLength(1)
+    expect(tabs[0]).toHaveTextContent('Scenario A')
+    await userEvent.click(addButton)
+    expect(client.createScenario).toHaveBeenCalledWith('New scenario', '', {
+      haveLabel: false,
+      haveNoise: false,
+      haveRealism: false,
+      haveDisableAltitude: false,
+      haveDisableLatitude: false,
+      haveDisableLongitude: false,
+    })
+    await userEvent.click(addButton)
+    expect(client.createScenario).toHaveBeenCalledWith('New scenario', '', {
+      haveLabel: false,
+      haveNoise: false,
+      haveRealism: false,
+      haveDisableAltitude: false,
+      haveDisableLatitude: false,
+      haveDisableLongitude: false,
+    })
+
+    tabs = await screen.findAllByTestId(EditorTabTestIds.DIV_TAB)
+    expect(tabs).toHaveLength(3)
+    expect(tabs[0]).toHaveTextContent('Scenario A')
+    expect(tabs[1]).toHaveTextContent('Scenario A')
+    expect(tabs[2]).toHaveTextContent('Scenario A')
+
+    expect(client.createScenario).toHaveBeenCalledTimes(3)
+  })
+
+  it('delete scenario saved', async () => {
+    render(<ScenarioEditor onGenerate={() => null} />)
+    let scenarioRemoveButtons = await screen.findAllByTestId(
+      ScenarioListTestIds.REMOVE_BUTTON
+    )
+
+    expect(scenarioRemoveButtons).toHaveLength(3)
+    await userEvent.click(scenarioRemoveButtons[0])
+    expect(client.deleteScenario).toHaveBeenCalledTimes(1)
+    expect(client.deleteScenario).toHaveBeenCalledWith(scenario1.id)
+  })
+
+  it('delete scenario saved and opened', async () => {
+    render(<ScenarioEditor onGenerate={() => null} />)
+    const scenarioButtons = await screen.findAllByTestId(
+      ScenarioListTestIds.BUTTON
+    )
+    await userEvent.click(scenarioButtons[0])
+    let tabs = await screen.findAllByTestId(EditorTabTestIds.DIV_TAB)
+    expect(tabs).toHaveLength(1)
+
+    const scenarioRemoveButtons = await screen.findAllByTestId(
+      ScenarioListTestIds.REMOVE_BUTTON
+    )
+    expect(scenarioRemoveButtons).toHaveLength(3)
+    await userEvent.click(scenarioRemoveButtons[0])
+
+    tabs = screen.queryAllByTestId(EditorTabTestIds.DIV_TAB)
+    expect(tabs).toHaveLength(0)
+
+    expect(client.deleteScenario).toHaveBeenCalledTimes(1)
+    expect(client.deleteScenario).toHaveBeenCalledWith(scenario1.id)
+  })
+
+  it('create more than 10 scenarios', async () => {
+    render(<ScenarioEditor onGenerate={() => null} />)
+    const addButton = await screen.findByTestId(EditorTabListTestIds.ADD_BUTTON)
+
+    for (let i: number = 0; i < 10; i++) {
+      await userEvent.click(addButton)
+    }
+
+    let tabs = await screen.findAllByTestId(EditorTabTestIds.DIV_TAB)
+    expect(tabs).toHaveLength(10)
+
+    for (let i: number = 0; i < 10; i++) {
+      expect(tabs[i]).toHaveTextContent('Scenario A')
+    }
+    await userEvent.click(addButton)
+    expect(tabs).toHaveLength(10)
+
+    expect(client.createScenario).toHaveBeenCalledTimes(10)
   })
 
   it('calls onGenerate callback if generate button is clicked with scenario content', async () => {
@@ -145,164 +390,4 @@ describe('ScenarioEditor', () => {
       })
     })
   })
-
-  it('show scenario list', async () => {
-    let scenarioA: Scenario = {
-      name: 'Scenario 1',
-      text: 'Texte du scenario 1',
-      options: {
-        haveLabel: false,
-        haveNoise: false,
-        haveRealism: false,
-        haveDisableAltitude: false,
-        haveDisableLatitude: false,
-        haveDisableLongitude: false,
-      },
-      id: '1',
-      create_at: new Date(),
-      update_at: new Date(),
-    }
-    let scenarioB: Scenario = {
-      name: 'Scenario 2',
-      text: 'Texte du scenario 2',
-      options: {
-        haveLabel: false,
-        haveNoise: false,
-        haveRealism: false,
-        haveDisableAltitude: false,
-        haveDisableLatitude: false,
-        haveDisableLongitude: false,
-      },
-      id: '2',
-      create_at: new Date(),
-      update_at: new Date(),
-    }
-
-    let listScenario: Scenario[] = []
-    listScenario.push(scenarioA)
-    listScenario.push(scenarioB)
-    const mockScenarios: ListScenarioResponse = {
-      scenarios: listScenario,
-      error: null,
-    }
-
-    require('../../../Client').default.listScenario.mockResolvedValue(
-      mockScenarios
-    )
-
-    render(<ScenarioEditor onGenerate={spiedCallback} />)
-    await waitFor(async () => {
-      const scenarioButtons = await screen.findAllByTestId(
-        ScenarioListTestIds.BUTTON
-      )
-      expect(scenarioButtons).toHaveLength(mockScenarios.scenarios!.length)
-    })
-  })
-
-  it('remove one tab middle', async () => {
-    let scenarioA: Scenario = {
-      name: 'Scenario 1',
-      text: 'Texte du scenario 1',
-      options: {
-        haveLabel: false,
-        haveNoise: false,
-        haveRealism: false,
-        haveDisableAltitude: false,
-        haveDisableLatitude: false,
-        haveDisableLongitude: false,
-      },
-      id: '1',
-      create_at: new Date(),
-      update_at: new Date(),
-    }
-    let scenarioB: Scenario = {
-      name: 'Scenario 2',
-      text: 'Texte du scenario 2',
-      options: {
-        haveLabel: false,
-        haveNoise: false,
-        haveRealism: false,
-        haveDisableAltitude: false,
-        haveDisableLatitude: false,
-        haveDisableLongitude: false,
-      },
-      id: '2',
-      create_at: new Date(),
-      update_at: new Date(),
-    }
-    let scenarioC: Scenario = {
-      name: 'Scenario 3',
-      text: 'Texte du scenario 3',
-      options: {
-        haveLabel: false,
-        haveNoise: false,
-        haveRealism: false,
-        haveDisableAltitude: false,
-        haveDisableLatitude: false,
-        haveDisableLongitude: false,
-      },
-      id: '3',
-      create_at: new Date(),
-      update_at: new Date(),
-    }
-
-    let listScenario: Scenario[] = []
-    listScenario.push(scenarioA)
-    listScenario.push(scenarioB)
-    const mockScenarios: ListScenarioResponse = {
-      scenarios: listScenario,
-      error: null,
-    }
-
-    require('../../../Client').default.listScenario.mockResolvedValue(
-      mockScenarios
-    )
-
-    render(<ScenarioEditor onGenerate={spiedCallback} />)
-
-    await userEvent.click(screen.getByTestId(EditorTabListTestIds.ADD_BUTTON))
-    await userEvent.click(screen.getByTestId(EditorTabTestIds.DIV_TAB + '-0'))
-
-    await userEvent.type(screen.getByRole('input'), scenarioA.name)
-
-    await userEvent.click(screen.getByTestId(EditorTabListTestIds.ADD_BUTTON))
-    await userEvent.click(screen.getByTestId(EditorTabTestIds.DIV_TAB + '-1'))
-
-    await userEvent.type(screen.getByRole('input'), scenarioB.name)
-    await userEvent.click(screen.getByTestId(EditorTabListTestIds.ADD_BUTTON))
-    await userEvent.click(screen.getByTestId(EditorTabTestIds.DIV_TAB + '-2'))
-
-    await userEvent.type(screen.getByRole('input'), scenarioC.name)
-  })
-  /*
-  it('click on scenario on scenario list', async () => {
-    let scenarioA : Scenario = { name: 'Scenario 1', text: 'Texte du scenario 1', options : { haveLabel : false, haveNoise : false, haveRealism : false, haveDisableAltitude : false, haveDisableLatitude : false, haveDisableLongitude : false}, id : '1', create_at : new Date(), update_at : new Date()}
-    let scenarioB : Scenario = { name: 'Scenario 2', text: 'Texte du scenario 2', options : { haveLabel : false, haveNoise : false, haveRealism : false, haveDisableAltitude : false, haveDisableLatitude : false, haveDisableLongitude : false}, id : '2' , create_at : new Date(), update_at : new Date()}
-
-    let listScenario : Scenario[] = []
-    listScenario.push(scenarioA)
-    listScenario.push(scenarioB)
-    const mockScenarios : ListScenarioResponse = {scenarios : listScenario,error : null}
-    const mockOnClick = () => {}
-    require('../../../Client').default.listScenario.mockResolvedValue(mockScenarios)
-    require('./ScenarioList/ScenarioList.tsx').default.listScenario.mockResolvedValue(mockOnClick)
-
-    render(<ScenarioEditor onGenerate={spiedCallback} />);
-    await waitFor(async() => {
-      const scenarioButtons = await screen.findAllByTestId(ScenarioListTestIds.BUTTON);
-      await userEvent.click(scenarioButtons[0]);
-
-    });
-
-    expect(mockOnClick).toHaveBeenCalledWith(mockScenarios.scenarios![0].text);
-    await waitFor(async() => {
-      const scenarioButtons = await screen.findAllByTestId(ScenarioListTestIds.BUTTON);
-      await userEvent.click(scenarioButtons[1]);
-
-    });
-
-    expect(mockOnClick).toHaveBeenCalledWith(mockScenarios.scenarios![1].text);
-  });
-
- */
 })

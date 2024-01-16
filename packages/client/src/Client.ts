@@ -7,7 +7,7 @@ import { OptionsAlteration, Recording } from '@smartesting/shared/dist'
 import apiUrl from './config'
 
 export default class Client {
-  private static async apiCall<T>(url: string, data?: any): Promise<T> {
+  private async apiCall<T>(url: string, data?: any): Promise<T> {
     let response: Response
     if (data) {
       response = await fetch(url, {
@@ -29,7 +29,7 @@ export default class Client {
 
     return await response.json()
   }
-  static async alteration(
+  async alteration(
     value: string | null,
     recording: Recording,
     optionsAlteration: OptionsAlteration,
@@ -46,7 +46,7 @@ export default class Client {
     return this.apiCall<AlterRecordingResponse>(url, data)
   }
 
-  static async createScenario(
+  async createScenario(
     name: string,
     text: string,
     optionsAlteration: OptionsAlteration
@@ -60,7 +60,7 @@ export default class Client {
     return this.apiCall<CreateScenarioResponse>(url, data)
   }
 
-  static async updateScenario(
+  async updateScenario(
     id_scenario: string,
     newName: string,
     newText: string,
@@ -76,9 +76,7 @@ export default class Client {
     return this.apiCall<UpdateScenarioResponse>(url, data)
   }
 
-  static async deleteScenario(
-    id_scenario: string
-  ): Promise<DeleteScenarioResponse> {
+  async deleteScenario(id_scenario: string): Promise<DeleteScenarioResponse> {
     const url: string = `${apiUrl}/scenario/delete`
     const data = {
       id: id_scenario,
@@ -86,7 +84,7 @@ export default class Client {
     return this.apiCall<DeleteScenarioResponse>(url, data)
   }
 
-  static async listScenario(): Promise<ListScenarioResponse> {
+  async listScenario(): Promise<ListScenarioResponse> {
     const url: string = `${apiUrl}/scenario/list`
     return this.apiCall<ListScenarioResponse>(url)
   }

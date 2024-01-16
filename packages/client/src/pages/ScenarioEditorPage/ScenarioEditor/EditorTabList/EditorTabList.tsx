@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import './EditorTabList.css'
 import Button from '../../../../components/ui/Button/Button'
 import EditorTab from './EditorTab/EditorTab'
@@ -42,19 +42,18 @@ const EditorTabList: React.FunctionComponent<EditorTabListProps> = ({
   return (
     <>
       <ul className='tabList'>
-        {tabs
-          .map((scenario) => scenario.name)
-          .map((name, index) => (
-            <EditorTab
-              tabName={name}
-              index={index}
-              isSelected={selected === index}
-              closable={tabs.length > 1}
-              onSelect={handleSelect}
-              onChange={handleChange}
-              onClose={handleTabClose}
-            />
-          ))}
+        {tabs.map(({ name }, index) => (
+          <EditorTab
+            key={`${name}-${index}`}
+            tabName={name}
+            index={index}
+            isSelected={selected === index}
+            closable={tabs.length > 1}
+            onSelect={handleSelect}
+            onChange={handleChange}
+            onClose={handleTabClose}
+          />
+        ))}
       </ul>
       <div className='addTabContainerButton'>
         <Button

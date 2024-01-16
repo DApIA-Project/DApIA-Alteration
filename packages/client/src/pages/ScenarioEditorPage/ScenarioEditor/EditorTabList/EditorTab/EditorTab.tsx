@@ -1,9 +1,13 @@
 import React, { useState } from 'react'
 import Button from '../../../../../components/ui/Button/Button'
+import IconButton from '../../../../../components/ui/Button/IconButton/IconButton'
+import CloseIcon from '@mui/icons-material/Close'
+import './EditorTab.css'
 
 export enum EditorTabTestIds {
   REMOVE_BUTTON = 'RemoveTabButton',
   DIV_TAB = 'DivTab',
+  INPUT_NAME = 'InputName',
 }
 
 type EditorTabProps = {
@@ -25,7 +29,7 @@ const EditorTab: React.FunctionComponent<EditorTabProps> = ({
   index,
   closable,
 }) => {
-  const [name, setName] = useState<string>(tabName)
+  const [editedName, setEditedName] = useState<string>(tabName)
   const [isUpdated, setIsUpdated] = useState<boolean>(false)
 
   function handleClick() {
@@ -44,14 +48,17 @@ const EditorTab: React.FunctionComponent<EditorTabProps> = ({
 
   function handleOnBlur() {
     setIsUpdated(false)
-    onChange(name)
+    onChange(editedName)
   }
 
   return (
     <>
-      <li key={index} className={`li ${isSelected ? 'selected' : ''}`}>
+      <li
+        key={`${tabName}-${index}`}
+        className={`li ${isSelected ? 'selected' : ''}`}
+      >
         <div
-          data-testid={`${EditorTabTestIds.DIV_TAB}-${index}`}
+          data-testid={EditorTabTestIds.DIV_TAB}
           onClick={() => handleClick()}
           onAuxClick={handleAuxClick}
           role='button'
@@ -61,23 +68,25 @@ const EditorTab: React.FunctionComponent<EditorTabProps> = ({
             <input
               autoFocus={true}
               type='text'
-              value={name}
+              value={editedName}
               onChange={(e) => {
-                setName(e.target.value)
+                setEditedName(e.target.value)
               }}
               onBlur={() => handleOnBlur()}
               className={`input ${isSelected ? 'selected' : ''}`}
+              data-testid={EditorTabTestIds.INPUT_NAME}
             />
           ) : (
-            name
+            tabName
           )}
         </div>
         {closable && (
-          <Button
-            data-testid={`${EditorTabTestIds.REMOVE_BUTTON}-${index}`}
+          <IconButton
+            data-testid={EditorTabTestIds.REMOVE_BUTTON}
             text={'x'}
             onClick={() => onClose(index)}
             className={'tabCloseButton'}
+            icon={<CloseIcon fontSize={'small'} />}
           />
         )}
       </li>
