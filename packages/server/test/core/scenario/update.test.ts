@@ -46,7 +46,7 @@ describe('core/scenario/update', () => {
     assert.strictEqual(updatedError, UpdateScenarioError.emptyName)
   })
 
-  it('requires a non-blank text for the scenario', async () => {
+  it('can have a blank text for the scenario', async () => {
     const { scenario: createdScenario } = await create(
       {
         ...validScenarioAttributes,
@@ -63,8 +63,8 @@ describe('core/scenario/update', () => {
         scenarioManager
       )
 
-    assert.strictEqual(updatedScenario, null)
-    assert.strictEqual(updatedError, UpdateScenarioError.emptyTextScenario)
+    assert.strictEqual(updatedScenario?.text, '')
+    assert.strictEqual(updatedError, null)
   })
 
   it('update scenario if all fields are correct', async () => {

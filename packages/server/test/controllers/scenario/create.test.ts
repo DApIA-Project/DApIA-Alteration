@@ -76,26 +76,6 @@ describe(`POST ${ApiRoutes.createScenario()}`, () => {
   })
 
   context('when scenario text is invalid', () => {
-    it('returns 422 if the text is not specified', async () => {
-      const response = await request(server)
-        .post(ApiRoutes.createScenario())
-        .send({ ...validScenarioAttributesMissingText, text: '' })
-
-      const { error, scenario } = response.body
-      assert.deepStrictEqual(scenario, null)
-      assert.equal(error, CreateScenarioError.emptyTextScenario)
-    })
-
-    it('returns 422 if the text is blank', async () => {
-      const response = await request(server)
-        .post(ApiRoutes.createScenario())
-        .send({ ...validScenarioAttributesMissingText, text: '   ' })
-
-      const { error, scenario } = response.body
-      assert.deepStrictEqual(scenario, null)
-      assert.equal(error, CreateScenarioError.emptyTextScenario)
-    })
-
     it('returns 422 if the text is not set', async () => {
       const response = await request(server)
         .post(ApiRoutes.createScenario())
@@ -239,6 +219,26 @@ describe(`POST ${ApiRoutes.createScenario()}`, () => {
       assert.deepStrictEqual(error, null)
       assert.equal(scenario.name, 'ScenarioA')
       assert.equal(scenario.text, 'hide all_planes at 6 seconds')
+    })
+
+    it('returns 201 if the text is not specified', async () => {
+      const response = await request(server)
+        .post(ApiRoutes.createScenario())
+        .send({ ...validScenarioAttributesMissingText, text: '' })
+
+      const { error, scenario } = response.body
+      assert.equal(scenario.text, '')
+      assert.deepStrictEqual(error, null)
+    })
+
+    it('returns 201 if the text is blank', async () => {
+      const response = await request(server)
+        .post(ApiRoutes.createScenario())
+        .send({ ...validScenarioAttributesMissingText, text: '   ' })
+
+      const { error, scenario } = response.body
+      assert.equal(scenario.text, '')
+      assert.deepStrictEqual(error, null)
     })
   })
 })

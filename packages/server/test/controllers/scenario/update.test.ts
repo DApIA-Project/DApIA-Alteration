@@ -99,44 +99,6 @@ describe(`POST ${ApiRoutes.updateScenario()}`, () => {
   })
 
   context('when scenario text is invalid', () => {
-    it('returns 422 if the text is not specified', async () => {
-      const createScenarioReq = await request(server)
-        .post(ApiRoutes.createScenario())
-        .send(validScenarioAttributes)
-      const scenarioCreate = createScenarioReq.body.scenario
-
-      const response = await request(server)
-        .post(ApiRoutes.updateScenario())
-        .send({
-          ...validScenarioAttributesMissingText,
-          text: '',
-          id: scenarioCreate.id,
-        })
-
-      const { error, scenario } = response.body
-      assert.deepStrictEqual(scenario, null)
-      assert.equal(error, UpdateScenarioError.emptyTextScenario)
-    })
-
-    it('returns 422 if the text is blank', async () => {
-      const createScenarioReq = await request(server)
-        .post(ApiRoutes.createScenario())
-        .send(validScenarioAttributes)
-      const scenarioCreate = createScenarioReq.body.scenario
-
-      const response = await request(server)
-        .post(ApiRoutes.updateScenario())
-        .send({
-          ...validScenarioAttributesMissingText,
-          text: '   ',
-          id: scenarioCreate.id,
-        })
-
-      const { error, scenario } = response.body
-      assert.deepStrictEqual(scenario, null)
-      assert.equal(error, UpdateScenarioError.emptyTextScenario)
-    })
-
     it('returns 422 if the text is not set', async () => {
       const createScenarioReq = await request(server)
         .post(ApiRoutes.createScenario())
@@ -352,6 +314,44 @@ describe(`POST ${ApiRoutes.updateScenario()}`, () => {
       assert.deepStrictEqual(error, null)
       assert.equal(scenario.name, 'ScenarioW')
       assert.equal(scenario.text, 'Other Text')
+    })
+
+    it('returns 201 if the text is not specified', async () => {
+      const createScenarioReq = await request(server)
+        .post(ApiRoutes.createScenario())
+        .send(validScenarioAttributes)
+      const scenarioCreate = createScenarioReq.body.scenario
+
+      const response = await request(server)
+        .post(ApiRoutes.updateScenario())
+        .send({
+          ...validScenarioAttributesMissingText,
+          text: '',
+          id: scenarioCreate.id,
+        })
+
+      const { error, scenario } = response.body
+      assert.equal(scenario.text, '')
+      assert.deepStrictEqual(error, null)
+    })
+
+    it('returns 201 if the text is blank', async () => {
+      const createScenarioReq = await request(server)
+        .post(ApiRoutes.createScenario())
+        .send(validScenarioAttributes)
+      const scenarioCreate = createScenarioReq.body.scenario
+
+      const response = await request(server)
+        .post(ApiRoutes.updateScenario())
+        .send({
+          ...validScenarioAttributesMissingText,
+          text: '   ',
+          id: scenarioCreate.id,
+        })
+
+      const { error, scenario } = response.body
+      assert.equal(scenario.text, '')
+      assert.deepStrictEqual(error, null)
     })
   })
 })

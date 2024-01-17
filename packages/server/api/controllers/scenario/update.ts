@@ -39,11 +39,15 @@ async function validateScenario(
       error: UpdateScenarioError.emptyName,
       scenario: null,
     }
-  /*if (!body.text || typeof body.text !== 'string')
+  if (
+    body.text === null ||
+    body.text === undefined ||
+    typeof body.text !== 'string'
+  )
     return {
       error: UpdateScenarioError.emptyTextScenario,
       scenario: null,
-    }*/
+    }
 
   if (
     typeof body.options.haveNoise !== 'boolean' ||
