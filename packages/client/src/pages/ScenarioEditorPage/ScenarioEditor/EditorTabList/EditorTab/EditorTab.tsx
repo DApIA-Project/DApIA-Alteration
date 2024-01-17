@@ -45,6 +45,12 @@ const EditorTab: React.FunctionComponent<EditorTabProps> = ({
       onClose(index)
     }
   }
+  function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
+    if (e.key === 'Enter') {
+      e.preventDefault()
+      handleOnBlur()
+    }
+  }
 
   function handleOnBlur() {
     setIsUpdated(false)
@@ -73,6 +79,7 @@ const EditorTab: React.FunctionComponent<EditorTabProps> = ({
                 setEditedName(e.target.value)
               }}
               onBlur={() => handleOnBlur()}
+              onKeyDown={(e) => handleKeyDown(e)}
               className={`input ${isSelected ? 'selected' : ''}`}
               data-testid={EditorTabTestIds.INPUT_NAME}
             />
