@@ -79,8 +79,8 @@ async function validateScenario(
       name: body.name,
       text: body.text,
       options: body.options,
-      create_at: scenarioBefore.create_at,
-      update_at: scenarioBefore.update_at,
+      createdAt: scenarioBefore.createdAt,
+      updatedAt: scenarioBefore.updatedAt,
     },
     error: null,
   }

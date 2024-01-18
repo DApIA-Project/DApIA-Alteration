@@ -4,6 +4,7 @@ import makeTestAdapters from '../../makeTestAdapters'
 import listScenario from '../../../api/core/scenario/listScenario'
 import assert from 'assert'
 import { ListScenarioError } from '@smartesting/shared/dist/responses/listScenario'
+import { clearDb } from '../../clearDb'
 
 describe('core/scenario/listScenario', () => {
   let scenarioManager: IScenarioManager
@@ -47,6 +48,10 @@ describe('core/scenario/listScenario', () => {
   beforeEach(async () => {
     const adapters = makeTestAdapters()
     scenarioManager = adapters.scenarioManager
+  })
+
+  afterEach(async () => {
+    await clearDb()
   })
 
   it('list scenario is valid with 3 scenarios', async () => {

@@ -5,6 +5,7 @@ import create from '../../../api/core/scenario/create'
 import assert from 'assert'
 import { DeleteScenarioError } from '@smartesting/shared/dist/responses/deleteScenario'
 import deleteScenario from '../../../api/core/scenario/delete'
+import { clearDb } from '../../clearDb'
 describe('core/scenario/delete', () => {
   let scenarioManager: IScenarioManager
   const validScenarioAttributes: ScenarioAttributes = {
@@ -23,6 +24,10 @@ describe('core/scenario/delete', () => {
   beforeEach(async () => {
     const adapters = makeTestAdapters()
     scenarioManager = adapters.scenarioManager
+  })
+
+  afterEach(async () => {
+    await clearDb()
   })
 
   it('scenario exists', async () => {

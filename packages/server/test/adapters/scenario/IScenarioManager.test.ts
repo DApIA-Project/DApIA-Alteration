@@ -10,7 +10,7 @@ import {
   makeMemoryAdapters,
   makeProductionAdapters,
 } from '../../makeTestAdapters'
-import { clearMemoryDb } from '../../clearDb'
+import { clearMemoryDb, clearProductionDb } from '../../clearDb'
 
 const IScenarioContractTest: IContractTest = (
   implementationName,
@@ -60,8 +60,8 @@ const IScenarioContractTest: IContractTest = (
         )
 
         assert(created.id)
-        assert(created.create_at)
-        assert(created.update_at)
+        assert(created.createdAt)
+        assert(created.updatedAt)
         assert.deepStrictEqual(created.name, validScenarioAttributes.name)
         assert.deepStrictEqual(created.text, validScenarioAttributes.text)
         assert.deepStrictEqual(created.options, validScenarioAttributes.options)
@@ -98,33 +98,6 @@ const IScenarioContractTest: IContractTest = (
 
         const found = await scenarioManager.findScenario(secondScenario.id)
         assert.deepStrictEqual(found, secondScenario)
-      })
-    })
-
-    describe('hasText', () => {
-      let created: Scenario
-      beforeEach(async () => {
-        created = await scenarioManager.createScenario(validScenarioAttributes)
-      })
-
-      it('returns false if the text does not exists', async () => {
-        assert.strictEqual(
-          await scenarioManager.hasText(
-            created.id,
-            'cut all_planes at 22 seconds'
-          ),
-          false
-        )
-      })
-
-      it('returns true if the text is in a scenario', async () => {
-        assert.strictEqual(
-          await scenarioManager.hasText(
-            created.id,
-            'hide all_planes at 6 seconds'
-          ),
-          true
-        )
       })
     })
 
@@ -166,8 +139,16 @@ const IScenarioContractTest: IContractTest = (
   })
 }
 
-IScenarioContractTest(
-  'MemoryScenarioManager',
-  makeMemoryAdapters,
-  clearMemoryDb
-)
+describe('IProjectManager', () => {
+  IScenarioContractTest(
+    'MemoryScenarioManager',
+    makeMemoryAdapters,
+    clearMemoryDb
+  )
+
+  IScenarioContractTest(
+    'PsqlScenarioManager',
+    makeProductionAdapters,
+    clearProductionDb
+  )
+})

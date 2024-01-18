@@ -6,12 +6,17 @@ import assert from 'assert'
 import { CreateScenarioError } from '@smartesting/shared/dist/responses/createScenario'
 import makeTestAdapters from '../../makeTestAdapters'
 import { OptionsAlteration } from '@smartesting/shared/dist/index'
+import { clearDb } from '../../clearDb'
 
 describe(`POST ${ApiRoutes.createScenario()}`, () => {
   let server: express.Express
 
   beforeEach(() => {
     server = setupExpress(makeTestAdapters())
+  })
+
+  afterEach(async () => {
+    await clearDb()
   })
 
   const options: OptionsAlteration = {

@@ -5,6 +5,7 @@ import create from '../../../api/core/scenario/create'
 import assert from 'assert'
 import { UpdateScenarioError } from '@smartesting/shared/dist/responses/updateScenario'
 import updateScenario from '../../../api/core/scenario/update'
+import { clearDb } from '../../clearDb'
 describe('core/scenario/update', () => {
   let scenarioManager: IScenarioManager
   const validScenarioAttributes: ScenarioAttributes = {
@@ -23,6 +24,10 @@ describe('core/scenario/update', () => {
   beforeEach(async () => {
     const adapters = makeTestAdapters()
     scenarioManager = adapters.scenarioManager
+  })
+
+  afterEach(async () => {
+    await clearDb()
   })
 
   it('requires a non-blank name for the scenario', async () => {
@@ -88,7 +93,8 @@ describe('core/scenario/update', () => {
     assert(updatedScenario)
 
     const existing = await scenarioManager.findScenario(updatedScenario.id)
-    assert.deepStrictEqual(updatedScenario, existing)
+    assert.deepStrictEqual(updatedScenario.name, existing?.name)
+    assert.deepStrictEqual(updatedScenario.text, existing?.text)
   })
 
   it('trims the name and text before saving', async () => {

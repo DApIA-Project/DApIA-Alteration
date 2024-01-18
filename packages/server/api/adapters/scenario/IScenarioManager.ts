@@ -15,7 +15,5 @@ export default interface IScenarioManager {
 
   findScenario(scenarioId: string): Promise<Scenario | null>
 
-  hasText(scenarioId: string, text: string): Promise<boolean>
-
   listScenarios(): Promise<ReadonlyArray<Scenario>>
 }

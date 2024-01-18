@@ -1,13 +1,13 @@
 import {
   CreationOptional,
   DataTypes,
-  Identifier,
   InferAttributes,
   InferCreationAttributes,
   Model,
 } from 'sequelize'
 import { sequelize } from '../database/connection'
 import { OptionsAlteration } from '@smartesting/shared/dist'
+import { Identifier } from 'sequelize/types/model'
 
 export default class Scenario extends Model<
   InferAttributes<Scenario>,
@@ -17,6 +17,8 @@ export default class Scenario extends Model<
   declare name: string
   declare text: string
   declare options: OptionsAlteration
+  declare createdAt: Date
+  declare updatedAt: Date
 }
 
 Scenario.init(
@@ -34,6 +36,14 @@ Scenario.init(
     },
     options: {
       type: DataTypes.JSON,
+    },
+    createdAt: {
+      type: DataTypes.DATE,
+      defaultValue: Date.now,
+    },
+    updatedAt: {
+      type: DataTypes.DATE,
+      defaultValue: Date.now,
     },
   },
   {

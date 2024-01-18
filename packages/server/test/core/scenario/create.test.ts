@@ -4,6 +4,7 @@ import makeTestAdapters from '../../makeTestAdapters'
 import create from '../../../api/core/scenario/create'
 import assert from 'assert'
 import { CreateScenarioError } from '@smartesting/shared/dist/responses/createScenario'
+import { clearDb } from '../../clearDb'
 describe('core/scenario/create', () => {
   let scenarioManager: IScenarioManager
   const validScenarioAttributes: ScenarioAttributes = {
@@ -22,6 +23,9 @@ describe('core/scenario/create', () => {
   beforeEach(async () => {
     const adapters = makeTestAdapters()
     scenarioManager = adapters.scenarioManager
+  })
+  afterEach(async () => {
+    await clearDb()
   })
 
   it('requires a non-blank name for the scenario', async () => {

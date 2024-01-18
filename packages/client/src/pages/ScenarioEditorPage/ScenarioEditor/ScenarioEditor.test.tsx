@@ -30,8 +30,8 @@ describe('ScenarioEditor', () => {
       haveDisableLatitude: false,
       haveDisableLongitude: false,
     },
-    create_at: new Date(),
-    update_at: new Date(),
+    createdAt: new Date(),
+    updatedAt: new Date(),
   }
   let scenario1: Scenario = {
     ...scenarioAttributes,

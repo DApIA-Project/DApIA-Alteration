@@ -18,8 +18,8 @@ let scenarioA: Scenario = {
     haveDisableLongitude: false,
   },
   id: '1',
-  create_at: new Date(),
-  update_at: new Date(),
+  createdAt: new Date(),
+  updatedAt: new Date(),
 }
 let scenarioB: Scenario = {
   name: 'Scenario 2',
@@ -33,8 +33,8 @@ let scenarioB: Scenario = {
     haveDisableLongitude: false,
   },
   id: '2',
-  create_at: new Date(),
-  update_at: new Date(),
+  createdAt: new Date(),
+  updatedAt: new Date(),
 }
 
 let listScenario: Scenario[] = []

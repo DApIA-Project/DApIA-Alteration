@@ -14,8 +14,8 @@ export default class MemoryScenarioManager implements IScenarioManager {
     const fullScenario: Scenario = {
       ...scenario,
       id,
-      create_at: date,
-      update_at: date,
+      createdAt: date,
+      updatedAt: date,
     }
     this.scenariosById.set(id, fullScenario)
     return fullScenario
@@ -30,7 +30,7 @@ export default class MemoryScenarioManager implements IScenarioManager {
     const updatedScenario: Scenario = {
       ...scenario,
       ...updatedData,
-      update_at: new Date(),
+      updatedAt: new Date(),
     }
     this.scenariosById.set(scenarioId, updatedScenario)
     return updatedScenario
@@ -43,14 +43,6 @@ export default class MemoryScenarioManager implements IScenarioManager {
   async findScenario(scenarioId: string): Promise<Scenario | null> {
     const scenario = this.scenariosById.get(scenarioId)
     return scenario || null
-  }
-
-  async hasText(scenarioId: string, text: string): Promise<boolean> {
-    const scenarios = Array.from(this.scenariosById.values())
-    const foundScenario = scenarios.find(
-      (scenario) => scenario.id === scenarioId && scenario.text === text
-    )
-    return !!foundScenario
   }
 
   async listScenarios(): Promise<ReadonlyArray<Scenario>> {
