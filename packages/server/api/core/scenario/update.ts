@@ -1,4 +1,4 @@
-import { ScenarioAttributes } from '@smartesting/shared/dist/models/Scenario'
+import { OptionsAlteration } from '@smartesting/shared/dist/models'
 import {
   UpdateScenarioError,
   UpdateScenarioResponse,
@@ -9,6 +9,7 @@ export default async function updateScenario(
   scenarioId: string,
   name: string,
   text: string,
+  options: OptionsAlteration,
   scenarioManager: IScenarioManager
 ): Promise<UpdateScenarioResponse> {
   const newName = name.trim()
@@ -20,6 +21,7 @@ export default async function updateScenario(
   const updatedScenario = await scenarioManager.updateScenario(scenarioId, {
     name: newName,
     text: newText,
+    options: options,
   })
   return { error: null, scenario: updatedScenario }
 }

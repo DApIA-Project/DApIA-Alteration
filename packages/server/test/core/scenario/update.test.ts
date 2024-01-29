@@ -6,6 +6,7 @@ import assert from 'assert'
 import { UpdateScenarioError } from '@smartesting/shared/dist/responses/updateScenario'
 import updateScenario from '../../../api/core/scenario/update'
 import { clearDb } from '../../clearDb'
+import { OptionsAlteration } from '@smartesting/shared/dist/models'
 describe('core/scenario/update', () => {
   let scenarioManager: IScenarioManager
   const validScenarioAttributes: ScenarioAttributes = {
@@ -39,11 +40,20 @@ describe('core/scenario/update', () => {
     )
 
     assert(createdScenario)
+    let options: OptionsAlteration = {
+      haveDisableAltitude: false,
+      haveDisableLongitude: false,
+      haveDisableLatitude: false,
+      haveNoise: false,
+      haveRealism: false,
+      haveLabel: false,
+    }
     const { scenario: updatedScenario, error: updatedError } =
       await updateScenario(
         createdScenario.id,
         '  ',
         createdScenario.text,
+        options,
         scenarioManager
       )
 
@@ -60,11 +70,20 @@ describe('core/scenario/update', () => {
     )
 
     assert(createdScenario)
+    let options: OptionsAlteration = {
+      haveDisableAltitude: false,
+      haveDisableLongitude: false,
+      haveDisableLatitude: false,
+      haveNoise: false,
+      haveRealism: false,
+      haveLabel: false,
+    }
     const { scenario: updatedScenario, error: updatedError } =
       await updateScenario(
         createdScenario.id,
         createdScenario.name,
         '   ',
+        options,
         scenarioManager
       )
 
@@ -81,11 +100,21 @@ describe('core/scenario/update', () => {
     )
 
     assert(createdScenario)
+
+    let options: OptionsAlteration = {
+      haveDisableAltitude: false,
+      haveDisableLongitude: false,
+      haveDisableLatitude: false,
+      haveNoise: false,
+      haveRealism: false,
+      haveLabel: false,
+    }
     const { scenario: updatedScenario, error: updatedError } =
       await updateScenario(
         createdScenario.id,
         'Scenario B',
         'cut all_planes at 5 seconds',
+        options,
         scenarioManager
       )
 
@@ -106,11 +135,20 @@ describe('core/scenario/update', () => {
     )
 
     assert(createdScenario)
+    let options: OptionsAlteration = {
+      haveDisableAltitude: false,
+      haveDisableLongitude: false,
+      haveDisableLatitude: false,
+      haveNoise: false,
+      haveRealism: false,
+      haveLabel: false,
+    }
     const { scenario: updatedScenario, error: updatedError } =
       await updateScenario(
         createdScenario.id,
         '  Scenario B  ',
         '  cut all_planes at 5 seconds  ',
+        options,
         scenarioManager
       )
 

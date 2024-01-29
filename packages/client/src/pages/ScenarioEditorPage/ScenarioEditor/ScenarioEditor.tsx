@@ -73,14 +73,14 @@ const ScenarioEditor: React.FunctionComponent<ScenarioEditorProps> = ({
       })
   }, [openedScenarios])
 
-  function updateScenario(
+  async function updateScenario(
     id: string,
     newName: string,
     newText: string,
     newOptions: OptionsAlteration
   ) {
     if (!client) return
-    client
+    await client
       .updateScenario(id, newName, newText, newOptions)
       .then(({ scenario, error }) => {
         if (error) console.log(error)
@@ -137,20 +137,26 @@ const ScenarioEditor: React.FunctionComponent<ScenarioEditorProps> = ({
     setOpenedScenarios(newScenarios)
   }
 
-  function handleOnRemove(scenario: Scenario) {
+  async function handleOnRemove(scenario: Scenario) {
     if (!client) return
-    client.deleteScenario(scenario.id).then(({ error }) => {
+
+    await client.deleteScenario(scenario.id).then(({ error }) => {
       if (error) console.log(error)
     })
-    const newScenariosSaved = savedScenarios.filter(
-      (scenarioSaved, indexScenario) => scenarioSaved.id !== scenario.id
-    )
-    setSavedScenarios(newScenariosSaved)
-
     const newScenariosOpened = openedScenarios.filter(
       (scenarioOpened, indexScenario) => scenarioOpened.id !== scenario.id
     )
-    setOpenedScenarios(newScenariosOpened)
+
+    const newScenariosSaved = savedScenarios.filter(
+      (scenarioSaved, indexScenario) => scenarioSaved.id !== scenario.id
+    )
+
+    unstable_batchedUpdates(async () => {
+      setSavedScenarios(newScenariosSaved)
+      setOpenedScenarios(newScenariosOpened)
+    }).then(() => {
+      return
+    })
   }
 
   function handleOnChange(newText: string) {
@@ -165,8 +171,8 @@ const ScenarioEditor: React.FunctionComponent<ScenarioEditorProps> = ({
     setOpenedScenarios(newOpenedScenarios)
   }
 
-  const handleScenarioNameUpdate = (newName: string) => {
-    updateScenario(
+  async function handleScenarioNameUpdate(newName: string) {
+    await updateScenario(
       openedScenarios[selectedScenario].id,
       newName,
       openedScenarios[selectedScenario].text,

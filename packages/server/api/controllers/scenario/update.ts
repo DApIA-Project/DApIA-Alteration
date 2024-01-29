@@ -22,6 +22,7 @@ export default makeRequestHandler<UpdateScenarioResponse>(
       scenario.id,
       scenario.name,
       scenario.text,
+      scenario.options,
       scenarioManager
     )
   }

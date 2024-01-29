@@ -3,6 +3,7 @@ import setRoutes from './appRoute'
 import setAdapters from './api/middlewares/setAdapters'
 import MemoryScenarioManager from './api/adapters/scenario/MemoryScenarioManager'
 import { JavaAlterationManager } from './api/adapters/JavaAlterationManager'
+import PsqlScenarioManager from './api/adapters/scenario/PsqlScenarioManager'
 
 const express = require('express')
 const cors = require('cors')
@@ -17,7 +18,7 @@ app.use(cors())
 app.use(express.json({ limit: '200mb' }))
 app.use(
   setAdapters({
-    scenarioManager: new MemoryScenarioManager(),
+    scenarioManager: new PsqlScenarioManager(),
     alterationManager: new JavaAlterationManager(),
   })
 )

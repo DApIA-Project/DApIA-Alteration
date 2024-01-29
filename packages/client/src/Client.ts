@@ -64,14 +64,14 @@ export default class Client {
     id_scenario: string,
     newName: string,
     newText: string,
-    optionsAlteration: OptionsAlteration
+    newOptionsAlteration: OptionsAlteration
   ): Promise<UpdateScenarioResponse> {
     const url: string = `${apiUrl}/scenario/update`
     const data = {
       id: id_scenario,
       name: newName,
       text: newText,
-      options: optionsAlteration,
+      options: newOptionsAlteration,
     }
     return this.apiCall<UpdateScenarioResponse>(url, data)
   }
