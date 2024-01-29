@@ -1,6 +1,7 @@
 export {}
 describe('Click on tab button', () => {
   beforeEach(() => {
+    cy.task('db:reset')
     cy.visit('http://localhost:3000')
   })
 

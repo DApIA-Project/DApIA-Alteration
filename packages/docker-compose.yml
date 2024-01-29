@@ -63,7 +63,7 @@ services:
     working_dir: /app/packages/server
     entrypoint: npm run migrate up
     environment:
-      DATABASE_URL: postgresql://postgres:postgres@postgres-alteration:5432/alterationdb
+      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/alterationdb
     depends_on:
       postgres:
         condition: service_healthy
@@ -78,6 +78,49 @@ services:
       - ./postgres/data:/var/lib/postgresql/data
     ports:
       - '5432:5432'
+    restart: unless-stopped
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U postgres']
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  #       $$$$$$$$\                    $$\                                                   $$\
+  #       \__$$  __|                   $$ |                                                  \__|
+  #          $$ | $$$$$$\   $$$$$$$\ $$$$$$\          $$$$$$$\  $$$$$$\   $$$$$$\ $$\    $$\ $$\  $$$$$$$\  $$$$$$\   $$$$$$$\
+  #          $$ |$$  __$$\ $$  _____|\_$$  _|        $$  _____|$$  __$$\ $$  __$$\\$$\  $$  |$$ |$$  _____|$$  __$$\ $$  _____|
+  #          $$ |$$$$$$$$ |\$$$$$$\    $$ |          \$$$$$$\  $$$$$$$$ |$$ |  \__|\$$\$$  / $$ |$$ /      $$$$$$$$ |\$$$$$$\
+  #          $$ |$$   ____| \____$$\   $$ |$$\        \____$$\ $$   ____|$$ |       \$$$  /  $$ |$$ |      $$   ____| \____$$\
+  #          $$ |\$$$$$$$\ $$$$$$$  |  \$$$$  |      $$$$$$$  |\$$$$$$$\ $$ |        \$  /   $$ |\$$$$$$$\ \$$$$$$$\ $$$$$$$  |
+  #          \__| \_______|\_______/    \____/       \_______/  \_______|\__|         \_/    \__| \_______| \_______|\_______/
+  alteration-migrate-test-db:
+    image: node:16-alpine
+    container_name: alteration-migrate-test-db
+    profiles:
+      - test
+      - e2e-test
+    volumes:
+      - .:/app/packages
+    working_dir: /app/packages/server
+    entrypoint: npm run migrate up
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@postgres-alteration-test:5432/alterationdb
+    depends_on:
+      postgres-test:
+        condition: service_healthy
+      install-server-dependencies:
+        condition: service_completed_successfully
+
+  postgres-test:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: alterationdb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - ./postgres/data-test:/var/lib/postgresql/data
+    ports:
+      - '5433:5432'
     restart: unless-stopped
     healthcheck:
       test: ['CMD-SHELL', 'pg_isready -U postgres']

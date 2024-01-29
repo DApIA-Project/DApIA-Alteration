@@ -1,6 +1,7 @@
 export {}
 describe('Upload a file to alterate', () => {
   beforeEach(() => {
+    cy.task('db:reset')
     cy.visit('http://localhost:3000')
   })
 

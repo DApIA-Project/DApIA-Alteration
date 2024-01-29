@@ -1,8 +1,11 @@
 export {}
 describe('Generate a complete alteration', () => {
   beforeEach(() => {
+    cy.task('db:reset')
     cy.visit('http://localhost:3000')
     cy.wait(1000)
+    cy.get('[data-testid="AddTabButton"]').click()
+    cy.get('[class="alterationeditor"]').click()
   })
 
   it('Generate an alteration without option', () => {
@@ -42,6 +45,7 @@ describe('Generate a complete alteration', () => {
     ).selectFile('cypress/resources/2022_07_toulouse_SAMUCF_1h.sbs')
     cy.get('[class="imageDownload"]').should('not.exist')
     cy.get('[data-testid="GenerateAlterationButton"]').click()
+    cy.wait(2000)
     cy.get('[class="imageDownload"]').should(($elements) => {
       expect($elements).to.have.length(2)
     })

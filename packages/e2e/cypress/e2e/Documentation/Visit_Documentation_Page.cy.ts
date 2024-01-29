@@ -2,6 +2,7 @@ export {}
 
 describe('Visit Documentation Page', () => {
   beforeEach(() => {
+    cy.task('db:reset')
     cy.visit('http://localhost:3000')
   })
 

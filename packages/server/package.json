@@ -1,5 +1,5 @@
 {
-  "name": "server",
+  "name": "@smartesting/dapia-server",
   "version": "0.16",
   "description": "",
   "main": "index.js",
