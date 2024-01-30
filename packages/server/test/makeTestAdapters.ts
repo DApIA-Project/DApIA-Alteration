@@ -1,5 +1,6 @@
 import { AlterationAdapters } from '../api/AlterationAdapters'
 import { JavaAlterationManager } from '../api/adapters/JavaAlterationManager'
+import { TypescriptAlterationManager } from '../api/adapters/TypescriptAlterationManager'
 
 export default function makeTestAdapters(): AlterationAdapters {
   if (process.env.MEMORY_ADAPTERS) {
@@ -10,12 +11,12 @@ export default function makeTestAdapters(): AlterationAdapters {
 
 export function makeMemoryAdapters(): AlterationAdapters {
   return {
-    alterationManager: new JavaAlterationManager(),
+    alterationManager: new TypescriptAlterationManager(),
   }
 }
 
 export function makeProductionAdapters(): AlterationAdapters {
   return {
-    alterationManager: new JavaAlterationManager(),
+    alterationManager: new TypescriptAlterationManager(),
   }
 }

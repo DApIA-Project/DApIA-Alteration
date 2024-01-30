@@ -3,8 +3,37 @@ import  { Message, notEmpty } from './types'
 
 export function parse(recording: string): Message[] {
 	return recording.split("\n")
+									.filter((str) => str.length > 0) // remove blank lines
 									.map(parseOne)
 									.filter(notEmpty);
+}
+
+export function stringify(msg: Message): string {
+	let result: string = "";
+
+	for(let field in msg) {
+		if(field == "timestampLogged" || field == "timestampGenerated") {
+			let date = new Date(msg[field]);
+			result += date.toISOString().split("T")[0].replaceAll("-", "/") + ",";
+			result += date.toISOString().split("T")[1].slice(0, -1) + ",";
+			continue;
+		}
+
+		if(typeof msg[field] == "boolean") {
+			result += (msg[field] ? "1" : "0") + ",";
+			continue;
+		}
+
+		if(msg[field] == undefined || msg[field] == null) {
+			result += ',';
+			continue;
+		}
+
+		result += msg[field] + ",";
+	}
+
+	// Remove trailling coma
+	return result.slice(0, -1);
 }
 
 
@@ -29,10 +58,11 @@ function parseOne(msg: string) : Message | null {
 		longitude: 						parseOrNull(fields[15]),
 		verticalRate: 				parseOrNull(fields[16]),
 		squawk: 							parseOrNull(fields[17]),
-		alert: 								fields[18] == '1',
-		emergency: 						fields[19] == '1',
-		spi: 									fields[20] == '1',
-		onGround: 						fields[21] == '1',
+		alert: 								(fields[18] ? fields[18] == '1' : undefined),
+		emergency: 						(fields[19] ? fields[19] == '1' : undefined),
+		spi: 									(fields[20] ? fields[20] == '1' : undefined),
+		onGround: 						(fields[21] ? fields[21] == '1' : undefined),
+
 		...extra_fields,
 	});
 }

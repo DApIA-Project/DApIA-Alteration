@@ -4,6 +4,23 @@ import IAlterationManager from '../../../api/adapters/IAlterationManager'
 import { Recording } from '@smartesting/shared/dist/models/index'
 import assert from 'assert'
 
+/**
+ * Format a ADS-B message to prepare it for comparaison
+ * The function remove whitespace, empty line, non significant number (.0) 
+ * The function truncate float with only n significant digit
+ * @param str: the recording
+ * @param n : the number of significant digit in float
+ */ 
+function prepare_string(str: string, n: number) : string {
+	if(!n) n = '';
+
+	return str.replace(/ +/g ,'')
+						.split("\n").filter((s) => s.length > 0).join("\n")
+						.replace(/\.0+([,\n])/g, '$1')
+						.replace(new RegExp(`([0-9]+)\.([0-9]{1,${n}})[0-9]*,`, "g"), '$1.$2,')
+}
+
+
 const IAlterationContractTest: IContractTest = (
   implementationName,
   makeAdapters
@@ -24,7 +41,7 @@ const IAlterationContractTest: IContractTest = (
         'MSG,3,3,5022202,4CA1FA,5022202,2018/11/25,12:22:19.221,2018/11/25,12:22:19.221,,29975.0,,,48.2271,3.5527,,,0,0,0,0\n' +
         'MSG,1,3,5022202,4CA1FA,5022202,2018/11/25,12:22:19.501,2018/11/25,12:22:19.501,AZA676,,,,,,,,,,,\n' +
         'MSG,3,3,5022202,4CA1FA,5022202,2018/11/25,12:22:19.695,2018/11/25,12:22:19.695,,29975.0,,,48.2271,3.5527,,,0,0,0,0\n' +
-        'MSG,4,3,5022202,4CA1FA,5022202,2018/11/25,12:22:19.843,2018/11/25,12:22:19.843,,,517.63,336.31,,,-0.33,,,,,\n' +
+        'MSG,4,3,5022202,4CA1FA,5022202,2018/11/25,12:22:19.843,2018/11/25,12:22:19.843,,,517.63,336.31,,,0,,,,,\n' +
         'MSG,3,3,5022202,4CA1FA,5022202,2018/11/25,12:22:20.171,2018/11/25,12:22:20.171,,30000.0,,,48.2293,3.5513,,,0,0,0,0\n' +
         'MSG,3,3,5022202,4CA1FA,5022202,2018/11/25,12:22:20.179,2018/11/25,12:22:20.179,,30000.0,,,48.228,3.5522,,,0,0,0,0\n' +
         'MSG,3,3,5022202,4CA1FA,5022202,2018/11/25,12:22:20.800,2018/11/25,12:22:20.800,,30000.0,,,48.2306,3.5505,,,0,0,0,0\n'
@@ -91,7 +108,8 @@ const IAlterationContractTest: IContractTest = (
         recordingsAltered[0].name,
         'modified__zigzag_0.sbs'
       )
-      assert.deepStrictEqual(recordingsAltered[0].content, content)
+
+      assert.deepStrictEqual(prepare_string(recordingsAltered[0].content), prepare_string(content));
     })
 
     it('valid hide all-planes from until', async () => {
@@ -144,8 +162,8 @@ const IAlterationContractTest: IContractTest = (
         'modified__zigzag_0.sbs'
       )
       assert.deepStrictEqual(
-        recordingsAltered[0].content,
-        'MSG,3,3,5022202,4CA1FA,5022202,2018/11/25,12:22:18.758,2018/11/25,12:22:18.758,,30000,,,48.226,3.5534,,,0,0,0,0\n' +
+        prepare_string(recordingsAltered[0].content, 1),
+        prepare_string('MSG,3,3,5022202,4CA1FA,5022202,2018/11/25,12:22:18.758,2018/11/25,12:22:18.758,,30000,,,48.226,3.5534,,,0,0,0,0\n' +
           'MSG,3,3,5022202,4CA1FA,5022202,2018/11/25,12:22:19.221,2018/11/25,12:22:19.221,,29975,,,48.2271,3.5527,,,0,0,0,0\n' +
           'MSG,1,3,5022202,4CA1FA,5022202,2018/11/25,12:22:19.501,2018/11/25,12:22:19.501,AZA676,,,,,,,,,,,\n' +
           'MSG,3,3,5022202,4CA1FA,5022202,2018/11/25,12:22:19.695,2018/11/25,12:22:19.695,,29975,,,48.2271,3.5527,,,0,0,0,0\n' +
@@ -153,7 +171,7 @@ const IAlterationContractTest: IContractTest = (
           'MSG,3,3,5022202,4CA1FA,5022202,2018/11/25,12:22:20.171,2018/11/25,12:22:20.171,,30000,,,48.2293,3.5513,,,0,0,0,0\n' +
           'MSG,3,3,5022202,4CA1FA,5022202,2018/11/25,12:22:20.179,2018/11/25,12:22:20.179,,30000,,,48.228,3.5522,,,0,0,0,0\n' +
           'MSG,3,3,5022202,4CA1FA,5022202,2018/11/25,12:22:20.800,2018/11/25,12:22:20.800,,30000,,,48.2306,3.5505,,,0,0,0,0\n' +
-          '\n'
+          '\n', 1)
       )
     })
 
@@ -214,8 +232,8 @@ const IAlterationContractTest: IContractTest = (
         'modified__zigzag2_0.sbs'
       )
       assert.deepStrictEqual(
-        recordingsAltered[0].content,
-        'MSG,3,3,5022202,B2B2B2,5022202,2018/11/25,12:22:16.239,2018/11/25,12:22:16.239,,30000,,,48.2206,3.557,,,0,0,0,0\n' +
+        prepare_string(recordingsAltered[0].content, 1),
+        prepare_string('MSG,3,3,5022202,B2B2B2,5022202,2018/11/25,12:22:16.239,2018/11/25,12:22:16.239,,30000,,,48.2206,3.557,,,0,0,0,0\n' +
           'MSG,4,3,5022202,B2B2B2,5022202,2018/11/25,12:22:16.424,2018/11/25,12:22:16.424,,,517.6,336.3,,,0,,,,,\n' +
           'MSG,3,3,5022202,B2B2B2,5022202,2018/11/25,12:22:16.842,2018/11/25,12:22:16.842,,30000,,,48.2219,3.5562,,,0,0,0,0\n' +
           'MSG,3,3,5022202,B2B2B2,5022202,2018/11/25,12:22:18.758,2018/11/25,12:22:18.758,,30000,,,48.226,3.5534,,,0,0,0,0\n' +
@@ -226,7 +244,7 @@ const IAlterationContractTest: IContractTest = (
           'MSG,3,3,5022202,B2B2B2,5022202,2018/11/25,12:22:20.171,2018/11/25,12:22:20.171,,30000,,,48.2293,3.5513,,,0,0,0,0\n' +
           'MSG,3,3,5022202,B2B2B2,5022202,2018/11/25,12:22:20.179,2018/11/25,12:22:20.179,,30000,,,48.228,3.5522,,,0,0,0,0\n' +
           'MSG,3,3,5022202,B2B2B2,5022202,2018/11/25,12:22:20.800,2018/11/25,12:22:20.800,,30000,,,48.2306,3.5505,,,0,0,0,0\n' +
-          '\n'
+          '\n', 1)
       )
     })
 

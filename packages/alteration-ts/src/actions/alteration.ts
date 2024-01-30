@@ -2,10 +2,10 @@ import {Scope, Icao, Action, Message, XOR} from "../types"
 
 
 export enum AlterationMode {
-	REPLACE,
-	OFFSET,
-	NOISE,
-	DRIFT,
+	REPLACE = "replace",
+	OFFSET = "offset",
+	NOISE = "noise",
+	DRIFT = "drift",
 }
 
 type Modification = {

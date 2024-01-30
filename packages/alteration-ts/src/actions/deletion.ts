@@ -1,6 +1,12 @@
 
 import { Scope, Message } from "../types"
 
+/**
+ * Config for a deletion action
+ * @param scope : a Scope function
+ * @param frequency : the number between two deleted rows, 
+ * 										if 0 then all targeted rows are remove
+ */ 
 type Config = {
 	scope: Scope,
 	frequency?: number

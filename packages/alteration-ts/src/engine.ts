@@ -1,5 +1,6 @@
 import { Action, Message } from './types'
 import { clone } from './index'
+import { stringify } from './message'
 
 type Config = {
 	actions: Action[],
@@ -28,5 +29,11 @@ export class EngineResult {
 
 	get_recording(): Message[] {
 		return this.recording
+	}
+
+	to_string(): string {
+		let result = this.recording.reduce((res, msg) => res += stringify(msg) + "\n", "");
+
+		return result;
 	}
 }

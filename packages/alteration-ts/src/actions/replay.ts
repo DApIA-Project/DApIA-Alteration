@@ -9,6 +9,13 @@ type AlterationConfig = {
 	mode: AlterationMode,	
 }
 
+/**
+ * Config for a replay alteration
+ * @param scope : a Scope function
+ * @param source a recording to replay, a message of the recording is replayed iff the scope target it
+ * @param alterations : a list of modifications to compute on each replayed message (see 'actions/alteration.ts')
+ * @param offset : a number in millisecond to add to timestamp of replayed messages
+ */ 
 type Config = {
 	scope: Scope,
 	source: readonly Message[],

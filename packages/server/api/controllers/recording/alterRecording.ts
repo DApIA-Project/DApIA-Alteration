@@ -2,6 +2,7 @@ import { RequestHandler } from 'express'
 import { AlterRecordingError } from '@smartesting/shared/dist'
 import alterRecordingCore from '../../core/recording/alterRecording'
 import { JavaAlterationManager } from '../../adapters/JavaAlterationManager'
+import { TypescriptAlterationManager } from "../../adapters/TypescriptAlterationManager"
 
 const alterRecording: RequestHandler = async (req, res) => {
   const { scenario, recording, recordingToReplay, optionsAlteration } = req.body

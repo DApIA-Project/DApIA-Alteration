@@ -1,4 +1,4 @@
-import {parse} from '../../src/'
+import {parse, stringify} from '../../src/'
 import {expect} from 'chai'
 
 describe("Message parser", () => {
@@ -21,6 +21,17 @@ describe("Message parser", () => {
 			onGround: false
 		});
 	})
+
+	it("should stringify a message", () => {
+		let src = "MSG,0,3,10610299,A1E67B,10610299,2019/04/19,17:30:00.140,2019/04/19,17:30:00.140,,16625,,,50.4073,8.2464,,,0,0,0,0";
+		let msg = parse(src)[0];
+
+		expect(stringify(msg)).to.be.equals(src);
+		
+		src = "MSG,3,3,5022202,4CA1FA,5022202,2018/11/25,12:22:16.239,2018/11/25,12:22:16.239,,30000,,,48.2206,3.557,,,0,0,0,0";
+		msg = parse(src)[0];
+		expect(stringify(msg)).to.be.equals(src);
+	});
 
 	it("should parse a valid Message lower case hexIdent", () => {
 		const msgs = parse("MSG,3,3,5022202,39ac45,5022202,2022/07/01,05:08:57.000000,2022/07/01,05:08:57.000000,SAMUCF,550.0,66.0,303.20657031508955,43.61418643240201,1.3985988071986606,192.0,7015,0,0,0,0");
