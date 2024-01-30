@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "cross-env MODE_TEST=true ts-mocha -p tsconfig.json test/**/*.test.ts --timeout 10000",
+    "test:workflow": "ts-mocha -p tsconfig.json test/**/*.test.ts --timeout 10000",
     "test:coverage": "nyc --reporter=html ts-mocha -p tsconfig.json 'test/**/*.test.ts'",
     "serve": "node build/server.js",
     "start": "ts-node index.ts",
