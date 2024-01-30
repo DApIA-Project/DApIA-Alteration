@@ -232,7 +232,11 @@ const ScenarioEditor: React.FunctionComponent<ScenarioEditorProps> = ({
 
       <div className={'composantOption'}>
         <GenerateAlterationButton
-          optionsAlteration={optionsAlteration}
+          optionsAlteration={
+            openedScenarios[selectedScenario]
+              ? openedScenarios[selectedScenario].options
+              : optionsAlteration
+          }
           recording={recording}
           recordingToReplay={
             recordingToReplay.name && recordingToReplay.content
@@ -242,7 +246,11 @@ const ScenarioEditor: React.FunctionComponent<ScenarioEditorProps> = ({
           onClicked={(options) => onGenerate(options)}
         />
         <ScenarioOptions
-          optionsAlteration={optionsAlteration}
+          optionsAlteration={
+            openedScenarios[selectedScenario]
+              ? openedScenarios[selectedScenario].options
+              : optionsAlteration
+          }
           onChange={(newValue) => setOptionsAlteration(newValue)}
         />
         <RecordInputFiles

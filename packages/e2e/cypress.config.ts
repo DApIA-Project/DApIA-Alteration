@@ -14,8 +14,7 @@ export default defineConfig({
   },
   env: {
     MODE_TEST: 'true',
-    TEST_DATABASE_URL: process.env.TEST_DATABASE_URL,
+    DATABASE_URL:
+      'postgresql://postgres:postgres@localhost:5433/alterationdb_test',
   },
 })
-
-console.log('Cypress NODE_ENV e2e:', process.env.MODE_TEST)
