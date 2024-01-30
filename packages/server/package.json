@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "ts-mocha -p tsconfig.json test/**/*.test.ts --timeout 10000",
+    "test": "cross-env MODE_TEST=true ts-mocha -p tsconfig.json test/**/*.test.ts --timeout 10000",
     "test:coverage": "nyc --reporter=html ts-mocha -p tsconfig.json 'test/**/*.test.ts'",
     "serve": "node build/server.js",
     "start": "ts-node index.ts",

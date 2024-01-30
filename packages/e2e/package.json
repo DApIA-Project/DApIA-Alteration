@@ -3,10 +3,11 @@
   "version": "0.15",
   "private": true,
   "scripts": {
-    "test-cypress": "npx cypress run"
+    "test-cypress": "cross-env MODE_TEST=true npx cypress run"
   },
   "devDependencies": {
     "@smartesting/dapia-server": "file:../server",
+    "cross-env": "^7.0.3",
     "cypress": "^13.6.1",
     "typescript": "^4.9.5"
   }

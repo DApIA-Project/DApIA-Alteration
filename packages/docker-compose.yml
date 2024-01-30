@@ -104,17 +104,16 @@ services:
     working_dir: /app/packages/server
     entrypoint: npm run migrate up
     environment:
-      DATABASE_URL: postgresql://postgres:postgres@postgres-alteration-test:5432/alterationdb
+      DATABASE_URL: postgresql://postgres:postgres@postgres-test:5432/alterationdb_test
+      MODE_TEST: true
     depends_on:
       postgres-test:
         condition: service_healthy
-      install-server-dependencies:
-        condition: service_completed_successfully
 
   postgres-test:
     image: postgres:latest
     environment:
-      POSTGRES_DB: alterationdb
+      POSTGRES_DB: alterationdb_test
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
     volumes:

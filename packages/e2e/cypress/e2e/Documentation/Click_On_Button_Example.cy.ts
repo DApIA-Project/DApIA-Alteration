@@ -2,6 +2,7 @@ export {}
 
 describe('Click on button example', () => {
   beforeEach(() => {
+    Cypress.env()
     cy.task('db:reset')
     cy.visit('http://localhost:3000/documentation')
     cy.wait(1000)

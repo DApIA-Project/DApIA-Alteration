@@ -15,5 +15,6 @@ if (CONFIG.SSL_CONFIGURATION) {
     },
   }
 }
-
+console.log('Using DATABASE_URL:', CONFIG.DATABASE_URL)
+console.log('Sequelize options:', options)
 export const sequelize: Sequelize = new Sequelize(CONFIG.DATABASE_URL, options)
