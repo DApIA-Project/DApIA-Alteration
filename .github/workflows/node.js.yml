@@ -16,14 +16,14 @@ jobs:
     runs-on: ubuntu-latest
 
     services:
-      postgres:
+      postgres-test:
         image: postgres:latest
         env:
-          POSTGRES_DB: alterationdb
+          POSTGRES_DB: alterationdb_test
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
         ports:
-          - '5432:5432'
+          - '5433:5432'
         options: --health-cmd "pg_isready -U postgres" --health-interval 5s --health-timeout 5s --health-retries 5
 
     strategy:
