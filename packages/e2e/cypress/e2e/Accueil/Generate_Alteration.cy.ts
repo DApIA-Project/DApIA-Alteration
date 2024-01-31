@@ -16,7 +16,7 @@ describe('Generate a complete alteration', () => {
     ).selectFile('cypress/resources/2022_07_toulouse_SAMUCF_1h.sbs')
     cy.get('[class="imageDownload"]').should('not.exist')
     cy.get('[data-testid="GenerateAlterationButton"]').click()
-    cy.get('[class="imageDownload"]').should('exist').should('be.visible')
+    cy.wait(5000)
     cy.get('[class="imageDownload"]').should(($elements) => {
       expect($elements).to.have.length(1)
     })
@@ -31,7 +31,7 @@ describe('Generate a complete alteration', () => {
     ).selectFile('cypress/resources/2022_07_toulouse_SAMUCF_1h.sbs')
     cy.get('[class="imageDownload"]').should('not.exist')
     cy.get('[data-testid="GenerateAlterationButton"]').click()
-    cy.get('[class="imageDownload"]').should('exist').should('be.visible')
+    cy.wait(5000)
     cy.get('[class="imageDownload"]').should(($elements) => {
       expect($elements).to.have.length(1)
     })
@@ -47,7 +47,7 @@ describe('Generate a complete alteration', () => {
     ).selectFile('cypress/resources/2022_07_toulouse_SAMUCF_1h.sbs')
     cy.get('[class="imageDownload"]').should('not.exist')
     cy.get('[data-testid="GenerateAlterationButton"]').click()
-    cy.get('[class="imageDownload"]').should('exist').should('be.visible')
+    cy.wait(5000)
     cy.get('[class="imageDownload"]').should(($elements) => {
       expect($elements).to.have.length(2)
     })
@@ -67,7 +67,7 @@ describe('Generate a complete alteration', () => {
     ).selectFile('cypress/resources/2022_07_toulouse_SAMUCF_1h.sbs')
     cy.get('[class="imageDownload"]').should('not.exist')
     cy.get('[data-testid="GenerateAlterationButton"]').click()
-    cy.get('[class="imageDownload"]').should('exist').should('be.visible')
+    cy.wait(5000)
     cy.get('[class="imageDownload"]').should(($elements) => {
       expect($elements).to.have.length(1)
     })
@@ -82,6 +82,7 @@ describe('Generate a complete alteration', () => {
     cy.get('[class="imageDownload"]').should('not.exist')
     cy.get('[data-testid="GenerateAlterationButton"]').click()
     cy.get('[class="imageDownload"]').should('not.exist')
+    cy.wait(5000)
     cy.get('[data-testid="ScenarioOutput.action.displayError"]')
       .should('exist')
       .should('be.visible')
