@@ -1,7 +1,6 @@
 export {}
 describe('Generate a complete alteration', () => {
   beforeEach(() => {
-    Cypress.env()
     cy.task('db:reset')
     cy.visit('http://localhost:3000')
     cy.wait(1000)
