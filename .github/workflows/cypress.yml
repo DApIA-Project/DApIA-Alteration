@@ -39,7 +39,7 @@ jobs:
         run: npm run start &
       - name: Run server
         working-directory: packages/server
-        run: npm run start &
+        run: npm run start --env DATABASE_URL=postgresql://postgres:postgres@localhost:5433/alterationdb_test &
       - name: Run test e2e
         working-directory: packages/e2e
-        run: npm run test-cypress
+        run: npm run test-cypress --env DATABASE_URL=postgresql://postgres:postgres@localhost:5433/alterationdb_test

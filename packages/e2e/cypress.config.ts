@@ -12,9 +12,4 @@ export default defineConfig({
       })
     },
   },
-  env: {
-    MODE_TEST: 'true',
-    DATABASE_URL:
-      'postgresql://postgres:postgres@localhost:5433/alterationdb_test',
-  },
 })
