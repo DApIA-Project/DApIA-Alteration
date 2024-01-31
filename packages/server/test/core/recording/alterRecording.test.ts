@@ -11,7 +11,7 @@ describe(`core/alterRecording`, () => {
 
   beforeEach(() => {
     alterationManager = makeTestAdapters().alterationManager
-    server = setupExpress()
+    server = setupExpress(makeTestAdapters())
   })
 
   context('when syntax scenario is invalid', () => {

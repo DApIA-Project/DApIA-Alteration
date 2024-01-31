@@ -1,5 +1,7 @@
 import { AlterationAdapters } from '../api/AlterationAdapters'
 import { JavaAlterationManager } from '../api/adapters/JavaAlterationManager'
+import MemoryScenarioManager from '../api/adapters/scenario/MemoryScenarioManager'
+import PsqlScenarioManager from '../api/adapters/scenario/PsqlScenarioManager'
 
 export default function makeTestAdapters(): AlterationAdapters {
   if (process.env.MEMORY_ADAPTERS) {
@@ -11,11 +13,13 @@ export default function makeTestAdapters(): AlterationAdapters {
 export function makeMemoryAdapters(): AlterationAdapters {
   return {
     alterationManager: new JavaAlterationManager(),
+    scenarioManager: new MemoryScenarioManager(),
   }
 }
 
 export function makeProductionAdapters(): AlterationAdapters {
   return {
     alterationManager: new JavaAlterationManager(),
+    scenarioManager: new PsqlScenarioManager(),
   }
 }

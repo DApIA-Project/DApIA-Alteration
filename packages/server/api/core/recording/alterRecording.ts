@@ -34,7 +34,7 @@ export default async function alterRecording(
 
     if (recording.content === 'Error content file') {
       return {
-        error: recording.content,
+        error: AlterRecordingError.invalidContentFile,
         alteredRecordings: [],
       }
     }
@@ -45,7 +45,7 @@ export default async function alterRecording(
       recordingToReplay.content = csvToSbs(recordingToReplay.content)
       if (recordingToReplay.content === 'Error content file') {
         return {
-          error: recordingToReplay.content,
+          error: AlterRecordingError.invalidContentFile,
           alteredRecordings: [],
         }
       }
@@ -61,7 +61,7 @@ export default async function alterRecording(
 
   if (errors.length > 0)
     return {
-      error: errors.join('\n'),
+      error: AlterRecordingError.invalidSyntax,
       alteredRecordings: [],
     }
 

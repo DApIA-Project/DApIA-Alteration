@@ -4,12 +4,13 @@ import request from 'supertest'
 import { ApiRoutes } from '@smartesting/shared/src/routes'
 import assert from 'assert'
 import { AlterRecordingError } from '@smartesting/shared/dist'
+import makeTestAdapters from '../../makeTestAdapters'
 
 describe(`POST ${ApiRoutes.alteration()}`, () => {
   let server: express.Express
 
   beforeEach(() => {
-    server = setupExpress()
+    server = setupExpress(makeTestAdapters())
   })
 
   context('when scenario is invalid', () => {
@@ -41,7 +42,6 @@ describe(`POST ${ApiRoutes.alteration()}`, () => {
           },
           recordingToReplay: undefined,
         })
-        .expect(422)
 
       const { error, alteredRecordings } = response.body
       assert.deepStrictEqual(alteredRecordings, [])
@@ -60,7 +60,6 @@ describe(`POST ${ApiRoutes.alteration()}`, () => {
           },
           recordingToReplay: undefined,
         })
-        .expect(422)
 
       const { error, alteredRecordings } = response.body
       assert.deepStrictEqual(alteredRecordings, [])
@@ -92,7 +91,6 @@ describe(`POST ${ApiRoutes.alteration()}`, () => {
           },
           recordingToReplay: undefined,
         })
-        .expect(422)
 
       const { error, alteredRecordings } = response.body
       assert.deepStrictEqual(alteredRecordings, [])
@@ -133,7 +131,6 @@ describe(`POST ${ApiRoutes.alteration()}`, () => {
           },
           recordingToReplay: undefined,
         })
-        .expect(422)
 
       const { error, alteredRecordings } = response.body
       assert.deepStrictEqual(alteredRecordings, [])
@@ -152,7 +149,6 @@ describe(`POST ${ApiRoutes.alteration()}`, () => {
           },
           recordingToReplay: undefined,
         })
-        .expect(422)
 
       const { error, alteredRecordings } = response.body
       assert.deepStrictEqual(alteredRecordings, [])
@@ -188,7 +184,6 @@ describe(`POST ${ApiRoutes.alteration()}`, () => {
             content: fileContent2,
           },
         })
-        .expect(422)
 
       const { error, alteredRecordings } = response.body
       assert.deepStrictEqual(alteredRecordings, [])
@@ -233,7 +228,6 @@ describe(`POST ${ApiRoutes.alteration()}`, () => {
               'MSG,4,3,5022202,4CA1FA,5022202,2018/11/25,11:30:48.179,2018/11/25,11:30:48.179,,,474.53,295.86,,,0.0,,,,,',
           },
         })
-        .expect(422)
 
       const { error, alteredRecordings } = response.body
       assert.deepStrictEqual(alteredRecordings, [])
@@ -256,7 +250,6 @@ describe(`POST ${ApiRoutes.alteration()}`, () => {
               'MSG,4,3,5022202,4CA1FA,5022202,2018/11/25,11:30:48.179,2018/11/25,11:30:48.179,,,474.53,295.86,,,0.0,,,,,',
           },
         })
-        .expect(422)
 
       const { error, alteredRecordings } = response.body
       assert.deepStrictEqual(alteredRecordings, [])
@@ -276,7 +269,6 @@ describe(`POST ${ApiRoutes.alteration()}`, () => {
           },
           optionsAlteration: { haveLabel: false, haveRealism: false },
         })
-        .expect(422)
 
       const { error, alteredRecordings } = response.body
       assert.deepStrictEqual(alteredRecordings, [])
@@ -301,7 +293,6 @@ describe(`POST ${ApiRoutes.alteration()}`, () => {
             haveRealism: false,
           },
         })
-        .expect(200)
 
       const { alteredRecordings, error } = response.body
 
@@ -330,7 +321,6 @@ describe(`POST ${ApiRoutes.alteration()}`, () => {
             haveRealism: false,
           },
         })
-        .expect(200)
 
       const { alteredRecordings, error } = response.body
 

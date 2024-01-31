@@ -1,11 +1,12 @@
 import React from 'react'
 import './Button.css'
 
-interface ButtonProps {
+export interface ButtonProps {
   text: string
   disabled?: boolean
   className?: string
   onClick: () => void
+  children?: React.ReactNode
 }
 
 export enum ButtonTestIds {
@@ -27,7 +28,8 @@ function Button({
       onClick={onClick}
       disabled={disabled}
     >
-      &nbsp;{text}&nbsp;
+      {text}
+      {props.children}
     </button>
   )
 }

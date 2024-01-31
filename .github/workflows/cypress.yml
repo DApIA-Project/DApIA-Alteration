@@ -12,6 +12,17 @@ jobs:
   cypress-tests:
     runs-on: ubuntu-latest
 
+    services:
+      postgres:
+        image: postgres:latest
+        env:
+          POSTGRES_DB: alterationdb
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - '5432:5432'
+        options: --health-cmd "pg_isready -U postgres" --health-interval 5s --health-timeout 5s --health-retries 5
+
     strategy:
       matrix:
         node-version: [16.15.0]
@@ -31,12 +42,18 @@ jobs:
       - name: Install dependencies server
         working-directory: packages/server
         run: npm ci
+      - name: Run migrations
+        working-directory: packages/server
+        run: npm run migrate up
+      - name: Install dependencies E2E
+        working-directory: packages/e2e
+        run: npm ci
       - name: Run client
         working-directory: packages/client
         run: npm run start &
       - name: Run server
         working-directory: packages/server
         run: npm run start &
-      - name: Run test Client
-        working-directory: packages/client
+      - name: Run test e2e
+        working-directory: packages/e2e
         run: npm run test-cypress

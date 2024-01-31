@@ -43,3 +43,4 @@ Thumbs.db
 *.flv
 *.mov
 *.wmv
+/packages/postgres/

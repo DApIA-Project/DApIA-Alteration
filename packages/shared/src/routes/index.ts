@@ -6,4 +6,20 @@ export class ApiRoutes {
   static streamRecording() {
     return '/recording/stream'
   }
+
+  static createScenario() {
+    return '/scenario/create'
+  }
+
+  static updateScenario() {
+    return '/scenario/update'
+  }
+
+  static deleteScenario() {
+    return '/scenario/delete'
+  }
+
+  static listScenario() {
+    return '/scenario/list'
+  }
 }
