@@ -31,6 +31,15 @@ const ScenarioEditor: React.FunctionComponent<ScenarioEditorProps> = ({
   onGenerate,
 }) => {
   const client = useClient()
+  const optionsAlterationDefault: OptionsAlteration = {
+    haveLabel: false,
+    haveRealism: false,
+    haveNoise: false,
+    haveDisableLatitude: false,
+    haveDisableLongitude: false,
+    haveDisableAltitude: false,
+  }
+
   const [recording, setRecording] = useState<Recording>({
     name: '',
     content: '',
@@ -115,12 +124,12 @@ const ScenarioEditor: React.FunctionComponent<ScenarioEditorProps> = ({
       let scenarioCreation = await createScenario(
         'New scenario',
         '',
-        optionsAlteration
+        optionsAlterationDefault
       )
       if (scenarioCreation) {
         newScenarios.push(scenarioCreation)
         setOpenedScenarios(newScenarios)
-        setSelectedScenario(newScenarios.length - 1)
+        selectTab(newScenarios.length - 1, optionsAlterationDefault)
       }
     }).then(() => {
       return
@@ -131,9 +140,33 @@ const ScenarioEditor: React.FunctionComponent<ScenarioEditorProps> = ({
     const newScenarios = openedScenarios.filter(
       (scenario, indexScenario) => indexScenario !== index
     )
-    if (selectedScenario >= newScenarios.length) {
-      setSelectedScenario(newScenarios.length - 1)
+
+    if (selectedScenario === index) {
+      if (selectedScenario < newScenarios.length) {
+        selectTab(
+          selectedScenario,
+          openedScenarios[selectedScenario + 1].options
+        )
+      } else {
+        selectTab(
+          selectedScenario - 1,
+          openedScenarios[selectedScenario - 1].options
+        )
+      }
+    } else {
+      if (selectedScenario >= newScenarios.length) {
+        selectTab(
+          selectedScenario - 1,
+          openedScenarios[selectedScenario - 1].options
+        )
+      } else {
+        selectTab(
+          selectedScenario - 1,
+          openedScenarios[selectedScenario].options
+        )
+      }
     }
+
     setOpenedScenarios(newScenarios)
   }
 
@@ -154,6 +187,10 @@ const ScenarioEditor: React.FunctionComponent<ScenarioEditorProps> = ({
     unstable_batchedUpdates(async () => {
       setSavedScenarios(newScenariosSaved)
       setOpenedScenarios(newScenariosOpened)
+      selectTab(
+        newScenariosOpened.length - 1,
+        openedScenarios[newScenariosOpened.length - 1].options
+      )
     }).then(() => {
       return
     })
@@ -195,11 +232,37 @@ const ScenarioEditor: React.FunctionComponent<ScenarioEditorProps> = ({
       if (openingScenario && !isAlreadyOpen) {
         newScenarios.push(openingScenario)
         setOpenedScenarios(newScenarios)
-        setSelectedScenario(newScenarios.length - 1)
+        selectTab(newScenarios.length - 1, openingScenario.options)
       }
     }).then(() => {
       return
     })
+  }
+
+  async function handleOptions(newValue: OptionsAlteration) {
+    unstable_batchedUpdates(async () => {
+      await updateScenario(
+        openedScenarios[selectedScenario].id,
+        openedScenarios[selectedScenario].name,
+        openedScenarios[selectedScenario].text,
+        newValue
+      )
+      setOptionsAlteration(newValue)
+    }).then(() => {
+      return
+    })
+  }
+
+  function handleSelectTab(newSelectedTab: number) {
+    selectTab(newSelectedTab, openedScenarios[newSelectedTab].options)
+  }
+
+  function selectTab(
+    newSelectedTab: number,
+    optionToChange: OptionsAlteration
+  ) {
+    setOptionsAlteration(optionToChange)
+    setSelectedScenario(newSelectedTab)
   }
 
   return (
@@ -211,7 +274,7 @@ const ScenarioEditor: React.FunctionComponent<ScenarioEditorProps> = ({
         <EditorTabList
           tabs={openedScenarios}
           selected={selectedScenario}
-          onSelect={setSelectedScenario}
+          onSelect={handleSelectTab}
           onAdd={handleOnAdd}
           onChange={handleScenarioNameUpdate}
           onClose={handleOnDelete}
@@ -246,12 +309,8 @@ const ScenarioEditor: React.FunctionComponent<ScenarioEditorProps> = ({
           onClicked={(options) => onGenerate(options)}
         />
         <ScenarioOptions
-          optionsAlteration={
-            openedScenarios[selectedScenario]
-              ? openedScenarios[selectedScenario].options
-              : optionsAlteration
-          }
-          onChange={(newValue) => setOptionsAlteration(newValue)}
+          optionsAlteration={optionsAlteration}
+          onChange={handleOptions}
         />
         <RecordInputFiles
           onChangeRecord={(newValue) => setRecording(newValue)}

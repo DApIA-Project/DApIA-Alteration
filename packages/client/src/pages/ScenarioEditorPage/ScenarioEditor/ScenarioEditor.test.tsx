@@ -1,6 +1,6 @@
 import React from 'react'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
-import ScenarioEditor from './ScenarioEditor'
+import ScenarioEditor, { ScenarioEditorTestIds } from './ScenarioEditor'
 import userEvent from '@testing-library/user-event'
 import { OptionsAlteration, Recording } from '@smartesting/shared/src'
 import { uuid } from '@smartesting/shared/dist/uuid/uuid'
@@ -354,6 +354,9 @@ describe('ScenarioEditor', () => {
         target: { files: fileList },
       }
     )
+
+    let addButton = await screen.findByTestId(EditorTabListTestIds.ADD_BUTTON)
+    await userEvent.click(addButton)
 
     await screen.findByTestId(RecordInputFilesTestIds.RECORDING_IS_PRESENT)
     const checkboxs = screen.getAllByRole('checkbox')
