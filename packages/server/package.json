@@ -4,8 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "cross-env MODE_TEST=true ts-mocha -p tsconfig.json test/**/*.test.ts --timeout 10000",
-    "test:workflow": "ts-mocha -p tsconfig.json test/**/*.test.ts --timeout 10000",
+    "test": "ts-mocha -p tsconfig.json test/**/*.test.ts --timeout 10000",
     "test:coverage": "nyc --reporter=html ts-mocha -p tsconfig.json 'test/**/*.test.ts'",
     "serve": "node build/server.js",
     "start": "ts-node index.ts",
@@ -46,7 +45,6 @@
     "@smartesting/shared": "file:../shared",
     "@types/cors": "^2.8.13",
     "cors": "^2.8.5",
-    "cross-env": "^7.0.3",
     "esbuild": "^0.15.13",
     "express": "^4.18.2",
     "react": "^18.2.0",
