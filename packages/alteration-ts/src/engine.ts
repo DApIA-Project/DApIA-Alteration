@@ -34,6 +34,7 @@ export class EngineResult {
 	to_string(): string {
 		let result = this.recording.reduce((res, msg) => res += stringify(msg) + "\n", "");
 
-		return result;
+		// Remove the trailling \n
+		return result.slice(0,-1);
 	}
 }
