@@ -22,9 +22,7 @@ describe('Click on tab button', () => {
 
   it('click on remove tab 1 button', () => {
     cy.get('[data-testid="AddTabButton"]').click()
-    cy.screenshot('apres_clic1')
     cy.get('[data-testid="AddTabButton"]').click()
-    cy.screenshot('apres_clic2')
     cy.get('[data-testid="DivTab"]').should('have.length', 2)
     cy.get('[data-testid="RemoveTabButton"]').eq(0).click()
     cy.get('[data-testid="DivTab"]').should('have.length', 1)
