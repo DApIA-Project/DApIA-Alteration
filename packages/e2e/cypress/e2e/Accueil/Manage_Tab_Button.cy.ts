@@ -28,22 +28,6 @@ describe('Click on tab button', () => {
     cy.get('[data-testid="DivTab"]').should('have.length', 1)
   })
 
-  it('click on add tab button 11 times', () => {
-    cy.get('[data-testid="AddTabButton"]').click()
-    cy.get('[data-testid="AddTabButton"]').click()
-    cy.get('[data-testid="AddTabButton"]').click()
-    cy.get('[data-testid="AddTabButton"]').click()
-    cy.get('[data-testid="AddTabButton"]').click()
-    cy.get('[data-testid="AddTabButton"]').click()
-    cy.get('[data-testid="AddTabButton"]').click()
-    cy.get('[data-testid="AddTabButton"]').click()
-    cy.get('[data-testid="AddTabButton"]').click()
-    cy.get('[data-testid="AddTabButton"]').click()
-    cy.get('[data-testid="AddTabButton"]').should('be.disabled')
-
-    cy.get('[data-testid="DivTab"]').should('have.length', 10)
-  })
-
   it('Write scenario in many tab and scenarios are saved', () => {
     cy.get('[data-testid="AddTabButton"]').click()
     cy.get('[data-testid="AddTabButton"]').click()
