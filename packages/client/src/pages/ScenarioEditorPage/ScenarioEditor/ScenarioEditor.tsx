@@ -187,10 +187,12 @@ const ScenarioEditor: React.FunctionComponent<ScenarioEditorProps> = ({
     unstable_batchedUpdates(async () => {
       setSavedScenarios(newScenariosSaved)
       setOpenedScenarios(newScenariosOpened)
-      selectTab(
-        newScenariosOpened.length - 1,
-        openedScenarios[newScenariosOpened.length - 1].options
-      )
+      if (newScenariosOpened.length > 0) {
+        selectTab(
+          newScenariosOpened.length - 1,
+          openedScenarios[newScenariosOpened.length - 1].options
+        )
+      }
     }).then(() => {
       return
     })
@@ -240,17 +242,13 @@ const ScenarioEditor: React.FunctionComponent<ScenarioEditorProps> = ({
   }
 
   async function handleOptions(newValue: OptionsAlteration) {
-    unstable_batchedUpdates(async () => {
-      await updateScenario(
-        openedScenarios[selectedScenario].id,
-        openedScenarios[selectedScenario].name,
-        openedScenarios[selectedScenario].text,
-        newValue
-      )
-      setOptionsAlteration(newValue)
-    }).then(() => {
-      return
-    })
+    setOptionsAlteration(newValue)
+    await updateScenario(
+      openedScenarios[selectedScenario].id,
+      openedScenarios[selectedScenario].name,
+      openedScenarios[selectedScenario].text,
+      newValue
+    )
   }
 
   function handleSelectTab(newSelectedTab: number) {
@@ -295,11 +293,7 @@ const ScenarioEditor: React.FunctionComponent<ScenarioEditorProps> = ({
 
       <div className={'composantOption'}>
         <GenerateAlterationButton
-          optionsAlteration={
-            openedScenarios[selectedScenario]
-              ? openedScenarios[selectedScenario].options
-              : optionsAlteration
-          }
+          optionsAlteration={optionsAlteration}
           recording={recording}
           recordingToReplay={
             recordingToReplay.name && recordingToReplay.content
