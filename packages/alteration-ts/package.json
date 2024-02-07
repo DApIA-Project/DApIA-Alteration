@@ -2,9 +2,9 @@
   "name": "alteration-ts",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "type": "module",
   "scripts": {
-    "test": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' mocha -r ts-node/register 'tests/**/*.ts'",
+    "test": "mocha --inspect -r ts-node/register 'tests/**/*.ts'",
     "build": "tsc"
   },
   "keywords": [],
@@ -17,6 +17,8 @@
     "chai": "^4.3.10",
     "commons-math-interpolation": "^2.2.3",
     "mocha": "^10.2.0",
+    "tsx": "^4.7.0",
+    "ts-mocha": "^10.0.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3"
   }

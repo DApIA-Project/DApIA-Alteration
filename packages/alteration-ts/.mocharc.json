@@ -1,0 +1,9 @@
+{
+  "extensions": ["ts"],
+  "spec": ["tests/**/*.ts"],
+  "node-option": [
+    "experimental-specifier-resolution=node",
+    "import=tsx/esm",
+    "trace-uncaught"
+  ]
+}
