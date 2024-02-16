@@ -4,6 +4,7 @@ export * from "./actions"
 export * from "./scope"
 export * from "./engine"
 export * from "./aircraftTrajectory"
+export * from "./template"
 
 import { Message } from './types'
 

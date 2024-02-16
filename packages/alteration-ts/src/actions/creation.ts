@@ -4,9 +4,15 @@ import { Point, AircraftBuilder } from "../aircraftTrajectory"
 type Config = {
 	start: number, 
 	end: number,
-	template: Partial<Message>,
+	template: Template,
 	waypoints : Point[],
+
+	timeOffset?: () => number,
 }
+
+export type Template = Omit<Message, "timestampGenerated" | "timestampLogged"> | 
+						  				 Partial<Pick<Message, "timestampGenerated" | "timestampLogged">>
+
 
 function rand(min: number, max: number) {
 	const minCeiled = Math.ceil(min);
@@ -23,6 +29,8 @@ function rand(min: number, max: number) {
  * The template message SHOULD define mandatory field (messageType, flightID, ...)
  */
 export function creation(config: Config): Action {
+	if(!config.timeOffset) config.timeOffset = () => rand(200,400);
+
 	// Create the interpolation function
 	let trajectory = new AircraftBuilder()
 											.add_all(config.waypoints)
@@ -42,7 +50,7 @@ export function creation(config: Config): Action {
 				};
 				new_recording.push(msg);
 
-				time += rand(200, 400);
+				time += config.timeOffset!();
 			}
 
 			return new_recording.sort((a,b) => a.timestampGenerated - b.timestampGenerated);
