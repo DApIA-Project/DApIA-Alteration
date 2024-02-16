@@ -1,12 +1,6 @@
 import { Scope, Message } from "../index"
 import { createInterpolatorWithFallback } from "commons-math-interpolation";
-
-type Point = {
-	latitude: number, 
-	longitude: number,
-	altitude: number,
-	timestampGenerated: number,
-}
+import { Point, AircraftBuilder } from "../aircraftTrajectory"
 
 type Config = {
 	target: string, 
@@ -17,17 +11,17 @@ type Config = {
 export function trajectoryModification(config: Config) {
 	return {
 		processing(recording: Message[]): Message[] {
-			let [lat,lon,alt] = this.compute_interpolation(recording);
+			let interpolator = this.compute_interpolation(recording);
 			
 			let new_msg: Message[] = [];
 			for(let m of recording) {
 				if(config.scope(m)){
-					let t = m.timestampGenerated
+					console.log("Message is in scope : interpolation !");
+					let t = m.timestampGenerated;
+					let p = interpolator.get_point(t);
 					new_msg.push({
 						...m, 
-						latitude: lat(t),
-						longitude: lon(t),
-						altitude:  alt(t),
+						...p,
 					})
 				} else { 
 					new_msg.push({...m});
@@ -39,28 +33,22 @@ export function trajectoryModification(config: Config) {
 
 
 		compute_interpolation(recording: Message[]) {
-			let points: Partial<Point>[] = []; // Partial<Point> to be compatible with Message fields that's should be undefined
+			let trajectory = new AircraftBuilder();
 			let updated = false;
 			for(let m of recording){
 				if(m.hexIdent == config.target) {
 					if(!config.scope(m)){
-						points.push(m);
+						trajectory.add_point(m as Point);
 					}else if(!updated) {
 						for(let w of config.waypoints){
-							points.push(w);
+							trajectory.add_point(w);
 						}
 						updated = true;
 					}
 				}
 			}
 
-			let times = points.map((m) => m.timestampGenerated!);
-
-			return [ 
-				createInterpolatorWithFallback("akima", times, points.map((m) => m.latitude!)),
-				createInterpolatorWithFallback("akima", times, points.map((m) => m.longitude!)),
-				createInterpolatorWithFallback("akima", times, points.map((m) => m.altitude!)),
-			];
+			return trajectory.interpolate();
 		}
 	}
 }
