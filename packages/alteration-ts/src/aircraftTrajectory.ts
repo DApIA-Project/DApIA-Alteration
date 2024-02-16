@@ -31,6 +31,13 @@ export class AircraftBuilder {
 		return this;
 	}
 
+	add_all(points: Point[]): AircraftBuilder {
+		for(let p of points) {
+			this.add_point(p);
+		}
+		return this;
+	}
+
 	interpolate(): AircraftInterpolation {
 		this.waypoint.sort((a, b) => a.timestampGenerated - b.timestampGenerated);
 		let times = this.waypoint.map((point) => point.timestampGenerated);
@@ -63,6 +70,7 @@ export class AircraftInterpolation {
 			longitude: this.longitude(time),
 			altitude: this.get_altitude(time),
 			timestampGenerated: time,
+			timestampLogged: time,
 		}	
 	}
 
