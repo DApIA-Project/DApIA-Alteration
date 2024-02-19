@@ -14,9 +14,15 @@ import {
 import { Parameters } from '@smartesting/alteration-scenario/dist/types'
 import assert from 'assert'
 import IAlterationManager from '../../adapters/IAlterationManager'
-import { csvToSbs, sbsToCsv } from '@dapia-project/data-converter/dist/src'
+import {
+  openskyCsvToSbs,
+  sbsToOpenskyCsv,
+} from '@dapia-project/data-converter/dist/src'
 import { AlterationScenarioSemanticVisitor } from '@smartesting/alteration-scenario/dist/generators/AlterationScenarioSemanticVisitor'
 import { SemanticError } from '@smartesting/alteration-scenario/dist/generators/index'
+import { getDataType } from '@dapia-project/data-converter/dist/src/utils/utils'
+import { droneCsvToSbs } from '@dapia-project/data-converter/dist/src/droneCsvToSbs'
+import { sbsToDroneCsv } from '@dapia-project/data-converter/dist/src/sbsToDroneCsv'
 
 export default async function alterRecording(
   scenario: string,
@@ -26,11 +32,17 @@ export default async function alterRecording(
   alterationManager: IAlterationManager
 ): Promise<AlterRecordingResponse> {
   let fileIsCsv: boolean = false
-
+  let dataType: string = ''
+  let dataTypeReplay: string
   const regex = /.csv$/i
   if (regex.test(recording.name)) {
     fileIsCsv = true
-    recording.content = csvToSbs(recording.content)
+    dataType = getDataType(recording.content)
+    if (dataType === 'drone') {
+      recording.content = droneCsvToSbs(recording.content)
+    } else {
+      recording.content = openskyCsvToSbs(recording.content)
+    }
 
     if (recording.content === 'Error content file') {
       return {
@@ -42,7 +54,12 @@ export default async function alterRecording(
   }
   if (recordingToReplay !== undefined) {
     if (regex.test(recordingToReplay.name)) {
-      recordingToReplay.content = csvToSbs(recordingToReplay.content)
+      dataTypeReplay = getDataType(recordingToReplay.content)
+      if (dataTypeReplay === 'drone') {
+        recordingToReplay.content = droneCsvToSbs(recordingToReplay.content)
+      } else {
+        recordingToReplay.content = openskyCsvToSbs(recordingToReplay.content)
+      }
       if (recordingToReplay.content === 'Error content file') {
         return {
           error: AlterRecordingError.invalidContentFile,
@@ -76,8 +93,14 @@ export default async function alterRecording(
   if (fileIsCsv) {
     let alteredRecordingsCsv: Recording[] = []
     for (const recordingSbs of alteredRecordings) {
-      let contentCsv: string = sbsToCsv(recordingSbs.content, false)
-      let contentName: string = recordingSbs.name.replace('.sbs', '.csv')
+      let contentCsv: string
+      if (dataType === 'drone') {
+        contentCsv = sbsToDroneCsv(recordingSbs.content, false)
+      } else {
+        contentCsv = sbsToOpenskyCsv(recordingSbs.content, false)
+      }
+
+      let contentName: string = recordingSbs.name.replace('.sbs', '.drone.csv')
       let recordingCsv: Recording = { content: contentCsv, name: contentName }
       alteredRecordingsCsv.push(recordingCsv)
     }

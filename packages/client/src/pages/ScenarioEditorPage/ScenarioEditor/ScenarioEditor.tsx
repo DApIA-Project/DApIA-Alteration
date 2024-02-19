@@ -283,6 +283,10 @@ const ScenarioEditor: React.FunctionComponent<ScenarioEditorProps> = ({
           language={'alterationscenario'}
           value={scenario ? scenario.text : ''}
           onChange={handleOnChange}
+          options={{
+            readOnly: openedScenarios.length <= 0,
+            hideCursorInOverviewRuler: openedScenarios.length <= 0,
+          }}
         />
       </div>
       <ScenarioList

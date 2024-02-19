@@ -1,6 +1,6 @@
 {
   "name": "client",
-  "version": "0.15",
+  "version": "0.16",
   "private": true,
   "type": "commonjs",
   "dependencies": {

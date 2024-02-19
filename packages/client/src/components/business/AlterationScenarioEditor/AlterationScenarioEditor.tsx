@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import Editor, { useMonaco } from '@monaco-editor/react'
 
 import * as monaco from 'monaco-editor'
-import { editor } from 'monaco-editor'
+import { editor, IMarkdownString } from 'monaco-editor'
 import * as parser from '@smartesting/alteration-scenario/dist/parser/parser'
 import { Suggestion } from '@smartesting/alteration-scenario/dist/parser/parser'
 import ALTERATION_SCENARIO_FORMAT from '../../../alterationscenario'
