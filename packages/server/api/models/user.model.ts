@@ -75,3 +75,7 @@ User.hasMany(Scenario, {
   foreignKey: 'user_id',
   as: 'scenarios', // Alias pour la relation
 })
+
+User.sync({}).then(() => {
+  console.log('User table synchronized')
+})

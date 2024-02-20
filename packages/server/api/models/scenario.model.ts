@@ -53,3 +53,7 @@ Scenario.init(
     tableName: 'scenarios',
   }
 )
+
+Scenario.sync({}).then(() => {
+  console.log('Scenario table synchronized')
+})

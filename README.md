@@ -73,3 +73,40 @@ npm run start
 ```shell
 npm run copy:dependencies:m2
 ```
+
+# Run Server, Client and Database with docker-compose
+
+## Put the following code in a docker-compose.yml file
+
+```yml
+alteration-client:
+  image: dapiaproject/alteration-client
+  environment:
+    BASE_URL: http://alteration-server:3001
+alteration-server:
+  image: dapiaproject/alteration-server
+  environment:
+    DATABASE_URL: postgresql://postgres:postgres@postgres:5432/alterationdb
+postgres:
+  image: postgres:latest
+  environment:
+    POSTGRES_DB: alterationdb
+    POSTGRES_USER: postgres
+    POSTGRES_PASSWORD: postgres
+  volumes:
+    - ./postgres/data:/var/lib/postgresql/data
+  ports:
+    - '5432:5432'
+  restart: unless-stopped
+  healthcheck:
+    test: ['CMD-SHELL', 'pg_isready -U postgres']
+    interval: 5s
+    timeout: 5s
+    retries: 5
+```
+
+## Execute the following command :
+
+```shell
+docker-compose up
+```

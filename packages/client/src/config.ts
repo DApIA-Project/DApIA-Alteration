@@ -1,5 +1,2 @@
-const apiUrl =
-  process.env.NODE_ENV === 'production'
-    ? 'https://votre-api-prod.com'
-    : 'http://localhost:3001'
+const apiUrl = process.env.BASE_URL ?? 'http://localhost:3001'
 export default apiUrl
