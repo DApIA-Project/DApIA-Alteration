@@ -1,0 +1,23 @@
+.selectFormat {
+  margin-right: auto;
+  margin-left: auto;
+  margin-top: 1%;
+  margin-bottom: 1%;
+  color: white;
+  border-radius: 6px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border: none;
+  cursor: pointer;
+  transition-duration: 200ms;
+  width: 60%;
+  text-align: center;
+}
+
+.selectFormat option {
+  border-color: rgba(0, 0, 0, 0.8);
+  color: black;
+}
+
+.selectFormat option:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}

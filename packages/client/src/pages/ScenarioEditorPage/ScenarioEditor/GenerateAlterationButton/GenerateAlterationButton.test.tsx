@@ -6,6 +6,7 @@ import { render, screen, waitFor } from '@testing-library/react'
 import React from 'react'
 import * as getMonacoEditorContentModule from '../../../../utils/getMonacoEditorContent/getMonacoEditorContent'
 import userEvent from '@testing-library/user-event'
+import { FileFormat } from '@smartesting/shared/dist'
 
 describe('GenerateAlterationButton', () => {
   const optionsAlteration = {
@@ -23,6 +24,7 @@ describe('GenerateAlterationButton', () => {
       <GenerateAlterationButton
         recording={recording}
         optionsAlteration={optionsAlteration}
+        outputFormat={FileFormat.sbs}
         onClicked={() => null}
       />
     )
@@ -46,6 +48,7 @@ describe('GenerateAlterationButton', () => {
           <GenerateAlterationButton
             recording={recording}
             optionsAlteration={optionsAlteration}
+            outputFormat={FileFormat.sbs}
             onClicked={() => null}
           />
         )
@@ -57,6 +60,7 @@ describe('GenerateAlterationButton', () => {
           <GenerateAlterationButton
             recording={{ ...recording, content: '' }}
             optionsAlteration={optionsAlteration}
+            outputFormat={FileFormat.sbs}
             onClicked={() => null}
           />
         )
@@ -68,6 +72,7 @@ describe('GenerateAlterationButton', () => {
           <GenerateAlterationButton
             recording={{ ...recording, name: '' }}
             optionsAlteration={optionsAlteration}
+            outputFormat={FileFormat.sbs}
             onClicked={() => null}
           />
         )
@@ -80,6 +85,7 @@ describe('GenerateAlterationButton', () => {
           <GenerateAlterationButton
             recording={recording}
             optionsAlteration={optionsAlteration}
+            outputFormat={FileFormat.sbs}
             onClicked={callback}
           />
         )
@@ -96,6 +102,7 @@ describe('GenerateAlterationButton', () => {
             scenario: 'hide all_planes at 0 seconds',
             optionsAlteration: optionsAlteration,
             recording: { content: 'A message', name: 'Aircraft disappearance' },
+            outputFormat: FileFormat.sbs,
           })
         })
       })

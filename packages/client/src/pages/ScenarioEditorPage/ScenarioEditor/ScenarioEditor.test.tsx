@@ -2,7 +2,11 @@ import React from 'react'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import ScenarioEditor, { ScenarioEditorTestIds } from './ScenarioEditor'
 import userEvent from '@testing-library/user-event'
-import { OptionsAlteration, Recording } from '@smartesting/shared/src'
+import {
+  FileFormat,
+  OptionsAlteration,
+  Recording,
+} from '@smartesting/shared/src'
 import { uuid } from '@smartesting/shared/dist/uuid/uuid'
 import { RecordInputFilesTestIds } from './RecordInputFiles/RecordInputFiles'
 import { GenerateAlterationButtonTestIds } from './GenerateAlterationButton/GenerateAlterationButton'
@@ -341,6 +345,7 @@ describe('ScenarioEditor', () => {
         scenario: 'hide all_planes at 0 seconds',
         recording,
         optionsAlteration,
+        outputFormat: FileFormat.sbs,
       })
     })
   })
@@ -390,6 +395,7 @@ describe('ScenarioEditor', () => {
         scenario: 'hide all_planes at 0 seconds',
         recording,
         optionsAlteration,
+        outputFormat: FileFormat.sbs,
       })
     })
   })

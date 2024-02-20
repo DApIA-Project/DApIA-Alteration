@@ -3,7 +3,7 @@ import { setupExpress } from '../../helpers/setupExpress'
 import request from 'supertest'
 import { ApiRoutes } from '@smartesting/shared/src/routes'
 import assert from 'assert'
-import { AlterRecordingError } from '@smartesting/shared/dist'
+import { AlterRecordingError, FileFormat } from '@smartesting/shared/dist'
 import makeTestAdapters from '../../makeTestAdapters'
 
 describe(`POST ${ApiRoutes.alteration()}`, () => {
@@ -41,6 +41,7 @@ describe(`POST ${ApiRoutes.alteration()}`, () => {
               'MSG,4,3,5022202,4CA1FA,5022202,2018/11/25,11:30:48.179,2018/11/25,11:30:48.179,,,474.53,295.86,,,0.0,,,,,',
           },
           recordingToReplay: undefined,
+          outputFormat: FileFormat.sbs,
         })
 
       const { error, alteredRecordings } = response.body
@@ -59,6 +60,7 @@ describe(`POST ${ApiRoutes.alteration()}`, () => {
               'MSG,4,3,5022202,4CA1FA,5022202,2018/11/25,11:30:48.179,2018/11/25,11:30:48.179,,,474.53,295.86,,,0.0,,,,,',
           },
           recordingToReplay: undefined,
+          outputFormat: FileFormat.sbs,
         })
 
       const { error, alteredRecordings } = response.body
@@ -90,6 +92,7 @@ describe(`POST ${ApiRoutes.alteration()}`, () => {
             content: fileContent,
           },
           recordingToReplay: undefined,
+          outputFormat: FileFormat.sbs,
         })
 
       const { error, alteredRecordings } = response.body
@@ -130,6 +133,7 @@ describe(`POST ${ApiRoutes.alteration()}`, () => {
               'MSG,4,3,5022202,4CA1FA,5022202,2018/11/25,11:30:48.179,2018/11/25,11:30:48.179,,,474.53,295.86,,,0.0,,,,,',
           },
           recordingToReplay: undefined,
+          outputFormat: FileFormat.sbs,
         })
 
       const { error, alteredRecordings } = response.body
@@ -148,6 +152,7 @@ describe(`POST ${ApiRoutes.alteration()}`, () => {
               'MSG,4,3,5022202,4CA1FA,5022202,2018/11/25,11:30:48.179,2018/11/25,11:30:48.179,,,474.53,295.86,,,0.0,,,,,',
           },
           recordingToReplay: undefined,
+          outputFormat: FileFormat.sbs,
         })
 
       const { error, alteredRecordings } = response.body
@@ -183,6 +188,7 @@ describe(`POST ${ApiRoutes.alteration()}`, () => {
             name: 'myfile2.sbs',
             content: fileContent2,
           },
+          outputFormat: FileFormat.sbs,
         })
 
       const { error, alteredRecordings } = response.body
@@ -227,6 +233,7 @@ describe(`POST ${ApiRoutes.alteration()}`, () => {
             content:
               'MSG,4,3,5022202,4CA1FA,5022202,2018/11/25,11:30:48.179,2018/11/25,11:30:48.179,,,474.53,295.86,,,0.0,,,,,',
           },
+          outputFormat: FileFormat.sbs,
         })
 
       const { error, alteredRecordings } = response.body
@@ -249,6 +256,7 @@ describe(`POST ${ApiRoutes.alteration()}`, () => {
             content:
               'MSG,4,3,5022202,4CA1FA,5022202,2018/11/25,11:30:48.179,2018/11/25,11:30:48.179,,,474.53,295.86,,,0.0,,,,,',
           },
+          outputFormat: FileFormat.sbs,
         })
 
       const { error, alteredRecordings } = response.body
@@ -268,6 +276,7 @@ describe(`POST ${ApiRoutes.alteration()}`, () => {
             name: 'myfile.sbs',
           },
           optionsAlteration: { haveLabel: false, haveRealism: false },
+          outputFormat: FileFormat.sbs,
         })
 
       const { error, alteredRecordings } = response.body
@@ -292,6 +301,7 @@ describe(`POST ${ApiRoutes.alteration()}`, () => {
             haveLabel: false,
             haveRealism: false,
           },
+          outputFormat: FileFormat.sbs,
         })
 
       const { alteredRecordings, error } = response.body
@@ -320,6 +330,103 @@ describe(`POST ${ApiRoutes.alteration()}`, () => {
             haveLabel: false,
             haveRealism: false,
           },
+          outputFormat: FileFormat.sbs,
+        })
+
+      const { alteredRecordings, error } = response.body
+
+      assert(!error, 'Error is defined')
+      assert.equal(alteredRecordings.length, 2)
+    })
+
+    it('returns 200 and altered recordings output opensky csv', async () => {
+      const response = await request(server)
+        .post(ApiRoutes.alteration())
+        .send({
+          scenario:
+            'let $call = {0, 10}, hide all_planes from $call seconds until 1000 seconds ',
+          recording: {
+            content:
+              'MSG,4,3,5022202,4CA1FA,5022202,2018/11/25,11:30:48.179,2018/11/25,11:30:48.179,,,474.53,295.86,,,0.0,,,,,',
+            name: 'myfile.sbs',
+          },
+          optionsAlteration: {
+            haveLabel: false,
+            haveRealism: false,
+          },
+          outputFormat: FileFormat.openskyCsv,
+        })
+
+      const { alteredRecordings, error } = response.body
+
+      assert(!error, 'Error is defined')
+      assert.equal(alteredRecordings.length, 2)
+    })
+
+    it('returns 200 and altered recordings output drone csv', async () => {
+      const response = await request(server)
+        .post(ApiRoutes.alteration())
+        .send({
+          scenario:
+            'let $call = {0, 10}, hide all_planes from $call seconds until 1000 seconds ',
+          recording: {
+            content:
+              'MSG,4,3,5022202,4CA1FA,5022202,2018/11/25,11:30:48.179,2018/11/25,11:30:48.179,,,474.53,295.86,,,0.0,,,,,',
+            name: 'myfile.sbs',
+          },
+          optionsAlteration: {
+            haveLabel: false,
+            haveRealism: false,
+          },
+          outputFormat: FileFormat.droneCsv,
+        })
+
+      const { alteredRecordings, error } = response.body
+
+      assert(!error, 'Error is defined')
+      assert.equal(alteredRecordings.length, 2)
+    })
+
+    it('returns 200 and altered recordings output json', async () => {
+      const response = await request(server)
+        .post(ApiRoutes.alteration())
+        .send({
+          scenario:
+            'let $call = {0, 10}, hide all_planes from $call seconds until 1000 seconds ',
+          recording: {
+            content:
+              'MSG,4,3,5022202,4CA1FA,5022202,2018/11/25,11:30:48.179,2018/11/25,11:30:48.179,,,474.53,295.86,,,0.0,,,,,',
+            name: 'myfile.sbs',
+          },
+          optionsAlteration: {
+            haveLabel: false,
+            haveRealism: false,
+          },
+          outputFormat: FileFormat.json,
+        })
+
+      const { alteredRecordings, error } = response.body
+
+      assert(!error, 'Error is defined')
+      assert.equal(alteredRecordings.length, 2)
+    })
+
+    it('returns 200 and altered recordings output ndjson', async () => {
+      const response = await request(server)
+        .post(ApiRoutes.alteration())
+        .send({
+          scenario:
+            'let $call = {0, 10}, hide all_planes from $call seconds until 1000 seconds ',
+          recording: {
+            content:
+              'MSG,4,3,5022202,4CA1FA,5022202,2018/11/25,11:30:48.179,2018/11/25,11:30:48.179,,,474.53,295.86,,,0.0,,,,,',
+            name: 'myfile.sbs',
+          },
+          optionsAlteration: {
+            haveLabel: false,
+            haveRealism: false,
+          },
+          outputFormat: FileFormat.ndjson,
         })
 
       const { alteredRecordings, error } = response.body

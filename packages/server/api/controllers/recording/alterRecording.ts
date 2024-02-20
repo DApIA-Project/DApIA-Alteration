@@ -9,8 +9,13 @@ import {
 export default makeRequestHandler<AlterRecordingResponse>(
   async (req): Promise<AlterRecordingResponse> => {
     const { scenarioManager } = req.adapters
-    const { scenario, recording, recordingToReplay, optionsAlteration } =
-      req.body
+    const {
+      scenario,
+      recording,
+      recordingToReplay,
+      optionsAlteration,
+      outputFormat,
+    } = req.body
     if (
       isBlank(scenario) ||
       !recording ||
@@ -63,6 +68,7 @@ export default makeRequestHandler<AlterRecordingResponse>(
       recording,
       recordingToReplay,
       optionsAlteration,
+      outputFormat,
       new JavaAlterationManager()
     )
   }

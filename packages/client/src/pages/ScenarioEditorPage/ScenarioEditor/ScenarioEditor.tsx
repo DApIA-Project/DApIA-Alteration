@@ -14,6 +14,8 @@ import { unstable_batchedUpdates } from 'react-dom'
 import ScenarioList from './ScenarioList/ScenarioList'
 import { Scenario } from '@smartesting/shared/dist/models/Scenario'
 import { useClient } from '../../../providers/ClientProvider/ClientProvider'
+import { FileFormat } from '@smartesting/shared/dist'
+import Select from '../../../components/ui/Select/Select'
 
 export enum ScenarioEditorTestIds {
   COMPONENT = 'ScenarioEditor',
@@ -40,6 +42,15 @@ const ScenarioEditor: React.FunctionComponent<ScenarioEditorProps> = ({
     haveDisableAltitude: false,
   }
 
+  const formats = [
+    { value: FileFormat.auto, label: 'Auto' },
+    { value: FileFormat.sbs, label: 'sbs' },
+    { value: FileFormat.openskyCsv, label: 'openskyCsv' },
+    { value: FileFormat.droneCsv, label: 'droneCsv' },
+    { value: FileFormat.json, label: 'json' },
+    { value: FileFormat.ndjson, label: 'ndjson' },
+  ]
+
   const [recording, setRecording] = useState<Recording>({
     name: '',
     content: '',
@@ -59,6 +70,8 @@ const ScenarioEditor: React.FunctionComponent<ScenarioEditorProps> = ({
       haveLabel: false,
     }
   )
+
+  const [outputFormat, setOutputFormat] = useState('auto')
 
   const [selectedScenario, setSelectedScenario] = useState(0)
   const [openedScenarios, setOpenedScenarios] = useState<Scenario[]>([])
@@ -251,8 +264,16 @@ const ScenarioEditor: React.FunctionComponent<ScenarioEditorProps> = ({
     )
   }
 
+  async function handleSelectFormat(value: string) {
+    setOutputFormat(value)
+  }
+
   function handleSelectTab(newSelectedTab: number) {
     selectTab(newSelectedTab, openedScenarios[newSelectedTab].options)
+  }
+
+  function handleChangeRecord(newValue: Recording) {
+    setRecording(newValue)
   }
 
   function selectTab(
@@ -304,14 +325,20 @@ const ScenarioEditor: React.FunctionComponent<ScenarioEditorProps> = ({
               ? recordingToReplay
               : undefined
           }
+          outputFormat={outputFormat}
           onClicked={(options) => onGenerate(options)}
         />
         <ScenarioOptions
           optionsAlteration={optionsAlteration}
           onChange={handleOptions}
         />
+        <Select
+          value={outputFormat}
+          options={formats}
+          onChange={handleSelectFormat}
+        />
         <RecordInputFiles
-          onChangeRecord={(newValue) => setRecording(newValue)}
+          onChangeRecord={handleChangeRecord}
           onChangeReplayRecord={(newValue) => setRecordingToReplay(newValue)}
         />
       </div>

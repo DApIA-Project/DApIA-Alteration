@@ -33,6 +33,7 @@ export default class Client {
     value: string | null,
     recording: Recording,
     optionsAlteration: OptionsAlteration,
+    outputFormat: string,
     recordingToReplay?: Recording
   ): Promise<AlterRecordingResponse> {
     const url: string = `${apiUrl}/recording/alteration`
@@ -41,6 +42,7 @@ export default class Client {
       recording,
       optionsAlteration,
       recordingToReplay,
+      outputFormat,
     }
 
     return this.apiCall<AlterRecordingResponse>(url, data)

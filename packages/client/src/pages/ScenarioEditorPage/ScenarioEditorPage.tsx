@@ -24,6 +24,7 @@ const ScenarioEditorPage: React.FunctionComponent = () => {
             recording,
             optionsAlteration,
             recordingToReplay,
+            outputFormat,
           }) => {
             setAlteredRecordings(null)
             setIsLoading(true)
@@ -33,6 +34,7 @@ const ScenarioEditorPage: React.FunctionComponent = () => {
                 scenario,
                 recording,
                 optionsAlteration,
+                outputFormat,
                 recordingToReplay
               )
               .then((response) => {
