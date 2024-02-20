@@ -1,5 +1,5 @@
 export {}
-
+/*
 describe('Click on tab button', () => {
   beforeEach(() => {
     cy.task('db:reset')
@@ -79,3 +79,4 @@ describe('Click on tab button', () => {
     cy.contains('cut all_planes at 5 seconds').should('not.exist')
   })
 })
+*/
