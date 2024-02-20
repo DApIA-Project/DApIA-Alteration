@@ -345,7 +345,7 @@ describe('ScenarioEditor', () => {
         scenario: 'hide all_planes at 0 seconds',
         recording,
         optionsAlteration,
-        outputFormat: FileFormat.sbs,
+        outputFormat: FileFormat.auto,
       })
     })
   })
@@ -395,7 +395,7 @@ describe('ScenarioEditor', () => {
         scenario: 'hide all_planes at 0 seconds',
         recording,
         optionsAlteration,
-        outputFormat: FileFormat.sbs,
+        outputFormat: FileFormat.auto,
       })
     })
   })
