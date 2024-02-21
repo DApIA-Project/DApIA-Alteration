@@ -1,4 +1,4 @@
-import { Scope, Message, Action, clone} from "../index"
+import { Scope, Message, Action, clone, Template} from "../index"
 import { Point, AircraftBuilder } from "../aircraftTrajectory"
 
 type Config = {
@@ -10,8 +10,6 @@ type Config = {
 	timeOffset?: () => number,
 }
 
-export type Template = Omit<Message, "timestampGenerated" | "timestampLogged"> | 
-						  				 Partial<Pick<Message, "timestampGenerated" | "timestampLogged">>
 
 
 function rand(min: number, max: number) {

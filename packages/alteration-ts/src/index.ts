@@ -43,3 +43,17 @@ export function earth_azimuth(lat1: number, lon1: number, lat2: number, lon2: nu
 
 	return (((alpha * 180 ) / Math.PI) + 360) % 360;
 }
+
+
+type Op = "-" | "+" | "*" | "/" 
+export function op(op: Op, lhs: number, rhs: number, n = 2) {
+	let result: number;
+	switch(op) {
+		case "-": result = lhs - rhs; break;
+		case "+": result = lhs + rhs; break;
+		case "*": result = lhs * rhs; break;
+		case "/": result = lhs / rhs; break;
+	}
+
+	return parseFloat(result.toPrecision(n));
+}
