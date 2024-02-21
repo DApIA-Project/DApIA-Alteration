@@ -1,5 +1,5 @@
 const dotenv = require('dotenv')
 
-dotenv.config({ path: '.env' })
+dotenv.config()
 const apiUrl = process.env.BASE_URL
 export default apiUrl
