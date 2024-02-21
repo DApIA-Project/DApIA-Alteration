@@ -1,2 +1,2 @@
-const apiUrl = process.env.BASE_URL
+const apiUrl = 'http://alteration-server:3001'
 export default apiUrl
