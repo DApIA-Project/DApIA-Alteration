@@ -38,7 +38,7 @@ services:
     build:
       dockerfile: client/Dockerfile
     environment:
-      BASE_URL: http://alteration-server:3001
+      REACT_APP_BASE_URL: http://localhost:3001
     ports:
       - '3000:3000'
     depends_on:
