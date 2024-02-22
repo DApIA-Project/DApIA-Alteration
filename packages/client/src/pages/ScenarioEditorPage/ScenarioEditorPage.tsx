@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import ScenarioEditor from './ScenarioEditor/ScenarioEditor'
 import AlterationOutput from './AlterationOutput/AlterationOutput'
-import Client from '../../Client'
 import { AlterRecordingResponse } from '@smartesting/shared/dist'
 import '../../styles.css'
 import './ScenarioEditorPage.css'

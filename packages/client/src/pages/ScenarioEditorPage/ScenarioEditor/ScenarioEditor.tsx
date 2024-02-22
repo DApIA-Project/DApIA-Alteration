@@ -93,7 +93,7 @@ const ScenarioEditor: React.FunctionComponent<ScenarioEditorProps> = ({
       .catch((e) => {
         console.error('Erreur lors de la récupération des scénarios :', e)
       })
-  }, [openedScenarios])
+  }, [client, openedScenarios])
 
   async function updateScenario(
     id: string,

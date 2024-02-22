@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import Button from '../../../../../components/ui/Button/Button'
 import IconButton from '../../../../../components/ui/Button/IconButton/IconButton'
 import CloseIcon from '@mui/icons-material/Close'
 import './EditorTab.css'
