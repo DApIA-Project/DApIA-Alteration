@@ -115,7 +115,7 @@ services:
       - dapia
   alteration-client:
     container_name: alteration-client
-    image: dapiaproject/alteration-client:0.27
+    image: dapiaproject/alteration-client:0.28
     environment:
       REACT_APP_BASE_URL: http://localhost:3001
     ports:
