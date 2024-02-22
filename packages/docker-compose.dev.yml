@@ -37,10 +37,8 @@ services:
     container_name: alteration-client
     build:
       dockerfile: client/Dockerfile
-      args:
-        BASE_URL: http://localhost:3001
     environment:
-      BASE_URL: http://localhost:3001
+      BASE_URL: http://alteration-server:3001
     ports:
       - '3000:3000'
     depends_on:

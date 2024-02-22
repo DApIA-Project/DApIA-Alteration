@@ -115,7 +115,9 @@ services:
       - dapia
   alteration-client:
     container_name: alteration-client
-    image: dapiaproject/alteration-client:0.24
+    image: dapiaproject/alteration-client:0.25
+    environment:
+      BASE_URL: http://alteration-server:3001
     ports:
       - '3000:3000'
     depends_on:

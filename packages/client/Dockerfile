@@ -1,6 +1,5 @@
 FROM node:16-alpine
 WORKDIR /usr/src/app
-ARG BASE_URL=http://localhost:3001
 COPY ./client ./client/
 COPY ./alteration-scenario ./alteration-scenario/
 COPY ./shared ./shared/
