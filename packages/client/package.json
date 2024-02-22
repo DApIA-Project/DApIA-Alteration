@@ -1,38 +1,8 @@
 {
   "name": "client",
-  "version": "0.26",
+  "version": "0.27",
   "private": true,
   "type": "commonjs",
-  "dependencies": {
-    "@emotion/react": "^11.11.1",
-    "@emotion/styled": "^11.11.0",
-    "@fortawesome/free-solid-svg-icons": "^6.4.0",
-    "@fortawesome/react-fontawesome": "^0.2.0",
-    "@monaco-editor/react": "^4.5.1",
-    "@mui/icons-material": "^5.13.7",
-    "@mui/joy": "^5.0.0-alpha.86",
-    "@mui/material": "^5.11.15",
-    "@smartesting/alteration-scenario": "file:../alteration-scenario",
-    "@smartesting/shared": "file:../shared",
-    "@testing-library/jest-dom": "^5.16.5",
-    "@types/node": "^16.18.12",
-    "@types/react": "^18.0.27",
-    "@types/react-dom": "^18.0.10",
-    "@uiw/react-textarea-code-editor": "^2.1.1",
-    "monaco-editor": "^0.39.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-router-dom": "^6.10.0",
-    "react-scripts": "5.0.1",
-    "requirejs": "^2.3.6",
-    "sass": "^1.61.0",
-    "typescript": "^4.9.5",
-    "uuid": "^9.0.0",
-    "vscode-languageclient": "^8.1.0",
-    "vscode-languageserver": "^8.1.0",
-    "vscode-uri": "^3.0.2",
-    "web-vitals": "^2.1.4"
-  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
@@ -41,6 +11,37 @@
     "test": "react-scripts test --watchAll=false",
     "eject": "react-scripts eject",
     "preinstall": "cd ../alteration-scenario && npm i && npm run build"
+  },
+  "dependencies": {
+    "@smartesting/alteration-scenario": "file:../alteration-scenario",
+    "@smartesting/shared": "file:../shared",
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
+    "@fortawesome/free-solid-svg-icons": "^6.4.0",
+    "@fortawesome/react-fontawesome": "^0.2.0",
+    "@monaco-editor/react": "^4.5.1",
+    "@mui/icons-material": "^5.13.7",
+    "@mui/joy": "^5.0.0-alpha.86",
+    "@mui/material": "^5.11.15",
+    "@testing-library/jest-dom": "^5.16.5",
+    "@types/node": "^16.18.12",
+    "@types/react": "^18.0.27",
+    "@types/react-dom": "^18.0.10",
+    "eslint-config-react-app": "^7.0.1",
+    "monaco-editor": "^0.39.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.10.0",
+    "react-scripts": "5.0.1",
+    "typescript": "^4.9.5",
+    "vscode-languageserver": "^8.1.0",
+    "vscode-languageserver-types": "^3.17.5",
+    "vscode-uri": "^3.0.2",
+    "web-vitals": "^2.1.4"
+  },
+  "devDependencies": {
+    "@testing-library/react": "^14.0.0",
+    "@testing-library/user-event": "^14.4.3"
   },
   "eslintConfig": {
     "extends": [
@@ -59,10 +60,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "devDependencies": {
-    "@testing-library/react": "^14.0.0",
-    "@testing-library/user-event": "^14.4.3",
-    "@types/uuid": "^9.0.1"
   }
 }
