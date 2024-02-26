@@ -20,6 +20,7 @@ describe('core/scenario/update', () => {
       haveDisableLongitude: false,
       haveDisableAltitude: false,
     },
+    user_id: '0',
   }
 
   beforeEach(async () => {

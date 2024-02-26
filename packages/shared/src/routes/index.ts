@@ -22,4 +22,24 @@ export class ApiRoutes {
   static listScenario() {
     return '/scenario/list'
   }
+
+  static createUser() {
+    return '/user/create'
+  }
+
+  static updateUser() {
+    return '/user/update'
+  }
+
+  static deleteUser() {
+    return '/user/delete'
+  }
+
+  static listUserScenarios() {
+    return '/user/scenario/list'
+  }
+
+  static listUser() {
+    return '/user/list'
+  }
 }

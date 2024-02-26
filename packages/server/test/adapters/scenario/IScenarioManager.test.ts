@@ -32,6 +32,7 @@ const IScenarioContractTest: IContractTest = (
         haveDisableLongitude: false,
         haveDisableAltitude: false,
       },
+      user_id: '0',
     }
 
     const secondScenarioAttributes: ScenarioAttributes = {
@@ -45,6 +46,7 @@ const IScenarioContractTest: IContractTest = (
         haveDisableLongitude: true,
         haveDisableAltitude: true,
       },
+      user_id: '1',
     }
 
     beforeEach(async () => {

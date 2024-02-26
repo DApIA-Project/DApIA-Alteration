@@ -1,13 +1,13 @@
 import {
-  Association,
   CreationOptional,
   DataTypes,
+  HasMany,
   InferAttributes,
   InferCreationAttributes,
   Model,
+  NonAttribute,
 } from 'sequelize'
 import { sequelize } from '../database/connection'
-import { OptionsAlteration } from '@smartesting/shared/dist'
 import { Identifier } from 'sequelize/types/model'
 import Scenario from './scenario.model'
 
@@ -69,12 +69,6 @@ User.init(
     tableName: 'users',
   }
 )
-
-User.hasMany(Scenario, {
-  sourceKey: 'id',
-  foreignKey: 'user_id',
-  as: 'scenarios', // Alias pour la relation
-})
 
 User.sync({}).then(() => {
   console.log('User table synchronized')

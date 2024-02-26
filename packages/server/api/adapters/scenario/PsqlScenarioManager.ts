@@ -56,13 +56,15 @@ export default class PsqlScenarioManager implements IScenarioManager {
 }
 
 function scenarioModelToScenario(scenarioModel: ScenarioModel): Scenario {
-  const { id, name, text, options, createdAt, updatedAt } = scenarioModel
+  const { id, name, text, options, user_id, createdAt, updatedAt } =
+    scenarioModel
 
   return {
     id: `${id}`,
     name,
     text,
     options,
+    user_id,
     createdAt,
     updatedAt,
   }

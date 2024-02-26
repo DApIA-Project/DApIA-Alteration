@@ -10,4 +10,5 @@ export type ScenarioAttributes = {
   name: Readonly<string>
   text: Readonly<string>
   options: Readonly<OptionsAlteration>
+  user_id: Readonly<string>
 }

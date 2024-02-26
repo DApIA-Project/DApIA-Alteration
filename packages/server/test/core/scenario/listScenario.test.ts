@@ -19,6 +19,7 @@ describe('core/scenario/listScenario', () => {
       haveDisableLongitude: false,
       haveDisableAltitude: false,
     },
+    user_id: '0',
   }
   const validScenarioAttributes2: ScenarioAttributes = {
     name: 'Scenario B',
@@ -31,6 +32,7 @@ describe('core/scenario/listScenario', () => {
       haveDisableLongitude: false,
       haveDisableAltitude: false,
     },
+    user_id: '1',
   }
   const validScenarioAttributes3: ScenarioAttributes = {
     name: 'Scenario C',
@@ -43,6 +45,7 @@ describe('core/scenario/listScenario', () => {
       haveDisableLongitude: false,
       haveDisableAltitude: false,
     },
+    user_id: '2',
   }
 
   beforeEach(async () => {
