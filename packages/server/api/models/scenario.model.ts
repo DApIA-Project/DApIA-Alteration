@@ -1,6 +1,7 @@
 import {
   CreationOptional,
   DataTypes,
+  ForeignKey,
   InferAttributes,
   InferCreationAttributes,
   Model,
@@ -18,7 +19,7 @@ export default class Scenario extends Model<
   declare name: string
   declare text: string
   declare options: OptionsAlteration
-  declare user_id: string
+  declare user_id: ForeignKey<User['id']>
   declare createdAt: Date
   declare updatedAt: Date
 }
@@ -38,10 +39,6 @@ Scenario.init(
     },
     options: {
       type: DataTypes.JSON,
-    },
-    user_id: {
-      type: DataTypes.STRING,
-      allowNull: false,
     },
     createdAt: {
       type: DataTypes.DATE,

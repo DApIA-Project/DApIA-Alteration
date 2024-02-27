@@ -7,9 +7,13 @@ import {
 import { InferCreationAttributes } from 'sequelize'
 
 export default class PsqlScenarioManager implements IScenarioManager {
-  async createScenario(scenario: ScenarioAttributes): Promise<Scenario> {
+  async createScenario(
+    scenario: ScenarioAttributes,
+    user_id: number
+  ): Promise<Scenario> {
     const scenarioModel = await ScenarioModel.create({
       ...scenario,
+      user_id,
       createdAt: new Date(),
       updatedAt: new Date(),
     })
@@ -60,11 +64,10 @@ function scenarioModelToScenario(scenarioModel: ScenarioModel): Scenario {
     scenarioModel
 
   return {
-    id: `${id}`,
+    id: String(id),
     name,
     text,
     options,
-    user_id,
     createdAt,
     updatedAt,
   }

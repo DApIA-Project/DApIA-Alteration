@@ -4,7 +4,10 @@ import {
 } from '@smartesting/shared/dist/models/Scenario'
 
 export default interface IScenarioManager {
-  createScenario(scenario: ScenarioAttributes): Promise<Scenario>
+  createScenario(
+    scenario: ScenarioAttributes,
+    user_id: number
+  ): Promise<Scenario>
 
   updateScenario(
     scenarioId: string,

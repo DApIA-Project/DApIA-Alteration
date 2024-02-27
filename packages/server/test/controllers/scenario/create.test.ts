@@ -7,12 +7,25 @@ import { CreateScenarioError } from '@smartesting/shared/dist/responses/createSc
 import makeTestAdapters from '../../makeTestAdapters'
 import { OptionsAlteration } from '@smartesting/shared/dist/index'
 import { clearDb } from '../../clearDb'
+import { uuid } from '@smartesting/shared/dist/uuid/uuid'
+import { User } from '@smartesting/shared/dist/models/User'
 
 describe(`POST ${ApiRoutes.createScenario()}`, () => {
   let server: express.Express
+  const validUserAttributes: User = {
+    id: '2',
+    firstname: 'Bob',
+    lastname: 'Dupont',
+    email: 'bob.dupont@mail.fr',
+    password: 's3cret!',
+    isAdmin: false,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  }
 
-  beforeEach(() => {
+  beforeEach(async () => {
     server = setupExpress(makeTestAdapters())
+    await request(server).post(ApiRoutes.createUser()).send(validUserAttributes)
   })
 
   afterEach(async () => {
@@ -30,19 +43,23 @@ describe(`POST ${ApiRoutes.createScenario()}`, () => {
   const validScenarioAttributesMissingName = {
     text: 'hide all_planes at 6 seconds',
     options: options,
+    user_id: validUserAttributes.id,
   }
   const validScenarioAttributesMissingText = {
     name: 'ScenarioA',
     options: options,
+    user_id: validUserAttributes.id,
   }
   const validScenarioAttributesMissingOption = {
     name: 'ScenarioA',
     text: 'hide all_planes at 6 seconds',
+    user_id: validUserAttributes.id,
   }
   const validScenarioAttributes = {
     name: 'ScenarioA',
     text: 'hide all_planes at 6 seconds',
     options: options,
+    user_id: 2,
   }
 
   context('when scenario name is invalid', () => {

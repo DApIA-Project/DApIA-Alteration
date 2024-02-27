@@ -5,25 +5,40 @@ import create from '../../../api/core/scenario/create'
 import assert from 'assert'
 import { CreateScenarioError } from '@smartesting/shared/dist/responses/createScenario'
 import { clearDb } from '../../clearDb'
+import IUserManager from '../../../api/adapters/user/IUserManager'
 describe('core/scenario/create', () => {
   let scenarioManager: IScenarioManager
-  const validScenarioAttributes: ScenarioAttributes = {
-    name: 'Scenario A',
-    text: 'hide all_planes at 10 seconds',
-    options: {
-      haveLabel: false,
-      haveNoise: false,
-      haveRealism: false,
-      haveDisableLatitude: false,
-      haveDisableLongitude: false,
-      haveDisableAltitude: false,
-    },
-    user_id: '0',
-  }
+  let userManager: IUserManager
+  let validScenarioAttributes: ScenarioAttributes
 
   beforeEach(async () => {
     const adapters = makeTestAdapters()
     scenarioManager = adapters.scenarioManager
+    userManager = adapters.userManager
+    await userManager.createUser({
+      firstname: 'Bob',
+      lastname: 'Dupont',
+      email: 'bob.dupont@mail.fr',
+      password: 's3cret!',
+      isAdmin: false,
+    })
+
+    let user = await userManager.findUserByEmail('bob.dupont@mail.fr')
+    if (user) {
+      validScenarioAttributes = {
+        name: 'Scenario A',
+        text: 'hide all_planes at 10 seconds',
+        options: {
+          haveLabel: false,
+          haveNoise: false,
+          haveRealism: false,
+          haveDisableLatitude: false,
+          haveDisableLongitude: false,
+          haveDisableAltitude: false,
+        },
+        user_id: user.id,
+      }
+    }
   })
   afterEach(async () => {
     await clearDb()

@@ -7,7 +7,8 @@ import IScenarioManager from '../../adapters/scenario/IScenarioManager'
 
 export default async function create(
   scenarioAttributes: ScenarioAttributes,
-  scenarioManager: IScenarioManager
+  scenarioManager: IScenarioManager,
+  user_id: number
 ): Promise<CreateScenarioResponse> {
   const name = scenarioAttributes.name.trim()
   if (name === '')
@@ -17,11 +18,14 @@ export default async function create(
     return { scenario: null, error: CreateScenarioError.emptyTextScenario }
 
   return {
-    scenario: await scenarioManager.createScenario({
-      ...scenarioAttributes,
-      name,
-      text,
-    }),
+    scenario: await scenarioManager.createScenario(
+      {
+        ...scenarioAttributes,
+        name,
+        text,
+      },
+      user_id
+    ),
     error: null,
   }
 }

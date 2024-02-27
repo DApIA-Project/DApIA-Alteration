@@ -23,6 +23,7 @@ export enum Conflict {
 export enum UnprocessableContent {
   emptyName = 'empty_name',
   emptyTextScenario = 'empty_text_scenario',
+  emptyUserId = 'empty_user_id',
   emptyListScenario = 'empty_list_scenario',
   emptyListUser = 'empty_list_user',
   emptyEmail = 'empty_email',
@@ -69,14 +70,16 @@ export function getStatusCode<E extends ResponseError>(error: E): number {
   if (isError(error, Object.values(NotFound))) {
     return 404
   }
-  if (isError(error, Object.values(Conflict)))
-    if (
-      isError(error, Object.values(UnprocessableContent)) ||
-      isError(error, Object.values(BadType)) ||
-      isError(error, Object.values(Invalid))
-    ) {
-      return 422
-    }
+  if (isError(error, Object.values(Conflict))) {
+    return 409
+  }
+  if (
+    isError(error, Object.values(UnprocessableContent)) ||
+    isError(error, Object.values(BadType)) ||
+    isError(error, Object.values(Invalid))
+  ) {
+    return 422
+  }
   if (isError(error, Object.values(InternalServerError))) {
     return 500
   }

@@ -5,11 +5,13 @@ import {
   ScenarioAttributes,
 } from '@smartesting/shared/dist/models/Scenario'
 import { User, UserAttributes } from '@smartesting/shared/dist/models/User'
+import { ArrayMultimap } from '@teppeis/multimaps'
 
 export default class MemoryUserManager implements IUserManager {
   constructor(
     private readonly usersById = new Map<string, User>(),
-    private readonly scenariosById = new Map<string, Scenario>()
+    private readonly scenariosById = new Map<string, Scenario>(),
+    private readonly scenarioIdsByUser = new ArrayMultimap<string, string>()
   ) {}
 
   async createUser(user: UserAttributes): Promise<User> {
@@ -63,25 +65,14 @@ export default class MemoryUserManager implements IUserManager {
   }
 
   async listUserScenarios(userId: string): Promise<ReadonlyArray<Scenario>> {
-    try {
-      const user = this.usersById.get(userId)
-      if (user) {
-        const scenarios: Scenario[] = []
-        this.scenariosById.forEach((scenario, key) => {
-          if (scenario.user_id === userId) {
-            scenarios.push(scenario)
-          }
-        })
-        return scenarios
-      } else {
-        throw new Error('Utilisateur non trouvé.')
+    const scenarioIds = this.scenarioIdsByUser.get(userId)
+    const scenarios: Array<Scenario> = []
+    scenarioIds.forEach((scenarioId) => {
+      const scenario = this.scenariosById.get(scenarioId)
+      if (scenario) {
+        scenarios.push(scenario)
       }
-    } catch (error) {
-      console.error(
-        "Erreur lors de la récupération des scénarios de l'utilisateur :",
-        error
-      )
-      throw error
-    }
+    })
+    return scenarios
   }
 }

@@ -11,11 +11,13 @@ export type CreateScenarioError =
   | Unauthorized.authenticationRequired
   | UnprocessableContent.emptyName
   | UnprocessableContent.emptyTextScenario
+  | UnprocessableContent.emptyUserId
   | BadType.optionsBadType
 
 export const CreateScenarioError = {
   authenticationRequired: Unauthorized.authenticationRequired,
   emptyName: UnprocessableContent.emptyName,
   emptyTextScenario: UnprocessableContent.emptyTextScenario,
+  emptyUserId: UnprocessableContent.emptyUserId,
   optionsBadType: BadType.optionsBadType,
 } as const

@@ -23,6 +23,7 @@
     "@dapia-project/data-converter": "^4.0.0",
     "@smartesting/alteration-scenario": "file:../alteration-scenario",
     "@smartesting/shared": "file:../shared",
+    "@teppeis/multimaps": "^3.0.0",
     "@types/cors": "^2.8.13",
     "cors": "^2.8.5",
     "esbuild": "^0.15.13",

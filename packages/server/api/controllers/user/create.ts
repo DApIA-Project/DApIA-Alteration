@@ -45,9 +45,16 @@ function validateUser(body: Body): {
       userAttributes: null,
     }
 
+  if (typeof body.isAdmin !== 'boolean') {
+    return {
+      error: CreateUserError.optionsBadType,
+      userAttributes: null,
+    }
+  }
+
   return {
     userAttributes: {
-      firstname: body.fistname,
+      firstname: body.firstname,
       lastname: body.lastname,
       email: body.email,
       password: body.password,

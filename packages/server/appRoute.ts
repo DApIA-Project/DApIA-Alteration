@@ -6,6 +6,10 @@ import makeCreateRequestHandler from './api/controllers/scenario/create'
 import makeUpdateRequestHandler from './api/controllers/scenario/update'
 import makeDeleteRequestHandler from './api/controllers/scenario/delete'
 import makeListRequestHandler from './api/controllers/scenario/listScenario'
+import makeCreateUserRequestHandler from './api/controllers/user/create'
+//import makeUpdateUserRequestHandler from './api/controllers/user/update'
+//import makeDeleteUserRequestHandler from './api/controllers/user/delete'
+//import makeListUserRequestHandler from './api/controllers/user/listScenario'
 const router = express.Router()
 
 function setRoutes(): Router {
@@ -15,6 +19,10 @@ function setRoutes(): Router {
   router.post(ApiRoutes.updateScenario(), makeUpdateRequestHandler)
   router.post(ApiRoutes.deleteScenario(), makeDeleteRequestHandler)
   router.post(ApiRoutes.listScenario(), makeListRequestHandler)
+  router.post(ApiRoutes.createUser(), makeCreateUserRequestHandler)
+  //router.post(ApiRoutes.deleteUser(), makeDeleteUserRequestHandler)
+  //router.post(ApiRoutes.updateUser(), makeUpdateUserRequestHandler)
+  //router.post(ApiRoutes.listUser(), makeListUserRequestHandler)
   return router
 }
 
