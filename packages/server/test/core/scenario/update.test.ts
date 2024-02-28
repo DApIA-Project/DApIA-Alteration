@@ -20,7 +20,6 @@ describe('core/scenario/update', () => {
       haveDisableLongitude: false,
       haveDisableAltitude: false,
     },
-    user_id: '0',
   }
 
   beforeEach(async () => {
@@ -37,7 +36,8 @@ describe('core/scenario/update', () => {
       {
         ...validScenarioAttributes,
       },
-      scenarioManager
+      scenarioManager,
+      0
     )
 
     assert(createdScenario)
@@ -67,7 +67,8 @@ describe('core/scenario/update', () => {
       {
         ...validScenarioAttributes,
       },
-      scenarioManager
+      scenarioManager,
+      0
     )
 
     assert(createdScenario)
@@ -97,7 +98,8 @@ describe('core/scenario/update', () => {
       {
         ...validScenarioAttributes,
       },
-      scenarioManager
+      scenarioManager,
+      0
     )
 
     assert(createdScenario)
@@ -132,7 +134,8 @@ describe('core/scenario/update', () => {
       {
         ...validScenarioAttributes,
       },
-      scenarioManager
+      scenarioManager,
+      0
     )
 
     assert(createdScenario)

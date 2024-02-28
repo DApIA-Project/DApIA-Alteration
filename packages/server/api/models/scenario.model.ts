@@ -27,7 +27,7 @@ export default class Scenario extends Model<
 Scenario.init(
   {
     id: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.NUMBER,
       primaryKey: true,
       autoIncrement: true,
     },

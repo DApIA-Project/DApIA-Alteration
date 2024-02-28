@@ -6,16 +6,18 @@ import assert from 'assert'
 import { CreateScenarioError } from '@smartesting/shared/dist/responses/createScenario'
 import { clearDb } from '../../clearDb'
 import IUserManager from '../../../api/adapters/user/IUserManager'
+import { User } from '@smartesting/shared/dist/models/User'
 describe('core/scenario/create', () => {
   let scenarioManager: IScenarioManager
   let userManager: IUserManager
   let validScenarioAttributes: ScenarioAttributes
+  let user: User
 
   beforeEach(async () => {
     const adapters = makeTestAdapters()
     scenarioManager = adapters.scenarioManager
     userManager = adapters.userManager
-    await userManager.createUser({
+    user = await userManager.createUser({
       firstname: 'Bob',
       lastname: 'Dupont',
       email: 'bob.dupont@mail.fr',
@@ -23,7 +25,6 @@ describe('core/scenario/create', () => {
       isAdmin: false,
     })
 
-    let user = await userManager.findUserByEmail('bob.dupont@mail.fr')
     if (user) {
       validScenarioAttributes = {
         name: 'Scenario A',
@@ -36,7 +37,6 @@ describe('core/scenario/create', () => {
           haveDisableLongitude: false,
           haveDisableAltitude: false,
         },
-        user_id: user.id,
       }
     }
   })
@@ -50,7 +50,8 @@ describe('core/scenario/create', () => {
         ...validScenarioAttributes,
         name: '   ',
       },
-      scenarioManager
+      scenarioManager,
+      user.id
     )
 
     assert.strictEqual(createdScenario, null)
@@ -63,7 +64,8 @@ describe('core/scenario/create', () => {
         ...validScenarioAttributes,
         text: '   ',
       },
-      scenarioManager
+      scenarioManager,
+      user.id
     )
 
     assert.strictEqual(createdScenario?.text, '')
@@ -75,7 +77,8 @@ describe('core/scenario/create', () => {
       {
         ...validScenarioAttributes,
       },
-      scenarioManager
+      scenarioManager,
+      user.id
     )
 
     assert.strictEqual(error, null)
@@ -91,7 +94,8 @@ describe('core/scenario/create', () => {
         ...validScenarioAttributes,
         name: '  Scenario B  ',
       },
-      scenarioManager
+      scenarioManager,
+      user.id
     )
 
     assert(createdScenario)
@@ -105,7 +109,8 @@ describe('core/scenario/create', () => {
         ...validScenarioAttributes,
         text: '  cut all_planes at 6 seconds  ',
       },
-      scenarioManager
+      scenarioManager,
+      user.id
     )
 
     assert(createdScenario)

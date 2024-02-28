@@ -4,12 +4,19 @@ import {
   Scenario,
   ScenarioAttributes,
 } from '@smartesting/shared/dist/models/Scenario'
+import { ArrayMultimap } from '@teppeis/multimaps'
 
 export default class MemoryScenarioManager implements IScenarioManager {
-  constructor(private readonly scenariosById = new Map<string, Scenario>()) {}
+  constructor(
+    private readonly scenariosById = new Map<number, Scenario>(),
+    private readonly userIdByScenarioId = new Map<number, number>()
+  ) {}
 
-  async createScenario(scenario: ScenarioAttributes): Promise<Scenario> {
-    const id = uuid()
+  async createScenario(
+    scenario: ScenarioAttributes,
+    user_id: number
+  ): Promise<Scenario> {
+    const id = this.scenariosById.size + 1
     const date = new Date()
     const fullScenario: Scenario = {
       ...scenario,
@@ -18,11 +25,12 @@ export default class MemoryScenarioManager implements IScenarioManager {
       updatedAt: date,
     }
     this.scenariosById.set(id, fullScenario)
+    this.userIdByScenarioId.set(id, user_id)
     return fullScenario
   }
 
   async updateScenario(
-    scenarioId: string,
+    scenarioId: number,
     updatedData: Partial<ScenarioAttributes>
   ): Promise<Scenario | null> {
     const scenario = this.scenariosById.get(scenarioId)
@@ -36,16 +44,33 @@ export default class MemoryScenarioManager implements IScenarioManager {
     return updatedScenario
   }
 
-  async deleteScenario(scenarioId: string): Promise<void> {
+  async deleteScenario(scenarioId: number): Promise<void> {
     this.scenariosById.delete(scenarioId)
+    this.userIdByScenarioId.delete(scenarioId)
   }
 
-  async findScenario(scenarioId: string): Promise<Scenario | null> {
+  async findScenario(scenarioId: number): Promise<Scenario | null> {
     const scenario = this.scenariosById.get(scenarioId)
     return scenario || null
   }
 
   async listScenarios(): Promise<ReadonlyArray<Scenario>> {
     return Array.from(this.scenariosById.values())
+  }
+
+  async listUserScenario(userId: number): Promise<ReadonlyArray<Scenario>> {
+    const scenarios: Scenario[] = []
+    for (const [
+      scenarioId,
+      storedUserId,
+    ] of this.userIdByScenarioId.entries()) {
+      if (storedUserId === userId) {
+        let scenario = this.scenariosById.get(scenarioId)
+        if (scenario !== undefined) {
+          scenarios.push(scenario)
+        }
+      }
+    }
+    return scenarios
   }
 }

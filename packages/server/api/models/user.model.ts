@@ -28,7 +28,7 @@ export default class User extends Model<
 User.init(
   {
     id: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.NUMBER,
       primaryKey: true,
       autoIncrement: true,
     },

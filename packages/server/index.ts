@@ -4,6 +4,7 @@ import setAdapters from './api/middlewares/setAdapters'
 import MemoryScenarioManager from './api/adapters/scenario/MemoryScenarioManager'
 import { JavaAlterationManager } from './api/adapters/JavaAlterationManager'
 import PsqlScenarioManager from './api/adapters/scenario/PsqlScenarioManager'
+import MemoryUserManager from './api/adapters/user/MemoryUserManager'
 
 const express = require('express')
 const cors = require('cors')
@@ -20,6 +21,7 @@ app.use(
   setAdapters({
     scenarioManager: new PsqlScenarioManager(),
     alterationManager: new JavaAlterationManager(),
+    userManager: new MemoryUserManager(),
   })
 )
 app.use('/', setRoutes())

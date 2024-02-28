@@ -19,7 +19,6 @@ describe('core/scenario/delete', () => {
       haveDisableLongitude: false,
       haveDisableAltitude: false,
     },
-    user_id: '0',
   }
 
   beforeEach(async () => {
@@ -36,7 +35,8 @@ describe('core/scenario/delete', () => {
       {
         ...validScenarioAttributes,
       },
-      scenarioManager
+      scenarioManager,
+      0
     )
 
     assert(createdScenario)
@@ -49,10 +49,7 @@ describe('core/scenario/delete', () => {
   })
 
   it('scenario not exists', async () => {
-    const { error: errorRemoved } = await deleteScenario(
-      '1234',
-      scenarioManager
-    )
+    const { error: errorRemoved } = await deleteScenario(1234, scenarioManager)
     assert.strictEqual(errorRemoved, DeleteScenarioError.scenarioNotFound)
   })
 })

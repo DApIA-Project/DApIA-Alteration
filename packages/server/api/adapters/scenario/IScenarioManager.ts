@@ -10,13 +10,15 @@ export default interface IScenarioManager {
   ): Promise<Scenario>
 
   updateScenario(
-    scenarioId: string,
+    scenarioId: number,
     updatedData: Partial<ScenarioAttributes>
   ): Promise<Scenario | null>
 
-  deleteScenario(scenarioId: string): Promise<void>
+  deleteScenario(scenarioId: number): Promise<void>
 
-  findScenario(scenarioId: string): Promise<Scenario | null>
+  findScenario(scenarioId: number): Promise<Scenario | null>
 
   listScenarios(): Promise<ReadonlyArray<Scenario>>
+
+  listUserScenario(user_id: number): Promise<ReadonlyArray<Scenario>>
 }

@@ -1,7 +1,7 @@
 import { OptionsAlteration } from './index'
 
 export type Scenario = {
-  id: Readonly<string>
+  id: Readonly<number>
   createdAt: Readonly<Date>
   updatedAt: Readonly<Date>
 } & ScenarioAttributes

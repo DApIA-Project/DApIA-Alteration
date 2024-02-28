@@ -1,5 +1,5 @@
 export type User = {
-  id: Readonly<string>
+  id: Readonly<number>
   createdAt: Readonly<Date>
   updatedAt: Readonly<Date>
 } & UserAttributes

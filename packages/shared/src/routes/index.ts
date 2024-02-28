@@ -23,6 +23,10 @@ export class ApiRoutes {
     return '/scenario/list'
   }
 
+  static listUserScenario() {
+    return '/scenario/user/list'
+  }
+
   static createUser() {
     return '/user/create'
   }
@@ -33,10 +37,6 @@ export class ApiRoutes {
 
   static deleteUser() {
     return '/user/delete'
-  }
-
-  static listUserScenarios() {
-    return '/user/scenario/list'
   }
 
   static listUser() {

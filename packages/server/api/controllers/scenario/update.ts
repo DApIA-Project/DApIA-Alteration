@@ -5,7 +5,6 @@ import {
 import { makeRequestHandler } from '../utils/makeRequestHandler'
 import { Scenario } from '@smartesting/shared/dist/models/Scenario'
 import update from '../../core/scenario/update'
-import request from 'supertest'
 import IScenarioManager from '../../adapters/scenario/IScenarioManager'
 
 type Body = Record<string, any>

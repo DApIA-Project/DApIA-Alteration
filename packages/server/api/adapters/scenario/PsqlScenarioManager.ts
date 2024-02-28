@@ -20,7 +20,7 @@ export default class PsqlScenarioManager implements IScenarioManager {
     return scenarioModelToScenario(scenarioModel)
   }
 
-  async deleteScenario(scenarioId: string): Promise<void> {
+  async deleteScenario(scenarioId: number): Promise<void> {
     const scenarioModel = await ScenarioModel.findByPk(scenarioId)
     if (!scenarioModel) return
     await scenarioModel.destroy()
@@ -31,7 +31,16 @@ export default class PsqlScenarioManager implements IScenarioManager {
     return scenarioModels.map(scenarioModelToScenario)
   }
 
-  async findScenario(scenarioId: string): Promise<Scenario | null> {
+  async listUserScenario(user_id: number): Promise<ReadonlyArray<Scenario>> {
+    const scenarioModels = await ScenarioModel.findAll({
+      where: {
+        user_id: user_id,
+      },
+    })
+    return scenarioModels.map(scenarioModelToScenario)
+  }
+
+  async findScenario(scenarioId: number): Promise<Scenario | null> {
     const scenarioModel = await ScenarioModel.findOne({
       where: {
         id: scenarioId,
@@ -42,7 +51,7 @@ export default class PsqlScenarioManager implements IScenarioManager {
   }
 
   async updateScenario(
-    scenarioId: string,
+    scenarioId: number,
     updatedData: Partial<ScenarioAttributes>
   ): Promise<Scenario | null> {
     const scenarioModel = await ScenarioModel.findOne({
@@ -64,7 +73,7 @@ function scenarioModelToScenario(scenarioModel: ScenarioModel): Scenario {
     scenarioModel
 
   return {
-    id: String(id),
+    id: Number(id),
     name,
     text,
     options,

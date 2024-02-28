@@ -1,5 +1,6 @@
 import { sequelize } from './connection'
 import Scenario from '../models/scenario.model'
+import User from '../models/user.model'
 
 export type Logger = {
   log: typeof console.log
@@ -17,6 +18,7 @@ export async function truncateDB(logger: Logger = console) {
           truncate: true,
         }
 
+        await User.destroy(options)
         await Scenario.destroy(options)
 
         logger.log('DB truncate success')

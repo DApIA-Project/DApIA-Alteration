@@ -6,7 +6,7 @@ import {
 import IScenarioManager from '../../adapters/scenario/IScenarioManager'
 import { UnprocessableContent } from '@smartesting/shared/dist/responses/responseError'
 export default async function updateScenario(
-  scenarioId: string,
+  scenarioId: number,
   name: string,
   text: string,
   options: OptionsAlteration,

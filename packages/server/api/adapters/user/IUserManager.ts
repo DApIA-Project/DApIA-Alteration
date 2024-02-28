@@ -5,13 +5,12 @@ export default interface IUserManager {
   createUser(user: UserAttributes): Promise<User>
 
   updateUser(
-    userId: string,
+    userId: number,
     updatedData: Partial<UserAttributes>
   ): Promise<User | null>
 
-  deleteUser(userId: string): Promise<void>
+  deleteUser(userId: number): Promise<void>
   findUserByEmail(email: string): Promise<User | null>
-  findUser(id: string): Promise<User | null>
-  listUserScenarios(userId: string): Promise<ReadonlyArray<Scenario>>
+  findUser(id: number): Promise<User | null>
   listUsers(): Promise<ReadonlyArray<User>>
 }

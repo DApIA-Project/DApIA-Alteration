@@ -15,12 +15,18 @@ export type UpdateUserResponse = DapiaAlterationResponse<
 export type UpdateUserError =
   | Unauthorized.authenticationRequired
   | UnprocessableContent.emptyEmail
+  | UnprocessableContent.emptyFirstname
+  | UnprocessableContent.emptyLastname
+  | UnprocessableContent.emptyPassword
   | BadType.optionsBadType
   | NotFound.userNotFound
 
 export const UpdateUserError = {
   authenticationRequired: Unauthorized.authenticationRequired,
-  emptyTextScenario: UnprocessableContent.emptyEmail,
+  emptyEmail: UnprocessableContent.emptyEmail,
+  emptyFirstname: UnprocessableContent.emptyFirstname,
+  emptyLastname: UnprocessableContent.emptyLastname,
+  emptyPassword: UnprocessableContent.emptyPassword,
   optionsBadType: BadType.optionsBadType,
-  scenarioNotFound: NotFound.userNotFound,
+  userNotFound: NotFound.userNotFound,
 } as const

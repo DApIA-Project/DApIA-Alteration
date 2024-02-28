@@ -18,9 +18,9 @@ export default makeRequestHandler<DeleteScenarioResponse>(
 
 function validateId(body: Body): {
   error: DeleteScenarioError | null
-  id: string | null
+  id: number | null
 } {
-  if (!body.id || typeof body.id !== 'string') {
+  if (typeof body.id !== 'number') {
     return {
       error: DeleteScenarioError.idBadType,
       id: null,

@@ -4,11 +4,11 @@ import { Unauthorized, UnprocessableContent } from './responseError'
 
 export type ListUserScenarioResponse = DapiaAlterationResponse<
   { scenarios: readonly Scenario[] | null },
-  ListUserScenariosError
+  ListUserScenarioError
 >
 
-export type ListUserScenariosError = UnprocessableContent.emptyListScenario
+export type ListUserScenarioError = UnprocessableContent.emptyListScenario
 
-export const ListUserScenariosError = {
+export const ListUserScenarioError = {
   emptyListScenario: UnprocessableContent.emptyListScenario,
 } as const

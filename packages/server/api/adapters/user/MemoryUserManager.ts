@@ -9,13 +9,13 @@ import { ArrayMultimap } from '@teppeis/multimaps'
 
 export default class MemoryUserManager implements IUserManager {
   constructor(
-    private readonly usersById = new Map<string, User>(),
-    private readonly scenariosById = new Map<string, Scenario>(),
-    private readonly scenarioIdsByUser = new ArrayMultimap<string, string>()
+    private readonly usersById = new Map<number, User>(),
+    private readonly scenariosById = new Map<number, Scenario>(),
+    private readonly scenarioIdsByUser = new ArrayMultimap<number, number>()
   ) {}
 
   async createUser(user: UserAttributes): Promise<User> {
-    const id = uuid()
+    const id = this.usersById.size + 1
     const date = new Date()
     const fullUser: User = {
       ...user,
@@ -28,7 +28,7 @@ export default class MemoryUserManager implements IUserManager {
   }
 
   async updateUser(
-    userId: string,
+    userId: number,
     updatedData: Partial<UserAttributes>
   ): Promise<User | null> {
     const user = this.usersById.get(userId)
@@ -42,7 +42,7 @@ export default class MemoryUserManager implements IUserManager {
     return updatedUser
   }
 
-  async deleteUser(userId: string): Promise<void> {
+  async deleteUser(userId: number): Promise<void> {
     this.usersById.delete(userId)
   }
 
@@ -55,24 +55,12 @@ export default class MemoryUserManager implements IUserManager {
     return null
   }
 
-  async findUser(userId: string): Promise<User | null> {
+  async findUser(userId: number): Promise<User | null> {
     const user = this.usersById.get(userId)
     return user || null
   }
 
   async listUsers(): Promise<ReadonlyArray<User>> {
     return Array.from(this.usersById.values())
-  }
-
-  async listUserScenarios(userId: string): Promise<ReadonlyArray<Scenario>> {
-    const scenarioIds = this.scenarioIdsByUser.get(userId)
-    const scenarios: Array<Scenario> = []
-    scenarioIds.forEach((scenarioId) => {
-      const scenario = this.scenariosById.get(scenarioId)
-      if (scenario) {
-        scenarios.push(scenario)
-      }
-    })
-    return scenarios
   }
 }

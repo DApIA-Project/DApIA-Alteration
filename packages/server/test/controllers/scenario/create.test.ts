@@ -13,7 +13,7 @@ import { User } from '@smartesting/shared/dist/models/User'
 describe(`POST ${ApiRoutes.createScenario()}`, () => {
   let server: express.Express
   const validUserAttributes: User = {
-    id: '2',
+    id: 2,
     firstname: 'Bob',
     lastname: 'Dupont',
     email: 'bob.dupont@mail.fr',

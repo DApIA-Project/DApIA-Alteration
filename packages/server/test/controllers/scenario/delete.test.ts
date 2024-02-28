@@ -61,7 +61,7 @@ describe(`POST ${ApiRoutes.deleteScenario()}`, () => {
 
       const response = await request(server)
         .post(ApiRoutes.deleteScenario())
-        .send({ id: '31' })
+        .send({ id: 31 })
 
       const error = response.body.error
       assert.deepStrictEqual(error, DeleteScenarioError.scenarioNotFound)
@@ -76,7 +76,7 @@ describe(`POST ${ApiRoutes.deleteScenario()}`, () => {
 
       const response = await request(server)
         .post(ApiRoutes.deleteScenario())
-        .send({ id: 31 })
+        .send({ id: String(scenario.id) })
 
       const error = response.body.error
       assert.deepStrictEqual(error, DeleteScenarioError.idBadType)

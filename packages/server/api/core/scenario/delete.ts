@@ -5,7 +5,7 @@ import {
 import IScenarioManager from '../../adapters/scenario/IScenarioManager'
 
 export default async function deleteScenario(
-  scenarioId: string,
+  scenarioId: number,
   scenarioManager: IScenarioManager
 ): Promise<DeleteScenarioResponse> {
   const existingScenario = await scenarioManager.findScenario(scenarioId)
