@@ -8,6 +8,8 @@ import {
   makeProductionAdapters,
 } from '../../makeTestAdapters'
 import { clearMemoryDb, clearProductionDb } from '../../clearDb'
+import hashPassword from '../../../api/adapters/user/hashPassword'
+import bcrypt from 'bcryptjs'
 
 const IUserContractTest: IContractTest = (
   implementationName,
@@ -50,7 +52,10 @@ const IUserContractTest: IContractTest = (
         assert.deepStrictEqual(created.firstname, validUserAttributes.firstname)
         assert.deepStrictEqual(created.lastname, validUserAttributes.lastname)
         assert.deepStrictEqual(created.email, validUserAttributes.email)
-        assert.deepStrictEqual(created.password, validUserAttributes.password)
+        assert.notEqual(created.password, validUserAttributes.password)
+        assert(
+          await bcrypt.compare(validUserAttributes.password, created.password)
+        )
       })
     })
 
@@ -66,7 +71,10 @@ const IUserContractTest: IContractTest = (
         assert.deepStrictEqual(updated.firstname, 'Joe')
         assert.deepStrictEqual(updated.lastname, validUserAttributes.lastname)
         assert.deepStrictEqual(updated.email, validUserAttributes.email)
-        assert.deepStrictEqual(updated.password, validUserAttributes.password)
+        assert.notEqual(updated.password, validUserAttributes.password)
+        assert(
+          await bcrypt.compare(validUserAttributes.password, updated.password)
+        )
       })
     })
 
@@ -84,22 +92,15 @@ const IUserContractTest: IContractTest = (
       })
     })
 
-    /* describe('listUsers', () => {
-          it('returns all users', async () => {
-            const user1 = await userManager.createUser(
-              validUserAttributes
-            )
-            const user2 = await userManager.createUser(
-              secondUserAttributes
-            )
+    describe('listUsers', () => {
+      it('returns all users', async () => {
+        const user1 = await userManager.createUser(validUserAttributes)
+        const user2 = await userManager.createUser(secondUserAttributes)
 
-            assert.deepEqual(await userManager.listUsers(), [
-              user1,
-              user2,
-            ])
-          })
-        })
-    */
+        assert.deepEqual(await userManager.listUsers(), [user1, user2])
+      })
+    })
+
     describe('deleteUser', () => {
       it('remove a specific user', async () => {
         const user1 = await userManager.createUser(validUserAttributes)

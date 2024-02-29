@@ -6,6 +6,7 @@ import assert from 'assert'
 import { CreateUserError } from '@smartesting/shared/dist/responses/createUser'
 import makeTestAdapters from '../../makeTestAdapters'
 import { clearDb } from '../../clearDb'
+import bcrypt from 'bcryptjs'
 
 describe(`POST ${ApiRoutes.createUser()}`, () => {
   let server: express.Express
@@ -227,7 +228,8 @@ describe(`POST ${ApiRoutes.createUser()}`, () => {
       assert.equal(user.firstname, 'Bob')
       assert.equal(user.lastname, 'Dupont')
       assert.equal(user.email, 'bob.dupont@mail.fr')
-      assert.equal(user.password, 's3cret!')
+      assert.notEqual(user.password, 's3cret!')
+      assert(await bcrypt.compare('s3cret!', user.password))
       assert.equal(user.isAdmin, false)
     })
   })

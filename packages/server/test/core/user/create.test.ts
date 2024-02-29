@@ -5,6 +5,7 @@ import create from '../../../api/core/user/create'
 import assert from 'assert'
 import { CreateUserError } from '@smartesting/shared/dist/responses/createUser'
 import { clearDb } from '../../clearDb'
+import bcrypt from 'bcryptjs'
 describe('core/user/create', () => {
   let userManager: IUserManager
   const validUserAttributes: UserAttributes = {
@@ -149,19 +150,5 @@ describe('core/user/create', () => {
     assert(createdUser)
     const existing = await userManager.findUser(createdUser.id)
     assert.strictEqual(existing?.email, 'bobdupont2@mail.fr')
-  })
-
-  it('trims the password before saving', async () => {
-    const { user: createdUser } = await create(
-      {
-        ...validUserAttributes,
-        password: '  secret  ',
-      },
-      userManager
-    )
-
-    assert(createdUser)
-    const existing = await userManager.findUser(createdUser.id)
-    assert.strictEqual(existing?.password, 'secret')
   })
 })

@@ -165,6 +165,24 @@ const IScenarioContractTest: IContractTest = (
         assert.deepEqual(await scenarioManager.listScenarios(), [scenario2])
       })
     })
+
+    describe('listUserScenario', () => {
+      it('returns all scenarios of user', async () => {
+        const scenario1 = await scenarioManager.createScenario(
+          validScenarioAttributes,
+          user.id
+        )
+        const scenario2 = await scenarioManager.createScenario(
+          secondScenarioAttributes,
+          user.id
+        )
+
+        assert.deepEqual(await scenarioManager.listUserScenario(user.id), [
+          scenario1,
+          scenario2,
+        ])
+      })
+    })
   })
 }
 

@@ -41,7 +41,6 @@ describe('core/user/update', () => {
       '  ',
       createdUser.lastname,
       createdUser.email,
-      createdUser.password,
       createdUser.isAdmin,
       userManager
     )
@@ -65,7 +64,6 @@ describe('core/user/update', () => {
       createdUser.firstname,
       '     ',
       createdUser.email,
-      createdUser.password,
       createdUser.isAdmin,
       userManager
     )
@@ -89,37 +87,12 @@ describe('core/user/update', () => {
       createdUser.firstname,
       createdUser.lastname,
       '     ',
-      createdUser.password,
       createdUser.isAdmin,
       userManager
     )
 
     assert.strictEqual(updatedUser, null)
     assert.strictEqual(updatedError, UpdateUserError.emptyEmail)
-  })
-
-  it('requires a non-blank password for the user', async () => {
-    const { user: createdUser } = await create(
-      {
-        ...validUserAttributes,
-      },
-      userManager
-    )
-
-    assert(createdUser)
-
-    const { user: updatedUser, error: updatedError } = await updateUser(
-      createdUser.id,
-      createdUser.firstname,
-      createdUser.lastname,
-      createdUser.email,
-      '     ',
-      createdUser.isAdmin,
-      userManager
-    )
-
-    assert.strictEqual(updatedUser, null)
-    assert.strictEqual(updatedError, UpdateUserError.emptyPassword)
   })
 
   it('update user if all fields are correct', async () => {
@@ -137,7 +110,6 @@ describe('core/user/update', () => {
       'Charlie',
       'Stone',
       'charlie.stone@mail.fr',
-      'news3cret!',
       true,
       userManager
     )
@@ -149,7 +121,6 @@ describe('core/user/update', () => {
     assert.deepStrictEqual(updatedUser.firstname, existing?.firstname)
     assert.deepStrictEqual(updatedUser.lastname, existing?.lastname)
     assert.deepStrictEqual(updatedUser.email, existing?.email)
-    assert.deepStrictEqual(updatedUser.password, existing?.password)
   })
 
   it('trims the firstname, lastname, email but no password before saving', async () => {
@@ -167,7 +138,6 @@ describe('core/user/update', () => {
       '  Charlie  ',
       '  Stone  ',
       '   charlie.stone@mail.fr   ',
-      '   newpassword   ',
       createdUser.isAdmin,
       userManager
     )
@@ -179,6 +149,5 @@ describe('core/user/update', () => {
     assert.strictEqual(existing?.firstname, 'Charlie')
     assert.strictEqual(existing?.lastname, 'Stone')
     assert.strictEqual(existing?.email, 'charlie.stone@mail.fr')
-    assert.strictEqual(existing?.password, '   newpassword   ')
   })
 })

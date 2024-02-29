@@ -10,7 +10,6 @@ export default async function updateUser(
   firstname: string,
   lastname: string,
   email: string,
-  password: string,
   isAdmin: boolean,
   userManager: IUserManager
 ): Promise<UpdateUserResponse> {
@@ -23,13 +22,10 @@ export default async function updateUser(
   const newEmail = email.trim()
   if (newEmail.length === 0)
     return { error: UnprocessableContent.emptyEmail, user: null }
-  if (password.trim().length === 0)
-    return { error: UnprocessableContent.emptyPassword, user: null }
   const updatedUser = await userManager.updateUser(userId, {
     firstname: newFirstname,
     lastname: newLastname,
     email: newEmail,
-    password: password,
     isAdmin: isAdmin,
   })
   return { error: null, user: updatedUser }

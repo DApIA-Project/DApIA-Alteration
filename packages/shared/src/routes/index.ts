@@ -42,4 +42,8 @@ export class ApiRoutes {
   static listUser() {
     return '/user/list'
   }
+
+  static updatePassword() {
+    return '/user/update/password'
+  }
 }

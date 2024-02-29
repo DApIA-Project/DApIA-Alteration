@@ -6,6 +6,7 @@ import {
 } from '@smartesting/shared/dist/models/Scenario'
 import { User, UserAttributes } from '@smartesting/shared/dist/models/User'
 import { ArrayMultimap } from '@teppeis/multimaps'
+import hashPassword from './hashPassword'
 
 export default class MemoryUserManager implements IUserManager {
   constructor(
@@ -20,6 +21,7 @@ export default class MemoryUserManager implements IUserManager {
     const fullUser: User = {
       ...user,
       id,
+      password: await hashPassword(user.password),
       createdAt: date,
       updatedAt: date,
     }
@@ -62,5 +64,13 @@ export default class MemoryUserManager implements IUserManager {
 
   async listUsers(): Promise<ReadonlyArray<User>> {
     return Array.from(this.usersById.values())
+  }
+
+  async updatePassword(userId: number, password: string): Promise<User | null> {
+    const user = this.usersById.get(userId)
+    if (!user) return null
+
+    user.password = await hashPassword(password)
+    return user
   }
 }

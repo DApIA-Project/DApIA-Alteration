@@ -7,6 +7,7 @@ import { UpdateUserError } from '@smartesting/shared/dist/responses/updateUser'
 import makeTestAdapters from '../../makeTestAdapters'
 import { OptionsAlteration } from '@smartesting/shared/dist/index'
 import { clearDb } from '../../clearDb'
+import bcrypt from 'bcryptjs'
 
 describe(`POST ${ApiRoutes.updateUser()}`, () => {
   let server: express.Express
@@ -236,64 +237,6 @@ describe(`POST ${ApiRoutes.updateUser()}`, () => {
     })
   })
 
-  context('when user password is invalid', () => {
-    it('returns 422 if the password is not specified', async () => {
-      const createUserReq = await request(server)
-        .post(ApiRoutes.createUser())
-        .send(validUserAttributes)
-      const userCreate = createUserReq.body.user
-
-      const response = await request(server)
-        .post(ApiRoutes.updateUser())
-        .send({
-          ...validUserAttributesMissingPassword,
-          password: '',
-          id: userCreate.id,
-        })
-
-      const { error, user } = response.body
-      assert.deepStrictEqual(user, null)
-      assert.equal(error, UpdateUserError.emptyPassword)
-    })
-
-    it('returns 422 if the password is blank', async () => {
-      const createUserReq = await request(server)
-        .post(ApiRoutes.createUser())
-        .send(validUserAttributes)
-      const userCreate = createUserReq.body.user
-
-      const response = await request(server)
-        .post(ApiRoutes.updateUser())
-        .send({
-          ...validUserAttributesMissingPassword,
-          password: '   ',
-          id: userCreate.id,
-        })
-
-      const { error, user } = response.body
-      assert.deepStrictEqual(user, null)
-      assert.equal(error, UpdateUserError.emptyPassword)
-    })
-
-    it('returns 422 if the password is not set', async () => {
-      const createUserReq = await request(server)
-        .post(ApiRoutes.createUser())
-        .send(validUserAttributes)
-      const userCreate = createUserReq.body.user
-
-      const response = await request(server)
-        .post(ApiRoutes.updateUser())
-        .send({
-          ...validUserAttributesMissingPassword,
-          id: userCreate.id,
-        })
-
-      const { error, user } = response.body
-      assert.deepStrictEqual(user, null)
-      assert.equal(error, UpdateUserError.emptyPassword)
-    })
-  })
-
   context('when user not exists', () => {
     it('returns 404 when user not exists', async () => {
       const response = await request(server)
@@ -328,7 +271,6 @@ describe(`POST ${ApiRoutes.updateUser()}`, () => {
           firstname: 'Charlie',
           lastname: 'Stone',
           email: 'charlie.stone@mail.fr',
-          password: 'itss3cretpassword!',
           id: userCreate.id,
         })
 
@@ -337,7 +279,6 @@ describe(`POST ${ApiRoutes.updateUser()}`, () => {
       assert.equal(user.firstname, 'Charlie')
       assert.equal(user.lastname, 'Stone')
       assert.equal(user.email, 'charlie.stone@mail.fr')
-      assert.equal(user.password, 'itss3cretpassword!')
     })
   })
 })

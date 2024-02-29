@@ -1,27 +1,20 @@
 import {
-  UpdateUserError,
-  UpdateUserResponse,
-} from '@smartesting/shared/dist/responses/updateUser'
+  UpdatePasswordUserError,
+  UpdatePasswordUserResponse,
+} from '@smartesting/shared/dist/responses/updatePasswordUser'
 import { makeRequestHandler } from '../utils/makeRequestHandler'
 import { User } from '@smartesting/shared/dist/models/User'
-import update from '../../core/user/update'
+import updatePassword from '../../core/user/updatePassword'
 import IUserManager from '../../adapters/user/IUserManager'
 
 type Body = Record<string, any>
 
-export default makeRequestHandler<UpdateUserResponse>(
-  async (req): Promise<UpdateUserResponse> => {
+export default makeRequestHandler<UpdatePasswordUserResponse>(
+  async (req): Promise<UpdatePasswordUserResponse> => {
     const { userManager } = req.adapters
     const { error, user } = await validateUser(req.body, userManager)
     if (error || !user) return { error, user: null }
-    return await update(
-      user.id,
-      user.firstname,
-      user.lastname,
-      user.email,
-      user.isAdmin,
-      userManager
-    )
+    return await updatePassword(user.id, user.password, userManager)
   }
 )
 
@@ -29,29 +22,19 @@ async function validateUser(
   body: Body,
   userManager: IUserManager
 ): Promise<{
-  error: UpdateUserError | null
+  error: UpdatePasswordUserError | null
   user: User | null
 }> {
-  if (!body.firstname || typeof body.firstname !== 'string')
+  if (!body.password || typeof body.password !== 'string')
     return {
-      error: UpdateUserError.emptyFirstname,
-      user: null,
-    }
-  if (!body.lastname || typeof body.lastname !== 'string')
-    return {
-      error: UpdateUserError.emptyLastname,
-      user: null,
-    }
-  if (!body.email || typeof body.email !== 'string')
-    return {
-      error: UpdateUserError.emptyEmail,
+      error: UpdatePasswordUserError.emptyPassword,
       user: null,
     }
 
   const userBefore: User | null = await userManager.findUser(body.id)
   if (!userBefore) {
     return {
-      error: UpdateUserError.userNotFound,
+      error: UpdatePasswordUserError.userNotFound,
       user: null,
     }
   }

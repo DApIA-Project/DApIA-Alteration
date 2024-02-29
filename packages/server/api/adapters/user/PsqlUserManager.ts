@@ -2,12 +2,13 @@ import IUserManager from './IUserManager'
 import UserModel from '../../models/user.model'
 import { User, UserAttributes } from '@smartesting/shared/dist/models/User'
 import { InferCreationAttributes } from 'sequelize'
-import Scenario from '../../models/scenario.model'
+import hashPassword from './hashPassword'
 
 export default class PsqlUserManager implements IUserManager {
   async createUser(user: UserAttributes): Promise<User> {
     const userModel = await UserModel.create({
       ...user,
+      password: await hashPassword(user.password),
       createdAt: new Date(),
       updatedAt: new Date(),
     })
@@ -59,6 +60,21 @@ export default class PsqlUserManager implements IUserManager {
       },
     })
     if (!userModel) return null
+    return userModelToUser(userModel)
+  }
+
+  async updatePassword(userId: number, password: string): Promise<User | null> {
+    const userModel = await UserModel.findOne({
+      where: {
+        id: userId,
+      },
+    })
+    if (!userModel) {
+      return null
+    }
+    await userModel.update({
+      password: await hashPassword(password),
+    })
     return userModelToUser(userModel)
   }
 }
