@@ -19,21 +19,6 @@ describe('EditorTab', () => {
     createdAt: new Date(),
     updatedAt: new Date(),
   }
-  let scenario1: Scenario = {
-    ...scenarioAttributes,
-    name: 'Scenario A',
-    id: uuid(),
-  }
-  let scenario2: Scenario = {
-    ...scenarioAttributes,
-    name: 'Scenario B',
-    id: uuid(),
-  }
-  let scenario3: Scenario = {
-    ...scenarioAttributes,
-    name: 'Scenario C',
-    id: uuid(),
-  }
 
   it('renders tab', async () => {
     render(
