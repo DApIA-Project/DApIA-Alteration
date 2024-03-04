@@ -16,7 +16,7 @@ describe('EditorTabList', () => {
     haveDisableLatitude: false,
   }
   let scenario: Scenario = {
-    id: 'id1',
+    id: 1,
     name: 'New scenario',
     text: 'hide all_planes at 6 seconds',
     options: options,
@@ -24,7 +24,7 @@ describe('EditorTabList', () => {
     createdAt: new Date(),
   }
   let scenario2: Scenario = {
-    id: 'id2',
+    id: 2,
     name: 'New scenario A',
     text: 'cut all_planes at 6 seconds',
     options: options,
@@ -32,7 +32,7 @@ describe('EditorTabList', () => {
     createdAt: new Date(),
   }
   let scenario3: Scenario = {
-    id: 'id3',
+    id: 3,
     name: 'New scenario B',
     text: 'alter all_planes at 6 seconds',
     options: options,
@@ -40,7 +40,7 @@ describe('EditorTabList', () => {
     createdAt: new Date(),
   }
   let scenario4: Scenario = {
-    id: 'id4',
+    id: 4,
     name: 'New scenario C',
     text: 'alter all_planes at 7 seconds',
     options: options,
@@ -48,7 +48,7 @@ describe('EditorTabList', () => {
     createdAt: new Date(),
   }
   let scenario5: Scenario = {
-    id: 'id5',
+    id: 5,
     name: 'New scenario D',
     text: 'alter all_planes at 8 seconds',
     options: options,
@@ -56,7 +56,7 @@ describe('EditorTabList', () => {
     createdAt: new Date(),
   }
   let scenario6: Scenario = {
-    id: 'id6',
+    id: 6,
     name: 'New scenario E',
     text: 'alter all_planes at 9 seconds',
     options: options,
@@ -64,7 +64,7 @@ describe('EditorTabList', () => {
     createdAt: new Date(),
   }
   let scenario7: Scenario = {
-    id: 'id7',
+    id: 7,
     name: 'New scenario F',
     text: 'alter all_planes at 19 seconds',
     options: options,
@@ -72,7 +72,7 @@ describe('EditorTabList', () => {
     createdAt: new Date(),
   }
   let scenario8: Scenario = {
-    id: 'id8',
+    id: 8,
     name: 'New scenario G',
     text: 'alter all_planes at 20 seconds',
     options: options,
@@ -80,7 +80,7 @@ describe('EditorTabList', () => {
     createdAt: new Date(),
   }
   let scenario9: Scenario = {
-    id: 'id9',
+    id: 9,
     name: 'New scenario H',
     text: 'alter all_planes at 21 seconds',
     options: options,
@@ -88,7 +88,7 @@ describe('EditorTabList', () => {
     createdAt: new Date(),
   }
   let scenario10: Scenario = {
-    id: 'id10',
+    id: 10,
     name: 'New scenario I',
     text: 'alter all_planes at 22 seconds',
     options: options,

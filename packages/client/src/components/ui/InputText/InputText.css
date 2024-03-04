@@ -1,0 +1,18 @@
+.inputTextDiv {
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  font-size: 100%;
+}
+
+.input {
+  background: white;
+  border-radius: 5px;
+  height: 50%;
+}
+
+.MuiOutlinedInput-root {
+  height: 100%;
+}

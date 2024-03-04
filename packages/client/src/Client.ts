@@ -4,6 +4,7 @@ import { UpdateScenarioResponse } from '@smartesting/shared/dist/responses/updat
 import { DeleteScenarioResponse } from '@smartesting/shared/dist/responses/deleteScenario'
 import { ListScenarioResponse } from '@smartesting/shared/dist/responses/listScenario'
 import { OptionsAlteration, Recording } from '@smartesting/shared/dist'
+import { CreateUserResponse } from '@smartesting/shared/dist/responses/createUser'
 import apiUrl from './config'
 
 export default class Client {
@@ -51,19 +52,21 @@ export default class Client {
   async createScenario(
     name: string,
     text: string,
-    optionsAlteration: OptionsAlteration
+    optionsAlteration: OptionsAlteration,
+    user_id: number
   ): Promise<CreateScenarioResponse> {
     const url: string = `${apiUrl}/scenario/create`
     const data = {
       name,
       text,
       options: optionsAlteration,
+      user_id,
     }
     return this.apiCall<CreateScenarioResponse>(url, data)
   }
 
   async updateScenario(
-    id_scenario: string,
+    id_scenario: number,
     newName: string,
     newText: string,
     newOptionsAlteration: OptionsAlteration
@@ -78,7 +81,7 @@ export default class Client {
     return this.apiCall<UpdateScenarioResponse>(url, data)
   }
 
-  async deleteScenario(id_scenario: string): Promise<DeleteScenarioResponse> {
+  async deleteScenario(id_scenario: number): Promise<DeleteScenarioResponse> {
     const url: string = `${apiUrl}/scenario/delete`
     const data = {
       id: id_scenario,
@@ -89,5 +92,22 @@ export default class Client {
   async listScenario(): Promise<ListScenarioResponse> {
     const url: string = `${apiUrl}/scenario/list`
     return this.apiCall<ListScenarioResponse>(url)
+  }
+
+  async createUser(
+    firstname: string,
+    lastname: string,
+    email: string,
+    password: string
+  ): Promise<CreateUserResponse> {
+    const url: string = `${apiUrl}/user/create`
+    const data = {
+      firstname,
+      lastname,
+      email,
+      password,
+      isAdmin: false,
+    }
+    return this.apiCall<CreateUserResponse>(url, data)
   }
 }

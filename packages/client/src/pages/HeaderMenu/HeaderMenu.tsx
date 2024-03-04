@@ -12,42 +12,48 @@ export enum HeaderMenuTestIds {
 }
 const HeaderMenu: React.FunctionComponent = () => {
   return (
-    <nav className='menu'>
-      <ul>
-        <li>
-          <NavLink
-            className='navbar-item'
-            to='/'
-            data-testid={HeaderMenuTestIds.NAVIGATION_ACCUEIL}
-          >
-            Accueil
-          </NavLink>
-        </li>
-        <li>
-          <NavLink
-            className='navbar-item'
-            to='/documentation'
-            data-testid={HeaderMenuTestIds.NAVIGATION_DOCUMENTATION}
-          >
-            Documentation
-          </NavLink>
-        </li>
-        <li>
-          <NavLink
-            className='navbar-item'
-            to='/connect'
-            data-testid={HeaderMenuTestIds.NAVIGATION_ACCOUNT}
-          >
-            <Tooltip arrow title={''} className={'tooltip'}>
-              <AccountCircleIcon
-                fontSize='large'
-                className='accountCircleIcon'
-              />
-            </Tooltip>
-          </NavLink>
-        </li>
-      </ul>
-    </nav>
+    <>
+      <header>
+        <span>DApIA</span>
+        <span>Alteration</span>
+      </header>
+      <nav className='menu'>
+        <ul>
+          <li>
+            <NavLink
+              className='navbar-item'
+              to='/'
+              data-testid={HeaderMenuTestIds.NAVIGATION_ACCUEIL}
+            >
+              Accueil
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              className='navbar-item'
+              to='/documentation'
+              data-testid={HeaderMenuTestIds.NAVIGATION_DOCUMENTATION}
+            >
+              Documentation
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              className='navbar-item'
+              to='/connect'
+              data-testid={HeaderMenuTestIds.NAVIGATION_ACCOUNT}
+            >
+              <Tooltip arrow title={''} className={'tooltip'}>
+                <AccountCircleIcon
+                  fontSize='large'
+                  className='accountCircleIcon'
+                />
+              </Tooltip>
+            </NavLink>
+          </li>
+        </ul>
+      </nav>
+    </>
   )
 }
 

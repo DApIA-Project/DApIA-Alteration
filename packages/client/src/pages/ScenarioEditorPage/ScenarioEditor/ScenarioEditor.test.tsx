@@ -40,17 +40,17 @@ describe('ScenarioEditor', () => {
   let scenario1: Scenario = {
     ...scenarioAttributes,
     name: 'Scenario A',
-    id: uuid(),
+    id: 1,
   }
   let scenario2: Scenario = {
     ...scenarioAttributes,
     name: 'Scenario B',
-    id: uuid(),
+    id: 2,
   }
   let scenario3: Scenario = {
     ...scenarioAttributes,
     name: 'Scenario C',
-    id: uuid(),
+    id: 3,
   }
   let client: Client
   let spiedCallback: jest.Mock

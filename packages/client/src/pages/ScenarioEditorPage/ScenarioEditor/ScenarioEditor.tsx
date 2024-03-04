@@ -96,7 +96,7 @@ const ScenarioEditor: React.FunctionComponent<ScenarioEditorProps> = ({
   }, [client, openedScenarios])
 
   async function updateScenario(
-    id: string,
+    id: number,
     newName: string,
     newText: string,
     newOptions: OptionsAlteration
@@ -119,7 +119,8 @@ const ScenarioEditor: React.FunctionComponent<ScenarioEditorProps> = ({
       const { scenario, error } = await client.createScenario(
         name,
         text,
-        options
+        options,
+        Number(sessionStorage.getItem('user_id'))
       )
       if (error) {
         return

@@ -17,7 +17,7 @@ let scenarioA: Scenario = {
     haveDisableLatitude: false,
     haveDisableLongitude: false,
   },
-  id: '1',
+  id: 1,
   createdAt: new Date(),
   updatedAt: new Date(),
 }
@@ -32,7 +32,7 @@ let scenarioB: Scenario = {
     haveDisableLatitude: false,
     haveDisableLongitude: false,
   },
-  id: '2',
+  id: 2,
   createdAt: new Date(),
   updatedAt: new Date(),
 }
