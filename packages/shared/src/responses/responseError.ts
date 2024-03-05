@@ -17,6 +17,7 @@ export enum NotFound {
 //409
 export enum Conflict {
   emailConflict = 'email_already_used',
+  passwordConflict = 'password_not_equals',
 }
 
 //422
@@ -30,6 +31,7 @@ export enum UnprocessableContent {
   emptyFirstname = 'empty_firstname',
   emptyLastname = 'empty_lastname',
   emptyPassword = 'empty_password',
+  emptyUserByEmail = 'empty_user',
 }
 
 //422

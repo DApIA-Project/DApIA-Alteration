@@ -12,6 +12,8 @@ import makeDeleteUserRequestHandler from './api/controllers/user/delete'
 import makeListUserScenarioRequestHandler from './api/controllers/scenario/listUserScenario'
 import makeListUserRequestHandler from './api/controllers/user/listUser'
 import makeUpdatePasswordUserRequestHandler from './api/controllers/user/updatePassword'
+import makeFindUserByEmailRequestHandler from './api/controllers/user/findUserByEmail'
+import makeLoginUserRequestHandler from './api/controllers/user/login'
 const router = express.Router()
 
 function setRoutes(): Router {
@@ -27,6 +29,8 @@ function setRoutes(): Router {
   router.post(ApiRoutes.listUserScenario(), makeListUserScenarioRequestHandler)
   router.post(ApiRoutes.listUser(), makeListUserRequestHandler)
   router.post(ApiRoutes.updatePassword(), makeUpdatePasswordUserRequestHandler)
+  router.post(ApiRoutes.findUserByEmail(), makeFindUserByEmailRequestHandler)
+  router.post(ApiRoutes.login(), makeLoginUserRequestHandler)
   return router
 }
 

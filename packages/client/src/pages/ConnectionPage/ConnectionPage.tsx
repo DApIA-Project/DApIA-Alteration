@@ -19,20 +19,21 @@ const ConnectionPage: React.FunctionComponent<ConnectionPageProps> = ({
   const handleSubmit = async () => {
     if (!client) return
 
-    /*try {
-      const { user, error } = await client.findUserWithEmail(
-        email
-      )
+    try {
+      const { user, error } = await client.login(email, password)
+      console.log(error)
       if (error) {
         return
       }
 
-      if (user) onLogin(user?.id);
+      if (user !== null) {
+        onLogin(user?.id)
+      }
 
       return user
     } catch (err) {
       throw err
-    }*/
+    }
   }
 
   function handleEmail(newEmail: string) {

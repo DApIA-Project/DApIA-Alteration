@@ -78,6 +78,26 @@ const IUserContractTest: IContractTest = (
       })
     })
 
+    describe('updateUserPassword', () => {
+      it('returns the updated user when update the password', async () => {
+        const created = await userManager.createUser(validUserAttributes)
+
+        const updated = await userManager.updatePassword(
+          created.id,
+          'newPassword'
+        )
+
+        assert(updated)
+        assert.deepStrictEqual(updated.firstname, validUserAttributes.firstname)
+        assert.deepStrictEqual(updated.lastname, validUserAttributes.lastname)
+        assert.deepStrictEqual(updated.email, validUserAttributes.email)
+        assert.deepStrictEqual(
+          await bcrypt.compare('newPassword', updated.password),
+          true
+        )
+      })
+    })
+
     describe('findUser', () => {
       it('returns null if the user does not exists', async () => {
         assert.strictEqual(await userManager.findUser(2345), null)
@@ -105,12 +125,64 @@ const IUserContractTest: IContractTest = (
       it('remove a specific user', async () => {
         const user1 = await userManager.createUser(validUserAttributes)
         const user2 = await userManager.createUser(secondUserAttributes)
-
         assert.deepEqual(await userManager.listUsers(), [user1, user2])
-
         await userManager.deleteUser(user1.id)
-
         assert.deepEqual(await userManager.listUsers(), [user2])
+      })
+    })
+
+    describe('findUserByEmail', () => {
+      it('find a specific user with email', async () => {
+        const user1 = await userManager.createUser(validUserAttributes)
+        const user2 = await userManager.createUser(secondUserAttributes)
+        assert.deepEqual(
+          await userManager.findUserByEmail(validUserAttributes.email),
+          user1
+        )
+      })
+
+      it('not find a specific user with no existing email', async () => {
+        await userManager.createUser(validUserAttributes)
+        await userManager.createUser(secondUserAttributes)
+        assert.deepEqual(
+          await userManager.findUserByEmail('notExistingMail@mail.fr'),
+          null
+        )
+      })
+    })
+
+    describe('loginUser', () => {
+      it('user login with good email and good password', async () => {
+        const user1 = await userManager.createUser(validUserAttributes)
+        await userManager.createUser(secondUserAttributes)
+        assert.deepEqual(
+          await userManager.login(
+            validUserAttributes.email,
+            validUserAttributes.password
+          ),
+          user1
+        )
+      })
+
+      it('user no login with bad email and good password', async () => {
+        await userManager.createUser(validUserAttributes)
+        await userManager.createUser(secondUserAttributes)
+        assert.deepEqual(
+          await userManager.login(
+            'badEmail@mail.fr',
+            validUserAttributes.password
+          ),
+          null
+        )
+      })
+
+      it('user no login with good email and bad password', async () => {
+        await userManager.createUser(validUserAttributes)
+        await userManager.createUser(secondUserAttributes)
+        assert.deepEqual(
+          await userManager.login(validUserAttributes.email, 'badPassword'),
+          null
+        )
       })
     })
   })

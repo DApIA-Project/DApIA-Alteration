@@ -14,4 +14,5 @@ export default interface IUserManager {
   findUser(id: number): Promise<User | null>
   listUsers(): Promise<ReadonlyArray<User>>
   updatePassword(userId: number, password: string): Promise<User | null>
+  login(email: string, password: string): Promise<User | null>
 }

@@ -46,4 +46,12 @@ export class ApiRoutes {
   static updatePassword() {
     return '/user/update/password'
   }
+
+  static findUserByEmail() {
+    return '/user/findByEmail'
+  }
+
+  static login() {
+    return '/user/login'
+  }
 }

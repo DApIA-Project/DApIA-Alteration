@@ -3,6 +3,7 @@ import UserModel from '../../models/user.model'
 import { User, UserAttributes } from '@smartesting/shared/dist/models/User'
 import { InferCreationAttributes } from 'sequelize'
 import hashPassword from './hashPassword'
+import { comparePassword } from '../../utils/user'
 
 export default class PsqlUserManager implements IUserManager {
   async createUser(user: UserAttributes): Promise<User> {
@@ -76,6 +77,20 @@ export default class PsqlUserManager implements IUserManager {
       password: await hashPassword(password),
     })
     return userModelToUser(userModel)
+  }
+
+  async login(email: string, password: string): Promise<User | null> {
+    const user = await this.findUserByEmail(email)
+    if (user !== null) {
+      const [pass, error] = await comparePassword(user, password)
+      if (pass) {
+        return user
+      } else {
+        return null
+      }
+    } else {
+      return null
+    }
   }
 }
 

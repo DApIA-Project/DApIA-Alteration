@@ -7,6 +7,7 @@ import {
 import { User, UserAttributes } from '@smartesting/shared/dist/models/User'
 import { ArrayMultimap } from '@teppeis/multimaps'
 import hashPassword from './hashPassword'
+import { comparePassword } from '../../utils/user'
 
 export default class MemoryUserManager implements IUserManager {
   constructor(
@@ -72,5 +73,19 @@ export default class MemoryUserManager implements IUserManager {
 
     user.password = await hashPassword(password)
     return user
+  }
+
+  async login(email: string, password: string): Promise<User | null> {
+    const user = await this.findUserByEmail(email)
+    if (user !== null) {
+      const [pass, error] = await comparePassword(user, password)
+      if (pass) {
+        return user
+      } else {
+        return null
+      }
+    } else {
+      return null
+    }
   }
 }
