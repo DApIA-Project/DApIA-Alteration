@@ -71,21 +71,34 @@ const RegistrationPage: React.FunctionComponent<RegistrationPageProps> = ({
         <InputText
           libelle={'Firstname'}
           value={''}
+          id={'firstname-input'}
           onChange={handleFirstname}
         />
-        <InputText libelle={'Lastname'} value={''} onChange={handleLastname} />
-        <InputText libelle={'Email'} value={''} onChange={handleEmail} />
+        <InputText
+          libelle={'Lastname'}
+          value={''}
+          onChange={handleLastname}
+          id={'lastname-input'}
+        />
+        <InputText
+          libelle={'Email'}
+          value={''}
+          onChange={handleEmail}
+          id={'email-input'}
+        />
         <InputText
           libelle={'Password'}
           value={''}
           onChange={handlePassword}
           isPassword={true}
+          id={'password-input'}
         />
         <InputText
           libelle={'Confirm Password'}
           value={''}
           onChange={handleConfirmPassword}
           isPassword={true}
+          id={'confirmPassword-input'}
         />
       </div>
       <div className={'submitZone'}>

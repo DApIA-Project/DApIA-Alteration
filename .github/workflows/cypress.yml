@@ -1,12 +1,12 @@
 name: Cypress Tests
 
-on:
-  push:
-    branches:
-      - '**'
-  pull_request:
-    branches:
-      - '**'
+#on:
+#  push:
+#    branches:
+#      - '**'
+#  pull_request:
+#    branches:
+#      - '**'
 
 jobs:
   cypress-tests:

@@ -17,6 +17,7 @@ interface InputTextProps {
   value: string | number
   onChange: (valueInput: string) => void
   isPassword?: boolean
+  id: string
 }
 
 function InputText({
@@ -24,6 +25,7 @@ function InputText({
   value,
   onChange,
   isPassword,
+  id,
   ...props
 }: InputTextProps) {
   const [showPassword, setShowPassword] = useState<boolean>(false)
@@ -42,11 +44,13 @@ function InputText({
 
   return (
     <div className={'inputTextDiv'}>
-      <label>{libelle}</label>
+      <label htmlFor={id}>{libelle}</label>
       {isPassword && (
         <FormControl className={'input'}>
           <OutlinedInput
             className='outlined-adornment-password'
+            id={id}
+            {...props}
             onChange={handleInputChange}
             type={showPassword ? 'text' : 'password'}
             endAdornment={
@@ -66,7 +70,12 @@ function InputText({
       )}
 
       {!isPassword && (
-        <TextField className={'input'} onChange={handleInputChange}></TextField>
+        <TextField
+          className={'input'}
+          onChange={handleInputChange}
+          id={id}
+          {...props}
+        ></TextField>
       )}
     </div>
   )

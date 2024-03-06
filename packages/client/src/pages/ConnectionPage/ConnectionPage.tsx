@@ -21,7 +21,6 @@ const ConnectionPage: React.FunctionComponent<ConnectionPageProps> = ({
 
     try {
       const { user, error } = await client.login(email, password)
-      console.log(error)
       if (error) {
         return
       }
@@ -51,12 +50,18 @@ const ConnectionPage: React.FunctionComponent<ConnectionPageProps> = ({
         <label>DApIA Alteration</label>
       </div>
       <div className={'allInputText'}>
-        <InputText libelle={'Email'} value={''} onChange={handleEmail} />
+        <InputText
+          libelle={'Email'}
+          value={''}
+          onChange={handleEmail}
+          id={'email-input'}
+        />
         <InputText
           libelle={'Password'}
           value={''}
           onChange={handlePassword}
           isPassword={true}
+          id={'password-input'}
         />
       </div>
       <div className={'submitZone'}>

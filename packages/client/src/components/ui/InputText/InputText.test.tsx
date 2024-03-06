@@ -15,6 +15,7 @@ describe('InputText', () => {
         value={''}
         onChange={onChange}
         data-testid={InputTextTestIds.INPUT_TEXT_ELEMENT}
+        id={'prenom-input'}
       />
     )
 
