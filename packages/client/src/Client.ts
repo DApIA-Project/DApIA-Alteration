@@ -4,6 +4,7 @@ import { UpdateScenarioResponse } from '@smartesting/shared/dist/responses/updat
 import { DeleteScenarioResponse } from '@smartesting/shared/dist/responses/deleteScenario'
 import { ListScenarioResponse } from '@smartesting/shared/dist/responses/listScenario'
 import { FindUserByEmailResponse } from '@smartesting/shared/dist/responses/findUserByEmail'
+import { FindUserResponse } from '@smartesting/shared/dist/responses/findUser'
 import { OptionsAlteration, Recording } from '@smartesting/shared/dist'
 import { CreateUserResponse } from '@smartesting/shared/dist/responses/createUser'
 import { LoginUserResponse } from '@smartesting/shared/dist/responses/loginUser'
@@ -119,6 +120,14 @@ export default class Client {
       email,
     }
     return this.apiCall<FindUserByEmailResponse>(url, data)
+  }
+
+  async findUser(id: number): Promise<FindUserResponse> {
+    const url: string = `${apiUrl}/user/find`
+    const data = {
+      id,
+    }
+    return this.apiCall<FindUserResponse>(url, data)
   }
 
   async login(email: string, password: string): Promise<LoginUserResponse> {

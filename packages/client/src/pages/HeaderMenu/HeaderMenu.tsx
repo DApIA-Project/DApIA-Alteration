@@ -2,15 +2,19 @@ import React from 'react'
 import '../../styles.css'
 import './HeaderMenu.css'
 import { NavLink } from 'react-router-dom'
-import AccountCircleIcon from '@mui/icons-material/AccountCircle'
-import { Tooltip } from '@mui/joy'
+import AccountMenu from './AccountMenu/AccountMenu'
+
+type HeaderMenuProps = {
+  onLogout: () => void
+}
 
 export enum HeaderMenuTestIds {
   NAVIGATION_ACCUEIL = 'HeaderMenu.action.isNavigationAccueil',
   NAVIGATION_DOCUMENTATION = 'HeaderMenu.action.isNavigationDocumentation',
   NAVIGATION_ACCOUNT = 'HeaderMenu.action.isNavigationAccount',
 }
-const HeaderMenu: React.FunctionComponent = () => {
+
+const HeaderMenu: React.FunctionComponent<HeaderMenuProps> = ({ onLogout }) => {
   return (
     <>
       <header>
@@ -38,18 +42,7 @@ const HeaderMenu: React.FunctionComponent = () => {
             </NavLink>
           </li>
           <li>
-            <NavLink
-              className='navbar-item'
-              to='/my-account'
-              data-testid={HeaderMenuTestIds.NAVIGATION_ACCOUNT}
-            >
-              <Tooltip arrow title={''} className={'tooltip'}>
-                <AccountCircleIcon
-                  fontSize='large'
-                  className='accountCircleIcon'
-                />
-              </Tooltip>
-            </NavLink>
+            <AccountMenu onLogout={onLogout} />
           </li>
         </ul>
       </nav>

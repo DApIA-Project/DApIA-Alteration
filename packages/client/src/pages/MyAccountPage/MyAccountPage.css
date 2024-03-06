@@ -1,0 +1,36 @@
+.myAccountPage {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 1%;
+}
+
+.modifyInfos {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 0;
+  flex-shrink: 1;
+  flex-basis: auto;
+  align-self: auto;
+  order: 0;
+}
+
+.modifyPassword {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 0;
+  flex-shrink: 1;
+  flex-basis: auto;
+  align-self: auto;
+  order: 0;
+}
+
+.removeAccount {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 0;
+  flex-shrink: 1;
+  flex-basis: auto;
+  align-self: auto;
+  order: 0;
+}

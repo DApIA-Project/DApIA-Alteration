@@ -120,7 +120,7 @@ const ScenarioEditor: React.FunctionComponent<ScenarioEditorProps> = ({
         name,
         text,
         options,
-        Number(sessionStorage.getItem('user_id'))
+        Number(localStorage.getItem('user_id'))
       )
       if (error) {
         return

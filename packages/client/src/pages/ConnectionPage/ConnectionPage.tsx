@@ -45,34 +45,36 @@ const ConnectionPage: React.FunctionComponent<ConnectionPageProps> = ({
 
   return (
     <div className={'root'}>
-      <div className={'imageFlight'}>
-        <img src={'../assets/Flight_White.png'} />
-        <label>DApIA Alteration</label>
-      </div>
-      <div className={'allInputText'}>
-        <InputText
-          libelle={'Email'}
-          value={''}
-          onChange={handleEmail}
-          id={'email-input'}
-          onSubmit={handleSubmit}
-        />
-        <InputText
-          libelle={'Password'}
-          value={''}
-          onChange={handlePassword}
-          isPassword={true}
-          id={'password-input'}
-          onSubmit={handleSubmit}
-        />
-      </div>
-      <div className={'submitZone'}>
-        <a href={'http://localhost:3000/registration'}>Sign up ?</a>
-        <Button
-          text={'Sign in'}
-          onClick={handleSubmit}
-          className={'buttonConnectAccount'}
-        />
+      <div className={'connectionPage'}>
+        <div className={'imageFlight'}>
+          <img src={'../assets/Flight_White.png'} />
+          <label>DApIA Alteration</label>
+        </div>
+        <div className={'allInputText'}>
+          <InputText
+            libelle={'Email'}
+            value={''}
+            onChange={handleEmail}
+            id={'email-input'}
+            onSubmit={handleSubmit}
+          />
+          <InputText
+            libelle={'Password'}
+            value={''}
+            onChange={handlePassword}
+            isPassword={true}
+            id={'password-input'}
+            onSubmit={handleSubmit}
+          />
+        </div>
+        <div className={'submitZone'}>
+          <a href={'http://localhost:3000/registration'}>Sign up ?</a>
+          <Button
+            text={'Sign in'}
+            onClick={handleSubmit}
+            className={'buttonConnectAccount'}
+          />
+        </div>
       </div>
     </div>
   )

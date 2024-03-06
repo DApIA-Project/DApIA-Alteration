@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import ReactDOM from 'react-dom/client'
 import reportWebVitals from './reportWebVitals'
 import ScenarioEditorPage from './pages/ScenarioEditorPage/ScenarioEditorPage'
@@ -10,21 +10,34 @@ import ClientProvider from './providers/ClientProvider/ClientProvider'
 import RegistrationPage from './pages/RegistrationPage/RegistrationPage'
 import { unstable_batchedUpdates } from 'react-dom'
 import ConnectionPage from './pages/ConnectionPage/ConnectionPage'
+import MyAccountPage from './pages/MyAccountPage/MyAccountPage'
 
 const AuthContext = React.createContext<boolean>(false)
 
 const App: React.FC = () => {
   const [isAuthenticated, setIsAuthenticated] = React.useState<boolean>(false)
+
   const setAuth = (value: boolean) => {
     setIsAuthenticated(value)
   }
 
   const handleLogin = (user_id: number) => {
     unstable_batchedUpdates(() => {
-      sessionStorage.setItem('user_id', user_id.toString())
+      localStorage.setItem('user_id', user_id.toString())
       setAuth(true)
     })
   }
+
+  const handleLogout = () => {
+    localStorage.clear()
+    setAuth(false)
+  }
+
+  useEffect(() => {
+    if (localStorage.getItem('user_id') !== null) {
+      setAuth(true)
+    }
+  }, [isAuthenticated])
 
   return (
     <AuthContext.Provider value={isAuthenticated}>
@@ -32,16 +45,16 @@ const App: React.FC = () => {
         <ClientProvider>
           <BrowserRouter>
             {/* Afficher HeaderMenu si l'utilisateur est connecté */}
-            {isAuthenticated && <HeaderMenu />}
+            {isAuthenticated && <HeaderMenu onLogout={handleLogout} />}
             <Routes>
               {/* Redirections selon le statut de connexion */}
               {!isAuthenticated && (
-                <Route path='/' element={<Navigate to='/registration' />} />
+                <Route path='/' element={<Navigate to='/connection' />} />
               )}
               {!isAuthenticated && (
                 <Route
                   path='/documentation'
-                  element={<Navigate to='/registration' />}
+                  element={<Navigate to='/connection' />}
                 />
               )}
               {isAuthenticated && (
@@ -69,6 +82,9 @@ const App: React.FC = () => {
               )}
               {isAuthenticated && (
                 <Route path='/documentation' element={<DocumentationPage />} />
+              )}
+              {isAuthenticated && (
+                <Route path='/my-account' element={<MyAccountPage />} />
               )}
             </Routes>
           </BrowserRouter>

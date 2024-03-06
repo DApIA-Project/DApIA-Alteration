@@ -151,6 +151,20 @@ const IUserContractTest: IContractTest = (
       })
     })
 
+    describe('findUser', () => {
+      it('find a specific user with id', async () => {
+        const user1 = await userManager.createUser(validUserAttributes)
+        const user2 = await userManager.createUser(secondUserAttributes)
+        assert.deepEqual(await userManager.findUser(user1.id), user1)
+      })
+
+      it('not find a specific user with no existing id', async () => {
+        await userManager.createUser(validUserAttributes)
+        await userManager.createUser(secondUserAttributes)
+        assert.deepEqual(await userManager.findUser(88), null)
+      })
+    })
+
     describe('loginUser', () => {
       it('user login with good email and good password', async () => {
         const user1 = await userManager.createUser(validUserAttributes)

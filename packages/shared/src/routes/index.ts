@@ -51,6 +51,10 @@ export class ApiRoutes {
     return '/user/findByEmail'
   }
 
+  static findUser() {
+    return '/user/find'
+  }
+
   static login() {
     return '/user/login'
   }

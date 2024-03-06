@@ -6,7 +6,7 @@ describe('HeaderMenu', () => {
   it('displays header menu', async () => {
     render(
       <BrowserRouter>
-        <HeaderMenu />
+        <HeaderMenu onLogout={() => {}} />
       </BrowserRouter>
     )
 
