@@ -40,7 +40,7 @@ const HeaderMenu: React.FunctionComponent = () => {
           <li>
             <NavLink
               className='navbar-item'
-              to='/connect'
+              to='/my-account'
               data-testid={HeaderMenuTestIds.NAVIGATION_ACCOUNT}
             >
               <Tooltip arrow title={''} className={'tooltip'}>

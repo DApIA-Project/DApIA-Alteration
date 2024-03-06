@@ -55,6 +55,7 @@ const ConnectionPage: React.FunctionComponent<ConnectionPageProps> = ({
           value={''}
           onChange={handleEmail}
           id={'email-input'}
+          onSubmit={handleSubmit}
         />
         <InputText
           libelle={'Password'}
@@ -62,10 +63,10 @@ const ConnectionPage: React.FunctionComponent<ConnectionPageProps> = ({
           onChange={handlePassword}
           isPassword={true}
           id={'password-input'}
+          onSubmit={handleSubmit}
         />
       </div>
       <div className={'submitZone'}>
-        <a href={'http://localhost:3000/forgotpassword'}>Forgot password ?</a>
         <a href={'http://localhost:3000/registration'}>Sign up ?</a>
         <Button
           text={'Sign in'}

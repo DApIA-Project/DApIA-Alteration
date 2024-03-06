@@ -44,6 +44,12 @@ const App: React.FC = () => {
                   element={<Navigate to='/registration' />}
                 />
               )}
+              {isAuthenticated && (
+                <Route path='/connection' element={<Navigate to='/' />} />
+              )}
+              {isAuthenticated && (
+                <Route path='/registration' element={<Navigate to='/' />} />
+              )}
 
               {/* Affichage des pages */}
               {!isAuthenticated && (

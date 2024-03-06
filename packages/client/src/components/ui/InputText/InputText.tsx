@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import IconButton from '@mui/material/IconButton'
 import OutlinedInput from '@mui/material/OutlinedInput'
 import InputAdornment from '@mui/material/InputAdornment'
@@ -18,6 +18,7 @@ interface InputTextProps {
   onChange: (valueInput: string) => void
   isPassword?: boolean
   id: string
+  onSubmit?: () => void
 }
 
 function InputText({
@@ -26,9 +27,29 @@ function InputText({
   onChange,
   isPassword,
   id,
+  onSubmit,
   ...props
 }: InputTextProps) {
   const [showPassword, setShowPassword] = useState<boolean>(false)
+  const inputRef = useRef<HTMLInputElement>(null)
+
+  useEffect(() => {
+    const handleKeyPress = (event: KeyboardEvent) => {
+      if (event.key === 'Enter' && onSubmit) {
+        onSubmit() // Appelle la fonction de soumission lorsque la touche "Entrée" est pressée
+      }
+    }
+
+    if (inputRef.current) {
+      inputRef.current.addEventListener('keypress', handleKeyPress)
+    }
+
+    return () => {
+      if (inputRef.current) {
+        inputRef.current.removeEventListener('keypress', handleKeyPress)
+      }
+    }
+  }, [onSubmit])
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     onChange(e.target.value)
@@ -50,6 +71,7 @@ function InputText({
           <OutlinedInput
             className='outlined-adornment-password'
             id={id}
+            inputRef={inputRef}
             {...props}
             onChange={handleInputChange}
             type={showPassword ? 'text' : 'password'}
@@ -74,6 +96,7 @@ function InputText({
           className={'input'}
           onChange={handleInputChange}
           id={id}
+          inputRef={inputRef}
           {...props}
         ></TextField>
       )}
