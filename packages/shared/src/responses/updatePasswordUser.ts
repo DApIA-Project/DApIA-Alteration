@@ -8,17 +8,19 @@ import {
 } from './responseError'
 
 export type UpdatePasswordUserResponse = DapiaAlterationResponse<
-  { user: User | null },
+  { user: { id: number; password: string; newPassword: string } | null },
   UpdatePasswordUserError
 >
 
 export type UpdatePasswordUserError =
   | Unauthorized.authenticationRequired
   | UnprocessableContent.emptyPassword
+  | UnprocessableContent.emptyNewPassword
   | NotFound.userNotFound
 
 export const UpdatePasswordUserError = {
   authenticationRequired: Unauthorized.authenticationRequired,
   emptyPassword: UnprocessableContent.emptyPassword,
+  emptyNewPassword: UnprocessableContent.emptyNewPassword,
   userNotFound: NotFound.userNotFound,
 } as const

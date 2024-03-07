@@ -67,12 +67,20 @@ export default class MemoryUserManager implements IUserManager {
     return Array.from(this.usersById.values())
   }
 
-  async updatePassword(userId: number, password: string): Promise<User | null> {
+  async updatePassword(
+    userId: number,
+    password: string,
+    newPassword: string
+  ): Promise<{ id: number; password: string; newPassword: string } | null> {
     const user = this.usersById.get(userId)
     if (!user) return null
-
-    user.password = await hashPassword(password)
-    return user
+    const [pass, error] = await comparePassword(user, password)
+    if (pass) {
+      user.password = await hashPassword(newPassword)
+      return { id: user.id, password: user.password, newPassword: '' }
+    } else {
+      return null
+    }
   }
 
   async login(email: string, password: string): Promise<User | null> {

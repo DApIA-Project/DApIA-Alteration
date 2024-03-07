@@ -64,7 +64,11 @@ export default class PsqlUserManager implements IUserManager {
     return userModelToUser(userModel)
   }
 
-  async updatePassword(userId: number, password: string): Promise<User | null> {
+  async updatePassword(
+    userId: number,
+    password: string,
+    newPassword: string
+  ): Promise<{ id: number; password: string; newPassword: string } | null> {
     const userModel = await UserModel.findOne({
       where: {
         id: userId,
@@ -73,10 +77,21 @@ export default class PsqlUserManager implements IUserManager {
     if (!userModel) {
       return null
     }
-    await userModel.update({
-      password: await hashPassword(password),
-    })
-    return userModelToUser(userModel)
+    const user = userModelToUser(userModel)
+    const [pass, error] = await comparePassword(user, password)
+    if (pass) {
+      await userModel.update({
+        password: await hashPassword(newPassword),
+      })
+      const userUpdated = userModelToUser(userModel)
+      return {
+        id: userUpdated.id,
+        password: userUpdated.password,
+        newPassword: '',
+      }
+    } else {
+      return null
+    }
   }
 
   async login(email: string, password: string): Promise<User | null> {

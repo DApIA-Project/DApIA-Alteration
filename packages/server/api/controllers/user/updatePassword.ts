@@ -14,7 +14,21 @@ export default makeRequestHandler<UpdatePasswordUserResponse>(
     const { userManager } = req.adapters
     const { error, user } = await validateUser(req.body, userManager)
     if (error || !user) return { error, user: null }
-    return await updatePassword(user.id, user.password, userManager)
+    const { error: errorUpdated, user: updatedUser } = await updatePassword(
+      user.id,
+      user.password,
+      user.newPassword,
+      userManager
+    )
+    if (errorUpdated || !updatedUser) return { error: errorUpdated, user: null }
+    return {
+      error: null,
+      user: {
+        id: updatedUser.id,
+        password: updatedUser?.password,
+        newPassword: '',
+      },
+    }
   }
 )
 
@@ -23,7 +37,7 @@ async function validateUser(
   userManager: IUserManager
 ): Promise<{
   error: UpdatePasswordUserError | null
-  user: User | null
+  user: { id: number; password: string; newPassword: string } | null
 }> {
   if (!body.password || typeof body.password !== 'string')
     return {
@@ -31,6 +45,11 @@ async function validateUser(
       user: null,
     }
 
+  if (!body.newPassword || typeof body.newPassword !== 'string')
+    return {
+      error: UpdatePasswordUserError.emptyNewPassword,
+      user: null,
+    }
   const userBefore: User | null = await userManager.findUser(body.id)
   if (!userBefore) {
     return {
@@ -42,13 +61,8 @@ async function validateUser(
   return {
     user: {
       id: body.id,
-      firstname: body.firstname,
-      lastname: body.lastname,
-      email: body.email,
       password: body.password,
-      isAdmin: body.isAdmin,
-      createdAt: userBefore.createdAt,
-      updatedAt: userBefore.updatedAt,
+      newPassword: body.newPassword,
     },
     error: null,
   }

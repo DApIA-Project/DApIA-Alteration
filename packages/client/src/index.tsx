@@ -57,6 +57,12 @@ const App: React.FC = () => {
                   element={<Navigate to='/connection' />}
                 />
               )}
+              {!isAuthenticated && (
+                <Route
+                  path='/my-account'
+                  element={<Navigate to='/connection' />}
+                />
+              )}
               {isAuthenticated && (
                 <Route path='/connection' element={<Navigate to='/' />} />
               )}

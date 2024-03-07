@@ -31,6 +31,7 @@ export enum UnprocessableContent {
   emptyFirstname = 'empty_firstname',
   emptyLastname = 'empty_lastname',
   emptyPassword = 'empty_password',
+  emptyNewPassword = 'empty_new_password',
   emptyUserByEmail = 'empty_user',
 }
 

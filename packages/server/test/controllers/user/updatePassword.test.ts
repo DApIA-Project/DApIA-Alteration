@@ -47,6 +47,7 @@ describe(`POST ${ApiRoutes.updatePassword()}`, () => {
           ...validUserAttributesMissingPassword,
           password: '',
           id: userCreate.id,
+          newPassword: 'newPassword',
         })
 
       const { error, user } = response.body
@@ -66,6 +67,7 @@ describe(`POST ${ApiRoutes.updatePassword()}`, () => {
           ...validUserAttributesMissingPassword,
           password: '   ',
           id: userCreate.id,
+          newPassword: 'newPassword',
         })
 
       const { error, user } = response.body
@@ -84,6 +86,7 @@ describe(`POST ${ApiRoutes.updatePassword()}`, () => {
         .send({
           ...validUserAttributesMissingPassword,
           id: userCreate.id,
+          newPassword: 'newPassword',
         })
 
       const { error, user } = response.body
@@ -100,6 +103,7 @@ describe(`POST ${ApiRoutes.updatePassword()}`, () => {
           ...validUserAttributes,
           password: 'Other Text',
           id: 31,
+          newPassword: 'newPassword',
         })
 
       const { error, user } = response.body
@@ -120,14 +124,14 @@ describe(`POST ${ApiRoutes.updatePassword()}`, () => {
         .post(ApiRoutes.updatePassword())
         .send({
           ...validUserAttributes,
-          password: 'itss3cretpassword!',
+          password: 's3cret!',
           id: userCreate.id,
+          newPassword: 'newPassword',
         })
 
       const { error, user } = response.body
       assert.deepStrictEqual(error, null)
-      assert.notEqual(user.password, 'itss3cretpassword!')
-      assert(await bcrypt.compare('itss3cretpassword!', user.password))
+      assert(await bcrypt.compare('newPassword', user.password))
     })
   })
 })

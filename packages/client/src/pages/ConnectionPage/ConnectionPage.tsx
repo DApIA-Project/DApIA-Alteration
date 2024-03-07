@@ -53,14 +53,14 @@ const ConnectionPage: React.FunctionComponent<ConnectionPageProps> = ({
         <div className={'allInputText'}>
           <InputText
             libelle={'Email'}
-            value={''}
+            value={email}
             onChange={handleEmail}
             id={'email-input'}
             onSubmit={handleSubmit}
           />
           <InputText
             libelle={'Password'}
-            value={''}
+            value={password}
             onChange={handlePassword}
             isPassword={true}
             id={'password-input'}

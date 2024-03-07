@@ -39,6 +39,7 @@ describe('core/user/update', () => {
     const { user: updatedUser, error: updatedError } = await updatePassword(
       createdUser.id,
       '     ',
+      'newPassword',
       userManager
     )
 
@@ -58,7 +59,8 @@ describe('core/user/update', () => {
 
     const { user: updatedUser, error: updatedError } = await updatePassword(
       createdUser.id,
-      'news3cret!',
+      's3cret!',
+      'newPassword',
       userManager
     )
 
@@ -66,8 +68,7 @@ describe('core/user/update', () => {
     assert(updatedUser)
 
     const existing = await userManager.findUser(updatedUser.id)
-    assert.notEqual(existing?.password, 'news3cret!')
-    assert(await bcrypt.compare('news3cret!', <string>existing?.password))
+    assert(await bcrypt.compare('newPassword', <string>existing?.password))
   })
 
   it('no trims password before saving', async () => {
@@ -82,7 +83,8 @@ describe('core/user/update', () => {
 
     const { user: updatedUser, error: updatedError } = await updatePassword(
       createdUser.id,
-      '   newpassword   ',
+      's3cret!',
+      '   newPassword   ',
       userManager
     )
 
@@ -90,9 +92,8 @@ describe('core/user/update', () => {
     assert(updatedUser)
 
     const existing = await userManager.findUser(updatedUser.id)
-    assert.notEqual(existing?.password, '   newpassword   ')
     assert(
-      await bcrypt.compare('   newpassword   ', <string>existing?.password)
+      await bcrypt.compare('   newPassword   ', <string>existing?.password)
     )
   })
 })

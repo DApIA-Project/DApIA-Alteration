@@ -13,6 +13,10 @@ export default interface IUserManager {
   findUserByEmail(email: string): Promise<User | null>
   findUser(id: number): Promise<User | null>
   listUsers(): Promise<ReadonlyArray<User>>
-  updatePassword(userId: number, password: string): Promise<User | null>
+  updatePassword(
+    userId: number,
+    password: string,
+    newPassword: string
+  ): Promise<{ id: number; password: string; newPassword: string } | null>
   login(email: string, password: string): Promise<User | null>
 }

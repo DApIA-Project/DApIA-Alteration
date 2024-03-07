@@ -14,7 +14,7 @@ export enum InputTextTestIds {
 
 interface InputTextProps {
   libelle: string
-  value: string | number
+  value?: string | number
   onChange: (valueInput: string) => void
   isPassword?: boolean
   id: string
@@ -72,6 +72,7 @@ function InputText({
             className='outlined-adornment-password'
             id={id}
             inputRef={inputRef}
+            value={value}
             {...props}
             onChange={handleInputChange}
             type={showPassword ? 'text' : 'password'}
@@ -97,6 +98,7 @@ function InputText({
           onChange={handleInputChange}
           id={id}
           inputRef={inputRef}
+          value={value}
           {...props}
         ></TextField>
       )}

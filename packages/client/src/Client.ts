@@ -8,6 +8,9 @@ import { FindUserResponse } from '@smartesting/shared/dist/responses/findUser'
 import { OptionsAlteration, Recording } from '@smartesting/shared/dist'
 import { CreateUserResponse } from '@smartesting/shared/dist/responses/createUser'
 import { LoginUserResponse } from '@smartesting/shared/dist/responses/loginUser'
+import { UpdateUserResponse } from '@smartesting/shared/dist/responses/updateUser'
+import { UpdatePasswordUserResponse } from '@smartesting/shared/dist/responses/updatePasswordUser'
+import { DeleteUserResponse } from '@smartesting/shared/dist/responses/deleteUser'
 import apiUrl from './config'
 
 export default class Client {
@@ -137,5 +140,47 @@ export default class Client {
       password,
     }
     return this.apiCall<LoginUserResponse>(url, data)
+  }
+
+  async updateUser(
+    id_user: number,
+    newFirstName: string,
+    newLastname: string,
+    newEmail: string,
+    password: string,
+    isAdmin: boolean
+  ): Promise<UpdateUserResponse> {
+    const url: string = `${apiUrl}/user/update`
+    const data = {
+      id: id_user,
+      firstname: newFirstName,
+      lastname: newLastname,
+      email: newEmail,
+      password: password,
+      isAdmin: isAdmin,
+    }
+    return this.apiCall<UpdateUserResponse>(url, data)
+  }
+
+  async deleteUser(id_user: number): Promise<DeleteUserResponse> {
+    const url: string = `${apiUrl}/user/delete`
+    const data = {
+      id: id_user,
+    }
+    return this.apiCall<DeleteUserResponse>(url, data)
+  }
+
+  async updatePasswordUser(
+    id_user: number,
+    password: string,
+    newPassword: string
+  ): Promise<UpdatePasswordUserResponse> {
+    const url: string = `${apiUrl}/user/update/password`
+    const data = {
+      id: id_user,
+      password: password,
+      newPassword: newPassword,
+    }
+    return this.apiCall<UpdatePasswordUserResponse>(url, data)
   }
 }

@@ -84,13 +84,11 @@ const IUserContractTest: IContractTest = (
 
         const updated = await userManager.updatePassword(
           created.id,
+          's3cret!',
           'newPassword'
         )
 
         assert(updated)
-        assert.deepStrictEqual(updated.firstname, validUserAttributes.firstname)
-        assert.deepStrictEqual(updated.lastname, validUserAttributes.lastname)
-        assert.deepStrictEqual(updated.email, validUserAttributes.email)
         assert.deepStrictEqual(
           await bcrypt.compare('newPassword', updated.password),
           true

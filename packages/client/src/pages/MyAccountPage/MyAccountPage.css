@@ -1,7 +1,7 @@
 .myAccountPage {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: space-evenly;
   margin: 1%;
 }
 
@@ -13,6 +13,12 @@
   flex-basis: auto;
   align-self: auto;
   order: 0;
+  font-size: 15px;
+}
+
+.modifyInfos > label {
+  font-size: 20px;
+  padding-bottom: 5%;
 }
 
 .modifyPassword {
@@ -23,6 +29,12 @@
   flex-basis: auto;
   align-self: auto;
   order: 0;
+  font-size: 15px;
+}
+
+.modifyPassword > label {
+  font-size: 20px;
+  padding-bottom: 5%;
 }
 
 .removeAccount {
@@ -33,4 +45,31 @@
   flex-basis: auto;
   align-self: auto;
   order: 0;
+  font-size: 15px;
+}
+
+.removeAccount > label {
+  font-size: 20px;
+  padding-bottom: 5%;
+}
+
+.buttonEdit {
+  background: #6e9a3f;
+  border-radius: 3px;
+  border: none;
+  color: white;
+  height: 100%;
+  width: 30%;
+  padding: 2%;
+  margin-left: auto;
+}
+
+.buttonRemove {
+  background: #992a2a;
+  border-radius: 3px;
+  border: none;
+  color: white;
+  width: 30%;
+  padding: 2%;
+  margin-left: auto;
 }
