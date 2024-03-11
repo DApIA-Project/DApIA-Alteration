@@ -3,6 +3,13 @@ import { useClient } from '../../providers/ClientProvider/ClientProvider'
 import InputText from '../../components/ui/InputText/InputText'
 import Button from '../../components/ui/Button/Button'
 import './ConnectionPage.css'
+import { Alert } from '@mui/material'
+import { LoginUserError } from '@smartesting/shared/dist/responses/loginUser'
+import {
+  NotFound,
+  UnprocessableContent,
+  Conflict,
+} from '@smartesting/shared/dist/responses/responseError'
 
 type ConnectionPageProps = {
   onLogin: (user_id: number) => void
@@ -15,13 +22,31 @@ const ConnectionPage: React.FunctionComponent<ConnectionPageProps> = ({
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [errorLogin, setErrorLogin] = useState('')
 
+  function showErrorLogin(error: LoginUserError) {
+    switch (error) {
+      case NotFound.userNotFound:
+        setErrorLogin('User not found')
+        break
+      case UnprocessableContent.emptyEmail:
+        setErrorLogin('Email is empty')
+        break
+      case UnprocessableContent.emptyPassword:
+        setErrorLogin('Password is empty')
+        break
+      case Conflict.passwordConflict:
+        setErrorLogin('Bad password')
+        break
+    }
+  }
   const handleSubmit = async () => {
     if (!client) return
 
     try {
       const { user, error } = await client.login(email, password)
       if (error) {
+        showErrorLogin(error)
         return
       }
 
@@ -74,6 +99,13 @@ const ConnectionPage: React.FunctionComponent<ConnectionPageProps> = ({
             onClick={handleSubmit}
             className={'buttonConnectAccount'}
           />
+        </div>
+        <div>
+          {errorLogin !== '' && (
+            <Alert className={'stateEdit'} severity='error'>
+              {errorLogin}
+            </Alert>
+          )}
         </div>
       </div>
     </div>

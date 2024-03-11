@@ -29,6 +29,12 @@
   border: none;
   color: white;
   height: 100%;
+  cursor: pointer;
+  opacity: 1;
+}
+
+.submitZone > .buttonConnectAccount:hover {
+  opacity: 0.8;
 }
 
 .submitZone > a {
