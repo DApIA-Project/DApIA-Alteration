@@ -37,7 +37,7 @@ describe(`POST ${ApiRoutes.deleteUser()}`, () => {
 
       const response = await request(server)
         .post(ApiRoutes.deleteUser())
-        .send({ id: user.id })
+        .send({ id: user.id, password: validUserAttributes.password })
 
       const error = response.body.error
       assert.deepStrictEqual(error, null)
@@ -54,7 +54,7 @@ describe(`POST ${ApiRoutes.deleteUser()}`, () => {
 
       const response = await request(server)
         .post(ApiRoutes.deleteUser())
-        .send({ id: 31 })
+        .send({ id: 31, password: validUserAttributes.password })
 
       const error = response.body.error
       assert.deepStrictEqual(error, DeleteUserError.userNotFound)
@@ -69,7 +69,7 @@ describe(`POST ${ApiRoutes.deleteUser()}`, () => {
 
       const response = await request(server)
         .post(ApiRoutes.deleteUser())
-        .send({ id: String(user.id) })
+        .send({ id: String(user.id), password: validUserAttributes.password })
 
       const error = response.body.error
       assert.deepStrictEqual(error, DeleteUserError.idBadType)

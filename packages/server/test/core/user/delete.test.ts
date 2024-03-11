@@ -37,13 +37,18 @@ describe('core/user/delete', () => {
 
     const { error: errorRemoved } = await deleteUser(
       createdUser.id,
+      validUserAttributes.password,
       userManager
     )
     assert.strictEqual(errorRemoved, null)
   })
 
   it('user not exists', async () => {
-    const { error: errorRemoved } = await deleteUser(1234, userManager)
+    const { error: errorRemoved } = await deleteUser(
+      1234,
+      validUserAttributes.password,
+      userManager
+    )
     assert.strictEqual(errorRemoved, DeleteUserError.userNotFound)
   })
 })
