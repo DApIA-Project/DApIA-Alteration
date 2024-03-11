@@ -8,6 +8,7 @@ import { Avatar, Divider, ListItemIcon, Menu, MenuItem } from '@mui/material'
 import { Logout } from '@mui/icons-material'
 import CodeIcon from '@mui/icons-material/Code'
 import { useNavigate } from 'react-router-dom'
+import { HeaderMenuTestIds } from '../HeaderMenu'
 
 type AccountMenuProps = {
   onLogout: () => void
@@ -44,7 +45,10 @@ const AccountMenu: React.FunctionComponent<AccountMenuProps> = ({
 
   return (
     <>
-      <Tooltip title='Account settings'>
+      <Tooltip
+        title='Account settings'
+        data-testid={HeaderMenuTestIds.NAVIGATION_ACCOUNT}
+      >
         <IconButton
           onClick={handleClick}
           size='small'
