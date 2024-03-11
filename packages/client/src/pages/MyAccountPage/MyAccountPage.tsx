@@ -4,7 +4,15 @@ import './MyAccountPage.css'
 import InputText from '../../components/ui/InputText/InputText'
 import Button from '../../components/ui/Button/Button'
 import { User } from '@smartesting/shared/dist/models/User'
-import { useNavigate } from 'react-router-dom'
+import { Alert } from '@mui/material'
+import { UpdateUserError } from '@smartesting/shared/dist/responses/updateUser'
+import { UpdatePasswordUserError } from '@smartesting/shared/dist/responses/updatePasswordUser'
+import { DeleteUserError } from '@smartesting/shared/dist/responses/deleteUser'
+import {
+  Conflict,
+  NotFound,
+  UnprocessableContent,
+} from '@smartesting/shared/dist/responses/responseError'
 
 type MyAccountPagePageProps = {
   onLogout: () => void
@@ -35,6 +43,13 @@ const MyAccountPage: React.FunctionComponent<MyAccountPagePageProps> = ({
   const [confirmNewPassword, setConfirmNewPassword] = useState('')
   const [deletePassword, setDeletePassword] = useState('')
   const [removeAccount, setRemoveAccount] = useState('')
+  const [haventErrorInformation, setHaventErrorInformation] = useState(false)
+  const [errorInformation, setErrorInformation] = useState('')
+  const [haventErrorPassword, setHaventErrorPassword] = useState(false)
+  const [errorPassword, setErrorPassword] = useState('')
+  const [haventErrorRemoveAccount, setHaventErrorRemoveAccount] =
+    useState(false)
+  const [errorRemoveAccount, setErrorRemoveAccount] = useState('')
 
   function handleFirstname(newFirstname: string) {
     setFirstname(newFirstname)
@@ -63,6 +78,45 @@ const MyAccountPage: React.FunctionComponent<MyAccountPagePageProps> = ({
   }
   function handleRemoveAccount(confirmation: string) {
     setRemoveAccount(confirmation)
+  }
+
+  function showErrorInformation(error: UpdateUserError) {
+    switch (error) {
+      case UnprocessableContent.emptyFirstname:
+        setErrorInformation('Firstname is empty')
+        break
+      case UnprocessableContent.emptyLastname:
+        setErrorInformation('Lastname is empty')
+        break
+      case UnprocessableContent.emptyEmail:
+        setErrorInformation('Email is empty')
+        break
+    }
+  }
+
+  function showErrorPassword(error: UpdatePasswordUserError) {
+    switch (error) {
+      case NotFound.userNotFound:
+        setErrorPassword('User not found')
+        break
+      case UnprocessableContent.emptyPassword:
+        setErrorPassword('Current password is empty')
+        break
+      case UnprocessableContent.emptyNewPassword:
+        setErrorPassword('New password is empty')
+        break
+    }
+  }
+
+  function showErrorRemoveAccount(error: DeleteUserError) {
+    switch (error) {
+      case Conflict.passwordConflict:
+        setErrorRemoveAccount('Bad password')
+        break
+      case NotFound.userNotFound:
+        setErrorPassword('User not found')
+        break
+    }
   }
 
   useEffect(() => {
@@ -94,9 +148,12 @@ const MyAccountPage: React.FunctionComponent<MyAccountPagePageProps> = ({
         userConnected.password,
         userConnected.isAdmin
       )
-      if (error) {
+      if (error !== null) {
+        setHaventErrorInformation(false)
+        showErrorInformation(error)
         return
       }
+      setHaventErrorInformation(true)
       return user
     } catch (err) {
       throw err
@@ -106,17 +163,26 @@ const MyAccountPage: React.FunctionComponent<MyAccountPagePageProps> = ({
   const handleEditPassword = async () => {
     if (!client) return
     if (userConnected == null) return
-    if (newPassword !== confirmNewPassword) return
+    if (newPassword !== confirmNewPassword) {
+      setHaventErrorPassword(false)
+      setErrorPassword('Confirmation is different with New password')
+      return
+    }
     try {
       const { user, error } = await client.updatePasswordUser(
         userConnected.id,
         currentPassword,
         newPassword
       )
-
-      if (error) {
+      if (error !== null) {
+        setHaventErrorPassword(false)
+        showErrorPassword(error)
         return
       }
+      setHaventErrorPassword(true)
+      setCurrentPassword('')
+      setNewPassword('')
+      setConfirmNewPassword('')
       return user
     } catch (err) {
       throw err
@@ -126,13 +192,18 @@ const MyAccountPage: React.FunctionComponent<MyAccountPagePageProps> = ({
   const handleDeleteAccount = async () => {
     if (!client) return
     if (userConnected == null) return
-    if (removeAccount !== 'REMOVEACCOUNT') return
+    if (removeAccount !== 'REMOVEACCOUNT') {
+      setErrorRemoveAccount("You didn't write REMOVEACCOUNT")
+      return
+    }
     try {
       const error = await client.deleteUser(userConnected.id, deletePassword)
       if (error.error === null) {
         localStorage.clear()
         onLogout()
         return
+      } else {
+        showErrorRemoveAccount(error.error)
       }
     } catch (err) {
       throw err
@@ -170,6 +241,18 @@ const MyAccountPage: React.FunctionComponent<MyAccountPagePageProps> = ({
             onClick={handleEditInfo}
             className={'buttonEdit'}
           />
+
+          {haventErrorInformation && (
+            <Alert className={'stateEdit'} severity='success'>
+              Edited !
+            </Alert>
+          )}
+
+          {!haventErrorInformation && errorInformation !== '' && (
+            <Alert className={'stateEdit'} severity='error'>
+              {errorInformation}
+            </Alert>
+          )}
         </div>
         <div className={'modifyPassword'}>
           <label>Edit my password</label>
@@ -202,6 +285,17 @@ const MyAccountPage: React.FunctionComponent<MyAccountPagePageProps> = ({
             onClick={handleEditPassword}
             className={'buttonEdit'}
           />
+          {haventErrorPassword && (
+            <Alert className={'stateEdit'} severity='success'>
+              Edited !
+            </Alert>
+          )}
+
+          {!haventErrorPassword && errorPassword !== '' && (
+            <Alert className={'stateEdit'} severity='error'>
+              {errorPassword}
+            </Alert>
+          )}
         </div>
         <div className={'removeAccount'}>
           <label>Delete my account</label>
@@ -225,6 +319,11 @@ const MyAccountPage: React.FunctionComponent<MyAccountPagePageProps> = ({
             onClick={handleDeleteAccount}
             className={'buttonRemove'}
           />
+          {!haventErrorRemoveAccount && errorRemoveAccount !== '' && (
+            <Alert className={'stateEdit'} severity='error'>
+              {errorRemoveAccount}
+            </Alert>
+          )}
         </div>
       </div>
     </div>

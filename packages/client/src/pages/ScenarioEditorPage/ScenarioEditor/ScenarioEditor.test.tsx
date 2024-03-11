@@ -79,7 +79,7 @@ describe('ScenarioEditor', () => {
     client = new Client()
     mockUseClient(client)
     client.updateScenario = jest.fn()
-    jest.spyOn(client, 'listScenario').mockReturnValue(
+    jest.spyOn(client, 'listUserScenario').mockReturnValue(
       Promise.resolve({
         error: null,
         scenarios: [scenario1, scenario2, scenario3],
@@ -117,7 +117,7 @@ describe('ScenarioEditor', () => {
     expect(scenarioButtons[0]).toHaveTextContent(scenario1.name)
     expect(scenarioButtons[1]).toHaveTextContent(scenario2.name)
     expect(scenarioButtons[2]).toHaveTextContent(scenario3.name)
-    expect(client.listScenario).toHaveBeenCalledTimes(1)
+    expect(client.listUserScenario).toHaveBeenCalledTimes(1)
   })
 
   it('opens scenarios in tab', async () => {

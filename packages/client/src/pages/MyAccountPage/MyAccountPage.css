@@ -58,10 +58,15 @@
   border-radius: 3px;
   border: none;
   color: white;
-  height: 100%;
   width: 30%;
+  opacity: 1;
   padding: 2%;
   margin-left: auto;
+  cursor: pointer;
+}
+
+.buttonEdit:hover {
+  opacity: 0.8;
 }
 
 .buttonRemove {
@@ -71,5 +76,20 @@
   color: white;
   width: 30%;
   padding: 2%;
+  opacity: 1;
   margin-left: auto;
+  cursor: pointer;
+}
+
+.buttonRemove:hover {
+  opacity: 0.8;
+}
+
+.stateEdit {
+  margin-top: 8%;
+}
+
+.emptyAlert {
+  margin-top: 8%;
+  flex: 0;
 }
