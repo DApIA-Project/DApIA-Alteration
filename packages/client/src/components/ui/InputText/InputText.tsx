@@ -36,20 +36,22 @@ function InputText({
   useEffect(() => {
     const handleKeyPress = (event: KeyboardEvent) => {
       if (event.key === 'Enter' && onSubmit) {
-        onSubmit() // Appelle la fonction de soumission lorsque la touche "Entrée" est pressée
+        onSubmit()
       }
     }
 
-    if (inputRef.current) {
-      inputRef.current.addEventListener('keypress', handleKeyPress)
+    const currentInputRef = inputRef.current
+
+    if (currentInputRef) {
+      currentInputRef.addEventListener('keypress', handleKeyPress)
     }
 
     return () => {
-      if (inputRef.current) {
-        inputRef.current.removeEventListener('keypress', handleKeyPress)
+      if (currentInputRef) {
+        currentInputRef.removeEventListener('keypress', handleKeyPress)
       }
     }
-  }, [onSubmit])
+  }, [onSubmit, inputRef])
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     onChange(e.target.value)

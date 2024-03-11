@@ -4,12 +4,11 @@ import './MyAccountPage.css'
 import InputText from '../../components/ui/InputText/InputText'
 import Button from '../../components/ui/Button/Button'
 import { User } from '@smartesting/shared/dist/models/User'
-import { unstable_batchedUpdates } from 'react-dom'
 import { useNavigate } from 'react-router-dom'
 
 type MyAccountPagePageProps = {}
 
-const MyAccountPage: React.FunctionComponent<MyAccountPagePageProps> = ({}) => {
+const MyAccountPage: React.FunctionComponent<MyAccountPagePageProps> = () => {
   const client = useClient()
   const navigate = useNavigate()
 
@@ -67,7 +66,7 @@ const MyAccountPage: React.FunctionComponent<MyAccountPagePageProps> = ({}) => {
       console.log(userConnected)
     }
     fetchData()
-  }, [client])
+  }, [client, userConnected])
 
   const handleEditInfo = async () => {
     if (!client) return

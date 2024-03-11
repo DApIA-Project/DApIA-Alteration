@@ -65,7 +65,7 @@ const RegistrationPage: React.FunctionComponent<RegistrationPageProps> = ({
     <div className={'root'}>
       <div className={'registrationPage'}>
         <div className={'imageFlight'}>
-          <img src={'../assets/Flight_White.png'} />
+          <img src={'../assets/Flight_White.png'} alt={'Logo White Flight'} />
           <label>DApIA Alteration</label>
         </div>
         <div className={'allInputText'}>

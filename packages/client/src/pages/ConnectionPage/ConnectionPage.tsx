@@ -47,7 +47,7 @@ const ConnectionPage: React.FunctionComponent<ConnectionPageProps> = ({
     <div className={'root'}>
       <div className={'connectionPage'}>
         <div className={'imageFlight'}>
-          <img src={'../assets/Flight_White.png'} />
+          <img src={'../assets/Flight_White.png'} alt={'Logo White Flight'} />
           <label>DApIA Alteration</label>
         </div>
         <div className={'allInputText'}>
