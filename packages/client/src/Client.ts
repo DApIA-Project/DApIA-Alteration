@@ -162,10 +162,14 @@ export default class Client {
     return this.apiCall<UpdateUserResponse>(url, data)
   }
 
-  async deleteUser(id_user: number): Promise<DeleteUserResponse> {
+  async deleteUser(
+    id_user: number,
+    password: string
+  ): Promise<DeleteUserResponse> {
     const url: string = `${apiUrl}/user/delete`
     const data = {
       id: id_user,
+      password: password,
     }
     return this.apiCall<DeleteUserResponse>(url, data)
   }

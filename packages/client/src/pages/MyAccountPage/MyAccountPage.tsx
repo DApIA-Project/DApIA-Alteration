@@ -6,11 +6,25 @@ import Button from '../../components/ui/Button/Button'
 import { User } from '@smartesting/shared/dist/models/User'
 import { useNavigate } from 'react-router-dom'
 
-type MyAccountPagePageProps = {}
+type MyAccountPagePageProps = {
+  onLogout: () => void
+}
 
-const MyAccountPage: React.FunctionComponent<MyAccountPagePageProps> = () => {
+export enum MyAccountPageTestIds {
+  INPUT_FIRSTNAME = 'MyAccountPage.action.isInputFirstname',
+  INPUT_LASTNAME = 'MyAccountPage.action.isInputLastname',
+  INPUT_EMAIL = 'MyAccountPage.action.isInputEmail',
+  INPUT_CURRENT_PASSWORD = 'MyAccountPage.action.isInputCurrentPassword',
+  INPUT_NEW_PASSWORD = 'MyAccountPage.action.isInputNewPassword',
+  INPUT_NEW_PASSWORD_CONFIRM = 'MyAccountPage.action.isInputNewPasswordConfirm',
+  INPUT_PASSWORD_DELETE_ACCOUNT = 'MyAccountPage.action.isInputPasswordDeleteAccount',
+  INPUT_REMOVE_ACCOUNT = 'MyAccountPage.action.isInputRemoveAccount',
+}
+
+const MyAccountPage: React.FunctionComponent<MyAccountPagePageProps> = ({
+  onLogout,
+}) => {
   const client = useClient()
-  const navigate = useNavigate()
 
   const [userConnected, setUserConnected] = useState<User>()
   const [firstname, setFirstname] = useState('')
@@ -66,7 +80,7 @@ const MyAccountPage: React.FunctionComponent<MyAccountPagePageProps> = () => {
       console.log(userConnected)
     }
     fetchData()
-  }, [client, userConnected])
+  }, [client])
 
   const handleEditInfo = async () => {
     if (!client) return
@@ -114,13 +128,12 @@ const MyAccountPage: React.FunctionComponent<MyAccountPagePageProps> = () => {
     if (userConnected == null) return
     if (removeAccount !== 'REMOVEACCOUNT') return
     try {
-      const error = await client.deleteUser(userConnected.id)
-
-      if (error !== null) {
+      const error = await client.deleteUser(userConnected.id, deletePassword)
+      if (error.error === null) {
+        localStorage.clear()
+        onLogout()
         return
       }
-      localStorage.clear()
-      navigate('/connection')
     } catch (err) {
       throw err
     }
@@ -136,18 +149,21 @@ const MyAccountPage: React.FunctionComponent<MyAccountPagePageProps> = () => {
             value={firstname}
             onChange={handleFirstname}
             id={'firstname-input'}
+            data-testid={MyAccountPageTestIds.INPUT_FIRSTNAME}
           />
           <InputText
             libelle={'Lastname'}
             value={lastname}
             onChange={handleLastname}
             id={'lastname-input'}
+            data-testid={MyAccountPageTestIds.INPUT_LASTNAME}
           />
           <InputText
             libelle={'Email'}
             value={email}
             onChange={handleEmail}
             id={'email-input'}
+            data-testid={MyAccountPageTestIds.INPUT_EMAIL}
           />
           <Button
             text={'Edit'}
@@ -163,6 +179,7 @@ const MyAccountPage: React.FunctionComponent<MyAccountPagePageProps> = () => {
             onChange={handleCurrentPassword}
             isPassword={true}
             id={'current-password-input'}
+            data-testid={MyAccountPageTestIds.INPUT_CURRENT_PASSWORD}
           />
           <InputText
             libelle={'New password'}
@@ -170,6 +187,7 @@ const MyAccountPage: React.FunctionComponent<MyAccountPagePageProps> = () => {
             onChange={handleNewPassword}
             isPassword={true}
             id={'new-password-input'}
+            data-testid={MyAccountPageTestIds.INPUT_NEW_PASSWORD}
           />
           <InputText
             libelle={'Confirm the new password'}
@@ -177,6 +195,7 @@ const MyAccountPage: React.FunctionComponent<MyAccountPagePageProps> = () => {
             onChange={handleConfirmNewPassword}
             isPassword={true}
             id={'confirm-new-password-input'}
+            data-testid={MyAccountPageTestIds.INPUT_NEW_PASSWORD_CONFIRM}
           />
           <Button
             text={'Edit'}
@@ -192,12 +211,14 @@ const MyAccountPage: React.FunctionComponent<MyAccountPagePageProps> = () => {
             onChange={handleDeletePassword}
             isPassword={true}
             id={'delete-password-input'}
+            data-testid={MyAccountPageTestIds.INPUT_PASSWORD_DELETE_ACCOUNT}
           />
           <InputText
             libelle={'Write REMOVEACCOUNT'}
             value={removeAccount}
             onChange={handleRemoveAccount}
             id={'remove-account-input'}
+            data-testid={MyAccountPageTestIds.INPUT_REMOVE_ACCOUNT}
           />
           <Button
             text={'Remove'}

@@ -90,7 +90,10 @@ const App: React.FC = () => {
                 <Route path='/documentation' element={<DocumentationPage />} />
               )}
               {isAuthenticated && (
-                <Route path='/my-account' element={<MyAccountPage />} />
+                <Route
+                  path='/my-account'
+                  element={<MyAccountPage onLogout={handleLogout} />}
+                />
               )}
             </Routes>
           </BrowserRouter>
