@@ -2,7 +2,6 @@
 ![Java Tests workflow](https://github.com/DApIA-Project/FDI-T-Web/actions/workflows/java.yml/badge.svg)
 ![FditScenario Tests workflow](https://github.com/DApIA-Project/FDI-T-Web/actions/workflows/fditscenario.yml/badge.svg)
 ![Client Components React Tests workflow](https://github.com/DApIA-Project/FDI-T-Web/actions/workflows/components.yml/badge.svg)
-![Cypress Tests workflow](https://github.com/DApIA-Project/FDI-T-Web/actions/workflows/cypress.yml/badge.svg)
 
 # FDI-T Web
 
@@ -103,7 +102,7 @@ services:
       - dapia
   alteration-server:
     container_name: alteration-server
-    image: dapiaproject/alteration-server:0.19
+    image: dapiaproject/alteration-server:0.20
     environment:
       DATABASE_URL: postgresql://postgres:postgres@postgres:5432/alterationdb
     ports:
@@ -115,7 +114,7 @@ services:
       - dapia
   alteration-client:
     container_name: alteration-client
-    image: dapiaproject/alteration-client:0.28
+    image: dapiaproject/alteration-client:0.29
     environment:
       REACT_APP_BASE_URL: http://localhost:3001
     ports:
