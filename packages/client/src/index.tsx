@@ -11,6 +11,7 @@ import RegistrationPage from './pages/RegistrationPage/RegistrationPage'
 import { unstable_batchedUpdates } from 'react-dom'
 import ConnectionPage from './pages/ConnectionPage/ConnectionPage'
 import MyAccountPage from './pages/MyAccountPage/MyAccountPage'
+import MyScenariosPage from './pages/MyScenariosPage/MyScenarioPage'
 
 const AuthContext = React.createContext<boolean>(false)
 
@@ -94,6 +95,10 @@ const App: React.FC = () => {
                   path='/my-account'
                   element={<MyAccountPage onLogout={handleLogout} />}
                 />
+              )}
+
+              {isAuthenticated && (
+                <Route path='/my-scenarios' element={<MyScenariosPage />} />
               )}
             </Routes>
           </BrowserRouter>

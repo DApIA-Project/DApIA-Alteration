@@ -32,6 +32,10 @@ const AccountMenu: React.FunctionComponent<AccountMenuProps> = ({
     navigate('/my-account')
   }
 
+  const handleGoToMyScenarios = () => {
+    navigate('/my-scenarios')
+  }
+
   useEffect(() => {
     async function fetchData() {
       if (!client) return
@@ -100,7 +104,7 @@ const AccountMenu: React.FunctionComponent<AccountMenuProps> = ({
         <MenuItem onClick={handleGoToMyAccount}>
           <Avatar /> My account
         </MenuItem>
-        <MenuItem onClick={handleClose}>
+        <MenuItem onClick={handleGoToMyScenarios}>
           <ListItemIcon>
             <CodeIcon fontSize={'small'} />
           </ListItemIcon>
