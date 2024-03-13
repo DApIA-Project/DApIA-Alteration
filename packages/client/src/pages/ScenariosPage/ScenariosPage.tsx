@@ -10,6 +10,9 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import AddIcon from '@mui/icons-material/Add'
 import AlterationScenarioEditor from '../../components/business/AlterationScenarioEditor/AlterationScenarioEditor'
 import { useNavigate } from 'react-router-dom'
+import { TextField } from '@mui/material'
+import InputText from '../../components/ui/InputText/InputText'
+import { MyAccountPageTestIds } from '../MyAccountPage/MyAccountPage'
 
 function formaterDate(dateString: string): string {
   const date = new Date(dateString)
@@ -27,13 +30,18 @@ export enum ScenariosPageTestIds {
   BUTTON_REMOVE_SCENARIO = 'ButtonRemoveScenario',
   BUTTON_ADD_SCENARIO = 'ButtonAddScenario',
   BUTTON_EDIT_SCENARIO = 'ButtonEditScenario',
+  INPUT_SEARCH_BAR = 'InputSearchBar',
 }
 
 const ScenariosPage: React.FunctionComponent = () => {
   const client = useClient()
   const navigate = useNavigate()
   const [myScenarios, setMyScenarios] = useState<ReadonlyArray<Scenario>>([])
+  const [searchText, setSearchText] = useState('')
 
+  function handleSearch(newsearch: string) {
+    setSearchText(newsearch)
+  }
   function handleEdit(id_scenario: number) {
     navigate('/edit-scenario/' + id_scenario)
   }
@@ -81,6 +89,15 @@ const ScenariosPage: React.FunctionComponent = () => {
           ) : (
             <h2>My scenarios</h2>
           )}
+          <div className={'searchBarDiv'}>
+            <InputText
+              libelle={''}
+              value={searchText}
+              onChange={handleSearch}
+              id={'search-input'}
+              data-testid={ScenariosPageTestIds.INPUT_SEARCH_BAR}
+            />
+          </div>
           {myScenarios.map((scenario, index) => (
             <div key={index} className={'divScenario'}>
               <div className={'infoScenario'}>

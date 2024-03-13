@@ -7,6 +7,15 @@
   margin-right: 5%;
 }
 
+.searchBarDiv {
+  display: flex;
+  justify-content: center;
+}
+
+.searchBarDiv > .inputTextDiv {
+  width: 30%;
+}
+
 .addScenario {
   all: unset;
   position: fixed;
