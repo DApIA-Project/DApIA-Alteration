@@ -6,6 +6,7 @@ import { ListScenarioResponse } from '@smartesting/shared/dist/responses/listSce
 import { ListUserScenarioResponse } from '@smartesting/shared/dist/responses/listUserScenario'
 import { FindUserByEmailResponse } from '@smartesting/shared/dist/responses/findUserByEmail'
 import { FindUserResponse } from '@smartesting/shared/dist/responses/findUser'
+import { FindScenarioResponse } from '@smartesting/shared/dist/responses/findScenario'
 import { OptionsAlteration, Recording } from '@smartesting/shared/dist'
 import { CreateUserResponse } from '@smartesting/shared/dist/responses/createUser'
 import { LoginUserResponse } from '@smartesting/shared/dist/responses/loginUser'
@@ -94,6 +95,14 @@ export default class Client {
       id: id_scenario,
     }
     return this.apiCall<DeleteScenarioResponse>(url, data)
+  }
+
+  async findScenario(id: number): Promise<FindScenarioResponse> {
+    const url: string = `${apiUrl}/scenario/find`
+    const data = {
+      id,
+    }
+    return this.apiCall<FindScenarioResponse>(url, data)
   }
 
   async listScenario(): Promise<ListScenarioResponse> {

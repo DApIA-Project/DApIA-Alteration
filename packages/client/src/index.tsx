@@ -11,7 +11,7 @@ import RegistrationPage from './pages/RegistrationPage/RegistrationPage'
 import { unstable_batchedUpdates } from 'react-dom'
 import ConnectionPage from './pages/ConnectionPage/ConnectionPage'
 import MyAccountPage from './pages/MyAccountPage/MyAccountPage'
-import MyScenariosPage from './pages/MyScenariosPage/MyScenarioPage'
+import ScenariosPage from './pages/ScenariosPage/ScenariosPage'
 
 const AuthContext = React.createContext<boolean>(false)
 
@@ -85,7 +85,7 @@ const App: React.FC = () => {
                 />
               )}
               {isAuthenticated && (
-                <Route path='/' element={<ScenarioEditorPage />} />
+                <Route path='/' element={<ScenariosPage />} />
               )}
               {isAuthenticated && (
                 <Route path='/documentation' element={<DocumentationPage />} />
@@ -98,7 +98,10 @@ const App: React.FC = () => {
               )}
 
               {isAuthenticated && (
-                <Route path='/my-scenarios' element={<MyScenariosPage />} />
+                <Route
+                  path='/edit-scenario/:id?'
+                  element={<ScenarioEditorPage />}
+                />
               )}
             </Routes>
           </BrowserRouter>

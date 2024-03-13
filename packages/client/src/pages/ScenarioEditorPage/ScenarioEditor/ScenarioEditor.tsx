@@ -16,6 +16,7 @@ import { Scenario } from '@smartesting/shared/dist/models/Scenario'
 import { useClient } from '../../../providers/ClientProvider/ClientProvider'
 import { FileFormat } from '@smartesting/shared/dist'
 import Select from '../../../components/ui/Select/Select'
+import { useParams } from 'react-router'
 
 export enum ScenarioEditorTestIds {
   COMPONENT = 'ScenarioEditor',
@@ -33,6 +34,8 @@ const ScenarioEditor: React.FunctionComponent<ScenarioEditorProps> = ({
   onGenerate,
 }) => {
   const client = useClient()
+  let params_url = useParams()
+
   const optionsAlterationDefault: OptionsAlteration = {
     haveLabel: false,
     haveRealism: false,
@@ -82,7 +85,6 @@ const ScenarioEditor: React.FunctionComponent<ScenarioEditorProps> = ({
   useEffect(() => {
     if (!client) return
     let id_user: number = Number(localStorage.getItem('user_id'))
-    console.log(id_user)
     client
       .listUserScenario(id_user)
       .then(({ scenarios, error }) => {
@@ -95,6 +97,21 @@ const ScenarioEditor: React.FunctionComponent<ScenarioEditorProps> = ({
       .catch((e) => {
         console.error('Erreur lors de la récupération des scénarios :', e)
       })
+
+    if (params_url.id) {
+      client
+        .findScenario(Number(params_url.id))
+        .then(({ scenario, error }) => {
+          if (error)
+            return console.error(
+              `Erreur lors de la récupération du scénario : ${error}`
+            )
+          if (scenario !== null) handleOnOpen(scenario)
+        })
+        .catch((e) => {
+          console.error('Erreur lors de la récupération du scénario :', e)
+        })
+    }
   }, [client, openedScenarios])
 
   async function updateScenario(

@@ -10,6 +10,12 @@ import CodeIcon from '@mui/icons-material/Code'
 import { useNavigate } from 'react-router-dom'
 import { HeaderMenuTestIds } from '../HeaderMenu'
 
+export enum AccountMenuTestIds {
+  BUTTON_MY_ACCOUNT = 'ButtonMyAccount',
+  BUTTON_MY_SCENARIOS = 'ButtonMyScenarios',
+  BUTTON_LOG_OUT = 'ButtonLogout',
+}
+
 type AccountMenuProps = {
   onLogout: () => void
 }
@@ -33,7 +39,7 @@ const AccountMenu: React.FunctionComponent<AccountMenuProps> = ({
   }
 
   const handleGoToMyScenarios = () => {
-    navigate('/my-scenarios')
+    navigate('/')
   }
 
   useEffect(() => {
@@ -101,17 +107,26 @@ const AccountMenu: React.FunctionComponent<AccountMenuProps> = ({
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
-        <MenuItem onClick={handleGoToMyAccount}>
+        <MenuItem
+          onClick={handleGoToMyAccount}
+          data-testid={AccountMenuTestIds.BUTTON_MY_ACCOUNT}
+        >
           <Avatar /> My account
         </MenuItem>
-        <MenuItem onClick={handleGoToMyScenarios}>
+        <MenuItem
+          onClick={handleGoToMyScenarios}
+          data-testid={AccountMenuTestIds.BUTTON_MY_SCENARIOS}
+        >
           <ListItemIcon>
             <CodeIcon fontSize={'small'} />
           </ListItemIcon>
           My scenarios
         </MenuItem>
         <Divider />
-        <MenuItem onClick={onLogout}>
+        <MenuItem
+          onClick={onLogout}
+          data-testid={AccountMenuTestIds.BUTTON_LOG_OUT}
+        >
           <ListItemIcon>
             <Logout fontSize='small' />
           </ListItemIcon>
