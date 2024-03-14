@@ -22,6 +22,6 @@ export default interface IScenarioManager {
 
   listUserScenario(
     user_id: number,
-    filter?: string
+    searchBar?: string
   ): Promise<ReadonlyArray<Scenario>>
 }

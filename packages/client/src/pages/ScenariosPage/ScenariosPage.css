@@ -7,13 +7,35 @@
   margin-right: 5%;
 }
 
-.searchBarDiv {
+.options {
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
 }
 
-.searchBarDiv > .inputTextDiv {
-  width: 30%;
+.options > .filters {
+  display: flex;
+  justify-content: center;
+  flex: 0 0 1%;
+}
+
+.options > .searchBarDiv {
+  display: flex;
+  justify-content: center;
+  flex: 0 0 59%;
+}
+
+.options > .searchBarDiv > .inputTextDiv {
+  width: 90%;
+}
+
+.options > .selectSort {
+  display: flex;
+  justify-content: center;
+  flex: 0 0 30%;
+}
+
+.options > .selectSort > .selectFormat {
+  height: 40%;
 }
 
 .addScenario {

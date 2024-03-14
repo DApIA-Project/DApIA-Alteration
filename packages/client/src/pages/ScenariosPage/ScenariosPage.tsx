@@ -13,6 +13,8 @@ import { useNavigate } from 'react-router-dom'
 import { TextField } from '@mui/material'
 import InputText from '../../components/ui/InputText/InputText'
 import { MyAccountPageTestIds } from '../MyAccountPage/MyAccountPage'
+import Select from '../../components/ui/Select/Select'
+import { Sort } from '@smartesting/shared/dist'
 
 function formaterDate(dateString: string): string {
   const date = new Date(dateString)
@@ -36,8 +38,18 @@ export enum ScenariosPageTestIds {
 const ScenariosPage: React.FunctionComponent = () => {
   const client = useClient()
   const navigate = useNavigate()
+
+  const sorts = [
+    { value: Sort.noSort, label: 'No sort' },
+    { value: Sort.dateDescending, label: 'Sort by descending date' },
+    { value: Sort.dateAscending, label: 'Sort by ascending date' },
+    { value: Sort.alphabeticalOrder, label: 'Sort alphabetically' },
+    { value: Sort.antialphabeticalOrder, label: 'Sort antialphabetically' },
+  ]
+
   const [myScenarios, setMyScenarios] = useState<ReadonlyArray<Scenario>>([])
   const [searchText, setSearchText] = useState('')
+  const [sort, setSort] = useState('auto')
 
   function handleSearch(newsearch: string) {
     if (!client) return
@@ -73,6 +85,10 @@ const ScenariosPage: React.FunctionComponent = () => {
     navigate('/edit-scenario')
   }
 
+  async function handleSelectSort(value: string) {
+    setSort(value)
+  }
+
   useEffect(() => {
     if (!client) return
     let id_user: number = Number(localStorage.getItem('user_id'))
@@ -100,14 +116,24 @@ const ScenariosPage: React.FunctionComponent = () => {
           ) : (
             <h2>My scenarios</h2>
           )}
-          <div className={'searchBarDiv'}>
-            <InputText
-              libelle={''}
-              value={searchText}
-              onChange={handleSearch}
-              id={'search-input'}
-              data-testid={ScenariosPageTestIds.INPUT_SEARCH_BAR}
-            />
+          <div className={'options'}>
+            <div className={'filters'}>Filters</div>
+            <div className={'searchBarDiv'}>
+              <InputText
+                libelle={''}
+                value={searchText}
+                onChange={handleSearch}
+                id={'search-input'}
+                data-testid={ScenariosPageTestIds.INPUT_SEARCH_BAR}
+              />
+            </div>
+            <div className={'selectSort'}>
+              <Select
+                value={sort}
+                options={sorts}
+                onChange={handleSelectSort}
+              />
+            </div>
           </div>
           {myScenarios.map((scenario, index) => (
             <div key={index} className={'divScenario'}>

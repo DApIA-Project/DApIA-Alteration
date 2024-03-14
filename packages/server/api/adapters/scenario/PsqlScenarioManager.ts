@@ -33,16 +33,16 @@ export default class PsqlScenarioManager implements IScenarioManager {
 
   async listUserScenario(
     user_id: number,
-    filter?: string
+    searchBar?: string
   ): Promise<ReadonlyArray<Scenario>> {
     let whereClause: any = { user_id }
 
-    if (filter) {
+    if (searchBar) {
       whereClause = {
         ...whereClause,
         [Op.or]: [
-          { name: { [Op.like]: `%${filter}%` } },
-          { text: { [Op.like]: `%${filter}%` } },
+          { name: { [Op.like]: `%${searchBar}%` } },
+          { text: { [Op.like]: `%${searchBar}%` } },
         ],
       }
     }
