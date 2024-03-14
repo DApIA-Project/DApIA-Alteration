@@ -95,7 +95,7 @@ describe(`POST ${ApiRoutes.listUserScenario()}`, () => {
 
       const response = await request(server)
         .post(ApiRoutes.listUserScenario())
-        .send({ user_id: responseUser.body.user.id, filter: 'B' })
+        .send({ user_id: responseUser.body.user.id, searchBar: 'B' })
 
       const { error, scenarios } = response.body
       assert.deepStrictEqual(error, null)
