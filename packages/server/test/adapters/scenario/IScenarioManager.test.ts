@@ -182,6 +182,22 @@ const IScenarioContractTest: IContractTest = (
           scenario2,
         ])
       })
+
+      it('returns all scenarios of user with filter searchbar', async () => {
+        const scenario1 = await scenarioManager.createScenario(
+          validScenarioAttributes,
+          user.id
+        )
+        const scenario2 = await scenarioManager.createScenario(
+          secondScenarioAttributes,
+          user.id
+        )
+
+        assert.deepEqual(
+          await scenarioManager.listUserScenario(user.id, 'cut'),
+          [scenario2]
+        )
+      })
     })
   })
 }

@@ -20,5 +20,8 @@ export default interface IScenarioManager {
 
   listScenarios(): Promise<ReadonlyArray<Scenario>>
 
-  listUserScenario(user_id: number): Promise<ReadonlyArray<Scenario>>
+  listUserScenario(
+    user_id: number,
+    filter?: string
+  ): Promise<ReadonlyArray<Scenario>>
 }

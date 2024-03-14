@@ -72,6 +72,36 @@ describe(`POST ${ApiRoutes.listUserScenario()}`, () => {
       assert.equal(scenarios[0].name, 'ScenarioA')
       assert.equal(scenarios[1].name, 'ScenarioB')
     })
+
+    it('returns 201 when list is returned with filter searchbar', async () => {
+      let responseUser = await request(server)
+        .post(ApiRoutes.createUser())
+        .send(validUserAttributes)
+
+      await request(server)
+        .post(ApiRoutes.createScenario())
+        .send({
+          ...validScenarioAttributes,
+          user_id: responseUser.body.user.id,
+        })
+
+      await request(server)
+        .post(ApiRoutes.createScenario())
+        .send({
+          ...validScenarioAttributes,
+          name: 'ScenarioB',
+          user_id: responseUser.body.user.id,
+        })
+
+      const response = await request(server)
+        .post(ApiRoutes.listUserScenario())
+        .send({ user_id: responseUser.body.user.id, filter: 'B' })
+
+      const { error, scenarios } = response.body
+      assert.deepStrictEqual(error, null)
+      assert.equal(scenarios[0].name, 'ScenarioB')
+      assert.equal(scenarios.length, 1)
+    })
   })
 
   context('when list have not scenario', () => {

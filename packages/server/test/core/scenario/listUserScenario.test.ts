@@ -79,6 +79,18 @@ describe('core/scenario/listUserScenario', () => {
     assert.strictEqual(errorListScenario, null)
   })
 
+  it('list user scenario is valid with 2 scenarios but filter searchbar', async () => {
+    let user: User = await userManager.createUser(validUserAttributes)
+    await scenarioManager.createScenario(validScenarioAttributes, user.id)
+    await scenarioManager.createScenario(validScenarioAttributes2, user.id)
+    await scenarioManager.createScenario(validScenarioAttributes3, user.id + 1)
+    const { scenarios: listedScenario, error: errorListScenario } =
+      await listUserScenario(scenarioManager, user.id, 'B')
+    assert(listedScenario)
+    assert.equal(listedScenario.length, 1)
+    assert.strictEqual(errorListScenario, null)
+  })
+
   it('list scenario is empty', async () => {
     let user: User = await userManager.createUser(validUserAttributes)
     const { scenarios: listedScenario, error: errorListScenario } =

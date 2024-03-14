@@ -4,7 +4,7 @@ import {
   Scenario,
   ScenarioAttributes,
 } from '@smartesting/shared/dist/models/Scenario'
-import { InferCreationAttributes } from 'sequelize'
+import { InferCreationAttributes, Op } from 'sequelize'
 
 export default class PsqlScenarioManager implements IScenarioManager {
   async createScenario(
@@ -31,11 +31,24 @@ export default class PsqlScenarioManager implements IScenarioManager {
     return scenarioModels.map(scenarioModelToScenario)
   }
 
-  async listUserScenario(user_id: number): Promise<ReadonlyArray<Scenario>> {
+  async listUserScenario(
+    user_id: number,
+    filter?: string
+  ): Promise<ReadonlyArray<Scenario>> {
+    let whereClause: any = { user_id }
+
+    if (filter) {
+      whereClause = {
+        ...whereClause,
+        [Op.or]: [
+          { name: { [Op.like]: `%${filter}%` } },
+          { text: { [Op.like]: `%${filter}%` } },
+        ],
+      }
+    }
+
     const scenarioModels = await ScenarioModel.findAll({
-      where: {
-        user_id: user_id,
-      },
+      where: whereClause,
     })
     return scenarioModels.map(scenarioModelToScenario)
   }

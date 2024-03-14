@@ -6,9 +6,13 @@ import IScenarioManager from '../../adapters/scenario/IScenarioManager'
 
 export default async function listUserScenario(
   scenarioManager: IScenarioManager,
-  user_id: number
+  user_id: number,
+  filter?: string
 ): Promise<ListUserScenarioResponse> {
-  const listUserScenario = await scenarioManager.listUserScenario(user_id)
+  const listUserScenario = await scenarioManager.listUserScenario(
+    user_id,
+    filter
+  )
   if (listUserScenario.length === 0) {
     return { scenarios: null, error: ListUserScenarioError.emptyListScenario }
   } else {

@@ -58,7 +58,10 @@ export default class MemoryScenarioManager implements IScenarioManager {
     return Array.from(this.scenariosById.values())
   }
 
-  async listUserScenario(userId: number): Promise<ReadonlyArray<Scenario>> {
+  async listUserScenario(
+    userId: number,
+    filter?: string
+  ): Promise<ReadonlyArray<Scenario>> {
     const scenarios: Scenario[] = []
     for (const [
       scenarioId,
@@ -67,7 +70,14 @@ export default class MemoryScenarioManager implements IScenarioManager {
       if (storedUserId === userId) {
         let scenario = this.scenariosById.get(scenarioId)
         if (scenario !== undefined) {
-          scenarios.push(scenario)
+          if (
+            !filter ||
+            scenario.name.toLowerCase().includes(filter.toLowerCase()) ||
+            scenario.text.toLowerCase().includes(filter.toLowerCase())
+          ) {
+            // Vérifiez si le nom du scénario correspond au filtre, ignorez le filtre s'il n'est pas fourni
+            scenarios.push(scenario)
+          }
         }
       }
     }

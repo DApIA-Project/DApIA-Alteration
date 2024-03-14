@@ -8,6 +8,7 @@ export default makeRequestHandler<ListUserScenarioResponse>(
   async (req): Promise<ListUserScenarioResponse> => {
     const { scenarioManager } = req.adapters
     const user_id: number = req.body.user_id
-    return await listUserScenario(scenarioManager, user_id)
+    const filter: string = req.body.filter
+    return await listUserScenario(scenarioManager, user_id, filter)
   }
 )

@@ -40,7 +40,18 @@ const ScenariosPage: React.FunctionComponent = () => {
   const [searchText, setSearchText] = useState('')
 
   function handleSearch(newsearch: string) {
+    if (!client) return
+    let id_user: number = Number(localStorage.getItem('user_id'))
     setSearchText(newsearch)
+
+    client
+      .listUserScenario(id_user, newsearch)
+      .then(({ scenarios, error }) => {
+        setMyScenarios(scenarios ?? [])
+      })
+      .catch((e) => {
+        console.error('Erreur lors de la récupération des scénarios :', e)
+      })
   }
   function handleEdit(id_scenario: number) {
     navigate('/edit-scenario/' + id_scenario)
