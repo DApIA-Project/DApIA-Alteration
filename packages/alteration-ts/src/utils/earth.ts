@@ -1,4 +1,8 @@
 
+/**
+ * Geographical function, inspired by WorldWind : 
+ * https://github.com/nasa/World-Wind-Java/tree/master/WorldWind/test/gov/nasa/worldwind/geom
+ */ 
 
 export let to_degree = (r: number) => (r * 180) / Math.PI;
 export let to_radian = (d: number) => (d * Math.PI) / 180;
@@ -28,12 +32,12 @@ export class Angle {
 	}
 }
 
-type Position = [Angle, Angle];
+export type Position = [Angle, Angle];
 
 /**
  * Return latitude (in degree) of a position (between -90° and 90°)
  */ 
-export function lat(p: Postion) {
+export function lat(p: Position) {
 	let lat = p[0].deg % 180;
 	if(lat > 90) 	return Angle.degree(180 - lat);
 	if(lat < -90) return Angle.degree(-180 - lat);
@@ -43,7 +47,7 @@ export function lat(p: Postion) {
 /**
  * Return longitude (in degree) of a position (between -180° and 180)
  */ 
-export function lon(p: Postion) {
+export function lon(p: Position) {
 	let lon = p[1].deg % 180;
 	if(lon > 180) 	return Angle.degree(lon - 360);
 	if(lon < -180) 	return Angle.degree(360 + lon);
@@ -100,7 +104,7 @@ export class Earth {
 	 * Compute the position after a travel of 'arc' distance from 'start' heading at 'azimuth' angle
 	 * Equation from : "Map Projections - A Working Manual", page 31, equation 5-5 and 5-6. [ https://pubs.usgs.gov/pp/1395/report.pdf ]
 	 */  
-	static end_position(p: Position, azimuth: Angle, arc: Angle) {
+	static end_position(p: Position, azimuth: Angle, arc: Angle): Position {
 		// Convert degree to radians
 		const phi1 = lat(p).rad;
 		const lambda1 = lon(p).rad;

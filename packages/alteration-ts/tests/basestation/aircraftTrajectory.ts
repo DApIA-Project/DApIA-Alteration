@@ -89,13 +89,11 @@ describe("Aircraft Trajectory Builder", () => {
 							.add_point({timestampGenerated: 30000, latitude: 2.0, longitude: 1.0, altitude: 10500})
 							.add_point({timestampGenerated: 40000, latitude: 2.0, longitude: 2.0, altitude: 10000})
 							.interpolate();
-/*
+
 		for(let t=5000; t < 35000; t+=1000) {
-		  console.log("t-1s :" + trajectory.get_altitude(t - 60e3));
-		 	console.log(" t : " + trajectory.get_altitude(t));
-		 	console.log("t+1s :" + trajectory.get_altitude(t + 60e3));
+			console.log("[" + t + " s] Altitude : "+ trajectory.get_altitude(t) + " Vertical rate : " + trajectory.get_verticalRate(t));
 		}
-*/
+
 
 		expect(trajectory.get_verticalRate(0)).not.to.be.an("undefined");
 		expect(trajectory.get_verticalRate(499)).not.to.be.an("undefined");
