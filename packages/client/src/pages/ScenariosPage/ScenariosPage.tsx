@@ -10,11 +10,15 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import AddIcon from '@mui/icons-material/Add'
 import AlterationScenarioEditor from '../../components/business/AlterationScenarioEditor/AlterationScenarioEditor'
 import { useNavigate } from 'react-router-dom'
-import { TextField } from '@mui/material'
 import InputText from '../../components/ui/InputText/InputText'
-import { MyAccountPageTestIds } from '../MyAccountPage/MyAccountPage'
 import Select from '../../components/ui/Select/Select'
-import { Sort } from '@smartesting/shared/dist'
+import { OptionsAlteration, Sort } from '@smartesting/shared/dist'
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp'
+import FormControlLabel from '@mui/material/FormControlLabel'
+import Checkbox from '@mui/material/Checkbox'
+import { grey } from '@mui/material/colors'
+import { unstable_batchedUpdates } from 'react-dom'
 
 function formaterDate(dateString: string): string {
   const date = new Date(dateString)
@@ -26,6 +30,17 @@ function formaterDate(dateString: string): string {
   const secondes = date.getSeconds().toString().padStart(2, '0')
 
   return `${jour}/${mois}/${annee} at ${heures}:${minutes}:${secondes}`
+}
+
+function formaterDateToString(date: Date): string {
+  const year = date.getFullYear()
+  const month = String(date.getMonth() + 1).padStart(2, '0')
+  const day = String(date.getDate()).padStart(2, '0')
+  const hours = String(date.getHours()).padStart(2, '0')
+  const minutes = String(date.getMinutes()).padStart(2, '0')
+  const seconds = String(date.getSeconds()).padStart(2, '0')
+
+  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`
 }
 
 export enum ScenariosPageTestIds {
@@ -50,6 +65,17 @@ const ScenariosPage: React.FunctionComponent = () => {
   const [myScenarios, setMyScenarios] = useState<ReadonlyArray<Scenario>>([])
   const [searchText, setSearchText] = useState('')
   const [sort, setSort] = useState('auto')
+  const [isFilterOpen, setIsFilterOpen] = useState(false)
+  const [dateStart, setDateStart] = useState('')
+  const [dateEnd, setDateEnd] = useState('')
+
+  const [withOptionsAlterations, setWithOptionsAlterations] = useState(false)
+  const [labeling, setLabeling] = useState(false)
+  const [realism, setRealism] = useState(false)
+  const [noise, setNoise] = useState(false)
+  const [disableLatitude, setDisableLatitude] = useState(false)
+  const [disableLongitude, setDisableLongitude] = useState(false)
+  const [disableAltitude, setDisableAltitude] = useState(false)
 
   function handleSearch(newsearch: string) {
     if (!client) return
@@ -67,6 +93,121 @@ const ScenariosPage: React.FunctionComponent = () => {
   }
   function handleEdit(id_scenario: number) {
     navigate('/edit-scenario/' + id_scenario)
+  }
+
+  function handleChangeStartDate(event: React.ChangeEvent<HTMLInputElement>) {
+    if (!client) return
+    let id_user: number = Number(localStorage.getItem('user_id'))
+    let startDate: string =
+      event.target.value !== ''
+        ? event.target.value + ' 00:00:00'
+        : formaterDateToString(new Date(0))
+    let endDate: string =
+      dateEnd !== '' ? dateEnd : formaterDateToString(new Date())
+    unstable_batchedUpdates(() => {
+      setDateStart(startDate)
+      setDateEnd(endDate)
+    })
+    client
+      .listUserScenario(id_user, searchText, startDate, dateEnd)
+      .then(({ scenarios, error }) => {
+        setMyScenarios(scenarios ?? [])
+      })
+      .catch((e) => {
+        console.error('Erreur lors de la récupération des scénarios :', e)
+      })
+  }
+
+  function handleChangeEndDate(event: React.ChangeEvent<HTMLInputElement>) {
+    if (!client) return
+    let id_user: number = Number(localStorage.getItem('user_id'))
+    let endDate: string =
+      event.target.value !== ''
+        ? event.target.value + ' 00:00:00'
+        : formaterDateToString(new Date())
+    setDateEnd(endDate)
+    client
+      .listUserScenario(id_user, searchText, dateStart, endDate)
+      .then(({ scenarios, error }) => {
+        setMyScenarios(scenarios ?? [])
+      })
+      .catch((e) => {
+        console.error('Erreur lors de la récupération des scénarios :', e)
+      })
+  }
+
+  function handleToggleState(
+    toggleFunc: () => void,
+    state: boolean,
+    setState: (value: boolean) => void
+  ) {
+    if (!client) return
+    if (!withOptionsAlterations) return
+    const id_user: number = Number(localStorage.getItem('user_id'))
+    let newState = state
+    setState(newState)
+    const optionsAlterations: OptionsAlteration = {
+      haveLabel: toggleFunc === handleLabeling ? newState : labeling,
+      haveRealism: toggleFunc === handleRealism ? newState : realism,
+      haveNoise: toggleFunc === handleNoise ? newState : noise,
+      haveDisableLatitude:
+        toggleFunc === handleDisableLatitude ? newState : disableLatitude,
+      haveDisableLongitude:
+        toggleFunc === handleDisableLongitude ? newState : disableLongitude,
+      haveDisableAltitude:
+        toggleFunc === handleDisableAltitude ? newState : disableAltitude,
+    }
+
+    client
+      .listUserScenario(
+        id_user,
+        searchText,
+        dateStart,
+        dateEnd,
+        optionsAlterations
+      )
+      .then(({ scenarios, error }) => {
+        setMyScenarios(scenarios ?? [])
+      })
+      .catch((e) => {
+        console.error('Erreur lors de la récupération des scénarios :', e)
+      })
+  }
+
+  function handleLabeling() {
+    handleToggleState(handleLabeling, !labeling, setLabeling)
+  }
+
+  function handleRealism() {
+    handleToggleState(handleRealism, !realism, setRealism)
+  }
+
+  function handleNoise() {
+    handleToggleState(handleNoise, !noise, setNoise)
+  }
+
+  function handleDisableLatitude() {
+    handleToggleState(
+      handleDisableLatitude,
+      !disableLatitude,
+      setDisableLatitude
+    )
+  }
+
+  function handleDisableLongitude() {
+    handleToggleState(
+      handleDisableLongitude,
+      !disableLongitude,
+      setDisableLongitude
+    )
+  }
+
+  function handleDisableAltitude() {
+    handleToggleState(
+      handleDisableAltitude,
+      !disableAltitude,
+      setDisableAltitude
+    )
   }
 
   function handleRemove(id_scenario: number) {
@@ -117,7 +258,14 @@ const ScenariosPage: React.FunctionComponent = () => {
             <h2>My scenarios</h2>
           )}
           <div className={'options'}>
-            <div className={'filters'}>Filters</div>
+            <div
+              className={'filters'}
+              onClick={() => setIsFilterOpen(!isFilterOpen)}
+            >
+              {!isFilterOpen && <KeyboardArrowDownIcon fontSize={'medium'} />}
+              {isFilterOpen && <KeyboardArrowUpIcon fontSize={'medium'} />}
+              Filters
+            </div>
             <div className={'searchBarDiv'}>
               <InputText
                 libelle={''}
@@ -135,6 +283,130 @@ const ScenariosPage: React.FunctionComponent = () => {
               />
             </div>
           </div>
+          {isFilterOpen && (
+            <div className={'additionalFilters'}>
+              <div className={'datesFilters'}>
+                <div>
+                  Start date
+                  <input
+                    type='date'
+                    name='filter-start'
+                    onChange={handleChangeStartDate}
+                  />
+                </div>
+                <div>
+                  End date
+                  <input
+                    type='date'
+                    name='filter-end'
+                    onChange={handleChangeEndDate}
+                  />
+                </div>
+              </div>
+              <div className={'optionsAlterationFilters'}>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      sx={{
+                        color: grey[50],
+                        '&.Mui-checked': {
+                          color: grey[50],
+                        },
+                      }}
+                      onChange={() => {
+                        setWithOptionsAlterations(!withOptionsAlterations)
+                      }}
+                    />
+                  }
+                  label='Options filter'
+                />
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      sx={{
+                        color: grey[50],
+                        '&.Mui-checked': {
+                          color: grey[50],
+                        },
+                      }}
+                      onChange={handleLabeling}
+                    />
+                  }
+                  label='Labeling'
+                />
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      sx={{
+                        color: grey[50],
+                        '&.Mui-checked': {
+                          color: grey[50],
+                        },
+                      }}
+                      onChange={handleRealism}
+                    />
+                  }
+                  label='Realism'
+                />
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      sx={{
+                        color: grey[50],
+                        '&.Mui-checked': {
+                          color: grey[50],
+                        },
+                      }}
+                      onChange={handleNoise}
+                    />
+                  }
+                  label='Noise'
+                />
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      sx={{
+                        color: grey[50],
+                        '&.Mui-checked': {
+                          color: grey[50],
+                        },
+                      }}
+                      onChange={handleDisableLatitude}
+                    />
+                  }
+                  label='Disable latitude'
+                />
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      sx={{
+                        color: grey[50],
+                        '&.Mui-checked': {
+                          color: grey[50],
+                        },
+                      }}
+                      onChange={handleDisableLongitude}
+                    />
+                  }
+                  label='Disable longitude'
+                />
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      sx={{
+                        color: grey[50],
+                        '&.Mui-checked': {
+                          color: grey[50],
+                        },
+                      }}
+                      onChange={handleDisableAltitude}
+                    />
+                  }
+                  label='Disable altitude'
+                />
+              </div>
+            </div>
+          )}
           {myScenarios.map((scenario, index) => (
             <div key={index} className={'divScenario'}>
               <div className={'infoScenario'}>

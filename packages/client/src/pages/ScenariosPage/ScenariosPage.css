@@ -16,6 +16,42 @@
   display: flex;
   justify-content: center;
   flex: 0 0 1%;
+  cursor: pointer;
+}
+
+.additionalFilters {
+  display: flex;
+  flex-direction: row;
+  border: 5px solid white;
+  border-radius: 2px;
+  justify-content: space-evenly;
+}
+
+.additionalFilters > .datesFilters {
+  display: flex;
+  flex-direction: column;
+  color: white;
+  margin: 1%;
+}
+
+.additionalFilters > .datesFilters > div > input {
+  all: unset;
+  padding: 6%;
+  width: 100%;
+  border-radius: 8px;
+  color: rgba(255, 255, 255, 1);
+  background-color: #575d5e;
+  box-shadow: inset 0 1px 0 0 #575d5e;
+  cursor: pointer;
+  transition-duration: 200ms;
+  margin: 1%;
+}
+
+.additionalFilters > .optionsAlterationFilters {
+  display: flex;
+  flex-direction: row;
+  color: white;
+  align-self: center;
 }
 
 .options > .searchBarDiv {

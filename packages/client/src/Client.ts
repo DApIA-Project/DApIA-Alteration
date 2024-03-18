@@ -112,12 +112,18 @@ export default class Client {
 
   async listUserScenario(
     id: number,
-    searchBar?: string
+    searchBar?: string,
+    startDate?: string,
+    endDate?: string,
+    optionsAlteration?: OptionsAlteration
   ): Promise<ListUserScenarioResponse> {
     const url: string = `${apiUrl}/scenario/user/list`
     const data = {
       user_id: id,
       searchBar: searchBar,
+      startDate: startDate,
+      endDate: endDate,
+      optionsAlteration: optionsAlteration,
     }
     return this.apiCall<ListUserScenarioResponse>(url, data)
   }

@@ -5,6 +5,7 @@ import {
   ScenarioAttributes,
 } from '@smartesting/shared/dist/models/Scenario'
 import { InferCreationAttributes, Op } from 'sequelize'
+import { OptionsAlteration } from '@smartesting/shared/dist/index'
 
 export default class PsqlScenarioManager implements IScenarioManager {
   async createScenario(
@@ -33,7 +34,10 @@ export default class PsqlScenarioManager implements IScenarioManager {
 
   async listUserScenario(
     user_id: number,
-    searchBar?: string
+    searchBar?: string,
+    startDate?: string,
+    endDate?: string,
+    optionsAlteration?: OptionsAlteration
   ): Promise<ReadonlyArray<Scenario>> {
     let whereClause: any = { user_id }
 
@@ -43,6 +47,35 @@ export default class PsqlScenarioManager implements IScenarioManager {
         [Op.or]: [
           { name: { [Op.like]: `%${searchBar}%` } },
           { text: { [Op.like]: `%${searchBar}%` } },
+        ],
+      }
+    }
+
+    if (startDate && endDate) {
+      whereClause = {
+        ...whereClause,
+        [Op.and]: [{ updated_at: { [Op.between]: [startDate, endDate] } }],
+      }
+    }
+
+    if (optionsAlteration) {
+      whereClause = {
+        ...whereClause,
+        [Op.and]: [
+          {
+            options: {
+              [Op.and]: [
+                { haveLabel: optionsAlteration.haveLabel },
+                { haveRealism: optionsAlteration.haveRealism },
+                { haveNoise: optionsAlteration.haveNoise },
+                { haveDisableLatitude: optionsAlteration.haveDisableLatitude },
+                {
+                  haveDisableLongitude: optionsAlteration.haveDisableLongitude,
+                },
+                { haveDisableAltitude: optionsAlteration.haveDisableAltitude },
+              ],
+            },
+          },
         ],
       }
     }

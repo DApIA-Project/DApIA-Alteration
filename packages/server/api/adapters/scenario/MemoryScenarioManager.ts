@@ -60,7 +60,9 @@ export default class MemoryScenarioManager implements IScenarioManager {
 
   async listUserScenario(
     userId: number,
-    searchBar?: string
+    searchBar?: string,
+    startDate?: string,
+    endDate?: string
   ): Promise<ReadonlyArray<Scenario>> {
     const scenarios: Scenario[] = []
     for (const [

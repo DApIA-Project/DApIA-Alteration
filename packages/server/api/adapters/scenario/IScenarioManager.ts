@@ -2,6 +2,7 @@ import {
   ScenarioAttributes,
   Scenario,
 } from '@smartesting/shared/dist/models/Scenario'
+import { OptionsAlteration } from '@smartesting/shared/dist/index'
 
 export default interface IScenarioManager {
   createScenario(
@@ -22,6 +23,9 @@ export default interface IScenarioManager {
 
   listUserScenario(
     user_id: number,
-    searchBar?: string
+    searchBar?: string,
+    startDate?: string,
+    endDate?: string,
+    optionsAlteration?: OptionsAlteration
   ): Promise<ReadonlyArray<Scenario>>
 }
