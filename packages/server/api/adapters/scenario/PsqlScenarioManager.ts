@@ -5,7 +5,7 @@ import {
   ScenarioAttributes,
 } from '@smartesting/shared/dist/models/Scenario'
 import { InferCreationAttributes, Op } from 'sequelize'
-import { OptionsAlteration } from '@smartesting/shared/dist/index'
+import { OptionsAlteration, Sort } from '@smartesting/shared/dist/index'
 
 export default class PsqlScenarioManager implements IScenarioManager {
   async createScenario(
@@ -37,9 +37,11 @@ export default class PsqlScenarioManager implements IScenarioManager {
     searchBar?: string,
     startDate?: string,
     endDate?: string,
-    optionsAlteration?: OptionsAlteration
+    optionsAlteration?: OptionsAlteration,
+    sort?: string
   ): Promise<ReadonlyArray<Scenario>> {
     let whereClause: any = { user_id }
+    let order: any = []
 
     if (searchBar) {
       whereClause = {
@@ -80,8 +82,19 @@ export default class PsqlScenarioManager implements IScenarioManager {
       }
     }
 
+    if (sort === Sort.dateDescending) {
+      order.push(['updated_at', 'DESC'])
+    } else if (sort === Sort.dateAscending) {
+      order.push(['updated_at', 'ASC'])
+    } else if (sort === Sort.alphabeticalOrder) {
+      order.push(['name', 'ASC'])
+    } else if (sort === Sort.antialphabeticalOrder) {
+      order.push(['name', 'DESC'])
+    }
+
     const scenarioModels = await ScenarioModel.findAll({
       where: whereClause,
+      order: order,
     })
     return scenarioModels.map(scenarioModelToScenario)
   }

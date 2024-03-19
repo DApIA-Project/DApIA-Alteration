@@ -4,7 +4,7 @@ import {
   Scenario,
   ScenarioAttributes,
 } from '@smartesting/shared/dist/models/Scenario'
-import { OptionsAlteration } from '@smartesting/shared/dist/index'
+import { OptionsAlteration, Sort } from '@smartesting/shared/dist/index'
 
 export default class MemoryScenarioManager implements IScenarioManager {
   constructor(
@@ -63,9 +63,11 @@ export default class MemoryScenarioManager implements IScenarioManager {
     searchBar?: string,
     startDate?: string,
     endDate?: string,
-    optionsAlteration?: OptionsAlteration
+    optionsAlteration?: OptionsAlteration,
+    sort?: string
   ): Promise<ReadonlyArray<Scenario>> {
     const scenarios: Scenario[] = []
+    const filteredScenarios: Scenario[] = []
     for (const [
       scenarioId,
       storedUserId,
@@ -114,6 +116,33 @@ export default class MemoryScenarioManager implements IScenarioManager {
         }
       }
     }
-    return scenarios
+
+    if (sort === Sort.dateDescending) {
+      filteredScenarios.push(
+        ...scenarios.sort(
+          (a, b) =>
+            new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+        )
+      )
+    } else if (sort === Sort.dateAscending) {
+      filteredScenarios.push(
+        ...scenarios.sort(
+          (a, b) =>
+            new Date(a.updatedAt).getTime() - new Date(b.updatedAt).getTime()
+        )
+      )
+    } else if (sort === Sort.alphabeticalOrder) {
+      filteredScenarios.push(
+        ...scenarios.sort((a, b) => a.name.localeCompare(b.name))
+      )
+    } else if (sort === Sort.antialphabeticalOrder) {
+      filteredScenarios.push(
+        ...scenarios.sort((a, b) => b.name.localeCompare(a.name))
+      )
+    } else {
+      filteredScenarios.push(...scenarios)
+    }
+
+    return filteredScenarios
   }
 }

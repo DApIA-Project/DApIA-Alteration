@@ -13,6 +13,7 @@ import {
 } from '../../makeTestAdapters'
 import { clearMemoryDb, clearProductionDb } from '../../clearDb'
 import IUserManager from '../../../api/adapters/user/IUserManager'
+import { Sort } from '@smartesting/shared/src'
 
 const IScenarioContractTest: IContractTest = (
   implementationName,
@@ -239,6 +240,29 @@ const IScenarioContractTest: IContractTest = (
             secondScenarioAttributes.options
           ),
           [scenario2]
+        )
+      })
+
+      it('returns all scenarios of user with sort', async () => {
+        const scenario1 = await scenarioManager.createScenario(
+          validScenarioAttributes,
+          user.id
+        )
+        const scenario2 = await scenarioManager.createScenario(
+          secondScenarioAttributes,
+          user.id
+        )
+
+        assert.deepEqual(
+          await scenarioManager.listUserScenario(
+            user.id,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            Sort.antialphabeticalOrder
+          ),
+          [scenario2, scenario1]
         )
       })
     })

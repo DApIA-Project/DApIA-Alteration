@@ -7,7 +7,7 @@ import { ListUserScenarioResponse } from '@smartesting/shared/dist/responses/lis
 import { FindUserByEmailResponse } from '@smartesting/shared/dist/responses/findUserByEmail'
 import { FindUserResponse } from '@smartesting/shared/dist/responses/findUser'
 import { FindScenarioResponse } from '@smartesting/shared/dist/responses/findScenario'
-import { OptionsAlteration, Recording } from '@smartesting/shared/dist'
+import { OptionsAlteration, Recording, Sort } from '@smartesting/shared/dist'
 import { CreateUserResponse } from '@smartesting/shared/dist/responses/createUser'
 import { LoginUserResponse } from '@smartesting/shared/dist/responses/loginUser'
 import { UpdateUserResponse } from '@smartesting/shared/dist/responses/updateUser'
@@ -115,7 +115,8 @@ export default class Client {
     searchBar?: string,
     startDate?: string,
     endDate?: string,
-    optionsAlteration?: OptionsAlteration
+    optionsAlteration?: OptionsAlteration,
+    sort?: string
   ): Promise<ListUserScenarioResponse> {
     const url: string = `${apiUrl}/scenario/user/list`
     const data = {
@@ -124,6 +125,7 @@ export default class Client {
       startDate: startDate,
       endDate: endDate,
       optionsAlteration: optionsAlteration,
+      sort: sort,
     }
     return this.apiCall<ListUserScenarioResponse>(url, data)
   }

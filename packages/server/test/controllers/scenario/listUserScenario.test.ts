@@ -5,7 +5,7 @@ import { ApiRoutes } from '@smartesting/shared/src/routes'
 import assert from 'assert'
 import { ListUserScenarioError } from '@smartesting/shared/dist/responses/listUserScenario'
 import makeTestAdapters from '../../makeTestAdapters'
-import { OptionsAlteration } from '@smartesting/shared/src'
+import { OptionsAlteration, Sort } from '@smartesting/shared/src'
 import { clearDb } from '../../clearDb'
 
 describe(`POST ${ApiRoutes.listUserScenario()}`, () => {
@@ -170,6 +170,40 @@ describe(`POST ${ApiRoutes.listUserScenario()}`, () => {
       assert.deepStrictEqual(error, null)
       assert.equal(scenarios[0].name, 'ScenarioA')
       assert.equal(scenarios[1].name, 'ScenarioB')
+      assert.equal(scenarios.length, 2)
+    })
+
+    it('returns 201 when list is returned with sort', async () => {
+      let responseUser = await request(server)
+        .post(ApiRoutes.createUser())
+        .send(validUserAttributes)
+
+      let responseScenario1 = await request(server)
+        .post(ApiRoutes.createScenario())
+        .send({
+          ...validScenarioAttributes,
+          user_id: responseUser.body.user.id,
+        })
+
+      let responseScenario2 = await request(server)
+        .post(ApiRoutes.createScenario())
+        .send({
+          ...validScenarioAttributes,
+          name: 'ScenarioB',
+          user_id: responseUser.body.user.id,
+        })
+
+      const response = await request(server)
+        .post(ApiRoutes.listUserScenario())
+        .send({
+          user_id: responseUser.body.user.id,
+          sort: Sort.antialphabeticalOrder,
+        })
+
+      const { error, scenarios } = response.body
+      assert.deepStrictEqual(error, null)
+      assert.equal(scenarios[0].name, 'ScenarioB')
+      assert.equal(scenarios[1].name, 'ScenarioA')
       assert.equal(scenarios.length, 2)
     })
   })

@@ -11,6 +11,7 @@ import { ListUserScenarioError } from '@smartesting/shared/src/responses/listUse
 import { clearDb } from '../../clearDb'
 import IUserManager from '../../../api/adapters/user/IUserManager'
 import listUserScenario from '../../../api/core/scenario/listUserScenario'
+import { Sort } from '@smartesting/shared/dist/index'
 
 describe('core/scenario/listUserScenario', () => {
   let scenarioManager: IScenarioManager
@@ -134,6 +135,28 @@ describe('core/scenario/listUserScenario', () => {
       )
     assert(listedScenario)
     assert.equal(listedScenario.length, 2)
+    assert.strictEqual(errorListScenario, null)
+  })
+
+  it('list user scenario is valid with 2 scenarios but sort', async () => {
+    let user: User = await userManager.createUser(validUserAttributes)
+    await scenarioManager.createScenario(validScenarioAttributes, user.id)
+    await scenarioManager.createScenario(validScenarioAttributes2, user.id)
+    await scenarioManager.createScenario(validScenarioAttributes3, user.id + 1)
+    const { scenarios: listedScenario, error: errorListScenario } =
+      await listUserScenario(
+        scenarioManager,
+        user.id,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        Sort.antialphabeticalOrder
+      )
+    assert(listedScenario)
+    assert.equal(listedScenario.length, 2)
+    assert.strictEqual(listedScenario[0].name, 'Scenario B')
+    assert.strictEqual(listedScenario[1].name, 'Scenario A')
     assert.strictEqual(errorListScenario, null)
   })
 

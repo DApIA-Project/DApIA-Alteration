@@ -64,7 +64,7 @@ const ScenariosPage: React.FunctionComponent = () => {
 
   const [myScenarios, setMyScenarios] = useState<ReadonlyArray<Scenario>>([])
   const [searchText, setSearchText] = useState('')
-  const [sort, setSort] = useState('auto')
+  const [sort, setSort] = useState('noSort')
   const [isFilterOpen, setIsFilterOpen] = useState(false)
   const [dateStart, setDateStart] = useState('')
   const [dateEnd, setDateEnd] = useState('')
@@ -142,10 +142,11 @@ const ScenariosPage: React.FunctionComponent = () => {
     setState: (value: boolean) => void
   ) {
     if (!client) return
-    if (!withOptionsAlterations) return
-    const id_user: number = Number(localStorage.getItem('user_id'))
     let newState = state
     setState(newState)
+    if (!withOptionsAlterations) return
+    const id_user: number = Number(localStorage.getItem('user_id'))
+
     const optionsAlterations: OptionsAlteration = {
       haveLabel: toggleFunc === handleLabeling ? newState : labeling,
       haveRealism: toggleFunc === handleRealism ? newState : realism,
@@ -172,6 +173,47 @@ const ScenariosPage: React.FunctionComponent = () => {
       .catch((e) => {
         console.error('Erreur lors de la récupération des scénarios :', e)
       })
+  }
+
+  function handleActiveOptions() {
+    if (!client) return
+    const id_user: number = Number(localStorage.getItem('user_id'))
+    setWithOptionsAlterations(!withOptionsAlterations)
+
+    if (!withOptionsAlterations) {
+      const optionsAlterations: OptionsAlteration = {
+        haveLabel: labeling,
+        haveRealism: realism,
+        haveNoise: noise,
+        haveDisableLatitude: disableLatitude,
+        haveDisableLongitude: disableLongitude,
+        haveDisableAltitude: disableAltitude,
+      }
+
+      client
+        .listUserScenario(
+          id_user,
+          searchText,
+          dateStart,
+          dateEnd,
+          optionsAlterations
+        )
+        .then(({ scenarios, error }) => {
+          setMyScenarios(scenarios ?? [])
+        })
+        .catch((e) => {
+          console.error('Erreur lors de la récupération des scénarios :', e)
+        })
+    } else {
+      client
+        .listUserScenario(id_user, searchText, dateStart, dateEnd)
+        .then(({ scenarios, error }) => {
+          setMyScenarios(scenarios ?? [])
+        })
+        .catch((e) => {
+          console.error('Erreur lors de la récupération des scénarios :', e)
+        })
+    }
   }
 
   function handleLabeling() {
@@ -227,7 +269,25 @@ const ScenariosPage: React.FunctionComponent = () => {
   }
 
   async function handleSelectSort(value: string) {
+    if (!client) return
     setSort(value)
+    const id_user: number = Number(localStorage.getItem('user_id'))
+
+    client
+      .listUserScenario(
+        id_user,
+        searchText,
+        dateStart,
+        dateEnd,
+        undefined,
+        value
+      )
+      .then(({ scenarios, error }) => {
+        setMyScenarios(scenarios ?? [])
+      })
+      .catch((e) => {
+        console.error('Erreur lors de la récupération des scénarios :', e)
+      })
   }
 
   useEffect(() => {
@@ -313,9 +373,7 @@ const ScenariosPage: React.FunctionComponent = () => {
                           color: grey[50],
                         },
                       }}
-                      onChange={() => {
-                        setWithOptionsAlterations(!withOptionsAlterations)
-                      }}
+                      onChange={handleActiveOptions}
                     />
                   }
                   label='Options filter'
