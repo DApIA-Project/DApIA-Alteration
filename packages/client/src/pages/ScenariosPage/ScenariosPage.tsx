@@ -15,33 +15,12 @@ import Select from '../../components/ui/Select/Select'
 import { OptionsAlteration, Sort } from '@smartesting/shared/dist'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp'
-import FormControlLabel from '@mui/material/FormControlLabel'
-import Checkbox from '@mui/material/Checkbox'
-import { grey } from '@mui/material/colors'
 import { unstable_batchedUpdates } from 'react-dom'
-
-function formaterDate(dateString: string): string {
-  const date = new Date(dateString)
-  const jour = date.getDate().toString().padStart(2, '0')
-  const mois = (date.getMonth() + 1).toString().padStart(2, '0')
-  const annee = date.getFullYear().toString()
-  const heures = date.getHours().toString().padStart(2, '0')
-  const minutes = date.getMinutes().toString().padStart(2, '0')
-  const secondes = date.getSeconds().toString().padStart(2, '0')
-
-  return `${jour}/${mois}/${annee} at ${heures}:${minutes}:${secondes}`
-}
-
-function formaterDateToString(date: Date): string {
-  const year = date.getFullYear()
-  const month = String(date.getMonth() + 1).padStart(2, '0')
-  const day = String(date.getDate()).padStart(2, '0')
-  const hours = String(date.getHours()).padStart(2, '0')
-  const minutes = String(date.getMinutes()).padStart(2, '0')
-  const seconds = String(date.getSeconds()).padStart(2, '0')
-
-  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`
-}
+import CheckBox from '../../components/ui/CheckBox/CheckBox'
+import {
+  formaterDateToString,
+  formaterDateStringToTextDate,
+} from '../../utils/formaterDate/formaterDate'
 
 export enum ScenariosPageTestIds {
   BUTTON_REMOVE_SCENARIO = 'ButtonRemoveScenario',
@@ -63,12 +42,10 @@ const ScenariosPage: React.FunctionComponent = () => {
   ]
 
   const [myScenarios, setMyScenarios] = useState<ReadonlyArray<Scenario>>([])
-  const [searchText, setSearchText] = useState('')
-  const [sort, setSort] = useState('noSort')
+
   const [isFilterOpen, setIsFilterOpen] = useState(false)
   const [dateStart, setDateStart] = useState('')
   const [dateEnd, setDateEnd] = useState('')
-
   const [withOptionsAlterations, setWithOptionsAlterations] = useState(false)
   const [labeling, setLabeling] = useState(false)
   const [realism, setRealism] = useState(false)
@@ -77,19 +54,41 @@ const ScenariosPage: React.FunctionComponent = () => {
   const [disableLongitude, setDisableLongitude] = useState(false)
   const [disableAltitude, setDisableAltitude] = useState(false)
 
-  function handleSearch(newsearch: string) {
-    if (!client) return
-    let id_user: number = Number(localStorage.getItem('user_id'))
-    setSearchText(newsearch)
+  const [searchText, setSearchText] = useState('')
 
-    client
-      .listUserScenario(id_user, newsearch)
+  const [sort, setSort] = useState('noSort')
+
+  function fetchScenarios(
+    id_user: number,
+    searchText?: string,
+    startDate?: string,
+    endDate?: string,
+    optionsAlterations?: OptionsAlteration,
+    sort?: string
+  ) {
+    if (!client) return
+    return client
+      .listUserScenario(
+        id_user,
+        searchText,
+        startDate,
+        endDate,
+        optionsAlterations,
+        sort
+      )
       .then(({ scenarios, error }) => {
         setMyScenarios(scenarios ?? [])
       })
       .catch((e) => {
         console.error('Erreur lors de la récupération des scénarios :', e)
       })
+  }
+
+  function handleSearch(newsearch: string) {
+    if (!client) return
+    let id_user: number = Number(localStorage.getItem('user_id'))
+    setSearchText(newsearch)
+    fetchScenarios(id_user, newsearch)
   }
   function handleEdit(id_scenario: number) {
     navigate('/edit-scenario/' + id_scenario)
@@ -108,14 +107,7 @@ const ScenariosPage: React.FunctionComponent = () => {
       setDateStart(startDate)
       setDateEnd(endDate)
     })
-    client
-      .listUserScenario(id_user, searchText, startDate, dateEnd)
-      .then(({ scenarios, error }) => {
-        setMyScenarios(scenarios ?? [])
-      })
-      .catch((e) => {
-        console.error('Erreur lors de la récupération des scénarios :', e)
-      })
+    fetchScenarios(id_user, searchText, startDate, dateEnd)
   }
 
   function handleChangeEndDate(event: React.ChangeEvent<HTMLInputElement>) {
@@ -126,14 +118,7 @@ const ScenariosPage: React.FunctionComponent = () => {
         ? event.target.value + ' 00:00:00'
         : formaterDateToString(new Date())
     setDateEnd(endDate)
-    client
-      .listUserScenario(id_user, searchText, dateStart, endDate)
-      .then(({ scenarios, error }) => {
-        setMyScenarios(scenarios ?? [])
-      })
-      .catch((e) => {
-        console.error('Erreur lors de la récupération des scénarios :', e)
-      })
+    fetchScenarios(id_user, searchText, dateStart, endDate)
   }
 
   function handleToggleState(
@@ -158,21 +143,7 @@ const ScenariosPage: React.FunctionComponent = () => {
       haveDisableAltitude:
         toggleFunc === handleDisableAltitude ? newState : disableAltitude,
     }
-
-    client
-      .listUserScenario(
-        id_user,
-        searchText,
-        dateStart,
-        dateEnd,
-        optionsAlterations
-      )
-      .then(({ scenarios, error }) => {
-        setMyScenarios(scenarios ?? [])
-      })
-      .catch((e) => {
-        console.error('Erreur lors de la récupération des scénarios :', e)
-      })
+    fetchScenarios(id_user, searchText, dateStart, dateEnd, optionsAlterations)
   }
 
   function handleActiveOptions() {
@@ -189,30 +160,15 @@ const ScenariosPage: React.FunctionComponent = () => {
         haveDisableLongitude: disableLongitude,
         haveDisableAltitude: disableAltitude,
       }
-
-      client
-        .listUserScenario(
-          id_user,
-          searchText,
-          dateStart,
-          dateEnd,
-          optionsAlterations
-        )
-        .then(({ scenarios, error }) => {
-          setMyScenarios(scenarios ?? [])
-        })
-        .catch((e) => {
-          console.error('Erreur lors de la récupération des scénarios :', e)
-        })
+      fetchScenarios(
+        id_user,
+        searchText,
+        dateStart,
+        dateEnd,
+        optionsAlterations
+      )
     } else {
-      client
-        .listUserScenario(id_user, searchText, dateStart, dateEnd)
-        .then(({ scenarios, error }) => {
-          setMyScenarios(scenarios ?? [])
-        })
-        .catch((e) => {
-          console.error('Erreur lors de la récupération des scénarios :', e)
-        })
+      fetchScenarios(id_user, searchText, dateStart, dateEnd)
     }
   }
 
@@ -272,40 +228,14 @@ const ScenariosPage: React.FunctionComponent = () => {
     if (!client) return
     setSort(value)
     const id_user: number = Number(localStorage.getItem('user_id'))
-
-    client
-      .listUserScenario(
-        id_user,
-        searchText,
-        dateStart,
-        dateEnd,
-        undefined,
-        value
-      )
-      .then(({ scenarios, error }) => {
-        setMyScenarios(scenarios ?? [])
-      })
-      .catch((e) => {
-        console.error('Erreur lors de la récupération des scénarios :', e)
-      })
+    fetchScenarios(id_user, searchText, dateStart, dateEnd, undefined, value)
   }
 
   useEffect(() => {
     if (!client) return
     let id_user: number = Number(localStorage.getItem('user_id'))
     console.log(id_user)
-    client
-      .listUserScenario(id_user)
-      .then(({ scenarios, error }) => {
-        if (error)
-          return console.error(
-            `Erreur lors de la récupération des scénarios : ${error}`
-          )
-        setMyScenarios(scenarios ?? [])
-      })
-      .catch((e) => {
-        console.error('Erreur lors de la récupération des scénarios :', e)
-      })
+    fetchScenarios(id_user)
   }, [client])
 
   return (
@@ -364,103 +294,40 @@ const ScenariosPage: React.FunctionComponent = () => {
                 </div>
               </div>
               <div className={'optionsAlterationFilters'}>
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      sx={{
-                        color: grey[50],
-                        '&.Mui-checked': {
-                          color: grey[50],
-                        },
-                      }}
-                      onChange={handleActiveOptions}
-                    />
-                  }
-                  label='Options filter'
+                <CheckBox
+                  label={'Options filter'}
+                  checked={withOptionsAlterations}
+                  onChange={handleActiveOptions}
                 />
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      sx={{
-                        color: grey[50],
-                        '&.Mui-checked': {
-                          color: grey[50],
-                        },
-                      }}
-                      onChange={handleLabeling}
-                    />
-                  }
-                  label='Labeling'
+                <CheckBox
+                  label={'Labeling'}
+                  checked={labeling}
+                  onChange={handleLabeling}
                 />
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      sx={{
-                        color: grey[50],
-                        '&.Mui-checked': {
-                          color: grey[50],
-                        },
-                      }}
-                      onChange={handleRealism}
-                    />
-                  }
-                  label='Realism'
+                <CheckBox
+                  label={'Realism'}
+                  checked={realism}
+                  onChange={handleRealism}
                 />
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      sx={{
-                        color: grey[50],
-                        '&.Mui-checked': {
-                          color: grey[50],
-                        },
-                      }}
-                      onChange={handleNoise}
-                    />
-                  }
-                  label='Noise'
+                <CheckBox
+                  label={'Noise'}
+                  checked={noise}
+                  onChange={handleNoise}
                 />
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      sx={{
-                        color: grey[50],
-                        '&.Mui-checked': {
-                          color: grey[50],
-                        },
-                      }}
-                      onChange={handleDisableLatitude}
-                    />
-                  }
-                  label='Disable latitude'
+                <CheckBox
+                  label={'Disable latitude'}
+                  checked={disableLatitude}
+                  onChange={handleDisableLatitude}
                 />
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      sx={{
-                        color: grey[50],
-                        '&.Mui-checked': {
-                          color: grey[50],
-                        },
-                      }}
-                      onChange={handleDisableLongitude}
-                    />
-                  }
-                  label='Disable longitude'
+                <CheckBox
+                  label={'Disable longitude'}
+                  checked={disableLongitude}
+                  onChange={handleDisableLongitude}
                 />
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      sx={{
-                        color: grey[50],
-                        '&.Mui-checked': {
-                          color: grey[50],
-                        },
-                      }}
-                      onChange={handleDisableAltitude}
-                    />
-                  }
-                  label='Disable altitude'
+                <CheckBox
+                  label={'Disable altitude'}
+                  checked={disableAltitude}
+                  onChange={handleDisableAltitude}
                 />
               </div>
             </div>
@@ -528,7 +395,7 @@ const ScenariosPage: React.FunctionComponent = () => {
               <div className={'editScenario'}>
                 <h4>
                   last modification on{' '}
-                  {formaterDate(scenario.updatedAt.toString())}
+                  {formaterDateStringToTextDate(scenario.updatedAt.toString())}
                 </h4>
                 <div className={'buttonsScenario'}>
                   <IconButton

@@ -7,7 +7,7 @@ import { ListUserScenarioResponse } from '@smartesting/shared/dist/responses/lis
 import { FindUserByEmailResponse } from '@smartesting/shared/dist/responses/findUserByEmail'
 import { FindUserResponse } from '@smartesting/shared/dist/responses/findUser'
 import { FindScenarioResponse } from '@smartesting/shared/dist/responses/findScenario'
-import { OptionsAlteration, Recording, Sort } from '@smartesting/shared/dist'
+import { OptionsAlteration, Recording } from '@smartesting/shared/dist'
 import { CreateUserResponse } from '@smartesting/shared/dist/responses/createUser'
 import { LoginUserResponse } from '@smartesting/shared/dist/responses/loginUser'
 import { UpdateUserResponse } from '@smartesting/shared/dist/responses/updateUser'
