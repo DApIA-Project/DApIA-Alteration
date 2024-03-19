@@ -4,7 +4,7 @@ import {
   Scenario,
   ScenarioAttributes,
 } from '@smartesting/shared/dist/models/Scenario'
-import { ArrayMultimap } from '@teppeis/multimaps'
+import { OptionsAlteration } from '@smartesting/shared/dist/index'
 
 export default class MemoryScenarioManager implements IScenarioManager {
   constructor(
@@ -62,7 +62,8 @@ export default class MemoryScenarioManager implements IScenarioManager {
     userId: number,
     searchBar?: string,
     startDate?: string,
-    endDate?: string
+    endDate?: string,
+    optionsAlteration?: OptionsAlteration
   ): Promise<ReadonlyArray<Scenario>> {
     const scenarios: Scenario[] = []
     for (const [
@@ -72,12 +73,42 @@ export default class MemoryScenarioManager implements IScenarioManager {
       if (storedUserId === userId) {
         let scenario = this.scenariosById.get(scenarioId)
         if (scenario !== undefined) {
+          let isMatched = true
+
           if (
-            !searchBar ||
-            scenario.name.toLowerCase().includes(searchBar.toLowerCase()) ||
-            scenario.text.toLowerCase().includes(searchBar.toLowerCase())
+            searchBar &&
+            !scenario.name.toLowerCase().includes(searchBar.toLowerCase()) &&
+            !scenario.text.toLowerCase().includes(searchBar.toLowerCase())
           ) {
-            // Vérifiez si le nom du scénario correspond au filtre, ignorez le filtre s'il n'est pas fourni
+            isMatched = false
+          }
+
+          if (startDate && endDate) {
+            const scenarioDate = new Date(scenario.updatedAt)
+            const start = new Date(startDate)
+            const end = new Date(endDate)
+            if (!(scenarioDate >= start && scenarioDate <= end)) {
+              isMatched = false
+            }
+          }
+
+          if (optionsAlteration) {
+            if (
+              optionsAlteration.haveLabel !== scenario.options.haveLabel ||
+              optionsAlteration.haveRealism !== scenario.options.haveRealism ||
+              optionsAlteration.haveNoise !== scenario.options.haveNoise ||
+              optionsAlteration.haveDisableLatitude !==
+                scenario.options.haveDisableLatitude ||
+              optionsAlteration.haveDisableLongitude !==
+                scenario.options.haveDisableLongitude ||
+              optionsAlteration.haveDisableAltitude !==
+                scenario.options.haveDisableAltitude
+            ) {
+              isMatched = false
+            }
+          }
+
+          if (isMatched) {
             scenarios.push(scenario)
           }
         }

@@ -1,5 +1,8 @@
 import IScenarioManager from '../../../api/adapters/scenario/IScenarioManager'
-import { ScenarioAttributes } from '@smartesting/shared/src/models/Scenario'
+import {
+  Scenario,
+  ScenarioAttributes,
+} from '@smartesting/shared/src/models/Scenario'
 import { User, UserAttributes } from '@smartesting/shared/src/models/User'
 import makeTestAdapters from '../../makeTestAdapters'
 import listScenario from '../../../api/core/scenario/listScenario'
@@ -88,6 +91,49 @@ describe('core/scenario/listUserScenario', () => {
       await listUserScenario(scenarioManager, user.id, 'B')
     assert(listedScenario)
     assert.equal(listedScenario.length, 1)
+    assert.strictEqual(errorListScenario, null)
+  })
+
+  it('list user scenario is valid with 2 scenarios but filter dates', async () => {
+    let user: User = await userManager.createUser(validUserAttributes)
+    let scenario1: Scenario = await scenarioManager.createScenario(
+      validScenarioAttributes,
+      user.id
+    )
+    let scenario2: Scenario = await scenarioManager.createScenario(
+      validScenarioAttributes2,
+      user.id
+    )
+    await scenarioManager.createScenario(validScenarioAttributes3, user.id + 1)
+    const { scenarios: listedScenario, error: errorListScenario } =
+      await listUserScenario(
+        scenarioManager,
+        user.id,
+        undefined,
+        scenario1.updatedAt.toISOString(),
+        scenario2.updatedAt.toISOString()
+      )
+    assert(listedScenario)
+    assert.equal(listedScenario.length, 2)
+    assert.strictEqual(errorListScenario, null)
+  })
+
+  it('list user scenario is valid with 2 scenarios but filter options alteration', async () => {
+    let user: User = await userManager.createUser(validUserAttributes)
+    await scenarioManager.createScenario(validScenarioAttributes, user.id)
+    await scenarioManager.createScenario(validScenarioAttributes2, user.id)
+    await scenarioManager.createScenario(validScenarioAttributes3, user.id + 1)
+    const { scenarios: listedScenario, error: errorListScenario } =
+      await listUserScenario(
+        scenarioManager,
+        user.id,
+        undefined,
+        undefined,
+        undefined,
+        validScenarioAttributes.options
+      )
+    assert(listedScenario)
+    assert.equal(listedScenario.length, 2)
     assert.strictEqual(errorListScenario, null)
   })
 

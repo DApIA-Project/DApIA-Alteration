@@ -102,6 +102,76 @@ describe(`POST ${ApiRoutes.listUserScenario()}`, () => {
       assert.equal(scenarios[0].name, 'ScenarioB')
       assert.equal(scenarios.length, 1)
     })
+
+    it('returns 201 when list is returned with filter dates', async () => {
+      let responseUser = await request(server)
+        .post(ApiRoutes.createUser())
+        .send(validUserAttributes)
+
+      let responseScenario1 = await request(server)
+        .post(ApiRoutes.createScenario())
+        .send({
+          ...validScenarioAttributes,
+          user_id: responseUser.body.user.id,
+        })
+
+      let responseScenario2 = await request(server)
+        .post(ApiRoutes.createScenario())
+        .send({
+          ...validScenarioAttributes,
+          name: 'ScenarioB',
+          user_id: responseUser.body.user.id,
+        })
+
+      const response = await request(server)
+        .post(ApiRoutes.listUserScenario())
+        .send({
+          user_id: responseUser.body.user.id,
+          undefined,
+          startDate: responseScenario1.body.scenario.updatedAt,
+          endDate: responseScenario2.body.scenario.updatedAt,
+        })
+
+      const { error, scenarios } = response.body
+      assert.deepStrictEqual(error, null)
+      assert.equal(scenarios[0].name, 'ScenarioA')
+      assert.equal(scenarios[1].name, 'ScenarioB')
+      assert.equal(scenarios.length, 2)
+    })
+
+    it('returns 201 when list is returned with filter options Alteration', async () => {
+      let responseUser = await request(server)
+        .post(ApiRoutes.createUser())
+        .send(validUserAttributes)
+
+      let responseScenario1 = await request(server)
+        .post(ApiRoutes.createScenario())
+        .send({
+          ...validScenarioAttributes,
+          user_id: responseUser.body.user.id,
+        })
+
+      let responseScenario2 = await request(server)
+        .post(ApiRoutes.createScenario())
+        .send({
+          ...validScenarioAttributes,
+          name: 'ScenarioB',
+          user_id: responseUser.body.user.id,
+        })
+
+      const response = await request(server)
+        .post(ApiRoutes.listUserScenario())
+        .send({
+          user_id: responseUser.body.user.id,
+          optionsAlteration: options,
+        })
+
+      const { error, scenarios } = response.body
+      assert.deepStrictEqual(error, null)
+      assert.equal(scenarios[0].name, 'ScenarioA')
+      assert.equal(scenarios[1].name, 'ScenarioB')
+      assert.equal(scenarios.length, 2)
+    })
   })
 
   context('when list have not scenario', () => {

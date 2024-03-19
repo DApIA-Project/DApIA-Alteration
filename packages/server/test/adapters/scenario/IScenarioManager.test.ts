@@ -198,6 +198,49 @@ const IScenarioContractTest: IContractTest = (
           [scenario2]
         )
       })
+
+      it('returns all scenarios of user with filter dates', async () => {
+        const scenario1 = await scenarioManager.createScenario(
+          validScenarioAttributes,
+          user.id
+        )
+        const scenario2 = await scenarioManager.createScenario(
+          secondScenarioAttributes,
+          user.id
+        )
+
+        assert.deepEqual(
+          await scenarioManager.listUserScenario(
+            user.id,
+            undefined,
+            scenario1.updatedAt.toISOString(),
+            scenario2.updatedAt.toISOString()
+          ),
+          [scenario1, scenario2]
+        )
+      })
+
+      it('returns all scenarios of user with filter options alteration', async () => {
+        const scenario1 = await scenarioManager.createScenario(
+          validScenarioAttributes,
+          user.id
+        )
+        const scenario2 = await scenarioManager.createScenario(
+          secondScenarioAttributes,
+          user.id
+        )
+
+        assert.deepEqual(
+          await scenarioManager.listUserScenario(
+            user.id,
+            undefined,
+            undefined,
+            undefined,
+            secondScenarioAttributes.options
+          ),
+          [scenario2]
+        )
+      })
     })
   })
 }
