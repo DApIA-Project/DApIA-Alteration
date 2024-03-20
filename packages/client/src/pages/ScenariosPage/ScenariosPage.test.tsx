@@ -7,6 +7,7 @@ import { mockUseClient } from '../../mocks/mockUseClient'
 import React from 'react'
 import { BrowserRouter } from 'react-router-dom'
 import userEvent from '@testing-library/user-event'
+import { CheckBoxTestIds } from '../../components/ui/CheckBox/CheckBox'
 
 jest.mock(
   '../../components/business/AlterationScenarioEditor/AlterationScenarioEditor',
@@ -40,8 +41,15 @@ describe('ScenariosPage', () => {
     ...scenarioAttributes,
     name: 'Scenario C',
     id: 3,
+    options: {
+      haveLabel: true,
+      haveNoise: true,
+      haveRealism: true,
+      haveDisableAltitude: false,
+      haveDisableLongitude: false,
+      haveDisableLatitude: false,
+    },
   }
-
   let userAttributes: User = {
     id: 1,
     firstname: 'Bob',
@@ -91,6 +99,55 @@ describe('ScenariosPage', () => {
 
     await waitFor(() => {
       expect(screen.getByText('Scenario C')).toBeInTheDocument()
+    })
+  })
+
+  it('renders elements correctly', async () => {
+    render(
+      <BrowserRouter>
+        <ScenariosPage />
+      </BrowserRouter>
+    )
+
+    await waitFor(() => {
+      expect(
+        screen.getByTestId(ScenariosPageTestIds.DIV_FILTERS)
+      ).toBeInTheDocument()
+    })
+
+    await waitFor(() => {
+      expect(
+        screen.getByTestId(ScenariosPageTestIds.INPUT_SEARCH_BAR)
+      ).toBeInTheDocument()
+    })
+
+    await waitFor(() => {
+      expect(
+        screen.getByTestId(ScenariosPageTestIds.INPUT_SELECT_SORT)
+      ).toBeInTheDocument()
+    })
+  })
+
+  it('renders filters correctly', async () => {
+    render(
+      <BrowserRouter>
+        <ScenariosPage />
+      </BrowserRouter>
+    )
+
+    let divFilterElement = screen.getByTestId(ScenariosPageTestIds.DIV_FILTERS)
+    await userEvent.click(divFilterElement)
+
+    await waitFor(() => {
+      expect(
+        screen.getAllByTestId(CheckBoxTestIds.CHECK_BOX_COMPONENT)
+      ).toHaveLength(7)
+    })
+
+    await waitFor(() => {
+      expect(
+        screen.getAllByTestId(ScenariosPageTestIds.INPUT_DATE)
+      ).toHaveLength(2)
     })
   })
 

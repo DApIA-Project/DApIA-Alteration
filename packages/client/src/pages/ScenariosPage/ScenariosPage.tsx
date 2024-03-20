@@ -27,6 +27,10 @@ export enum ScenariosPageTestIds {
   BUTTON_ADD_SCENARIO = 'ButtonAddScenario',
   BUTTON_EDIT_SCENARIO = 'ButtonEditScenario',
   INPUT_SEARCH_BAR = 'InputSearchBar',
+  INPUT_DATE = 'InputDate',
+  DIV_FILTERS = 'ClickDivFilters',
+  DIV_SCENARIO = 'DivScenario',
+  INPUT_SELECT_SORT = 'InputSelectSort',
 }
 
 const ScenariosPage: React.FunctionComponent = () => {
@@ -249,6 +253,7 @@ const ScenariosPage: React.FunctionComponent = () => {
           )}
           <div className={'options'}>
             <div
+              data-testid={ScenariosPageTestIds.DIV_FILTERS}
               className={'filters'}
               onClick={() => setIsFilterOpen(!isFilterOpen)}
             >
@@ -270,6 +275,7 @@ const ScenariosPage: React.FunctionComponent = () => {
                 value={sort}
                 options={sorts}
                 onChange={handleSelectSort}
+                data-testid={ScenariosPageTestIds.INPUT_SELECT_SORT}
               />
             </div>
           </div>
@@ -282,6 +288,7 @@ const ScenariosPage: React.FunctionComponent = () => {
                     type='date'
                     name='filter-start'
                     onChange={handleChangeStartDate}
+                    data-testid={ScenariosPageTestIds.INPUT_DATE}
                   />
                 </div>
                 <div>
@@ -290,6 +297,7 @@ const ScenariosPage: React.FunctionComponent = () => {
                     type='date'
                     name='filter-end'
                     onChange={handleChangeEndDate}
+                    data-testid={ScenariosPageTestIds.INPUT_DATE}
                   />
                 </div>
               </div>
@@ -333,7 +341,11 @@ const ScenariosPage: React.FunctionComponent = () => {
             </div>
           )}
           {myScenarios.map((scenario, index) => (
-            <div key={index} className={'divScenario'}>
+            <div
+              key={index}
+              className={'divScenario'}
+              data-testid={ScenariosPageTestIds.DIV_SCENARIO}
+            >
               <div className={'infoScenario'}>
                 <h2>{scenario.name}</h2>
                 <AlterationScenarioEditor
