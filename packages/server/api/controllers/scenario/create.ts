@@ -11,6 +11,7 @@ type Body = Record<string, any>
 export default makeRequestHandler<CreateScenarioResponse>(
   async (req): Promise<CreateScenarioResponse> => {
     const { scenarioManager } = req.adapters
+    //const userId = req.user_id
     const user_id: number = req.body.user_id
     const { error, scenarioAttributes } = validateScenario(req.body)
     if (error || !scenarioAttributes) return { error, scenario: null }
