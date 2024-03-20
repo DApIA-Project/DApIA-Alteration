@@ -90,7 +90,7 @@ describe("Aircraft Trajectory Builder", () => {
 							.add_point({timestampGenerated: 40000, latitude: 2.0, longitude: 2.0, altitude: 10000})
 							.interpolate();
 
-		for(let t=5000; t < 35000; t+=1000) {
+		for(let t=5000; t < 35000; t+=2500) {
 			console.log("[" + t + " s] Altitude : "+ trajectory.get_altitude(t) + " Vertical rate : " + trajectory.get_verticalRate(t));
 		}
 

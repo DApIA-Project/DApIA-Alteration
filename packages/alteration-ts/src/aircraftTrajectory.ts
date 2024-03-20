@@ -17,6 +17,7 @@ type Delta = {
 	groundSpeed: number, 
 	verticalRate: number,
 }
+export type AircraftTrajectory = AircraftBuilder | AircraftInterpolation;
 
 export class AircraftBuilder {
 	waypoint: Point[];
@@ -101,7 +102,7 @@ export class AircraftInterpolation {
 	}
 
 	get_verticalRate(time: number): number {
-		let delta = 30000; // ms
+		let delta = 1000; // ms
 		let alt1 = this.get_altitude(time - delta);
 		let alt2 = this.get_altitude(time + delta);
 
