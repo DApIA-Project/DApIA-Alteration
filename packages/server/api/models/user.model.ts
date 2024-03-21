@@ -21,6 +21,7 @@ export default class User extends Model<
   declare email: string
   declare password: string
   declare isAdmin: boolean
+  declare token: string
   declare createdAt: Date
   declare updatedAt: Date
 }
@@ -51,6 +52,10 @@ User.init(
     },
     isAdmin: {
       type: DataTypes.BOOLEAN,
+      allowNull: false,
+    },
+    token: {
+      type: DataTypes.STRING,
       allowNull: false,
     },
     createdAt: {

@@ -8,6 +8,7 @@ import React from 'react'
 import { BrowserRouter } from 'react-router-dom'
 import userEvent from '@testing-library/user-event'
 import { CheckBoxTestIds } from '../../components/ui/CheckBox/CheckBox'
+import { uuid } from '@smartesting/shared/dist/uuid/uuid'
 
 jest.mock(
   '../../components/business/AlterationScenarioEditor/AlterationScenarioEditor',
@@ -57,6 +58,7 @@ describe('ScenariosPage', () => {
     email: 'bob.dupont@mail.fr',
     password: 'password',
     isAdmin: false,
+    token: uuid(),
     createdAt: new Date(),
     updatedAt: new Date(),
   }

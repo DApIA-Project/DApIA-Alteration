@@ -64,6 +64,7 @@ async function validateUser(
       email: body.email,
       password: body.password,
       isAdmin: body.isAdmin,
+      token: body.token,
       createdAt: userBefore.createdAt,
       updatedAt: userBefore.updatedAt,
     },

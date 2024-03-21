@@ -4,11 +4,13 @@ import { User, UserAttributes } from '@smartesting/shared/dist/models/User'
 import { InferCreationAttributes } from 'sequelize'
 import hashPassword from './hashPassword'
 import { comparePassword } from '../../utils/user'
+import { uuid } from '@smartesting/shared/dist/uuid/uuid'
 
 export default class PsqlUserManager implements IUserManager {
   async createUser(user: UserAttributes): Promise<User> {
     const userModel = await UserModel.create({
       ...user,
+      token: uuid(),
       password: await hashPassword(user.password),
       createdAt: new Date(),
       updatedAt: new Date(),
@@ -117,6 +119,7 @@ function userModelToUser(userModel: UserModel): User {
     email,
     password,
     isAdmin,
+    token,
     createdAt,
     updatedAt,
   } = userModel
@@ -128,6 +131,7 @@ function userModelToUser(userModel: UserModel): User {
     email,
     password,
     isAdmin,
+    token,
     createdAt,
     updatedAt,
   }

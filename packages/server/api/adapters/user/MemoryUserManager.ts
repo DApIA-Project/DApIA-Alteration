@@ -22,6 +22,7 @@ export default class MemoryUserManager implements IUserManager {
     const fullUser: User = {
       ...user,
       id,
+      token: uuid(),
       password: await hashPassword(user.password),
       createdAt: date,
       updatedAt: date,

@@ -6,6 +6,7 @@ import Client from '../../Client'
 import { mockUseClient } from '../../mocks/mockUseClient'
 import { User } from '@smartesting/shared/dist/models/User'
 import { CreateUserError } from '@smartesting/shared/dist/responses/createUser'
+import { uuid } from '@smartesting/shared/dist/uuid/uuid'
 
 describe('RegistrationPage', () => {
   let user: User = {
@@ -15,6 +16,7 @@ describe('RegistrationPage', () => {
     email: 'bob.dupont@mail.fr',
     password: 'password',
     isAdmin: false,
+    token: uuid(),
     createdAt: new Date(),
     updatedAt: new Date(),
   }
