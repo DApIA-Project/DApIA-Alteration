@@ -59,6 +59,15 @@ export default class MemoryUserManager implements IUserManager {
     return null
   }
 
+  async findUserByToken(userToken: string): Promise<User | null> {
+    for (const user of this.usersById.values()) {
+      if (user.token === userToken) {
+        return user
+      }
+    }
+    return null
+  }
+
   async findUser(userId: number): Promise<User | null> {
     const user = this.usersById.get(userId)
     return user || null

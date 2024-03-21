@@ -45,8 +45,7 @@ const AccountMenu: React.FunctionComponent<AccountMenuProps> = ({
   useEffect(() => {
     async function fetchData() {
       if (!client) return
-      const id: number = Number(localStorage.getItem('user_id'))
-      const { user, error } = await client?.findUser(id)
+      const { user, error } = await client?.findUserByToken()
       if (error) console.log(error)
       if (user !== null) setFirstname(user.firstname)
     }

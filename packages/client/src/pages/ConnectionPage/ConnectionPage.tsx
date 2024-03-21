@@ -12,7 +12,7 @@ import {
 } from '@smartesting/shared/dist/responses/responseError'
 
 type ConnectionPageProps = {
-  onLogin: (user_id: number) => void
+  onLogin: (user_token: string) => void
 }
 
 const ConnectionPage: React.FunctionComponent<ConnectionPageProps> = ({
@@ -51,7 +51,7 @@ const ConnectionPage: React.FunctionComponent<ConnectionPageProps> = ({
       }
 
       if (user !== null) {
-        onLogin(user?.id)
+        onLogin(user?.token)
       }
 
       return user

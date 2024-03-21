@@ -22,9 +22,9 @@ const App: React.FC = () => {
     setIsAuthenticated(value)
   }
 
-  const handleLogin = (user_id: number) => {
+  const handleLogin = (user_token: string) => {
     unstable_batchedUpdates(() => {
-      localStorage.setItem('user_id', user_id.toString())
+      localStorage.setItem('userToken', user_token)
       setAuth(true)
     })
   }
@@ -35,7 +35,7 @@ const App: React.FC = () => {
   }
 
   useEffect(() => {
-    if (localStorage.getItem('user_id') !== null) {
+    if (localStorage.getItem('userToken') !== null) {
       setAuth(true)
     }
   }, [isAuthenticated])

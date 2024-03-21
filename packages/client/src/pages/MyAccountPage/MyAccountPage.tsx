@@ -122,8 +122,7 @@ const MyAccountPage: React.FunctionComponent<MyAccountPagePageProps> = ({
   useEffect(() => {
     async function fetchData() {
       if (!client) return
-      const id_user: number = Number(localStorage.getItem('user_id'))
-      const { user, error } = await client?.findUser(id_user)
+      const { user, error } = await client?.findUserByToken()
       if (error) console.log(error)
       if (user !== null) {
         setUserConnected(user)
@@ -141,7 +140,6 @@ const MyAccountPage: React.FunctionComponent<MyAccountPagePageProps> = ({
     if (userConnected == null) return
     try {
       const { user, error } = await client.updateUser(
-        userConnected.id,
         firstname,
         lastname,
         email,
@@ -170,7 +168,6 @@ const MyAccountPage: React.FunctionComponent<MyAccountPagePageProps> = ({
     }
     try {
       const { user, error } = await client.updatePasswordUser(
-        userConnected.id,
         currentPassword,
         newPassword
       )
@@ -197,7 +194,7 @@ const MyAccountPage: React.FunctionComponent<MyAccountPagePageProps> = ({
       return
     }
     try {
-      const error = await client.deleteUser(userConnected.id, deletePassword)
+      const error = await client.deleteUser(deletePassword)
       if (error.error === null) {
         localStorage.clear()
         onLogout()

@@ -84,9 +84,8 @@ const ScenarioEditor: React.FunctionComponent<ScenarioEditorProps> = ({
   const scenario = openedScenarios[selectedScenario]
   useEffect(() => {
     if (!client) return
-    let id_user: number = Number(localStorage.getItem('user_id'))
     client
-      .listUserScenario(id_user)
+      .listUserScenario()
       .then(({ scenarios, error }) => {
         if (error)
           return console.error(
@@ -138,8 +137,7 @@ const ScenarioEditor: React.FunctionComponent<ScenarioEditorProps> = ({
       const { scenario, error } = await client.createScenario(
         name,
         text,
-        options,
-        Number(localStorage.getItem('user_id'))
+        options
       )
       if (error) {
         return

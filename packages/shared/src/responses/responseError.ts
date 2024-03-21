@@ -33,6 +33,7 @@ export enum UnprocessableContent {
   emptyPassword = 'empty_password',
   emptyNewPassword = 'empty_new_password',
   emptyUserByEmail = 'empty_user',
+  emptyUserByToken = 'empty_user',
 }
 
 //422

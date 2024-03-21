@@ -55,6 +55,10 @@ export class ApiRoutes {
     return '/user/findByEmail'
   }
 
+  static findUserByToken() {
+    return '/user/findByToken'
+  }
+
   static findUser() {
     return '/user/find'
   }

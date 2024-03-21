@@ -11,6 +11,7 @@ export default interface IUserManager {
 
   deleteUser(userId: number): Promise<void>
   findUserByEmail(email: string): Promise<User | null>
+  findUserByToken(token: string): Promise<User | null>
   findUser(id: number): Promise<User | null>
   listUsers(): Promise<ReadonlyArray<User>>
   updatePassword(

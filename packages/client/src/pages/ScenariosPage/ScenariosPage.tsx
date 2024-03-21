@@ -63,7 +63,6 @@ const ScenariosPage: React.FunctionComponent = () => {
   const [sort, setSort] = useState('noSort')
 
   function fetchScenarios(
-    id_user: number,
     searchText?: string,
     startDate?: string,
     endDate?: string,
@@ -73,7 +72,6 @@ const ScenariosPage: React.FunctionComponent = () => {
     if (!client) return
     return client
       .listUserScenario(
-        id_user,
         searchText,
         startDate,
         endDate,
@@ -90,9 +88,8 @@ const ScenariosPage: React.FunctionComponent = () => {
 
   function handleSearch(newsearch: string) {
     if (!client) return
-    let id_user: number = Number(localStorage.getItem('user_id'))
     setSearchText(newsearch)
-    fetchScenarios(id_user, newsearch)
+    fetchScenarios(newsearch)
   }
   function handleEdit(id_scenario: number) {
     navigate('/edit-scenario/' + id_scenario)
@@ -100,7 +97,6 @@ const ScenariosPage: React.FunctionComponent = () => {
 
   function handleChangeStartDate(event: React.ChangeEvent<HTMLInputElement>) {
     if (!client) return
-    let id_user: number = Number(localStorage.getItem('user_id'))
     let startDate: string =
       event.target.value !== ''
         ? event.target.value + ' 00:00:00'
@@ -111,18 +107,17 @@ const ScenariosPage: React.FunctionComponent = () => {
       setDateStart(startDate)
       setDateEnd(endDate)
     })
-    fetchScenarios(id_user, searchText, startDate, dateEnd)
+    fetchScenarios(searchText, startDate, dateEnd)
   }
 
   function handleChangeEndDate(event: React.ChangeEvent<HTMLInputElement>) {
     if (!client) return
-    let id_user: number = Number(localStorage.getItem('user_id'))
     let endDate: string =
       event.target.value !== ''
         ? event.target.value + ' 00:00:00'
         : formaterDateToString(new Date())
     setDateEnd(endDate)
-    fetchScenarios(id_user, searchText, dateStart, endDate)
+    fetchScenarios(searchText, dateStart, endDate)
   }
 
   function handleToggleState(
@@ -134,7 +129,6 @@ const ScenariosPage: React.FunctionComponent = () => {
     let newState = state
     setState(newState)
     if (!withOptionsAlterations) return
-    const id_user: number = Number(localStorage.getItem('user_id'))
 
     const optionsAlterations: OptionsAlteration = {
       haveLabel: toggleFunc === handleLabeling ? newState : labeling,
@@ -147,12 +141,11 @@ const ScenariosPage: React.FunctionComponent = () => {
       haveDisableAltitude:
         toggleFunc === handleDisableAltitude ? newState : disableAltitude,
     }
-    fetchScenarios(id_user, searchText, dateStart, dateEnd, optionsAlterations)
+    fetchScenarios(searchText, dateStart, dateEnd, optionsAlterations)
   }
 
   function handleActiveOptions() {
     if (!client) return
-    const id_user: number = Number(localStorage.getItem('user_id'))
     setWithOptionsAlterations(!withOptionsAlterations)
 
     if (!withOptionsAlterations) {
@@ -164,15 +157,9 @@ const ScenariosPage: React.FunctionComponent = () => {
         haveDisableLongitude: disableLongitude,
         haveDisableAltitude: disableAltitude,
       }
-      fetchScenarios(
-        id_user,
-        searchText,
-        dateStart,
-        dateEnd,
-        optionsAlterations
-      )
+      fetchScenarios(searchText, dateStart, dateEnd, optionsAlterations)
     } else {
-      fetchScenarios(id_user, searchText, dateStart, dateEnd)
+      fetchScenarios(searchText, dateStart, dateEnd)
     }
   }
 
@@ -231,15 +218,12 @@ const ScenariosPage: React.FunctionComponent = () => {
   async function handleSelectSort(value: string) {
     if (!client) return
     setSort(value)
-    const id_user: number = Number(localStorage.getItem('user_id'))
-    fetchScenarios(id_user, searchText, dateStart, dateEnd, undefined, value)
+    fetchScenarios(searchText, dateStart, dateEnd, undefined, value)
   }
 
   useEffect(() => {
     if (!client) return
-    let id_user: number = Number(localStorage.getItem('user_id'))
-    console.log(id_user)
-    fetchScenarios(id_user)
+    fetchScenarios()
   }, [client])
 
   return (

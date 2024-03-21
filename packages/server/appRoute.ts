@@ -13,6 +13,7 @@ import makeListUserScenarioRequestHandler from './api/controllers/scenario/listU
 import makeListUserRequestHandler from './api/controllers/user/listUser'
 import makeUpdatePasswordUserRequestHandler from './api/controllers/user/updatePassword'
 import makeFindUserByEmailRequestHandler from './api/controllers/user/findUserByEmail'
+import makeFindUserByTokenRequestHandler from './api/controllers/user/findUserByToken'
 import makeFindUserRequestHandler from './api/controllers/user/findUser'
 import makeFindScenarioRequestHandler from './api/controllers/scenario/findScenario'
 import makeLoginUserRequestHandler from './api/controllers/user/login'
@@ -33,6 +34,7 @@ function setRoutes(): Router {
   router.post(ApiRoutes.listUser(), makeListUserRequestHandler)
   router.post(ApiRoutes.updatePassword(), makeUpdatePasswordUserRequestHandler)
   router.post(ApiRoutes.findUserByEmail(), makeFindUserByEmailRequestHandler)
+  router.post(ApiRoutes.findUserByToken(), makeFindUserByTokenRequestHandler)
   router.post(ApiRoutes.findUser(), makeFindUserRequestHandler)
   router.post(ApiRoutes.login(), makeLoginUserRequestHandler)
   return router

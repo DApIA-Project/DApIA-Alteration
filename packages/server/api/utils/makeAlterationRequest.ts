@@ -9,7 +9,7 @@ export interface AlterationRequest<
   ReqQuery = core.Query,
   Locals extends Record<string, any> = Record<string, any>
 > extends express.Request<P, ResBody, ReqBody, ReqQuery, Locals> {
-  user_id: number
+  userId: number
   adapters: AlterationAdapters
 }
 

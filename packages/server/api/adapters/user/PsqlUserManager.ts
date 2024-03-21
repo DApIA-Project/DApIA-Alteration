@@ -66,6 +66,16 @@ export default class PsqlUserManager implements IUserManager {
     return userModelToUser(userModel)
   }
 
+  async findUserByToken(token: string): Promise<User | null> {
+    const userModel = await UserModel.findOne({
+      where: {
+        token: token,
+      },
+    })
+    if (!userModel) return null
+    return userModelToUser(userModel)
+  }
+
   async updatePassword(
     userId: number,
     password: string,

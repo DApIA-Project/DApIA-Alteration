@@ -10,17 +10,17 @@ type Body = Record<string, any>
 export default makeRequestHandler<DeleteScenarioResponse>(
   async (req): Promise<DeleteScenarioResponse> => {
     const { scenarioManager } = req.adapters
-    const { error, id } = validateId(req.body)
+    const { error, id } = validateId(req.userId)
     if (error || !id) return { error }
     return await deleteScenario(id, scenarioManager)
   }
 )
 
-function validateId(body: Body): {
+function validateId(user_id: number): {
   error: DeleteScenarioError | null
   id: number | null
 } {
-  if (typeof body.id !== 'number') {
+  if (typeof user_id !== 'number') {
     return {
       error: DeleteScenarioError.idBadType,
       id: null,
@@ -28,7 +28,7 @@ function validateId(body: Body): {
   }
 
   return {
-    id: body.id,
+    id: user_id,
     error: null,
   }
 }

@@ -11,7 +11,7 @@ import {
 } from '@smartesting/shared/dist/responses/responseError'
 
 type RegistrationPageProps = {
-  onLogin: (user_id: number) => void
+  onLogin: (user_token: string) => void
 }
 
 const RegistrationPage: React.FunctionComponent<RegistrationPageProps> = ({
@@ -64,7 +64,7 @@ const RegistrationPage: React.FunctionComponent<RegistrationPageProps> = ({
         return
       }
 
-      if (user) onLogin(user?.id)
+      if (user) onLogin(user?.token)
 
       return user
     } catch (err) {
