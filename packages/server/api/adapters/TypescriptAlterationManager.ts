@@ -7,6 +7,8 @@ import {
 	alteration, AlterationMode,
 	deletion,
 	replay,
+	rotation,
+	saturation,
 	Scope, and, target, timeWindow,
 } from "../../../alteration-ts/src"
 
@@ -86,18 +88,36 @@ export class TypescriptAlterationManager implements IAlterationManager {
 				});
 
 			case 'DELETION' : 
-				let frequency = action.parameters.parameter?.find((arg) => arg.frequency != undefined);
+				let frequency_parameter = action.parameters.parameter?.find((arg) => arg.frequency != undefined);
+				let frequency = 0;
+				if(frequency_parameter) {
+					frequency = parseInt(frequency_parameter!.frequency!)
+				}
+
 				return deletion({
 					scope: scope,
 					frequency: frequency,
 				});
 
+			case 'ROTATION' : 
+				let angle_parameter = action.parameters.parameter?.find((arg) => arg.angle != undefined);
+
+				let angle = 0;
+				if(angle_parameter != undefined){
+					angle = parseInt(angle_parameter!.angle!);
+				}
+
+				return rotation({
+					scope: scope,
+					angle: angle,
+				});
+
 			case 'REPLAY' : 
 				if(!action.parameters.recordPath) throw new Error("Invalid parameters for DELETION engine");
-				let source = action.parameters.recordPath! // Couldn't be undefined
+				let source = parse(action.parameters.recordPath!) // Couldn't be undefined
 				
 				// In old java code, lowerbound of the time windows is used as offset
-				let offset  = action.scope.lowerBound ?? 0;
+				let offset  = parseInt(action.scope.lowerBound ?? "0");
 
 				// Add Alterations 
 				let alterations = action.parameters.parameter?.map((arg) => {
@@ -108,14 +128,37 @@ export class TypescriptAlterationManager implements IAlterationManager {
 						property: arg.key,
 						value: value,
 						mode: <AlterationMode> (arg.mode == "simple" ? "replace" : arg.mode)
-					}}).filter((alt) => alt != null);
+					}}).filter((alt) => alt != null)
+						 .map((alt) => alt!); // Remove null from type
 
 				return replay({
 					scope: scope,
 					source: source,
 					offset: offset,
-					alterations: alterations,
+					alterations: alterations
 				});
+
+
+			case 'SATURATION' : 
+				let start = start_date + (action.scope.lowerBound ?? "0");
+				let end = start_date + (action.scope.upperBound ?? "0");
+				let aircraft_number = action.parameters.parameter?.find((p) => p.key == "AIRCRAFT_NUMBER")?.value;
+
+			 	if(!aircraft_number) {
+					throw new Error("Saturation Engine Error : \"AIRCRAFT_NUMBER\" parameter is not defined"); 
+				}
+
+
+				return saturation({
+					source: [],
+					aircrafts: parseInt(aircraft_number!),
+					start: parseInt(start),
+					end: parseInt(end),
+				});
+
+			case 'TRAJECTORY' :
+			case 'CREATION' : 
+			case 'CUT' :
 
 			default: 
 				throw new Error("This alteration mode isn't supported yet");

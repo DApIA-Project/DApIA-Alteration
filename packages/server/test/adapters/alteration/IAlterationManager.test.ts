@@ -11,7 +11,7 @@ import assert from 'assert'
  * @param str: the recording
  * @param n : the number of significant digit in float
  */ 
-function prepare_string(str: string, n: number) : string {
+function prepare_string(str: string, n?: number | string) : string {
 	if(!n) n = '';
 
 	return str.replace(/ +/g ,'')

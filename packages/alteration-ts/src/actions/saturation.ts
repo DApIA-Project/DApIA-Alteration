@@ -57,9 +57,7 @@ export function saturation(dir: Config) {
 			for(let m of recording){
 				new_recording.push(m);
 				trajs.map((ghost) => ghost.get_point(m.timestampGenerated))
-						 .map((point) => {
-							 new_recording.push(Template.replace(m, point));
-						 });
+						 .map((point) => new_recording.push(Template.replace(m, point)));
 			}
 			
 			return new_recording;
