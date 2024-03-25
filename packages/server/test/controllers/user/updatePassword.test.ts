@@ -7,6 +7,7 @@ import { UpdatePasswordUserError } from '@smartesting/shared/dist/responses/upda
 import makeTestAdapters from '../../makeTestAdapters'
 import { clearDb } from '../../clearDb'
 import bcrypt from 'bcryptjs'
+import { uuid } from '@smartesting/shared/dist/uuid/uuid'
 
 describe(`POST ${ApiRoutes.updatePassword()}`, () => {
   let server: express.Express
@@ -43,10 +44,10 @@ describe(`POST ${ApiRoutes.updatePassword()}`, () => {
 
       const response = await request(server)
         .post(ApiRoutes.updatePassword())
+        .set('userToken', userCreate.token)
         .send({
           ...validUserAttributesMissingPassword,
           password: '',
-          id: userCreate.id,
           newPassword: 'newPassword',
         })
 
@@ -63,10 +64,10 @@ describe(`POST ${ApiRoutes.updatePassword()}`, () => {
 
       const response = await request(server)
         .post(ApiRoutes.updatePassword())
+        .set('userToken', userCreate.token)
         .send({
           ...validUserAttributesMissingPassword,
           password: '   ',
-          id: userCreate.id,
           newPassword: 'newPassword',
         })
 
@@ -83,9 +84,9 @@ describe(`POST ${ApiRoutes.updatePassword()}`, () => {
 
       const response = await request(server)
         .post(ApiRoutes.updatePassword())
+        .set('userToken', userCreate.token)
         .send({
           ...validUserAttributesMissingPassword,
-          id: userCreate.id,
           newPassword: 'newPassword',
         })
 
@@ -99,10 +100,10 @@ describe(`POST ${ApiRoutes.updatePassword()}`, () => {
     it('returns 404 when user not exists', async () => {
       const response = await request(server)
         .post(ApiRoutes.updatePassword())
+        .set('userToken', uuid())
         .send({
           ...validUserAttributes,
           password: 'Other Text',
-          id: 31,
           newPassword: 'newPassword',
         })
 
@@ -122,10 +123,10 @@ describe(`POST ${ApiRoutes.updatePassword()}`, () => {
 
       const response = await request(server)
         .post(ApiRoutes.updatePassword())
+        .set('userToken', userCreate.token)
         .send({
           ...validUserAttributes,
           password: 's3cret!',
-          id: userCreate.id,
           newPassword: 'newPassword',
         })
 

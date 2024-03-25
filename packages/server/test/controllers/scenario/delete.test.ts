@@ -11,7 +11,7 @@ import { clearDb } from '../../clearDb'
 describe(`POST ${ApiRoutes.deleteScenario()}`, () => {
   let server: express.Express
 
-  beforeEach(() => {
+  beforeEach(async () => {
     server = setupExpress(makeTestAdapters())
   })
 
@@ -46,8 +46,8 @@ describe(`POST ${ApiRoutes.deleteScenario()}`, () => {
         .post(ApiRoutes.deleteScenario())
         .send({ id: scenario.id })
 
-      const error = response.body.error
-      assert.deepStrictEqual(error, null)
+      const errorDelete = response.body.error
+      assert.deepStrictEqual(errorDelete, null)
     })
   })
 
@@ -63,8 +63,8 @@ describe(`POST ${ApiRoutes.deleteScenario()}`, () => {
         .post(ApiRoutes.deleteScenario())
         .send({ id: 31 })
 
-      const error = response.body.error
-      assert.deepStrictEqual(error, DeleteScenarioError.scenarioNotFound)
+      const errorDelete = response.body.error
+      assert.deepStrictEqual(errorDelete, DeleteScenarioError.scenarioNotFound)
     })
 
     it('returns 422 when scenario id is bad type', async () => {
@@ -78,8 +78,8 @@ describe(`POST ${ApiRoutes.deleteScenario()}`, () => {
         .post(ApiRoutes.deleteScenario())
         .send({ id: String(scenario.id) })
 
-      const error = response.body.error
-      assert.deepStrictEqual(error, DeleteScenarioError.idBadType)
+      const errorDelete = response.body.error
+      assert.deepStrictEqual(errorDelete, DeleteScenarioError.idBadType)
     })
   })
 })

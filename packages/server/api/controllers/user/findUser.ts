@@ -7,7 +7,7 @@ type Body = Record<string, any>
 export default makeRequestHandler<FindUserResponse>(
   async (req): Promise<FindUserResponse> => {
     const { userManager } = req.adapters
-    const id: number = req.body.id
+    const id: number = req.userId
     return await findUser(id, userManager)
   }
 )

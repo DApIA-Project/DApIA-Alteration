@@ -8,6 +8,7 @@ import makeTestAdapters from '../../makeTestAdapters'
 import { OptionsAlteration } from '@smartesting/shared/dist/index'
 import { clearDb } from '../../clearDb'
 import bcrypt from 'bcryptjs'
+import { uuid } from '@smartesting/shared/dist/uuid/uuid'
 
 describe(`POST ${ApiRoutes.updateUser()}`, () => {
   let server: express.Express
@@ -72,10 +73,10 @@ describe(`POST ${ApiRoutes.updateUser()}`, () => {
 
       const response = await request(server)
         .post(ApiRoutes.updateUser())
+        .set('userToken', userCreate.token)
         .send({
           ...validUserAttributesMissingFirstname,
           firstname: '',
-          id: userCreate.id,
         })
 
       const { error, user } = response.body
@@ -91,10 +92,10 @@ describe(`POST ${ApiRoutes.updateUser()}`, () => {
 
       const response = await request(server)
         .post(ApiRoutes.updateUser())
+        .set('userToken', userCreate.token)
         .send({
           ...validUserAttributesMissingFirstname,
           firstname: '   ',
-          id: userCreate.id,
         })
 
       const { error, user } = response.body
@@ -110,9 +111,9 @@ describe(`POST ${ApiRoutes.updateUser()}`, () => {
 
       const response = await request(server)
         .post(ApiRoutes.updateUser())
+        .set('userToken', userCreate.token)
         .send({
           ...validUserAttributesMissingFirstname,
-          id: userCreate.id,
         })
 
       const { error, user } = response.body
@@ -130,10 +131,10 @@ describe(`POST ${ApiRoutes.updateUser()}`, () => {
 
       const response = await request(server)
         .post(ApiRoutes.updateUser())
+        .set('userToken', userCreate.token)
         .send({
           ...validUserAttributesMissingLastname,
           lastname: '',
-          id: userCreate.id,
         })
 
       const { error, user } = response.body
@@ -149,10 +150,10 @@ describe(`POST ${ApiRoutes.updateUser()}`, () => {
 
       const response = await request(server)
         .post(ApiRoutes.updateUser())
+        .set('userToken', userCreate.token)
         .send({
           ...validUserAttributesMissingLastname,
           lastname: '   ',
-          id: userCreate.id,
         })
 
       const { error, user } = response.body
@@ -168,9 +169,9 @@ describe(`POST ${ApiRoutes.updateUser()}`, () => {
 
       const response = await request(server)
         .post(ApiRoutes.updateUser())
+        .set('userToken', userCreate.token)
         .send({
           ...validUserAttributesMissingLastname,
-          id: userCreate.id,
         })
 
       const { error, user } = response.body
@@ -188,10 +189,10 @@ describe(`POST ${ApiRoutes.updateUser()}`, () => {
 
       const response = await request(server)
         .post(ApiRoutes.updateUser())
+        .set('userToken', userCreate.token)
         .send({
           ...validUserAttributesMissingEmail,
           email: '',
-          id: userCreate.id,
         })
 
       const { error, user } = response.body
@@ -207,10 +208,10 @@ describe(`POST ${ApiRoutes.updateUser()}`, () => {
 
       const response = await request(server)
         .post(ApiRoutes.updateUser())
+        .set('userToken', userCreate.token)
         .send({
           ...validUserAttributesMissingEmail,
           email: '   ',
-          id: userCreate.id,
         })
 
       const { error, user } = response.body
@@ -226,9 +227,9 @@ describe(`POST ${ApiRoutes.updateUser()}`, () => {
 
       const response = await request(server)
         .post(ApiRoutes.updateUser())
+        .set('userToken', userCreate.token)
         .send({
           ...validUserAttributesMissingEmail,
-          id: userCreate.id,
         })
 
       const { error, user } = response.body
@@ -241,13 +242,13 @@ describe(`POST ${ApiRoutes.updateUser()}`, () => {
     it('returns 404 when user not exists', async () => {
       const response = await request(server)
         .post(ApiRoutes.updateUser())
+        .set('userToken', uuid())
         .send({
           ...validUserAttributes,
           firstname: 'UserW',
           lastname: 'Other Text',
           email: 'Other Text',
           password: 'Other Text',
-          id: 31,
         })
 
       const { error, user } = response.body
@@ -266,12 +267,12 @@ describe(`POST ${ApiRoutes.updateUser()}`, () => {
 
       const response = await request(server)
         .post(ApiRoutes.updateUser())
+        .set('userToken', userCreate.token)
         .send({
           ...validUserAttributes,
           firstname: 'Charlie',
           lastname: 'Stone',
           email: 'charlie.stone@mail.fr',
-          id: userCreate.id,
         })
 
       const { error, user } = response.body

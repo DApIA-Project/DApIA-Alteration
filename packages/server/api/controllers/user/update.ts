@@ -12,7 +12,11 @@ type Body = Record<string, any>
 export default makeRequestHandler<UpdateUserResponse>(
   async (req): Promise<UpdateUserResponse> => {
     const { userManager } = req.adapters
-    const { error, user } = await validateUser(req.body, userManager)
+    const { error, user } = await validateUser(
+      req.body,
+      req.userId,
+      userManager
+    )
     if (error || !user) return { error, user: null }
     return await update(
       user.id,
@@ -27,6 +31,7 @@ export default makeRequestHandler<UpdateUserResponse>(
 
 async function validateUser(
   body: Body,
+  user_id: number,
   userManager: IUserManager
 ): Promise<{
   error: UpdateUserError | null
@@ -48,7 +53,7 @@ async function validateUser(
       user: null,
     }
 
-  const userBefore: User | null = await userManager.findUser(body.id)
+  const userBefore: User | null = await userManager.findUser(user_id)
   if (!userBefore) {
     return {
       error: UpdateUserError.userNotFound,
@@ -58,7 +63,7 @@ async function validateUser(
 
   return {
     user: {
-      id: body.id,
+      id: user_id,
       firstname: body.firstname,
       lastname: body.lastname,
       email: body.email,

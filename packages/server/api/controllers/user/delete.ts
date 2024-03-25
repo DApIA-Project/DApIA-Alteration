@@ -33,7 +33,7 @@ function validateId(
   }
 
   return {
-    id: body.id,
+    id: user_id,
     password: body.password,
     error: null,
   }

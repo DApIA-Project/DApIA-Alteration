@@ -47,8 +47,8 @@ describe(`POST ${ApiRoutes.findUser()}`, () => {
 
       const response = await request(server)
         .post(ApiRoutes.findUser())
-        .send({ id: user2.body.user.id })
-      console.log(response)
+        .set('userToken', user2.body.user.token)
+        .send()
       const { error, user } = response.body
       assert.deepStrictEqual(error, null)
       assert.equal(user.lastname, 'Stone')

@@ -48,7 +48,6 @@ describe(`POST ${ApiRoutes.findUserByEmail()}`, () => {
       const response = await request(server)
         .post(ApiRoutes.findUserByEmail())
         .send({ email: 'charlie.stone7@mail.fr' })
-      console.log(response)
       const { error, user } = response.body
       assert.deepStrictEqual(error, null)
       assert.equal(user.lastname, 'Stone')

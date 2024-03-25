@@ -12,7 +12,11 @@ type Body = Record<string, any>
 export default makeRequestHandler<UpdatePasswordUserResponse>(
   async (req): Promise<UpdatePasswordUserResponse> => {
     const { userManager } = req.adapters
-    const { error, user } = await validateUser(req.body, userManager)
+    const { error, user } = await validateUser(
+      req.body,
+      req.userId,
+      userManager
+    )
     if (error || !user) return { error, user: null }
     const { error: errorUpdated, user: updatedUser } = await updatePassword(
       user.id,
@@ -34,6 +38,7 @@ export default makeRequestHandler<UpdatePasswordUserResponse>(
 
 async function validateUser(
   body: Body,
+  user_id: number,
   userManager: IUserManager
 ): Promise<{
   error: UpdatePasswordUserError | null
@@ -50,7 +55,7 @@ async function validateUser(
       error: UpdatePasswordUserError.emptyNewPassword,
       user: null,
     }
-  const userBefore: User | null = await userManager.findUser(body.id)
+  const userBefore: User | null = await userManager.findUser(user_id)
   if (!userBefore) {
     return {
       error: UpdatePasswordUserError.userNotFound,
@@ -60,7 +65,7 @@ async function validateUser(
 
   return {
     user: {
-      id: body.id,
+      id: user_id,
       password: body.password,
       newPassword: body.newPassword,
     },
