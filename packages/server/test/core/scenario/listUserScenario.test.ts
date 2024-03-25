@@ -5,7 +5,6 @@ import {
 } from '@smartesting/shared/src/models/Scenario'
 import { User, UserAttributes } from '@smartesting/shared/src/models/User'
 import makeTestAdapters from '../../makeTestAdapters'
-import listScenario from '../../../api/core/scenario/listScenario'
 import assert from 'assert'
 import { ListUserScenarioError } from '@smartesting/shared/src/responses/listUserScenario'
 import { clearDb } from '../../clearDb'

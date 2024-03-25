@@ -54,10 +54,6 @@ export default class MemoryScenarioManager implements IScenarioManager {
     return scenario || null
   }
 
-  async listScenarios(): Promise<ReadonlyArray<Scenario>> {
-    return Array.from(this.scenariosById.values())
-  }
-
   async listUserScenario(
     userId: number,
     searchBar?: string,

@@ -106,7 +106,7 @@ describe('core/user/create', () => {
     assert.strictEqual(error, null)
     assert(createdUser)
 
-    const existing = await userManager.findUser(createdUser.id)
+    const existing = await userManager.findUserByToken(createdUser.token)
     assert.deepStrictEqual(createdUser, existing)
   })
 
@@ -120,7 +120,7 @@ describe('core/user/create', () => {
     )
 
     assert(createdUser)
-    const existing = await userManager.findUser(createdUser.id)
+    const existing = await userManager.findUserByToken(createdUser.token)
     assert.strictEqual(existing?.firstname, 'Boby')
   })
 
@@ -134,7 +134,7 @@ describe('core/user/create', () => {
     )
 
     assert(createdUser)
-    const existing = await userManager.findUser(createdUser.id)
+    const existing = await userManager.findUserByToken(createdUser.token)
     assert.strictEqual(existing?.lastname, 'Stone')
   })
 
@@ -148,7 +148,7 @@ describe('core/user/create', () => {
     )
 
     assert(createdUser)
-    const existing = await userManager.findUser(createdUser.id)
+    const existing = await userManager.findUserByToken(createdUser.token)
     assert.strictEqual(existing?.email, 'bobdupont2@mail.fr')
   })
 })

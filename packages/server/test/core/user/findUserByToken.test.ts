@@ -1,12 +1,13 @@
 import IUserManager from '../../../api/adapters/user/IUserManager'
 import { UserAttributes } from '@smartesting/shared/dist/models/User'
 import makeTestAdapters from '../../makeTestAdapters'
-import findUserByEmail from '../../../api/core/user/findUserByEmail'
+import findUserByToken from '../../../api/core/user/findUserByToken'
 import assert from 'assert'
-import { FindUserByEmailError } from '@smartesting/shared/dist/responses/findUserByEmail'
+import { FindUserByTokenError } from '@smartesting/shared/dist/responses/findUserByToken'
 import { clearDb } from '../../clearDb'
+import { uuid } from '@smartesting/shared/dist/uuid/uuid'
 
-describe('core/user/findUserByEmail', () => {
+describe('core/user/findUserByToken', () => {
   let userManager: IUserManager
   const validUserAttributes: UserAttributes = {
     firstname: 'Bob',
@@ -40,27 +41,27 @@ describe('core/user/findUserByEmail', () => {
   })
 
   it('list user is valid with 3 users', async () => {
-    await userManager.createUser(validUserAttributes)
+    let user1 = await userManager.createUser(validUserAttributes)
     await userManager.createUser(validUserAttributes2)
     await userManager.createUser(validUserAttributes3)
-    const { user: user, error: errorFindUserByEmail } = await findUserByEmail(
-      validUserAttributes.email,
+    const { user: user, error: errorFindUserByToken } = await findUserByToken(
+      user1.token,
       userManager
     )
     assert(user)
     assert.deepStrictEqual(user.firstname, validUserAttributes.firstname)
-    assert.strictEqual(errorFindUserByEmail, null)
+    assert.strictEqual(errorFindUserByToken, null)
   })
 
   it('list user is empty', async () => {
-    const { user: user, error: errorFindUserByEmail } = await findUserByEmail(
-      validUserAttributes2.email,
+    const { user: user, error: errorFindUserByToken } = await findUserByToken(
+      uuid(),
       userManager
     )
-    assert(errorFindUserByEmail)
+    assert(errorFindUserByToken)
     assert.strictEqual(
-      errorFindUserByEmail,
-      FindUserByEmailError.emptyUserByEmail
+      errorFindUserByToken,
+      FindUserByTokenError.emptyUserByToken
     )
     assert.strictEqual(user, null)
   })
@@ -69,14 +70,14 @@ describe('core/user/findUserByEmail', () => {
     let createdUser = await userManager.createUser(validUserAttributes)
     assert(createdUser)
     await userManager.deleteUser(createdUser.id)
-    const { user: user, error: errorFindUserByEmail } = await findUserByEmail(
-      validUserAttributes.email,
+    const { user: user, error: errorFindUserByToken } = await findUserByToken(
+      uuid(),
       userManager
     )
-    assert(errorFindUserByEmail)
+    assert(errorFindUserByToken)
     assert.strictEqual(
-      errorFindUserByEmail,
-      FindUserByEmailError.emptyUserByEmail
+      errorFindUserByToken,
+      FindUserByTokenError.emptyUserByToken
     )
     assert.strictEqual(user, null)
   })

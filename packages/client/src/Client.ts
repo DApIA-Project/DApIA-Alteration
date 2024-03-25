@@ -2,11 +2,8 @@ import { AlterRecordingResponse } from '@smartesting/shared/dist/responses/alter
 import { CreateScenarioResponse } from '@smartesting/shared/dist/responses/createScenario'
 import { UpdateScenarioResponse } from '@smartesting/shared/dist/responses/updateScenario'
 import { DeleteScenarioResponse } from '@smartesting/shared/dist/responses/deleteScenario'
-import { ListScenarioResponse } from '@smartesting/shared/dist/responses/listScenario'
 import { ListUserScenarioResponse } from '@smartesting/shared/dist/responses/listUserScenario'
-import { FindUserByEmailResponse } from '@smartesting/shared/dist/responses/findUserByEmail'
 import { FindUserByTokenResponse } from '@smartesting/shared/dist/responses/findUserByToken'
-import { FindUserResponse } from '@smartesting/shared/dist/responses/findUser'
 import { FindScenarioResponse } from '@smartesting/shared/dist/responses/findScenario'
 import { OptionsAlteration, Recording } from '@smartesting/shared/dist'
 import { CreateUserResponse } from '@smartesting/shared/dist/responses/createUser'
@@ -107,11 +104,6 @@ export default class Client {
     return this.apiCall<FindScenarioResponse>(url, data)
   }
 
-  async listScenario(): Promise<ListScenarioResponse> {
-    const url: string = `${apiUrl}/scenario/list`
-    return this.apiCall<ListScenarioResponse>(url)
-  }
-
   async listUserScenario(
     searchBar?: string,
     startDate?: string,
@@ -146,15 +138,6 @@ export default class Client {
     }
     return this.apiCall<CreateUserResponse>(url, data)
   }
-
-  async findUserByEmail(email: string): Promise<FindUserByEmailResponse> {
-    const url: string = `${apiUrl}/user/findByEmail`
-    const data = {
-      email,
-    }
-    return this.apiCall<FindUserByEmailResponse>(url, data)
-  }
-
   async findUserByToken(): Promise<FindUserByTokenResponse> {
     const url: string = `${apiUrl}/user/findByToken`
     let token = localStorage.getItem('userToken')
@@ -166,14 +149,6 @@ export default class Client {
       return this.apiCall<FindUserByTokenResponse>(url, data)
     }
     return this.apiCall<FindUserByTokenResponse>(url)
-  }
-
-  async findUser(id: number): Promise<FindUserResponse> {
-    const url: string = `${apiUrl}/user/find`
-    const data = {
-      id,
-    }
-    return this.apiCall<FindUserResponse>(url, data)
   }
 
   async login(email: string, password: string): Promise<LoginUserResponse> {

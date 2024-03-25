@@ -19,6 +19,7 @@ describe(`POST ${ApiRoutes.createScenario()}`, () => {
     email: 'bob.dupont@mail.fr',
     password: 's3cret!',
     isAdmin: false,
+    token: uuid(),
     createdAt: new Date(),
     updatedAt: new Date(),
   }

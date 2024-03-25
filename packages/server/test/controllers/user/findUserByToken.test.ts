@@ -6,9 +6,10 @@ import assert from 'assert'
 import { ListUserError } from '@smartesting/shared/dist/responses/listUser'
 import makeTestAdapters from '../../makeTestAdapters'
 import { clearDb } from '../../clearDb'
-import { FindUserError } from '@smartesting/shared/dist/responses/findUser'
+import { FindUserByTokenError } from '@smartesting/shared/dist/responses/findUserByToken'
+import { uuid } from '@smartesting/shared/dist/uuid/uuid'
 
-describe(`POST ${ApiRoutes.findUser()}`, () => {
+describe(`POST ${ApiRoutes.findUserByToken()}`, () => {
   let server: express.Express
 
   beforeEach(() => {
@@ -41,14 +42,13 @@ describe(`POST ${ApiRoutes.findUser()}`, () => {
         .post(ApiRoutes.createUser())
         .send(validUserAttributes)
 
-      const user2 = await request(server)
+      let user2 = await request(server)
         .post(ApiRoutes.createUser())
         .send(validUserAttributes2)
 
       const response = await request(server)
-        .post(ApiRoutes.findUser())
-        .set('userToken', user2.body.user.token)
-        .send()
+        .post(ApiRoutes.findUserByToken())
+        .send({ token: user2.body.user.token })
       const { error, user } = response.body
       assert.deepStrictEqual(error, null)
       assert.equal(user.lastname, 'Stone')
@@ -59,11 +59,11 @@ describe(`POST ${ApiRoutes.findUser()}`, () => {
   context('when user list have not user', () => {
     it('returns 422 when  no user exists', async () => {
       const response = await request(server)
-        .post(ApiRoutes.findUser())
-        .send({ id: 6 })
+        .post(ApiRoutes.findUserByToken())
+        .send({ token: uuid() })
 
       const { error, user } = response.body
-      assert.deepStrictEqual(error, FindUserError.userNotFound)
+      assert.deepStrictEqual(error, FindUserByTokenError.emptyUserByToken)
       assert.deepStrictEqual(user, null)
     })
   })

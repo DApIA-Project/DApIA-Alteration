@@ -19,8 +19,6 @@ export default interface IScenarioManager {
 
   findScenario(scenarioId: number): Promise<Scenario | null>
 
-  listScenarios(): Promise<ReadonlyArray<Scenario>>
-
   listUserScenario(
     user_id: number,
     searchBar?: string,

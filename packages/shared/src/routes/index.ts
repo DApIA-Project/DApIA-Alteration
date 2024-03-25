@@ -23,10 +23,6 @@ export class ApiRoutes {
     return '/scenario/find'
   }
 
-  static listScenario() {
-    return '/scenario/list'
-  }
-
   static listUserScenario() {
     return '/scenario/user/list'
   }
@@ -51,16 +47,8 @@ export class ApiRoutes {
     return '/user/update/password'
   }
 
-  static findUserByEmail() {
-    return '/user/findByEmail'
-  }
-
   static findUserByToken() {
     return '/user/findByToken'
-  }
-
-  static findUser() {
-    return '/user/find'
   }
 
   static login() {

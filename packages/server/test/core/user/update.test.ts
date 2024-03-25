@@ -117,7 +117,7 @@ describe('core/user/update', () => {
     assert.strictEqual(updatedError, null)
     assert(updatedUser)
 
-    const existing = await userManager.findUser(updatedUser.id)
+    const existing = await userManager.findUserByToken(createdUser.token)
     assert.deepStrictEqual(updatedUser.firstname, existing?.firstname)
     assert.deepStrictEqual(updatedUser.lastname, existing?.lastname)
     assert.deepStrictEqual(updatedUser.email, existing?.email)
@@ -145,7 +145,7 @@ describe('core/user/update', () => {
     assert.strictEqual(updatedError, null)
     assert(updatedUser)
 
-    const existing = await userManager.findUser(updatedUser.id)
+    const existing = await userManager.findUserByToken(createdUser.token)
     assert.strictEqual(existing?.firstname, 'Charlie')
     assert.strictEqual(existing?.lastname, 'Stone')
     assert.strictEqual(existing?.email, 'charlie.stone@mail.fr')

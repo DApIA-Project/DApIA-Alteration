@@ -86,7 +86,7 @@ describe('core/user/login', () => {
     assert.strictEqual(logError, null)
     assert(logUser)
 
-    const existing = await userManager.findUser(logUser.id)
+    const existing = await userManager.findUserByToken(createdUser.token)
     assert.deepStrictEqual(logUser.firstname, existing?.firstname)
     assert.deepStrictEqual(logUser.lastname, existing?.lastname)
     assert.deepStrictEqual(logUser.email, existing?.email)

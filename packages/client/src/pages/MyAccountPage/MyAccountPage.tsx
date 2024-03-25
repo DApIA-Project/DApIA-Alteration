@@ -52,31 +52,47 @@ const MyAccountPage: React.FunctionComponent<MyAccountPagePageProps> = ({
   const [errorRemoveAccount, setErrorRemoveAccount] = useState('')
 
   function handleFirstname(newFirstname: string) {
+    setHaventErrorInformation(false)
+    setErrorInformation('')
     setFirstname(newFirstname)
   }
   function handleLastname(newLastname: string) {
+    setHaventErrorInformation(false)
+    setErrorInformation('')
     setLastname(newLastname)
   }
   function handleEmail(newEmail: string) {
+    setHaventErrorInformation(false)
+    setErrorInformation('')
     setEmail(newEmail)
   }
 
   function handleCurrentPassword(password: string) {
+    setHaventErrorPassword(false)
+    setErrorPassword('')
     setCurrentPassword(password)
   }
 
   function handleNewPassword(password: string) {
+    setHaventErrorPassword(false)
+    setErrorPassword('')
     setNewPassword(password)
   }
 
   function handleConfirmNewPassword(password: string) {
+    setHaventErrorPassword(false)
+    setErrorPassword('')
     setConfirmNewPassword(password)
   }
 
   function handleDeletePassword(password: string) {
+    setHaventErrorRemoveAccount(false)
+    setErrorRemoveAccount('')
     setDeletePassword(password)
   }
   function handleRemoveAccount(confirmation: string) {
+    setHaventErrorRemoveAccount(false)
+    setErrorRemoveAccount('')
     setRemoveAccount(confirmation)
   }
 

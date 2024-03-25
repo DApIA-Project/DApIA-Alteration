@@ -10,6 +10,7 @@ import {
 import { clearMemoryDb, clearProductionDb } from '../../clearDb'
 import hashPassword from '../../../api/adapters/user/hashPassword'
 import bcrypt from 'bcryptjs'
+import { uuid } from '@smartesting/shared/dist/uuid/uuid'
 
 const IUserContractTest: IContractTest = (
   implementationName,
@@ -149,17 +150,17 @@ const IUserContractTest: IContractTest = (
       })
     })
 
-    describe('findUser', () => {
-      it('find a specific user with id', async () => {
+    describe('findUserByToken', () => {
+      it('find a specific user with token', async () => {
         const user1 = await userManager.createUser(validUserAttributes)
         const user2 = await userManager.createUser(secondUserAttributes)
-        assert.deepEqual(await userManager.findUser(user1.id), user1)
+        assert.deepEqual(await userManager.findUserByToken(user1.token), user1)
       })
 
-      it('not find a specific user with no existing id', async () => {
+      it('not find a specific user with no existing email', async () => {
         await userManager.createUser(validUserAttributes)
         await userManager.createUser(secondUserAttributes)
-        assert.deepEqual(await userManager.findUser(88), null)
+        assert.deepEqual(await userManager.findUserByToken(uuid()), null)
       })
     })
 

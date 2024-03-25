@@ -27,11 +27,6 @@ export default class PsqlScenarioManager implements IScenarioManager {
     await scenarioModel.destroy()
   }
 
-  async listScenarios(): Promise<ReadonlyArray<Scenario>> {
-    const scenarioModels = await ScenarioModel.findAll()
-    return scenarioModels.map(scenarioModelToScenario)
-  }
-
   async listUserScenario(
     user_id: number,
     searchBar?: string,
