@@ -214,50 +214,35 @@ describe('ScenarioEditor', () => {
     const addButton = await screen.findByTestId(EditorTabListTestIds.ADD_BUTTON)
 
     await userEvent.click(addButton)
-    expect(client.createScenario).toHaveBeenCalledWith(
-      'New scenario',
-      '',
-      {
-        haveLabel: false,
-        haveNoise: false,
-        haveRealism: false,
-        haveDisableAltitude: false,
-        haveDisableLatitude: false,
-        haveDisableLongitude: false,
-      },
-      0
-    )
+    expect(client.createScenario).toHaveBeenCalledWith('New scenario', '', {
+      haveLabel: false,
+      haveNoise: false,
+      haveRealism: false,
+      haveDisableAltitude: false,
+      haveDisableLatitude: false,
+      haveDisableLongitude: false,
+    })
     let tabs = await screen.findAllByTestId(EditorTabTestIds.DIV_TAB)
     expect(tabs).toHaveLength(1)
     expect(tabs[0]).toHaveTextContent('Scenario A')
     await userEvent.click(addButton)
-    expect(client.createScenario).toHaveBeenCalledWith(
-      'New scenario',
-      '',
-      {
-        haveLabel: false,
-        haveNoise: false,
-        haveRealism: false,
-        haveDisableAltitude: false,
-        haveDisableLatitude: false,
-        haveDisableLongitude: false,
-      },
-      0
-    )
+    expect(client.createScenario).toHaveBeenCalledWith('New scenario', '', {
+      haveLabel: false,
+      haveNoise: false,
+      haveRealism: false,
+      haveDisableAltitude: false,
+      haveDisableLatitude: false,
+      haveDisableLongitude: false,
+    })
     await userEvent.click(addButton)
-    expect(client.createScenario).toHaveBeenCalledWith(
-      'New scenario',
-      '',
-      {
-        haveLabel: false,
-        haveNoise: false,
-        haveRealism: false,
-        haveDisableAltitude: false,
-        haveDisableLatitude: false,
-        haveDisableLongitude: false,
-      },
-      0
-    )
+    expect(client.createScenario).toHaveBeenCalledWith('New scenario', '', {
+      haveLabel: false,
+      haveNoise: false,
+      haveRealism: false,
+      haveDisableAltitude: false,
+      haveDisableLatitude: false,
+      haveDisableLongitude: false,
+    })
 
     tabs = await screen.findAllByTestId(EditorTabTestIds.DIV_TAB)
     expect(tabs).toHaveLength(3)

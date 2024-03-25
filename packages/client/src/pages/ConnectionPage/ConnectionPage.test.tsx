@@ -56,7 +56,7 @@ describe('ConnectionPage', () => {
       expect(onLogin).toBeCalledTimes(1)
     })
     await waitFor(() => {
-      expect(onLogin).toBeCalledWith(0)
+      expect(onLogin).toBeCalledWith(user.token)
     })
   })
 
