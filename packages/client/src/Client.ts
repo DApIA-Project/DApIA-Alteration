@@ -14,7 +14,11 @@ import { DeleteUserResponse } from '@smartesting/shared/dist/responses/deleteUse
 import apiUrl from './config'
 
 export default class Client {
-  private async apiCall<T>(url: string, data?: any): Promise<T> {
+  private async apiCall<T>(
+    url: string,
+    method: string,
+    data?: any
+  ): Promise<T> {
     let response: Response
     let headers: HeadersInit = {
       'Content-Type': 'application/json',
@@ -25,13 +29,13 @@ export default class Client {
     }
     if (data) {
       response = await fetch(url, {
-        method: 'POST',
+        method: method,
         headers: headers,
         body: JSON.stringify(data),
       })
     } else {
       response = await fetch(url, {
-        method: 'POST',
+        method: method,
         headers: headers,
         body: null,
       })
@@ -55,7 +59,7 @@ export default class Client {
       outputFormat,
     }
 
-    return this.apiCall<AlterRecordingResponse>(url, data)
+    return this.apiCall<AlterRecordingResponse>(url, 'POST', data)
   }
 
   async createScenario(
@@ -63,13 +67,13 @@ export default class Client {
     text: string,
     optionsAlteration: OptionsAlteration
   ): Promise<CreateScenarioResponse> {
-    const url: string = `${apiUrl}/scenario/create`
+    const url: string = `${apiUrl}/scenarios`
     const data = {
       name,
       text,
       options: optionsAlteration,
     }
-    return this.apiCall<CreateScenarioResponse>(url, data)
+    return this.apiCall<CreateScenarioResponse>(url, 'POST', data)
   }
 
   async updateScenario(
@@ -78,30 +82,28 @@ export default class Client {
     newText: string,
     newOptionsAlteration: OptionsAlteration
   ): Promise<UpdateScenarioResponse> {
-    const url: string = `${apiUrl}/scenario/update`
+    const url: string = `${apiUrl}/scenarios`
     const data = {
       id: id_scenario,
       name: newName,
       text: newText,
       options: newOptionsAlteration,
     }
-    return this.apiCall<UpdateScenarioResponse>(url, data)
+    return this.apiCall<UpdateScenarioResponse>(url, 'PUT', data)
   }
 
   async deleteScenario(id_scenario: number): Promise<DeleteScenarioResponse> {
-    const url: string = `${apiUrl}/scenario/delete`
+    const url: string = `${apiUrl}/scenarios`
     const data = {
       id: id_scenario,
     }
-    return this.apiCall<DeleteScenarioResponse>(url, data)
+    return this.apiCall<DeleteScenarioResponse>(url, 'DELETE', data)
   }
 
   async findScenario(id: number): Promise<FindScenarioResponse> {
-    const url: string = `${apiUrl}/scenario/find`
-    const data = {
-      id,
-    }
-    return this.apiCall<FindScenarioResponse>(url, data)
+    const url: string = `${apiUrl}/scenario/${id}`
+
+    return this.apiCall<FindScenarioResponse>(url, 'GET')
   }
 
   async listUserScenario(
@@ -111,7 +113,7 @@ export default class Client {
     optionsAlteration?: OptionsAlteration,
     sort?: string
   ): Promise<ListUserScenarioResponse> {
-    const url: string = `${apiUrl}/scenario/user/list`
+    const url: string = `${apiUrl}/scenarios/filters`
     const data = {
       searchBar: searchBar,
       startDate: startDate,
@@ -119,7 +121,7 @@ export default class Client {
       optionsAlteration: optionsAlteration,
       sort: sort,
     }
-    return this.apiCall<ListUserScenarioResponse>(url, data)
+    return this.apiCall<ListUserScenarioResponse>(url, 'POST', data)
   }
 
   async createUser(
@@ -128,7 +130,7 @@ export default class Client {
     email: string,
     password: string
   ): Promise<CreateUserResponse> {
-    const url: string = `${apiUrl}/user/create`
+    const url: string = `${apiUrl}/users`
     const data = {
       firstname,
       lastname,
@@ -136,28 +138,25 @@ export default class Client {
       password,
       isAdmin: false,
     }
-    return this.apiCall<CreateUserResponse>(url, data)
+    return this.apiCall<CreateUserResponse>(url, 'POST', data)
   }
   async findUserByToken(): Promise<FindUserByTokenResponse> {
-    const url: string = `${apiUrl}/user/findByToken`
     let token = localStorage.getItem('userToken')
     if (token) {
-      const data = {
-        token,
-      }
-
-      return this.apiCall<FindUserByTokenResponse>(url, data)
+      const url: string = `${apiUrl}/users/${token}`
+      return this.apiCall<FindUserByTokenResponse>(url, 'GET')
     }
-    return this.apiCall<FindUserByTokenResponse>(url)
+    const url: string = `${apiUrl}/users`
+    return this.apiCall<FindUserByTokenResponse>(url, 'POST')
   }
 
   async login(email: string, password: string): Promise<LoginUserResponse> {
-    const url: string = `${apiUrl}/user/login`
+    const url: string = `${apiUrl}/login`
     const data = {
       email,
       password,
     }
-    return this.apiCall<LoginUserResponse>(url, data)
+    return this.apiCall<LoginUserResponse>(url, 'POST', data)
   }
 
   async updateUser(
@@ -167,7 +166,7 @@ export default class Client {
     password: string,
     isAdmin: boolean
   ): Promise<UpdateUserResponse> {
-    const url: string = `${apiUrl}/user/update`
+    const url: string = `${apiUrl}/users`
     const data = {
       firstname: newFirstName,
       lastname: newLastname,
@@ -175,26 +174,26 @@ export default class Client {
       password: password,
       isAdmin: isAdmin,
     }
-    return this.apiCall<UpdateUserResponse>(url, data)
+    return this.apiCall<UpdateUserResponse>(url, 'PUT', data)
   }
 
   async deleteUser(password: string): Promise<DeleteUserResponse> {
-    const url: string = `${apiUrl}/user/delete`
+    const url: string = `${apiUrl}/users`
     const data = {
       password: password,
     }
-    return this.apiCall<DeleteUserResponse>(url, data)
+    return this.apiCall<DeleteUserResponse>(url, 'DELETE', data)
   }
 
   async updatePasswordUser(
     password: string,
     newPassword: string
   ): Promise<UpdatePasswordUserResponse> {
-    const url: string = `${apiUrl}/user/update/password`
+    const url: string = `${apiUrl}/users/password`
     const data = {
       password: password,
       newPassword: newPassword,
     }
-    return this.apiCall<UpdatePasswordUserResponse>(url, data)
+    return this.apiCall<UpdatePasswordUserResponse>(url, 'PUT', data)
   }
 }

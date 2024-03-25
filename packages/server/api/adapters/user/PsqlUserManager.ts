@@ -111,7 +111,18 @@ export default class PsqlUserManager implements IUserManager {
     if (user !== null) {
       const [pass, error] = await comparePassword(user, password)
       if (pass) {
-        return user
+        const userModel = await UserModel.findOne({
+          where: {
+            token: user.token,
+          },
+        })
+        if (!userModel) {
+          return null
+        }
+        await userModel.update({
+          token: uuid(),
+        })
+        return userModelToUser(userModel)
       } else {
         return null
       }

@@ -10,7 +10,7 @@ import { clearDb } from '../../clearDb'
 import { uuid } from '@smartesting/shared/dist/uuid/uuid'
 import { User } from '@smartesting/shared/dist/models/User'
 
-describe(`POST ${ApiRoutes.createScenario()}`, () => {
+describe(`POST ${ApiRoutes.scenarios()}`, () => {
   let server: express.Express
   const validUserAttributes: User = {
     id: 2,
@@ -26,7 +26,7 @@ describe(`POST ${ApiRoutes.createScenario()}`, () => {
 
   beforeEach(async () => {
     server = setupExpress(makeTestAdapters())
-    await request(server).post(ApiRoutes.createUser()).send(validUserAttributes)
+    await request(server).post(ApiRoutes.users()).send(validUserAttributes)
   })
 
   afterEach(async () => {
@@ -66,7 +66,7 @@ describe(`POST ${ApiRoutes.createScenario()}`, () => {
   context('when scenario name is invalid', () => {
     it('returns 422 if the name is not specified', async () => {
       const response = await request(server)
-        .post(ApiRoutes.createScenario())
+        .post(ApiRoutes.scenarios())
         .send({
           ...validScenarioAttributesMissingName,
           name: '',
@@ -79,7 +79,7 @@ describe(`POST ${ApiRoutes.createScenario()}`, () => {
 
     it('returns 422 if the name is blank', async () => {
       const response = await request(server)
-        .post(ApiRoutes.createScenario())
+        .post(ApiRoutes.scenarios())
         .send({ ...validScenarioAttributesMissingName, name: '   ' })
 
       const { error, scenario } = response.body
@@ -89,7 +89,7 @@ describe(`POST ${ApiRoutes.createScenario()}`, () => {
 
     it('returns 422 if the name is not set', async () => {
       const response = await request(server)
-        .post(ApiRoutes.createScenario())
+        .post(ApiRoutes.scenarios())
         .send({ ...validScenarioAttributesMissingName })
 
       const { error, scenario } = response.body
@@ -101,7 +101,7 @@ describe(`POST ${ApiRoutes.createScenario()}`, () => {
   context('when scenario text is invalid', () => {
     it('returns 422 if the text is not set', async () => {
       const response = await request(server)
-        .post(ApiRoutes.createScenario())
+        .post(ApiRoutes.scenarios())
         .send(validScenarioAttributesMissingText)
 
       const { error, scenario } = response.body
@@ -113,7 +113,7 @@ describe(`POST ${ApiRoutes.createScenario()}`, () => {
   context('when scenario option are invalid', () => {
     it('returns 422 if the option haveRealism is not boolean', async () => {
       const response = await request(server)
-        .post(ApiRoutes.createScenario())
+        .post(ApiRoutes.scenarios())
         .send({
           ...validScenarioAttributesMissingOption,
           options: {
@@ -133,7 +133,7 @@ describe(`POST ${ApiRoutes.createScenario()}`, () => {
 
     it('returns 422 if the option haveNoise is not boolean', async () => {
       const response = await request(server)
-        .post(ApiRoutes.createScenario())
+        .post(ApiRoutes.scenarios())
         .send({
           ...validScenarioAttributesMissingOption,
           options: {
@@ -153,7 +153,7 @@ describe(`POST ${ApiRoutes.createScenario()}`, () => {
 
     it('returns 422 if the option haveLabel is not boolean', async () => {
       const response = await request(server)
-        .post(ApiRoutes.createScenario())
+        .post(ApiRoutes.scenarios())
         .send({
           ...validScenarioAttributesMissingOption,
           options: {
@@ -173,7 +173,7 @@ describe(`POST ${ApiRoutes.createScenario()}`, () => {
 
     it('returns 422 if the option haveDisableLongitude is not boolean', async () => {
       const response = await request(server)
-        .post(ApiRoutes.createScenario())
+        .post(ApiRoutes.scenarios())
         .send({
           ...validScenarioAttributesMissingOption,
           options: {
@@ -193,7 +193,7 @@ describe(`POST ${ApiRoutes.createScenario()}`, () => {
 
     it('returns 422 if the option haveDisableLatitude is not boolean', async () => {
       const response = await request(server)
-        .post(ApiRoutes.createScenario())
+        .post(ApiRoutes.scenarios())
         .send({
           ...validScenarioAttributesMissingOption,
           options: {
@@ -213,7 +213,7 @@ describe(`POST ${ApiRoutes.createScenario()}`, () => {
 
     it('returns 422 if the option haveDisableAltitude is not boolean', async () => {
       const response = await request(server)
-        .post(ApiRoutes.createScenario())
+        .post(ApiRoutes.scenarios())
         .send({
           ...validScenarioAttributesMissingOption,
           options: {
@@ -235,7 +235,7 @@ describe(`POST ${ApiRoutes.createScenario()}`, () => {
   context('when scenario all is valid', () => {
     it('returns 201 when all is valid', async () => {
       const response = await request(server)
-        .post(ApiRoutes.createScenario())
+        .post(ApiRoutes.scenarios())
         .send(validScenarioAttributes)
 
       const { error, scenario } = response.body
@@ -246,7 +246,7 @@ describe(`POST ${ApiRoutes.createScenario()}`, () => {
 
     it('returns 201 if the text is not specified', async () => {
       const response = await request(server)
-        .post(ApiRoutes.createScenario())
+        .post(ApiRoutes.scenarios())
         .send({ ...validScenarioAttributesMissingText, text: '' })
 
       const { error, scenario } = response.body
@@ -256,7 +256,7 @@ describe(`POST ${ApiRoutes.createScenario()}`, () => {
 
     it('returns 201 if the text is blank', async () => {
       const response = await request(server)
-        .post(ApiRoutes.createScenario())
+        .post(ApiRoutes.scenarios())
         .send({ ...validScenarioAttributesMissingText, text: '   ' })
 
       const { error, scenario } = response.body

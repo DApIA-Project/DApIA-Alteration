@@ -9,7 +9,7 @@ import { OptionsAlteration } from '@smartesting/shared/dist/index'
 import { clearDb } from '../../clearDb'
 import { uuid } from '@smartesting/shared/dist/uuid/uuid'
 
-describe(`POST ${ApiRoutes.deleteUser()}`, () => {
+describe(`DELETE ${ApiRoutes.users()}`, () => {
   let server: express.Express
 
   beforeEach(() => {
@@ -31,13 +31,13 @@ describe(`POST ${ApiRoutes.deleteUser()}`, () => {
   context('when user exists and is removed', () => {
     it('returns 201 when user is removed', async () => {
       const responseCreate = await request(server)
-        .post(ApiRoutes.createUser())
+        .post(ApiRoutes.users())
         .send(validUserAttributes)
 
       const user = responseCreate.body.user
 
       const response = await request(server)
-        .post(ApiRoutes.deleteUser())
+        .delete(ApiRoutes.users())
         .set('userToken', user.token)
         .send({ password: validUserAttributes.password })
 
@@ -49,13 +49,13 @@ describe(`POST ${ApiRoutes.deleteUser()}`, () => {
   context('when user not exists and can not be removed', () => {
     it('returns 422 when user not exists, id is undefined', async () => {
       const responseCreate = await request(server)
-        .post(ApiRoutes.createUser())
+        .post(ApiRoutes.users())
         .send(validUserAttributes)
 
       const user = responseCreate.body.user
 
       const response = await request(server)
-        .post(ApiRoutes.deleteUser())
+        .delete(ApiRoutes.users())
         .set('userToken', uuid())
         .send({ password: validUserAttributes.password })
 

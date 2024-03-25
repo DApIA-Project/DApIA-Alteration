@@ -45,18 +45,18 @@ describe(`POST ${ApiRoutes.listUserScenario()}`, () => {
   context('when list have many Scenarios', () => {
     it('returns 201 when list is returned', async () => {
       let responseUser = await request(server)
-        .post(ApiRoutes.createUser())
+        .post(ApiRoutes.users())
         .send(validUserAttributes)
 
       await request(server)
-        .post(ApiRoutes.createScenario())
+        .post(ApiRoutes.scenarios())
         .send({
           ...validScenarioAttributes,
           user_id: responseUser.body.user.id,
         })
 
       await request(server)
-        .post(ApiRoutes.createScenario())
+        .post(ApiRoutes.scenarios())
         .send({
           ...validScenarioAttributes,
           name: 'ScenarioB',
@@ -75,18 +75,18 @@ describe(`POST ${ApiRoutes.listUserScenario()}`, () => {
 
     it('returns 201 when list is returned with filter searchbar', async () => {
       let responseUser = await request(server)
-        .post(ApiRoutes.createUser())
+        .post(ApiRoutes.users())
         .send(validUserAttributes)
 
       await request(server)
-        .post(ApiRoutes.createScenario())
+        .post(ApiRoutes.scenarios())
         .send({
           ...validScenarioAttributes,
           user_id: responseUser.body.user.id,
         })
 
       await request(server)
-        .post(ApiRoutes.createScenario())
+        .post(ApiRoutes.scenarios())
         .send({
           ...validScenarioAttributes,
           name: 'ScenarioB',
@@ -105,18 +105,18 @@ describe(`POST ${ApiRoutes.listUserScenario()}`, () => {
 
     it('returns 201 when list is returned with filter dates', async () => {
       let responseUser = await request(server)
-        .post(ApiRoutes.createUser())
+        .post(ApiRoutes.users())
         .send(validUserAttributes)
 
       let responseScenario1 = await request(server)
-        .post(ApiRoutes.createScenario())
+        .post(ApiRoutes.scenarios())
         .send({
           ...validScenarioAttributes,
           user_id: responseUser.body.user.id,
         })
 
       let responseScenario2 = await request(server)
-        .post(ApiRoutes.createScenario())
+        .post(ApiRoutes.scenarios())
         .send({
           ...validScenarioAttributes,
           name: 'ScenarioB',
@@ -141,18 +141,18 @@ describe(`POST ${ApiRoutes.listUserScenario()}`, () => {
 
     it('returns 201 when list is returned with filter options Alteration', async () => {
       let responseUser = await request(server)
-        .post(ApiRoutes.createUser())
+        .post(ApiRoutes.users())
         .send(validUserAttributes)
 
       let responseScenario1 = await request(server)
-        .post(ApiRoutes.createScenario())
+        .post(ApiRoutes.scenarios())
         .send({
           ...validScenarioAttributes,
           user_id: responseUser.body.user.id,
         })
 
       let responseScenario2 = await request(server)
-        .post(ApiRoutes.createScenario())
+        .post(ApiRoutes.scenarios())
         .send({
           ...validScenarioAttributes,
           name: 'ScenarioB',
@@ -175,18 +175,18 @@ describe(`POST ${ApiRoutes.listUserScenario()}`, () => {
 
     it('returns 201 when list is returned with sort', async () => {
       let responseUser = await request(server)
-        .post(ApiRoutes.createUser())
+        .post(ApiRoutes.users())
         .send(validUserAttributes)
 
       let responseScenario1 = await request(server)
-        .post(ApiRoutes.createScenario())
+        .post(ApiRoutes.scenarios())
         .send({
           ...validScenarioAttributes,
           user_id: responseUser.body.user.id,
         })
 
       let responseScenario2 = await request(server)
-        .post(ApiRoutes.createScenario())
+        .post(ApiRoutes.scenarios())
         .send({
           ...validScenarioAttributes,
           name: 'ScenarioB',
@@ -211,7 +211,7 @@ describe(`POST ${ApiRoutes.listUserScenario()}`, () => {
   context('when list have not scenario', () => {
     it('returns 422 when  no scenario exists', async () => {
       let responseUser = await request(server)
-        .post(ApiRoutes.createUser())
+        .post(ApiRoutes.users())
         .send(validUserAttributes)
 
       const response = await request(server)

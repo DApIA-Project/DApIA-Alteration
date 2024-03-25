@@ -8,7 +8,7 @@ import makeTestAdapters from '../../makeTestAdapters'
 import { OptionsAlteration } from '@smartesting/shared/dist/index'
 import { clearDb } from '../../clearDb'
 
-describe(`POST ${ApiRoutes.deleteScenario()}`, () => {
+describe(`DELETE ${ApiRoutes.scenarios()}`, () => {
   let server: express.Express
 
   beforeEach(async () => {
@@ -37,13 +37,13 @@ describe(`POST ${ApiRoutes.deleteScenario()}`, () => {
   context('when scenario exists and is removed', () => {
     it('returns 201 when scenario is removed', async () => {
       const responseCreate = await request(server)
-        .post(ApiRoutes.createScenario())
+        .post(ApiRoutes.scenarios())
         .send(validScenarioAttributes)
 
       const scenario = responseCreate.body.scenario
 
       const response = await request(server)
-        .post(ApiRoutes.deleteScenario())
+        .delete(ApiRoutes.scenarios())
         .send({ id: scenario.id })
 
       const errorDelete = response.body.error
@@ -54,13 +54,13 @@ describe(`POST ${ApiRoutes.deleteScenario()}`, () => {
   context('when scenario not exists and can not be removed', () => {
     it('returns 422 when scenario not exists', async () => {
       const responseCreate = await request(server)
-        .post(ApiRoutes.createScenario())
+        .post(ApiRoutes.scenarios())
         .send(validScenarioAttributes)
 
       const scenario = responseCreate.body.scenario
 
       const response = await request(server)
-        .post(ApiRoutes.deleteScenario())
+        .delete(ApiRoutes.scenarios())
         .send({ id: 31 })
 
       const errorDelete = response.body.error
@@ -69,13 +69,13 @@ describe(`POST ${ApiRoutes.deleteScenario()}`, () => {
 
     it('returns 422 when scenario id is bad type', async () => {
       const responseCreate = await request(server)
-        .post(ApiRoutes.createScenario())
+        .post(ApiRoutes.scenarios())
         .send(validScenarioAttributes)
 
       const scenario = responseCreate.body.scenario
 
       const response = await request(server)
-        .post(ApiRoutes.deleteScenario())
+        .delete(ApiRoutes.scenarios())
         .send({ id: String(scenario.id) })
 
       const errorDelete = response.body.error

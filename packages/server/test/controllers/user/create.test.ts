@@ -8,7 +8,7 @@ import makeTestAdapters from '../../makeTestAdapters'
 import { clearDb } from '../../clearDb'
 import bcrypt from 'bcryptjs'
 
-describe(`POST ${ApiRoutes.createUser()}`, () => {
+describe(`POST ${ApiRoutes.users()}`, () => {
   let server: express.Express
 
   beforeEach(() => {
@@ -65,7 +65,7 @@ describe(`POST ${ApiRoutes.createUser()}`, () => {
   context('when user firstname is invalid', () => {
     it('returns 422 if the firstname is not specified', async () => {
       const response = await request(server)
-        .post(ApiRoutes.createUser())
+        .post(ApiRoutes.users())
         .send({
           ...validUserAttributesMissingFirstname,
           firstname: '',
@@ -78,7 +78,7 @@ describe(`POST ${ApiRoutes.createUser()}`, () => {
 
     it('returns 422 if the firstname is blank', async () => {
       const response = await request(server)
-        .post(ApiRoutes.createUser())
+        .post(ApiRoutes.users())
         .send({ ...validUserAttributesMissingFirstname, firstname: '   ' })
 
       const { error, user } = response.body
@@ -88,7 +88,7 @@ describe(`POST ${ApiRoutes.createUser()}`, () => {
 
     it('returns 422 if the firstname is not set', async () => {
       const response = await request(server)
-        .post(ApiRoutes.createUser())
+        .post(ApiRoutes.users())
         .send({ ...validUserAttributesMissingFirstname })
 
       const { error, user } = response.body
@@ -100,7 +100,7 @@ describe(`POST ${ApiRoutes.createUser()}`, () => {
   context('when user lastname is invalid', () => {
     it('returns 422 if the lastname is not specified', async () => {
       const response = await request(server)
-        .post(ApiRoutes.createUser())
+        .post(ApiRoutes.users())
         .send({
           ...validUserAttributesMissingLastname,
           lastname: '',
@@ -113,7 +113,7 @@ describe(`POST ${ApiRoutes.createUser()}`, () => {
 
     it('returns 422 if the lastname is blank', async () => {
       const response = await request(server)
-        .post(ApiRoutes.createUser())
+        .post(ApiRoutes.users())
         .send({ ...validUserAttributesMissingLastname, lastname: '   ' })
 
       const { error, user } = response.body
@@ -123,7 +123,7 @@ describe(`POST ${ApiRoutes.createUser()}`, () => {
 
     it('returns 422 if the lastname is not set', async () => {
       const response = await request(server)
-        .post(ApiRoutes.createUser())
+        .post(ApiRoutes.users())
         .send({ ...validUserAttributesMissingLastname })
 
       const { error, user } = response.body
@@ -135,7 +135,7 @@ describe(`POST ${ApiRoutes.createUser()}`, () => {
   context('when user email is invalid', () => {
     it('returns 422 if the email is not specified', async () => {
       const response = await request(server)
-        .post(ApiRoutes.createUser())
+        .post(ApiRoutes.users())
         .send({
           ...validUserAttributesMissingEmail,
           email: '',
@@ -148,7 +148,7 @@ describe(`POST ${ApiRoutes.createUser()}`, () => {
 
     it('returns 422 if the email is blank', async () => {
       const response = await request(server)
-        .post(ApiRoutes.createUser())
+        .post(ApiRoutes.users())
         .send({ ...validUserAttributesMissingEmail, email: '   ' })
 
       const { error, user } = response.body
@@ -158,7 +158,7 @@ describe(`POST ${ApiRoutes.createUser()}`, () => {
 
     it('returns 422 if the email is not set', async () => {
       const response = await request(server)
-        .post(ApiRoutes.createUser())
+        .post(ApiRoutes.users())
         .send({ ...validUserAttributesMissingEmail })
 
       const { error, user } = response.body
@@ -170,7 +170,7 @@ describe(`POST ${ApiRoutes.createUser()}`, () => {
   context('when user password is invalid', () => {
     it('returns 422 if the password is not specified', async () => {
       const response = await request(server)
-        .post(ApiRoutes.createUser())
+        .post(ApiRoutes.users())
         .send({
           ...validUserAttributesMissingPassword,
           password: '',
@@ -183,7 +183,7 @@ describe(`POST ${ApiRoutes.createUser()}`, () => {
 
     it('returns 422 if the password is blank', async () => {
       const response = await request(server)
-        .post(ApiRoutes.createUser())
+        .post(ApiRoutes.users())
         .send({ ...validUserAttributesMissingPassword, password: '   ' })
 
       const { error, user } = response.body
@@ -193,7 +193,7 @@ describe(`POST ${ApiRoutes.createUser()}`, () => {
 
     it('returns 422 if the password is not set', async () => {
       const response = await request(server)
-        .post(ApiRoutes.createUser())
+        .post(ApiRoutes.users())
         .send({ ...validUserAttributesMissingPassword })
 
       const { error, user } = response.body
@@ -205,7 +205,7 @@ describe(`POST ${ApiRoutes.createUser()}`, () => {
   context('when user isAdmin are invalid', () => {
     it('returns 422 if isAdmin is not boolean', async () => {
       const response = await request(server)
-        .post(ApiRoutes.createUser())
+        .post(ApiRoutes.users())
         .send({
           ...validUserAttributesMissingIsAdmin,
           isAdmin: 'salut',
@@ -220,7 +220,7 @@ describe(`POST ${ApiRoutes.createUser()}`, () => {
   context('when user all is valid', () => {
     it('returns 201 when all is valid', async () => {
       const response = await request(server)
-        .post(ApiRoutes.createUser())
+        .post(ApiRoutes.users())
         .send(validUserAttributes)
 
       const { error, user } = response.body

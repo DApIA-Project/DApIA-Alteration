@@ -7,51 +7,31 @@ export class ApiRoutes {
     return '/recording/stream'
   }
 
-  static createScenario() {
-    return '/scenario/create'
-  }
-
-  static updateScenario() {
-    return '/scenario/update'
-  }
-
-  static deleteScenario() {
-    return '/scenario/delete'
-  }
-
-  static findScenario() {
-    return '/scenario/find'
+  static scenarios() {
+    return '/scenarios'
   }
 
   static listUserScenario() {
-    return '/scenario/user/list'
+    return '/scenarios/filters'
   }
 
-  static createUser() {
-    return '/user/create'
+  static findScenario(scenarioId: number) {
+    return `/scenarios/${scenarioId}`
   }
 
-  static updateUser() {
-    return '/user/update'
-  }
-
-  static deleteUser() {
-    return '/user/delete'
-  }
-
-  static listUser() {
-    return '/user/list'
+  static users() {
+    return '/users'
   }
 
   static updatePassword() {
-    return '/user/update/password'
+    return '/users/password'
   }
 
   static findUserByToken() {
-    return '/user/findByToken'
+    return '/users/:token'
   }
 
   static login() {
-    return '/user/login'
+    return '/login'
   }
 }

@@ -19,18 +19,21 @@ const router = express.Router()
 function setRoutes(): Router {
   router.post(ApiRoutes.alteration(), alterRecording)
   router.post(ApiRoutes.streamRecording(), streamRecording)
-  router.post(ApiRoutes.createScenario(), makeCreateRequestHandler)
-  router.post(ApiRoutes.updateScenario(), makeUpdateRequestHandler)
-  router.post(ApiRoutes.deleteScenario(), makeDeleteRequestHandler)
-  router.post(ApiRoutes.findScenario(), makeFindScenarioRequestHandler)
-  router.post(ApiRoutes.createUser(), makeCreateUserRequestHandler)
-  router.post(ApiRoutes.deleteUser(), makeDeleteUserRequestHandler)
-  router.post(ApiRoutes.updateUser(), makeUpdateUserRequestHandler)
+  router.post(ApiRoutes.scenarios(), makeCreateRequestHandler)
   router.post(ApiRoutes.listUserScenario(), makeListUserScenarioRequestHandler)
-  router.post(ApiRoutes.listUser(), makeListUserRequestHandler)
-  router.post(ApiRoutes.updatePassword(), makeUpdatePasswordUserRequestHandler)
-  router.post(ApiRoutes.findUserByToken(), makeFindUserByTokenRequestHandler)
+  router.post(ApiRoutes.users(), makeCreateUserRequestHandler)
   router.post(ApiRoutes.login(), makeLoginUserRequestHandler)
+
+  router.put(ApiRoutes.scenarios(), makeUpdateRequestHandler)
+  router.put(ApiRoutes.users(), makeUpdateUserRequestHandler)
+  router.put(ApiRoutes.updatePassword(), makeUpdatePasswordUserRequestHandler)
+
+  router.delete(ApiRoutes.scenarios(), makeDeleteRequestHandler)
+  router.delete(ApiRoutes.users(), makeDeleteUserRequestHandler)
+
+  router.get(ApiRoutes.findScenario(), makeFindScenarioRequestHandler)
+  router.get(ApiRoutes.findUserByToken(), makeFindUserByTokenRequestHandler)
+
   return router
 }
 

@@ -8,7 +8,7 @@ import { clearDb } from '../../clearDb'
 import { FindScenarioError } from '@smartesting/shared/dist/responses/findScenario'
 import { OptionsAlteration } from '@smartesting/shared/dist/index'
 
-describe(`POST ${ApiRoutes.findScenario()}`, () => {
+describe(`GET ${ApiRoutes.findScenario(0)}`, () => {
   let server: express.Express
 
   beforeEach(() => {
@@ -51,20 +51,20 @@ describe(`POST ${ApiRoutes.findScenario()}`, () => {
   context('when find scenario have in many Scenarios', () => {
     it('returns 201 when scenario is returned', async () => {
       const user1 = await request(server)
-        .post(ApiRoutes.createUser())
+        .post(ApiRoutes.users())
         .send(validUserAttributes)
 
       const scenario1 = await request(server)
-        .post(ApiRoutes.createScenario())
+        .post(ApiRoutes.scenarios())
         .send({ ...validScenarioAttributes, user_id: user1.body.user.id })
 
       await request(server)
-        .post(ApiRoutes.createScenario())
+        .post(ApiRoutes.scenarios())
         .send({ ...validScenarioAttributes2, user_id: user1.body.user.id })
+      const response = await request(server).get(
+        ApiRoutes.findScenario(scenario1.body.scenario.id)
+      )
 
-      const response = await request(server)
-        .post(ApiRoutes.findScenario())
-        .send({ id: scenario1.body.scenario.id })
       const { error, scenario } = response.body
       assert.deepStrictEqual(error, null)
       assert.equal(scenario.name, 'Scenario A')
@@ -74,13 +74,9 @@ describe(`POST ${ApiRoutes.findScenario()}`, () => {
 
   context('when scenario list have not scenario', () => {
     it('returns 422 when  no scenario exists', async () => {
-      await request(server)
-        .post(ApiRoutes.createUser())
-        .send(validUserAttributes)
+      await request(server).post(ApiRoutes.users()).send(validUserAttributes)
 
-      const response = await request(server)
-        .post(ApiRoutes.findScenario())
-        .send({ id: 6 })
+      const response = await request(server).get(ApiRoutes.findScenario(6))
 
       const { error, scenario } = response.body
       assert.deepStrictEqual(error, FindScenarioError.scenarioNotFound)
