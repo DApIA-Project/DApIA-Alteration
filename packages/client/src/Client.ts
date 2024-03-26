@@ -101,8 +101,7 @@ export default class Client {
   }
 
   async findScenario(id: number): Promise<FindScenarioResponse> {
-    const url: string = `${apiUrl}/scenario/${id}`
-
+    const url: string = `${apiUrl}/scenarios/${id}`
     return this.apiCall<FindScenarioResponse>(url, 'GET')
   }
 
@@ -146,8 +145,8 @@ export default class Client {
       const url: string = `${apiUrl}/users/${token}`
       return this.apiCall<FindUserByTokenResponse>(url, 'GET')
     }
-    const url: string = `${apiUrl}/users`
-    return this.apiCall<FindUserByTokenResponse>(url, 'POST')
+    const url: string = `${apiUrl}/users/null`
+    return this.apiCall<FindUserByTokenResponse>(url, 'GET')
   }
 
   async login(email: string, password: string): Promise<LoginUserResponse> {

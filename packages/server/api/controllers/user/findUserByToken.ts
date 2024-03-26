@@ -7,7 +7,7 @@ type Body = Record<string, any>
 export default makeRequestHandler<FindUserByTokenResponse>(
   async (req): Promise<FindUserByTokenResponse> => {
     const { userManager } = req.adapters
-    const token: string = req.body.token
+    const token: string = req.params.token
     return await findUserByToken(token, userManager)
   }
 )

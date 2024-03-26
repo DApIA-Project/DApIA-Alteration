@@ -7,7 +7,7 @@ type Body = Record<string, any>
 export default makeRequestHandler<FindScenarioResponse>(
   async (req): Promise<FindScenarioResponse> => {
     const { scenarioManager } = req.adapters
-    const id: number = req.body.id
+    const id: number = Number(req.params.scenarioId)
     return await findScenario(id, scenarioManager)
   }
 )

@@ -9,7 +9,7 @@ import { clearDb } from '../../clearDb'
 import { FindUserByTokenError } from '@smartesting/shared/dist/responses/findUserByToken'
 import { uuid } from '@smartesting/shared/dist/uuid/uuid'
 
-describe(`POST ${ApiRoutes.findUserByToken()}`, () => {
+describe(`GET ${ApiRoutes.findUserByToken('token')}`, () => {
   let server: express.Express
 
   beforeEach(() => {
@@ -38,17 +38,15 @@ describe(`POST ${ApiRoutes.findUserByToken()}`, () => {
 
   context('when find user have in many Users', () => {
     it('returns 201 when user is returned', async () => {
-      await request(server)
-        .post(ApiRoutes.createUser())
-        .send(validUserAttributes)
+      await request(server).post(ApiRoutes.users()).send(validUserAttributes)
 
       let user2 = await request(server)
-        .post(ApiRoutes.createUser())
+        .post(ApiRoutes.users())
         .send(validUserAttributes2)
 
-      const response = await request(server)
-        .post(ApiRoutes.findUserByToken())
-        .send({ token: user2.body.user.token })
+      const response = await request(server).get(
+        ApiRoutes.findUserByToken(user2.body.user.token)
+      )
       const { error, user } = response.body
       assert.deepStrictEqual(error, null)
       assert.equal(user.lastname, 'Stone')
@@ -58,9 +56,9 @@ describe(`POST ${ApiRoutes.findUserByToken()}`, () => {
 
   context('when user list have not user', () => {
     it('returns 422 when  no user exists', async () => {
-      const response = await request(server)
-        .post(ApiRoutes.findUserByToken())
-        .send({ token: uuid() })
+      const response = await request(server).get(
+        ApiRoutes.findUserByToken(uuid())
+      )
 
       const { error, user } = response.body
       assert.deepStrictEqual(error, FindUserByTokenError.emptyUserByToken)

@@ -168,12 +168,18 @@ const IUserContractTest: IContractTest = (
       it('user login with good email and good password', async () => {
         const user1 = await userManager.createUser(validUserAttributes)
         await userManager.createUser(secondUserAttributes)
+
+        const user1Logged = await userManager.login(
+          validUserAttributes.email,
+          validUserAttributes.password
+        )
         assert.deepEqual(
-          await userManager.login(
-            validUserAttributes.email,
-            validUserAttributes.password
-          ),
-          user1
+          {
+            ...user1,
+            token: user1Logged?.token,
+            updatedAt: user1Logged?.updatedAt,
+          },
+          user1Logged
         )
       })
 

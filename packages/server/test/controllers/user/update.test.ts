@@ -10,7 +10,7 @@ import { clearDb } from '../../clearDb'
 import bcrypt from 'bcryptjs'
 import { uuid } from '@smartesting/shared/dist/uuid/uuid'
 
-describe(`POST ${ApiRoutes.updateUser()}`, () => {
+describe(`PUT ${ApiRoutes.users()}`, () => {
   let server: express.Express
 
   beforeEach(() => {
@@ -67,12 +67,12 @@ describe(`POST ${ApiRoutes.updateUser()}`, () => {
   context('when user firstname is invalid', () => {
     it('returns 422 if the name is not specified', async () => {
       const createUserReq = await request(server)
-        .post(ApiRoutes.createUser())
+        .post(ApiRoutes.users())
         .send(validUserAttributes)
       const userCreate = createUserReq.body.user
 
       const response = await request(server)
-        .post(ApiRoutes.updateUser())
+        .put(ApiRoutes.users())
         .set('userToken', userCreate.token)
         .send({
           ...validUserAttributesMissingFirstname,
@@ -86,12 +86,12 @@ describe(`POST ${ApiRoutes.updateUser()}`, () => {
 
     it('returns 422 if the firstname is blank', async () => {
       const createUserReq = await request(server)
-        .post(ApiRoutes.createUser())
+        .post(ApiRoutes.users())
         .send(validUserAttributes)
       const userCreate = createUserReq.body.user
 
       const response = await request(server)
-        .post(ApiRoutes.updateUser())
+        .put(ApiRoutes.users())
         .set('userToken', userCreate.token)
         .send({
           ...validUserAttributesMissingFirstname,
@@ -105,12 +105,12 @@ describe(`POST ${ApiRoutes.updateUser()}`, () => {
 
     it('returns 422 if the firstname is not set', async () => {
       const createUserReq = await request(server)
-        .post(ApiRoutes.createUser())
+        .post(ApiRoutes.users())
         .send(validUserAttributes)
       const userCreate = createUserReq.body.user
 
       const response = await request(server)
-        .post(ApiRoutes.updateUser())
+        .put(ApiRoutes.users())
         .set('userToken', userCreate.token)
         .send({
           ...validUserAttributesMissingFirstname,
@@ -125,12 +125,12 @@ describe(`POST ${ApiRoutes.updateUser()}`, () => {
   context('when user lastname is invalid', () => {
     it('returns 422 if the lastname is not specified', async () => {
       const createUserReq = await request(server)
-        .post(ApiRoutes.createUser())
+        .post(ApiRoutes.users())
         .send(validUserAttributes)
       const userCreate = createUserReq.body.user
 
       const response = await request(server)
-        .post(ApiRoutes.updateUser())
+        .put(ApiRoutes.users())
         .set('userToken', userCreate.token)
         .send({
           ...validUserAttributesMissingLastname,
@@ -144,12 +144,12 @@ describe(`POST ${ApiRoutes.updateUser()}`, () => {
 
     it('returns 422 if the lastname is blank', async () => {
       const createUserReq = await request(server)
-        .post(ApiRoutes.createUser())
+        .post(ApiRoutes.users())
         .send(validUserAttributes)
       const userCreate = createUserReq.body.user
 
       const response = await request(server)
-        .post(ApiRoutes.updateUser())
+        .put(ApiRoutes.users())
         .set('userToken', userCreate.token)
         .send({
           ...validUserAttributesMissingLastname,
@@ -163,12 +163,12 @@ describe(`POST ${ApiRoutes.updateUser()}`, () => {
 
     it('returns 422 if the lastname is not set', async () => {
       const createUserReq = await request(server)
-        .post(ApiRoutes.createUser())
+        .post(ApiRoutes.users())
         .send(validUserAttributes)
       const userCreate = createUserReq.body.user
 
       const response = await request(server)
-        .post(ApiRoutes.updateUser())
+        .put(ApiRoutes.users())
         .set('userToken', userCreate.token)
         .send({
           ...validUserAttributesMissingLastname,
@@ -183,12 +183,12 @@ describe(`POST ${ApiRoutes.updateUser()}`, () => {
   context('when user email is invalid', () => {
     it('returns 422 if the email is not specified', async () => {
       const createUserReq = await request(server)
-        .post(ApiRoutes.createUser())
+        .post(ApiRoutes.users())
         .send(validUserAttributes)
       const userCreate = createUserReq.body.user
 
       const response = await request(server)
-        .post(ApiRoutes.updateUser())
+        .put(ApiRoutes.users())
         .set('userToken', userCreate.token)
         .send({
           ...validUserAttributesMissingEmail,
@@ -202,12 +202,12 @@ describe(`POST ${ApiRoutes.updateUser()}`, () => {
 
     it('returns 422 if the email is blank', async () => {
       const createUserReq = await request(server)
-        .post(ApiRoutes.createUser())
+        .post(ApiRoutes.users())
         .send(validUserAttributes)
       const userCreate = createUserReq.body.user
 
       const response = await request(server)
-        .post(ApiRoutes.updateUser())
+        .put(ApiRoutes.users())
         .set('userToken', userCreate.token)
         .send({
           ...validUserAttributesMissingEmail,
@@ -221,12 +221,12 @@ describe(`POST ${ApiRoutes.updateUser()}`, () => {
 
     it('returns 422 if the email is not set', async () => {
       const createUserReq = await request(server)
-        .post(ApiRoutes.createUser())
+        .post(ApiRoutes.users())
         .send(validUserAttributes)
       const userCreate = createUserReq.body.user
 
       const response = await request(server)
-        .post(ApiRoutes.updateUser())
+        .put(ApiRoutes.users())
         .set('userToken', userCreate.token)
         .send({
           ...validUserAttributesMissingEmail,
@@ -241,7 +241,7 @@ describe(`POST ${ApiRoutes.updateUser()}`, () => {
   context('when user not exists', () => {
     it('returns 404 when user not exists', async () => {
       const response = await request(server)
-        .post(ApiRoutes.updateUser())
+        .put(ApiRoutes.users())
         .set('userToken', uuid())
         .send({
           ...validUserAttributes,
@@ -260,13 +260,13 @@ describe(`POST ${ApiRoutes.updateUser()}`, () => {
   context('when user all is valid', () => {
     it('returns 201 when all is valid', async () => {
       const createUserReq = await request(server)
-        .post(ApiRoutes.createUser())
+        .post(ApiRoutes.users())
         .send(validUserAttributes)
 
       const userCreate = createUserReq.body.user
 
       const response = await request(server)
-        .post(ApiRoutes.updateUser())
+        .put(ApiRoutes.users())
         .set('userToken', userCreate.token)
         .send({
           ...validUserAttributes,

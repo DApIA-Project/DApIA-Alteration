@@ -9,7 +9,7 @@ import { clearDb } from '../../clearDb'
 import bcrypt from 'bcryptjs'
 import { uuid } from '@smartesting/shared/dist/uuid/uuid'
 
-describe(`POST ${ApiRoutes.updatePassword()}`, () => {
+describe(`PUT ${ApiRoutes.updatePassword()}`, () => {
   let server: express.Express
 
   beforeEach(() => {
@@ -38,12 +38,12 @@ describe(`POST ${ApiRoutes.updatePassword()}`, () => {
   context('when user password is invalid', () => {
     it('returns 422 if the password is not specified', async () => {
       const createUserReq = await request(server)
-        .post(ApiRoutes.createUser())
+        .post(ApiRoutes.users())
         .send(validUserAttributes)
       const userCreate = createUserReq.body.user
 
       const response = await request(server)
-        .post(ApiRoutes.updatePassword())
+        .put(ApiRoutes.updatePassword())
         .set('userToken', userCreate.token)
         .send({
           ...validUserAttributesMissingPassword,
@@ -58,12 +58,12 @@ describe(`POST ${ApiRoutes.updatePassword()}`, () => {
 
     it('returns 422 if the password is blank', async () => {
       const createUserReq = await request(server)
-        .post(ApiRoutes.createUser())
+        .post(ApiRoutes.users())
         .send(validUserAttributes)
       const userCreate = createUserReq.body.user
 
       const response = await request(server)
-        .post(ApiRoutes.updatePassword())
+        .put(ApiRoutes.updatePassword())
         .set('userToken', userCreate.token)
         .send({
           ...validUserAttributesMissingPassword,
@@ -78,12 +78,12 @@ describe(`POST ${ApiRoutes.updatePassword()}`, () => {
 
     it('returns 422 if the password is not set', async () => {
       const createUserReq = await request(server)
-        .post(ApiRoutes.createUser())
+        .post(ApiRoutes.users())
         .send(validUserAttributes)
       const userCreate = createUserReq.body.user
 
       const response = await request(server)
-        .post(ApiRoutes.updatePassword())
+        .put(ApiRoutes.updatePassword())
         .set('userToken', userCreate.token)
         .send({
           ...validUserAttributesMissingPassword,
@@ -99,7 +99,7 @@ describe(`POST ${ApiRoutes.updatePassword()}`, () => {
   context('when user not exists', () => {
     it('returns 404 when user not exists', async () => {
       const response = await request(server)
-        .post(ApiRoutes.updatePassword())
+        .put(ApiRoutes.updatePassword())
         .set('userToken', uuid())
         .send({
           ...validUserAttributes,
@@ -116,13 +116,13 @@ describe(`POST ${ApiRoutes.updatePassword()}`, () => {
   context('when user Password is valid', () => {
     it('returns 201 when all is valid', async () => {
       const createUserReq = await request(server)
-        .post(ApiRoutes.createUser())
+        .post(ApiRoutes.users())
         .send(validUserAttributes)
 
       const userCreate = createUserReq.body.user
 
       const response = await request(server)
-        .post(ApiRoutes.updatePassword())
+        .put(ApiRoutes.updatePassword())
         .set('userToken', userCreate.token)
         .send({
           ...validUserAttributes,

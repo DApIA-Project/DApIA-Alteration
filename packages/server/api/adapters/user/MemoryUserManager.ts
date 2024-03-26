@@ -92,6 +92,7 @@ export default class MemoryUserManager implements IUserManager {
         const updatedUser: User = {
           ...user,
           token: uuid(),
+          updatedAt: new Date(),
         }
         this.usersById.set(user.id, updatedUser)
         return updatedUser
