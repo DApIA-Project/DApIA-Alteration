@@ -15,8 +15,8 @@ export class ApiRoutes {
     return '/scenarios/filters'
   }
 
-  static findScenario(scenarioId: number) {
-    return `/scenarios/${scenarioId}`
+  static findScenario() {
+    return `/scenarios/:scenarioId`
   }
 
   static users() {
@@ -27,8 +27,8 @@ export class ApiRoutes {
     return '/users/password'
   }
 
-  static findUserByToken(token: string) {
-    return `/users/${token}`
+  static findUserByToken() {
+    return '/users/:token'
   }
 
   static login() {

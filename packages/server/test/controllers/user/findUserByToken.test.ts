@@ -3,13 +3,12 @@ import { setupExpress } from '../../helpers/setupExpress'
 import request from 'supertest'
 import { ApiRoutes } from '@smartesting/shared/src/routes'
 import assert from 'assert'
-import { ListUserError } from '@smartesting/shared/dist/responses/listUser'
 import makeTestAdapters from '../../makeTestAdapters'
 import { clearDb } from '../../clearDb'
 import { FindUserByTokenError } from '@smartesting/shared/dist/responses/findUserByToken'
 import { uuid } from '@smartesting/shared/dist/uuid/uuid'
 
-describe(`GET ${ApiRoutes.findUserByToken('token')}`, () => {
+describe(`GET ${ApiRoutes.findUserByToken()}`, () => {
   let server: express.Express
 
   beforeEach(() => {
@@ -45,7 +44,7 @@ describe(`GET ${ApiRoutes.findUserByToken('token')}`, () => {
         .send(validUserAttributes2)
 
       const response = await request(server).get(
-        ApiRoutes.findUserByToken(user2.body.user.token)
+        `/users/${user2.body.user.token}`
       )
       const { error, user } = response.body
       assert.deepStrictEqual(error, null)
@@ -56,9 +55,7 @@ describe(`GET ${ApiRoutes.findUserByToken('token')}`, () => {
 
   context('when user list have not user', () => {
     it('returns 422 when  no user exists', async () => {
-      const response = await request(server).get(
-        ApiRoutes.findUserByToken(uuid())
-      )
+      const response = await request(server).get(`/users/${uuid()}`)
 
       const { error, user } = response.body
       assert.deepStrictEqual(error, FindUserByTokenError.emptyUserByToken)

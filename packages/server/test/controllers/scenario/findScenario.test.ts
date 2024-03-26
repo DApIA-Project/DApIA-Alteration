@@ -8,7 +8,7 @@ import { clearDb } from '../../clearDb'
 import { FindScenarioError } from '@smartesting/shared/dist/responses/findScenario'
 import { OptionsAlteration } from '@smartesting/shared/dist/index'
 
-describe(`GET ${ApiRoutes.findScenario(0)}`, () => {
+describe(`GET ${ApiRoutes.findScenario()}`, () => {
   let server: express.Express
 
   beforeEach(() => {
@@ -62,7 +62,7 @@ describe(`GET ${ApiRoutes.findScenario(0)}`, () => {
         .post(ApiRoutes.scenarios())
         .send({ ...validScenarioAttributes2, user_id: user1.body.user.id })
       const response = await request(server).get(
-        ApiRoutes.findScenario(scenario1.body.scenario.id)
+        `/scenarios/${scenario1.body.scenario.id}`
       )
 
       const { error, scenario } = response.body
@@ -76,7 +76,7 @@ describe(`GET ${ApiRoutes.findScenario(0)}`, () => {
     it('returns 422 when  no scenario exists', async () => {
       await request(server).post(ApiRoutes.users()).send(validUserAttributes)
 
-      const response = await request(server).get(ApiRoutes.findScenario(6))
+      const response = await request(server).get(`/scenarios/${6}`)
 
       const { error, scenario } = response.body
       assert.deepStrictEqual(error, FindScenarioError.scenarioNotFound)
