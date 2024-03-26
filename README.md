@@ -102,7 +102,7 @@ services:
       - dapia
   alteration-server:
     container_name: alteration-server
-    image: dapiaproject/alteration-server:0.20
+    image: dapiaproject/alteration-server:0.21
     environment:
       DATABASE_URL: postgresql://postgres:postgres@postgres:5432/alterationdb
     ports:
@@ -114,7 +114,7 @@ services:
       - dapia
   alteration-client:
     container_name: alteration-client
-    image: dapiaproject/alteration-client:0.29
+    image: dapiaproject/alteration-client:0.30
     environment:
       REACT_APP_BASE_URL: http://localhost:3001
     ports:
