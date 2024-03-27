@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { OptionsAlteration, Recording } from '@smartesting/shared/dist/models'
 import '../../../styles.css'
 import './ScenarioEditor.css'
@@ -7,7 +7,7 @@ import {
   GenerateAlterationButton,
   OnGenerateOptions,
 } from './GenerateAlterationButton/GenerateAlterationButton'
-import { ScenarioOptions } from './ScenarioOptions/ScenarioOptions'
+import { ScenarioOptions } from '../../../components/business/ScenarioOptions/ScenarioOptions'
 import { RecordInputFiles } from './RecordInputFiles/RecordInputFiles'
 import EditorTabList from './EditorTabList/EditorTabList'
 import { unstable_batchedUpdates } from 'react-dom'
@@ -20,10 +20,6 @@ import { useParams } from 'react-router'
 
 export enum ScenarioEditorTestIds {
   COMPONENT = 'ScenarioEditor',
-}
-
-export enum SaveScenarioButtonTestIds {
-  COMPONENT = 'SaveScenarioButton',
 }
 
 type ScenarioEditorProps = {
@@ -82,36 +78,28 @@ const ScenarioEditor: React.FunctionComponent<ScenarioEditorProps> = ({
     []
   )
   const scenario = openedScenarios[selectedScenario]
-  useEffect(() => {
-    if (!client) return
-    client
-      .listUserScenario()
-      .then(({ scenarios, error }) => {
-        if (error)
-          return console.error(
-            `Erreur lors de la récupération des scénarios : ${error}`
-          )
-        setSavedScenarios(scenarios ?? [])
-      })
-      .catch((e) => {
-        console.error('Erreur lors de la récupération des scénarios :', e)
-      })
 
-    if (params_url.id) {
-      client
-        .findScenario(Number(params_url.id))
-        .then(({ scenario, error }) => {
-          if (error)
-            return console.error(
-              `Erreur lors de la récupération du scénario : ${error}`
-            )
-          if (scenario !== null) handleOnOpen(scenario)
-        })
-        .catch((e) => {
-          console.error('Erreur lors de la récupération du scénario :', e)
-        })
-    }
-  }, [client, openedScenarios])
+  const handleOnOpen = useCallback(
+    (openingScenario: Scenario) => {
+      unstable_batchedUpdates(async () => {
+        let newScenarios = openedScenarios.slice()
+        let isAlreadyOpen = false
+        for (const newScenario of newScenarios) {
+          if (newScenario.id === openingScenario.id) {
+            isAlreadyOpen = true
+          }
+        }
+        if (openingScenario && !isAlreadyOpen) {
+          newScenarios.push(openingScenario)
+          setOpenedScenarios(newScenarios)
+          selectTab(newScenarios.length - 1, openingScenario.options)
+        }
+      }).then(() => {
+        return
+      })
+    },
+    [openedScenarios]
+  )
 
   async function updateScenario(
     id: number,
@@ -122,7 +110,7 @@ const ScenarioEditor: React.FunctionComponent<ScenarioEditorProps> = ({
     if (!client) return
     await client
       .updateScenario(id, newName, newText, newOptions)
-      .then(({ scenario, error }) => {
+      .then(({ error }) => {
         if (error) console.log(error)
       })
   }
@@ -208,11 +196,11 @@ const ScenarioEditor: React.FunctionComponent<ScenarioEditorProps> = ({
       if (error) console.log(error)
     })
     const newScenariosOpened = openedScenarios.filter(
-      (scenarioOpened, indexScenario) => scenarioOpened.id !== scenario.id
+      (scenarioOpened) => scenarioOpened.id !== scenario.id
     )
 
     const newScenariosSaved = savedScenarios.filter(
-      (scenarioSaved, indexScenario) => scenarioSaved.id !== scenario.id
+      (scenarioSaved) => scenarioSaved.id !== scenario.id
     )
 
     unstable_batchedUpdates(async () => {
@@ -253,25 +241,6 @@ const ScenarioEditor: React.FunctionComponent<ScenarioEditorProps> = ({
     setOpenedScenarios(newOpenedScenarios)
   }
 
-  function handleOnOpen(openingScenario: Scenario) {
-    unstable_batchedUpdates(async () => {
-      let newScenarios = openedScenarios.slice()
-      let isAlreadyOpen = false
-      for (const newScenario of newScenarios) {
-        if (newScenario.id === openingScenario.id) {
-          isAlreadyOpen = true
-        }
-      }
-      if (openingScenario && !isAlreadyOpen) {
-        newScenarios.push(openingScenario)
-        setOpenedScenarios(newScenarios)
-        selectTab(newScenarios.length - 1, openingScenario.options)
-      }
-    }).then(() => {
-      return
-    })
-  }
-
   async function handleOptions(newValue: OptionsAlteration) {
     setOptionsAlteration(newValue)
     await updateScenario(
@@ -301,6 +270,37 @@ const ScenarioEditor: React.FunctionComponent<ScenarioEditorProps> = ({
     setOptionsAlteration(optionToChange)
     setSelectedScenario(newSelectedTab)
   }
+
+  useEffect(() => {
+    if (!client) return
+    client
+      .listUserScenario()
+      .then(({ scenarios, error }) => {
+        if (error)
+          return console.error(
+            `Erreur lors de la récupération des scénarios : ${error}`
+          )
+        setSavedScenarios(scenarios ?? [])
+      })
+      .catch((e) => {
+        console.error('Erreur lors de la récupération des scénarios :', e)
+      })
+
+    if (params_url.id) {
+      client
+        .findScenario(Number(params_url.id))
+        .then(({ scenario, error }) => {
+          if (error)
+            return console.error(
+              `Erreur lors de la récupération du scénario : ${error}`
+            )
+          if (scenario !== null) handleOnOpen(scenario)
+        })
+        .catch((e) => {
+          console.error('Erreur lors de la récupération du scénario :', e)
+        })
+    }
+  }, [client, handleOnOpen, openedScenarios, params_url.id])
 
   return (
     <div
@@ -346,10 +346,13 @@ const ScenarioEditor: React.FunctionComponent<ScenarioEditorProps> = ({
           outputFormat={outputFormat}
           onClicked={(options) => onGenerate(options)}
         />
-        <ScenarioOptions
-          optionsAlteration={optionsAlteration}
-          onChange={handleOptions}
-        />
+        <div className={'scenario-options'}>
+          <ScenarioOptions
+            optionsAlteration={optionsAlteration}
+            onChange={handleOptions}
+            haveDescription={true}
+          />
+        </div>
         <Select
           value={outputFormat}
           options={formats}

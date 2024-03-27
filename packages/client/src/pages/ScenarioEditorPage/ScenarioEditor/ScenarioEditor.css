@@ -50,3 +50,9 @@
 .saveScenarioButton:hover {
   background-color: rgba(255, 255, 255, 0.2);
 }
+
+.scenario-options {
+  display: flex;
+  flex-direction: column;
+  align-self: center;
+}

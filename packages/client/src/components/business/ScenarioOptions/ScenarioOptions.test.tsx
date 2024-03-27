@@ -1,7 +1,7 @@
 import {
   OptionsAlteration,
   OptionsAlterationName,
-} from '@smartesting/shared/dist'
+} from '@smartesting/shared/dist/models/index'
 import { render, screen, waitFor, within } from '@testing-library/react'
 import { ScenarioOptions } from './ScenarioOptions'
 import userEvent from '@testing-library/user-event'
