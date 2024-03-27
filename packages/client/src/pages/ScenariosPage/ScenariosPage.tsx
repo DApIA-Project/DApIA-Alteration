@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import { useClient } from '../../providers/ClientProvider/ClientProvider'
 import './ScenariosPage.css'
-import { Scenario } from '@smartesting/shared/dist/models/Scenario'
+import {
+  Scenario,
+  ScenarioAttributes,
+} from '@smartesting/shared/dist/models/Scenario'
 import Switch from '@mui/joy/Switch'
 import IconButton from '../../components/ui/Button/IconButton/IconButton'
 import EditIcon from '@mui/icons-material/Edit'
-import ShareIcon from '@mui/icons-material/Share'
+import FileDownloadIcon from '@mui/icons-material/FileDownload'
 import DeleteIcon from '@mui/icons-material/Delete'
 import AddIcon from '@mui/icons-material/Add'
+import FileUploadIcon from '@mui/icons-material/FileUpload'
 import AlterationScenarioEditor from '../../components/business/AlterationScenarioEditor/AlterationScenarioEditor'
 import { useNavigate } from 'react-router-dom'
 import InputText from '../../components/ui/InputText/InputText'
@@ -21,10 +25,12 @@ import {
   formaterDateToString,
   formaterDateStringToTextDate,
 } from '../../utils/formaterDate/formaterDate'
+import { Alert } from '@mui/material'
 
 export enum ScenariosPageTestIds {
   BUTTON_REMOVE_SCENARIO = 'ButtonRemoveScenario',
   BUTTON_ADD_SCENARIO = 'ButtonAddScenario',
+  BUTTON_IMPORT_SCENARIO = 'ButtonImportScenario',
   BUTTON_EDIT_SCENARIO = 'ButtonEditScenario',
   INPUT_SEARCH_BAR = 'InputSearchBar',
   INPUT_DATE = 'InputDate',
@@ -61,6 +67,31 @@ const ScenariosPage: React.FunctionComponent = () => {
   const [searchText, setSearchText] = useState('')
 
   const [sort, setSort] = useState('noSort')
+  const fileInputRef = React.useRef<HTMLInputElement | null>(null)
+  const [showAlert, setShowAlert] = useState(false)
+  const [errorAlert, setErrorAlert] = useState('')
+
+  async function createScenario(
+    name: string,
+    text: string,
+    options: OptionsAlteration
+  ) {
+    if (!client) return
+    try {
+      const { scenario, error } = await client.createScenario(
+        name,
+        text,
+        options
+      )
+      if (error) {
+        return
+      }
+
+      return scenario
+    } catch (err) {
+      throw err
+    }
+  }
 
   function fetchScenarios(
     searchText?: string,
@@ -93,6 +124,20 @@ const ScenariosPage: React.FunctionComponent = () => {
   }
   function handleEdit(id_scenario: number) {
     navigate('/edit-scenario/' + id_scenario)
+  }
+
+  function handleDownloadScenario(scenarioToDownload: Scenario) {
+    const { name, text, options } = scenarioToDownload
+    const scenarioAttributes: ScenarioAttributes = { name, text, options }
+    const scenarioJson = JSON.stringify(scenarioAttributes, null, 2)
+
+    const fileBlob = new Blob([scenarioJson], { type: 'text/plain' })
+    const fileUrl = URL.createObjectURL(fileBlob)
+    const link = document.createElement('a')
+    link.href = fileUrl
+    link.download = `${scenarioToDownload.name}.json`
+    document.body.appendChild(link)
+    link.click()
   }
 
   function handleChangeStartDate(event: React.ChangeEvent<HTMLInputElement>) {
@@ -221,10 +266,110 @@ const ScenariosPage: React.FunctionComponent = () => {
     fetchScenarios(searchText, dateStart, dateEnd, undefined, value)
   }
 
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0]
+    if (file) {
+      if (!/\.json$/.test(file.name)) {
+        setErrorAlert('Error file extension')
+        setShowAlert(true)
+        return
+      }
+      const reader = new FileReader()
+      reader.onload = async (e) => {
+        const content = e.target?.result as string
+        try {
+          const jsonContent = JSON.parse(content)
+
+          if (!jsonContent.name || !jsonContent.text || !jsonContent.options) {
+            setErrorAlert(
+              'Error file content : Missing attribute name or text or options'
+            )
+            setShowAlert(true)
+            return
+          }
+          if (
+            jsonContent.options.haveLabel === undefined ||
+            jsonContent.options.haveRealism === undefined ||
+            jsonContent.options.haveNoise === undefined ||
+            jsonContent.options.haveDisableLatitude === undefined ||
+            jsonContent.options.haveDisableLongitude === undefined ||
+            jsonContent.options.haveDisableAltitude === undefined
+          ) {
+            setErrorAlert(
+              'Error file content : Missing attribute haveLabel or haveRealism or haveNoise or haveDisableLatitude or haveDisableLongitude or haveDisableAltitude'
+            )
+            setShowAlert(true)
+            return
+          }
+
+          if (typeof jsonContent.name !== 'string') {
+            setErrorAlert('Attribute name must be a string')
+            setShowAlert(true)
+            return
+          }
+          if (typeof jsonContent.text !== 'string') {
+            setErrorAlert('Attribute text must be a string')
+            setShowAlert(true)
+            return
+          }
+          if (typeof jsonContent.options.haveLabel !== 'boolean') {
+            setErrorAlert('Attribute haveLabel must be a boolean')
+            setShowAlert(true)
+            return
+          }
+          if (typeof jsonContent.options.haveRealism !== 'boolean') {
+            setErrorAlert('Attribute haveRealism must be a boolean')
+            setShowAlert(true)
+            return
+          }
+          if (typeof jsonContent.options.haveNoise !== 'boolean') {
+            setErrorAlert('Attribute haveNoise must be a boolean')
+            setShowAlert(true)
+            return
+          }
+          if (typeof jsonContent.options.haveDisableLatitude !== 'boolean') {
+            setErrorAlert('Attribute haveDisableLatitude must be a boolean')
+            setShowAlert(true)
+            return
+          }
+          if (typeof jsonContent.options.haveDisableLongitude !== 'boolean') {
+            setErrorAlert('Attribute haveDisableLongitude must be a boolean')
+            setShowAlert(true)
+            return
+          }
+          if (typeof jsonContent.options.haveDisableAltitude !== 'boolean') {
+            setErrorAlert('Attribute haveDisableAltitude must be a boolean')
+            setShowAlert(true)
+            return
+          }
+          let newScenario = await createScenario(
+            jsonContent.name,
+            jsonContent.text,
+            jsonContent.options
+          )
+          if (newScenario) {
+            let newListScenarios: Scenario[] = [...myScenarios]
+            newListScenarios.push(newScenario)
+            setMyScenarios(newListScenarios)
+          }
+        } catch (error) {}
+      }
+      reader.readAsText(file)
+    }
+  }
+
+  const handleImportButtonClick = () => {
+    fileInputRef.current?.click()
+  }
+
   useEffect(() => {
     if (!client) return
     fetchScenarios()
-  }, [client])
+    const timer = setTimeout(() => {
+      setShowAlert(false)
+    }, 5000)
+    return () => clearTimeout(timer)
+  }, [client, showAlert])
 
   return (
     <>
@@ -406,8 +551,10 @@ const ScenariosPage: React.FunctionComponent = () => {
                   <IconButton
                     className={'iconButton'}
                     text={''}
-                    onClick={() => {}}
-                    icon={<ShareIcon fontSize={'small'} />}
+                    onClick={() => {
+                      handleDownloadScenario(scenario)
+                    }}
+                    icon={<FileDownloadIcon fontSize={'small'} />}
                   />
                   <IconButton
                     className={'iconButton'}
@@ -423,6 +570,30 @@ const ScenariosPage: React.FunctionComponent = () => {
             </div>
           ))}
         </div>
+      </div>
+      <input
+        ref={fileInputRef}
+        type='file'
+        style={{ display: 'none' }}
+        onChange={handleFileChange}
+      />
+      <IconButton
+        className={'importScenario'}
+        text={''}
+        onClick={handleImportButtonClick}
+        data-testid={ScenariosPageTestIds.BUTTON_IMPORT_SCENARIO}
+        icon={<FileUploadIcon fontSize={'large'} />}
+      />
+      <div className={'alertContainer'}>
+        {showAlert && (
+          <Alert
+            className={'alert'}
+            severity='error'
+            onClose={() => setShowAlert(false)}
+          >
+            {errorAlert}
+          </Alert>
+        )}
       </div>
       <IconButton
         className={'addScenario'}
