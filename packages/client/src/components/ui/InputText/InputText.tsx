@@ -101,7 +101,7 @@ function InputText({
           id={id}
           inputRef={inputRef}
           value={value}
-          {...props}
+          inputProps={{ ...props }}
         ></TextField>
       )}
     </div>

@@ -14,6 +14,7 @@ import { useNavigate } from 'react-router-dom'
 export enum ScenarioCreaterTestIds {
   BUTTON_ADD_SCENARIO = 'ButtonAddScenario',
   BUTTON_IMPORT_SCENARIO = 'ButtonImportScenario',
+  INPUT_IMPORT_SCENARIO = 'InputImportScenario',
 }
 
 type ScenarioCreaterProps = {
@@ -103,6 +104,7 @@ const ScenarioCreater: React.FunctionComponent<ScenarioCreaterProps> = ({
   return (
     <>
       <input
+        data-testid={ScenarioCreaterTestIds.INPUT_IMPORT_SCENARIO}
         ref={fileInputRef}
         type='file'
         style={{ display: 'none' }}

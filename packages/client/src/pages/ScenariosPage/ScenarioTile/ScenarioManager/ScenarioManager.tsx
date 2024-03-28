@@ -14,6 +14,7 @@ import { useNavigate } from 'react-router-dom'
 export enum ScenarioManagerTestIds {
   BUTTON_REMOVE_SCENARIO = 'ButtonRemoveScenario',
   BUTTON_EDIT_SCENARIO = 'ButtonEditScenario',
+  BUTTON_EXPORT_SCENARIO = 'ButtonExportScenario',
 }
 
 type ScenarioManagerProps = {
@@ -67,6 +68,7 @@ const ScenarioManager: React.FunctionComponent<ScenarioManagerProps> = ({
           onClick={() => {
             handleDownloadScenario(scenario)
           }}
+          data-testid={ScenarioManagerTestIds.BUTTON_EXPORT_SCENARIO}
           icon={<FileDownloadIcon fontSize={'small'} />}
         />
         <IconButton

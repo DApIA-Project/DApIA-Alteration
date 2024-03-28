@@ -85,8 +85,9 @@ const ScenariosPage: React.FunctionComponent = () => {
 
           {myScenarios.map((scenario, index) => (
             <ScenarioTile
-              scenario={scenario}
+              key={scenario.id}
               index={index}
+              scenario={scenario}
               onDeleteScenario={handleDeleteScenario}
             />
           ))}

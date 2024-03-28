@@ -16,6 +16,7 @@ export enum ScenariosFiltersTestIds {
   INPUT_SEARCH_BAR = 'InputSearchBar',
   INPUT_DATE = 'InputDate',
   DIV_FILTERS = 'ClickDivFilters',
+  DIV_CHECKBOX_LIST = 'DivCheckboxList',
   INPUT_SELECT_SORT = 'InputSelectSort',
 }
 
@@ -243,7 +244,10 @@ const ScenariosFilters: React.FunctionComponent<ScenariosFiltersProps> = ({
               />
             </div>
           </div>
-          <div className={'optionsAlterationFilters'}>
+          <div
+            className={'optionsAlterationFilters'}
+            data-testid={ScenariosFiltersTestIds.DIV_CHECKBOX_LIST}
+          >
             <CheckBox
               label={'Options filter'}
               checked={withOptionsAlterations}

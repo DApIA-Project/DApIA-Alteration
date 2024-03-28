@@ -9,17 +9,20 @@ import { ScenarioOptions } from '../../../components/business/ScenarioOptions/Sc
 
 export enum ScenarioTileTestIds {
   DIV_SCENARIO = 'DivScenario',
+  DIV_INFO_SCENARIO = 'DivInfoScenario',
+  DIV_OPTIONS_SCENARIO = 'DivOptionsScenario',
+  DIV_EDITION_SCENARIO = 'DivEditionScenario',
 }
 
 type ScenarioTileProps = {
-  scenario: Scenario
   index: number
+  scenario: Scenario
   onDeleteScenario: (id: number) => void
 }
 
 const ScenarioTile: React.FunctionComponent<ScenarioTileProps> = ({
-  scenario,
   index,
+  scenario,
   onDeleteScenario,
 }) => {
   function handleDeleteScenario(id: number) {
@@ -33,7 +36,10 @@ const ScenarioTile: React.FunctionComponent<ScenarioTileProps> = ({
         className={'divScenario'}
         data-testid={ScenarioTileTestIds.DIV_SCENARIO}
       >
-        <div className={'infoScenario'}>
+        <div
+          className={'infoScenario'}
+          data-testid={ScenarioTileTestIds.DIV_INFO_SCENARIO}
+        >
           <h2>{scenario.name}</h2>
           <AlterationScenarioEditor
             language={'alterationscenario'}
@@ -44,7 +50,10 @@ const ScenarioTile: React.FunctionComponent<ScenarioTileProps> = ({
             }}
           />
         </div>
-        <div className={'optionsScenario'}>
+        <div
+          className={'optionsScenario'}
+          data-testid={ScenarioTileTestIds.DIV_OPTIONS_SCENARIO}
+        >
           <h2>Options</h2>
           <div className={'switchButton'}>
             <ScenarioOptions
@@ -54,7 +63,10 @@ const ScenarioTile: React.FunctionComponent<ScenarioTileProps> = ({
             />
           </div>
         </div>
-        <div className={'editScenario'}>
+        <div
+          className={'editScenario'}
+          data-testid={ScenarioTileTestIds.DIV_EDITION_SCENARIO}
+        >
           <h4>
             last modification on{' '}
             {formaterDateStringToTextDate(scenario.updatedAt.toString())}
