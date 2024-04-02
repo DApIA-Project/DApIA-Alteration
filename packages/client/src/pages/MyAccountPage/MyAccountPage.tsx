@@ -13,6 +13,7 @@ import {
   NotFound,
   UnprocessableContent,
 } from '@smartesting/shared/dist/responses/responseError'
+import { unstable_batchedUpdates } from 'react-dom'
 
 type MyAccountPagePageProps = {
   onLogout: () => void
@@ -139,14 +140,15 @@ const MyAccountPage: React.FunctionComponent<MyAccountPagePageProps> = ({
     async function fetchData() {
       if (!client) return
       const { user, error } = await client?.findUserByToken()
-      if (error) console.log(error)
+      if (error) return
       if (user !== null) {
-        setUserConnected(user)
-        setFirstname(user.firstname)
-        setLastname(user.lastname)
-        setEmail(user.email)
+        unstable_batchedUpdates(() => {
+          setUserConnected(user)
+          setFirstname(user.firstname)
+          setLastname(user.lastname)
+          setEmail(user.email)
+        })
       }
-      console.log(userConnected)
     }
     fetchData()
   }, [client])
@@ -178,8 +180,11 @@ const MyAccountPage: React.FunctionComponent<MyAccountPagePageProps> = ({
     if (!client) return
     if (userConnected == null) return
     if (newPassword !== confirmNewPassword) {
-      setHaventErrorPassword(false)
-      setErrorPassword('Confirmation is different with New password')
+      unstable_batchedUpdates(() => {
+        setHaventErrorPassword(false)
+        setErrorPassword('Confirmation is different with New password')
+      })
+
       return
     }
     try {
@@ -192,10 +197,13 @@ const MyAccountPage: React.FunctionComponent<MyAccountPagePageProps> = ({
         showErrorPassword(error)
         return
       }
-      setHaventErrorPassword(true)
-      setCurrentPassword('')
-      setNewPassword('')
-      setConfirmNewPassword('')
+      unstable_batchedUpdates(() => {
+        setHaventErrorPassword(true)
+        setCurrentPassword('')
+        setNewPassword('')
+        setConfirmNewPassword('')
+      })
+
       return user
     } catch (err) {
       throw err

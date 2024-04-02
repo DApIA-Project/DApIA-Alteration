@@ -9,36 +9,64 @@ import { BrowserRouter } from 'react-router-dom'
 import MyAccountPage, { MyAccountPageTestIds } from './MyAccountPage'
 
 describe('MyAccountPage', () => {
-  let user: User = {
-    id: 0,
-    firstname: 'bob',
-    lastname: 'dupont',
-    email: 'bob.dupont@mail.fr',
-    password: 'password',
-    isAdmin: false,
-    token: uuid(),
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  }
+  let user: User
 
-  let userModifiedInfos: User = {
-    id: 0,
-    firstname: 'boby',
-    lastname: 'dupond',
-    email: 'boby.dupond@mail.fr',
-    password: 'password',
-    isAdmin: false,
-    token: uuid(),
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  }
+  let userModifiedInfos: User
 
   let client: Client
   beforeEach(() => {
+    user = {
+      id: 0,
+      firstname: 'bob',
+      lastname: 'dupont',
+      email: 'bob.dupont@mail.fr',
+      password: 'password',
+      isAdmin: false,
+      token: uuid(),
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    }
+    userModifiedInfos = {
+      id: 0,
+      firstname: 'boby',
+      lastname: 'dupond',
+      email: 'boby.dupond@mail.fr',
+      password: 'password',
+      isAdmin: false,
+      token: uuid(),
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    }
     // Reset local storage before each test to isolate the tests
     localStorage.clear()
     client = new Client()
     mockUseClient(client)
+
+    jest.spyOn(client, 'findUserByToken').mockReturnValue(
+      Promise.resolve({
+        error: null,
+        user: user,
+      })
+    )
+    jest.spyOn(client, 'updateUser').mockReturnValue(
+      Promise.resolve({
+        error: null,
+        user: userModifiedInfos,
+      })
+    )
+
+    jest.spyOn(client, 'updatePasswordUser').mockReturnValue(
+      Promise.resolve({
+        error: null,
+        user: { id: 0, password: 'password', newPassword: 'newpassword' },
+      })
+    )
+
+    jest.spyOn(client, 'deleteUser').mockReturnValue(
+      Promise.resolve({
+        error: null,
+      })
+    )
   })
 
   afterEach(() => {
@@ -81,18 +109,6 @@ describe('MyAccountPage', () => {
   })
 
   it('type in all fields for modify informations and edit', async () => {
-    jest.spyOn(client, 'findUserByToken').mockReturnValue(
-      Promise.resolve({
-        error: null,
-        user: user,
-      })
-    )
-    jest.spyOn(client, 'updateUser').mockReturnValue(
-      Promise.resolve({
-        error: null,
-        user: userModifiedInfos,
-      })
-    )
     render(<MyAccountPage onLogout={() => {}} />)
 
     user.firstname = 'Boby'
@@ -124,18 +140,6 @@ describe('MyAccountPage', () => {
   })
 
   it('type in all fields for modify password and edit', async () => {
-    jest.spyOn(client, 'findUserByToken').mockReturnValue(
-      Promise.resolve({
-        error: null,
-        user: user,
-      })
-    )
-    jest.spyOn(client, 'updatePasswordUser').mockReturnValue(
-      Promise.resolve({
-        error: null,
-        user: { id: 0, password: 'password', newPassword: 'newpassword' },
-      })
-    )
     render(<MyAccountPage onLogout={() => {}} />)
 
     fireEvent.change(
@@ -164,17 +168,6 @@ describe('MyAccountPage', () => {
   })
 
   it('type in all fields for remove account', async () => {
-    jest.spyOn(client, 'findUserByToken').mockReturnValue(
-      Promise.resolve({
-        error: null,
-        user: user,
-      })
-    )
-    jest.spyOn(client, 'deleteUser').mockReturnValue(
-      Promise.resolve({
-        error: null,
-      })
-    )
     render(<MyAccountPage onLogout={() => {}} />)
 
     fireEvent.change(
