@@ -11,6 +11,11 @@ import {
   Conflict,
 } from '@smartesting/shared/dist/responses/responseError'
 
+export enum ConnectionPageTestIds {
+  INPUT_EMAIL = 'InputEmail',
+  INPUT_PASSWORD = 'InputPassword',
+}
+
 type ConnectionPageProps = {
   onLogin: (user_token: string) => void
 }
@@ -82,6 +87,7 @@ const ConnectionPage: React.FunctionComponent<ConnectionPageProps> = ({
             onChange={handleEmail}
             id={'email-input'}
             onSubmit={handleSubmit}
+            data-testid={ConnectionPageTestIds.INPUT_EMAIL}
           />
           <InputText
             libelle={'Password'}
@@ -90,6 +96,7 @@ const ConnectionPage: React.FunctionComponent<ConnectionPageProps> = ({
             isPassword={true}
             id={'password-input'}
             onSubmit={handleSubmit}
+            data-testid={ConnectionPageTestIds.INPUT_PASSWORD}
           />
         </div>
         <div className={'submitZone'}>

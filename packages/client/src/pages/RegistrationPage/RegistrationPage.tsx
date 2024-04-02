@@ -10,6 +10,14 @@ import {
   UnprocessableContent,
 } from '@smartesting/shared/dist/responses/responseError'
 
+export enum RegistrationPageTestIds {
+  INPUT_FIRSTNAME = 'InputFirstname',
+  INPUT_LASTNAME = 'InputLastname',
+  INPUT_EMAIL = 'InputEmail',
+  INPUT_PASSWORD = 'InputPassword',
+  INPUT_CONFIRM_PASSWORD = 'InputConfirmPassword',
+}
+
 type RegistrationPageProps = {
   onLogin: (user_token: string) => void
 }
@@ -105,6 +113,7 @@ const RegistrationPage: React.FunctionComponent<RegistrationPageProps> = ({
             id={'firstname-input'}
             onChange={handleFirstname}
             onSubmit={handleSubmit}
+            data-testid={RegistrationPageTestIds.INPUT_FIRSTNAME}
           />
           <InputText
             libelle={'Lastname'}
@@ -112,6 +121,7 @@ const RegistrationPage: React.FunctionComponent<RegistrationPageProps> = ({
             onChange={handleLastname}
             id={'lastname-input'}
             onSubmit={handleSubmit}
+            data-testid={RegistrationPageTestIds.INPUT_LASTNAME}
           />
           <InputText
             libelle={'Email'}
@@ -119,6 +129,7 @@ const RegistrationPage: React.FunctionComponent<RegistrationPageProps> = ({
             onChange={handleEmail}
             id={'email-input'}
             onSubmit={handleSubmit}
+            data-testid={RegistrationPageTestIds.INPUT_EMAIL}
           />
           <InputText
             libelle={'Password'}
@@ -127,6 +138,7 @@ const RegistrationPage: React.FunctionComponent<RegistrationPageProps> = ({
             isPassword={true}
             id={'password-input'}
             onSubmit={handleSubmit}
+            data-testid={RegistrationPageTestIds.INPUT_PASSWORD}
           />
           <InputText
             libelle={'Confirm Password'}
@@ -135,6 +147,7 @@ const RegistrationPage: React.FunctionComponent<RegistrationPageProps> = ({
             isPassword={true}
             id={'confirmPassword-input'}
             onSubmit={handleSubmit}
+            data-testid={RegistrationPageTestIds.INPUT_CONFIRM_PASSWORD}
           />
         </div>
         <div className={'submitZone'}>

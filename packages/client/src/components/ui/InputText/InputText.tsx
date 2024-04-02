@@ -75,9 +75,9 @@ function InputText({
             id={id}
             inputRef={inputRef}
             value={value}
-            {...props}
             onChange={handleInputChange}
             type={showPassword ? 'text' : 'password'}
+            inputProps={{ ...props }}
             endAdornment={
               <InputAdornment position='end'>
                 <IconButton
