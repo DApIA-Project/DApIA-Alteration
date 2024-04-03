@@ -5,6 +5,7 @@
   "type": "commonjs",
   "scripts": {
     "start": "react-scripts start",
+    "serve": "serve -s build",
     "build": "react-scripts build",
     "tsc": "tsc",
     "watch": "tsc --watch",
@@ -39,7 +40,8 @@
     "vscode-languageserver": "^8.1.0",
     "vscode-languageserver-types": "^3.17.5",
     "vscode-uri": "^3.0.2",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "serve": "^14.2.1 "
   },
   "devDependencies": {
     "@testing-library/react": "^14.0.0",
