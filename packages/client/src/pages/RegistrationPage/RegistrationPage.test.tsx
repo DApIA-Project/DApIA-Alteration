@@ -7,9 +7,6 @@ import { mockUseClient } from '../../mocks/mockUseClient'
 import { User } from '@smartesting/shared/dist/models/User'
 import { CreateUserError } from '@smartesting/shared/dist/responses/createUser'
 import { uuid } from '@smartesting/shared/dist/uuid/uuid'
-import ScenariosFilters, {
-  ScenariosFiltersTestIds,
-} from '../ScenariosPage/ScenariosFilters/ScenariosFilters'
 
 describe('RegistrationPage', () => {
   let user: User = {

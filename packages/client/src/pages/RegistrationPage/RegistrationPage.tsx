@@ -151,7 +151,7 @@ const RegistrationPage: React.FunctionComponent<RegistrationPageProps> = ({
           />
         </div>
         <div className={'submitZone'}>
-          <a href={'http://localhost:3000/connection'}>Sign in ?</a>
+          <a href={'/connection'}>Sign in ?</a>
           <Button
             text={'Sign up'}
             onClick={handleSubmit}

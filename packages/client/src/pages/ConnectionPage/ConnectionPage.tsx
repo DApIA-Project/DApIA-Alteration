@@ -100,7 +100,7 @@ const ConnectionPage: React.FunctionComponent<ConnectionPageProps> = ({
           />
         </div>
         <div className={'submitZone'}>
-          <a href={'http://localhost:3000/registration'}>Sign up ?</a>
+          <a href={'/registration'}>Sign up ?</a>
           <Button
             text={'Sign in'}
             onClick={handleSubmit}

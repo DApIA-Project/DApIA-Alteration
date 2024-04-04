@@ -7,9 +7,6 @@ import { mockUseClient } from '../../mocks/mockUseClient'
 import { User } from '@smartesting/shared/dist/models/User'
 import { LoginUserError } from '@smartesting/shared/dist/responses/loginUser'
 import { uuid } from '@smartesting/shared/dist/uuid/uuid'
-import RegistrationPage, {
-  RegistrationPageTestIds,
-} from '../RegistrationPage/RegistrationPage'
 
 describe('ConnectionPage', () => {
   let user: User = {

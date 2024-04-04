@@ -21,7 +21,8 @@
     "dev": "nodemon app.ts",
     "copy:fs": "npx shx cp -fr ./node_modules/fs/ ./public/fs",
     "preinstall": "cd ../alteration-scenario && npm i && npm run build",
-    "migrate": "node-pg-migrate --tsconfig=tsconfig.json --ignore-pattern=\".*(js|md)\""
+    "migrate": "node-pg-migrate --tsconfig=tsconfig.json --ignore-pattern=\".*(js|md)\"",
+    "scalingo-postdeploy": "npm run migrate up"
   },
   "dependencies": {
     "@dapia-project/data-converter": "^4.0.0",
