@@ -7,7 +7,9 @@
   "types": "dist/type.d.ts",
   "scripts": {
     "vscode:prepublish": "npm run build && npm run lint",
+    "build-production": "npm run build:production",
     "build": "tsc -b tsconfig.json",
+    "build:production": "tsc -b tsconfig.prod.json",
     "watch": "tsc -b tsconfig.json --watch",
     "lint": "eslint src --ext ts",
     "langium:generate": "langium generate",
@@ -35,9 +37,7 @@
     "vscode-languageserver-types": "^3.17.5",
     "vscode-uri": "^3.0.2",
     "typescript": "^4.9.4",
-    "ts-node": "^10.9.1",
-    "ts-mocha": "^10.0.0",
-    "mocha": "^10.2.0"
+    "ts-node": "^10.9.1"
   },
   "devDependencies": {
     "@types/node": "^14.18.63",
@@ -47,7 +47,9 @@
     "assert": "^2.1.0",
     "eslint": "^8.17.0",
     "langium-cli": "~1.1.0",
-    "nyc": "^15.1.0"
+    "nyc": "^15.1.0",
+    "ts-mocha": "^10.0.0",
+    "mocha": "^10.2.0"
   },
   "engines": {
     "vscode": "^1.56.0",
