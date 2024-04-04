@@ -1,5 +1,9 @@
 {
   "name": "client",
+  "engines": {
+    "node": "16.15.0",
+    "npm": "8.5.5"
+  },
   "version": "0.31",
   "private": true,
   "type": "commonjs",

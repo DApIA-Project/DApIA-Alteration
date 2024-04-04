@@ -1,5 +1,9 @@
 {
   "name": "shared",
+  "engines": {
+    "node": "16.15.0",
+    "npm": "8.5.5"
+  },
   "version": "1.0.0",
   "description": "",
   "main": "dist/types.js",
