@@ -27,6 +27,7 @@ export default class Client {
     if (token) {
       headers['userToken'] = token
     }
+    console.log(JSON.stringify(data))
     if (data) {
       response = await fetch(url, {
         method: method,

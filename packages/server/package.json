@@ -23,7 +23,9 @@
     "preinstall": "cd ../alteration-scenario && npm i && npm run build-production",
     "migrate": "node-pg-migrate --tsconfig=tsconfig.json --ignore-pattern=\".*(js|md)\"",
     "migrate:built": "node-pg-migrate --verbose --ignore-pattern=\".*(ts|md)\" up",
-    "scalingo-postdeploy": "npm run migrate:built"
+    "java:copy:m2": "mkdir -p $HOME/.m2/repository/com/fdit/ && cp -r packages/alteration/libs/com/fdit/tools $HOME/.m2/repository/com/fdit/",
+    "java:install": "apt-get install -y openjdk-17-jdk && java:copy:m2",
+    "scalingo-postdeploy": "npm run java:install && npm run migrate:built"
   },
   "dependencies": {
     "@dapia-project/data-converter": "^4.0.0",
