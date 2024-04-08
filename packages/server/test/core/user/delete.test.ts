@@ -9,11 +9,8 @@ import { clearDb } from '../../clearDb'
 describe('core/user/delete', () => {
   let userManager: IUserManager
   const validUserAttributes: UserAttributes = {
-    firstname: 'Bob',
-    lastname: 'Dupont',
     email: 'bob.dupont@mail.fr',
     password: 's3cret',
-    isAdmin: false,
   }
 
   beforeEach(async () => {

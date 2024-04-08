@@ -10,25 +10,16 @@ import { uuid } from '@smartesting/shared/dist/uuid/uuid'
 describe('core/user/findUserByToken', () => {
   let userManager: IUserManager
   const validUserAttributes: UserAttributes = {
-    firstname: 'Bob',
-    lastname: 'Dupont',
     email: 'bob.dupont8@mail.fr',
     password: 's3cret',
-    isAdmin: false,
   }
   const validUserAttributes2: UserAttributes = {
-    firstname: 'Charlie',
-    lastname: 'Stone',
     email: 'charlie.stone@mail.fr',
     password: 's3cret',
-    isAdmin: false,
   }
   const validUserAttributes3: UserAttributes = {
-    firstname: 'Alice',
-    lastname: 'Summer',
     email: 'alice.summer8@mail.fr',
     password: 's3cret',
-    isAdmin: false,
   }
 
   beforeEach(async () => {
@@ -49,7 +40,7 @@ describe('core/user/findUserByToken', () => {
       userManager
     )
     assert(user)
-    assert.deepStrictEqual(user.firstname, validUserAttributes.firstname)
+    assert.deepStrictEqual(user.email, validUserAttributes.email)
     assert.strictEqual(errorFindUserByToken, null)
   })
 

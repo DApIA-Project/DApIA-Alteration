@@ -10,11 +10,8 @@ import bcrypt from 'bcryptjs'
 describe('core/user/update', () => {
   let userManager: IUserManager
   const validUserAttributes: UserAttributes = {
-    firstname: 'Bob',
-    lastname: 'Dupont',
     email: 'bob.dupont@mail.fr',
     password: 's3cret!',
-    isAdmin: false,
   }
 
   beforeEach(async () => {

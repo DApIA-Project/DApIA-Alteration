@@ -26,13 +26,9 @@ export enum UnprocessableContent {
   emptyTextScenario = 'empty_text_scenario',
   emptyUserId = 'empty_user_id',
   emptyListScenario = 'empty_list_scenario',
-  emptyListUser = 'empty_list_user',
   emptyEmail = 'empty_email',
-  emptyFirstname = 'empty_firstname',
-  emptyLastname = 'empty_lastname',
   emptyPassword = 'empty_password',
   emptyNewPassword = 'empty_new_password',
-  emptyUserByEmail = 'empty_user',
   emptyUserByToken = 'empty_user',
 }
 

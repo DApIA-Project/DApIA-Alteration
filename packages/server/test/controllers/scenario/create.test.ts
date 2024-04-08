@@ -14,11 +14,8 @@ describe(`POST ${ApiRoutes.scenarios()}`, () => {
   let server: express.Express
   const validUserAttributes: User = {
     id: 2,
-    firstname: 'Bob',
-    lastname: 'Dupont',
     email: 'bob.dupont@mail.fr',
     password: 's3cret!',
-    isAdmin: false,
     token: uuid(),
     createdAt: new Date(),
     updatedAt: new Date(),

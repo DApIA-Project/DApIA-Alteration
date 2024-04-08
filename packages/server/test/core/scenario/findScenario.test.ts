@@ -12,11 +12,8 @@ describe('core/user/findUser', () => {
   let userManager: IUserManager
   let scenarioManager: IScenarioManager
   const validUserAttributes: UserAttributes = {
-    firstname: 'Bob',
-    lastname: 'Dupont',
     email: 'bob.dupont8@mail.fr',
     password: 's3cret',
-    isAdmin: false,
   }
 
   const options: OptionsAlteration = {

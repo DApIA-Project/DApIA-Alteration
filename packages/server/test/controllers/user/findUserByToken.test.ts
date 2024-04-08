@@ -20,19 +20,13 @@ describe(`GET ${ApiRoutes.findUserByToken()}`, () => {
   })
 
   const validUserAttributes = {
-    firstname: 'Bob',
-    lastname: 'Dupont',
     email: 'bob.dupont7@mail.fr',
     password: 's3cret',
-    isAdmin: false,
   }
 
   const validUserAttributes2 = {
-    firstname: 'Charlie',
-    lastname: 'Stone',
     email: 'charlie.stone7@mail.fr',
     password: 's3cret',
-    isAdmin: false,
   }
 
   context('when find user have in many Users', () => {
@@ -48,8 +42,7 @@ describe(`GET ${ApiRoutes.findUserByToken()}`, () => {
       )
       const { error, user } = response.body
       assert.deepStrictEqual(error, null)
-      assert.equal(user.lastname, 'Stone')
-      assert.equal(user.firstname, 'Charlie')
+      assert.equal(user.email, 'charlie.stone7@mail.fr')
     })
   })
 

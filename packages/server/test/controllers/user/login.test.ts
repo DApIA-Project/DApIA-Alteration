@@ -19,54 +19,14 @@ describe(`POST ${ApiRoutes.login()}`, () => {
     await clearDb()
   })
 
-  const validUserAttributesMissingFirstname = {
-    lastname: 'Dupont',
-    email: 'bob.dupont@mail.fr',
-    password: 's3cret!',
-    isAdmin: false,
-  }
-
-  const validUserAttributesMissingLastname = {
-    firstname: 'Bob',
-    email: 'bob.dupont@mail.fr',
-    password: 's3cret!',
-    isAdmin: false,
-  }
-
-  const validUserAttributesMissingEmail = {
-    firstname: 'Bob',
-    lastname: 'Dupont',
-    password: 's3cret!',
-    isAdmin: false,
-  }
-
-  const validUserAttributesMissingPassword = {
-    firstname: 'Bob',
-    lastname: 'Dupont',
-    email: 'bob.dupont@mail.fr',
-    isAdmin: false,
-  }
-
-  const validUserAttributesMissingIsAdmin = {
-    firstname: 'Bob',
-    lastname: 'Dupont',
-    email: 'bob.dupont@mail.fr',
-    password: 's3cret!',
-  }
-
   const validUserAttributes = {
-    firstname: 'Bob',
-    lastname: 'Dupont',
     email: 'bob.dupont@mail.fr',
     password: 's3cret!',
-    isAdmin: false,
   }
 
   context('when user email is invalid', () => {
     it('returns 422 if the email is not specified', async () => {
-      const createUserReq = await request(server)
-        .post(ApiRoutes.users())
-        .send(validUserAttributes)
+      await request(server).post(ApiRoutes.users()).send(validUserAttributes)
 
       const response = await request(server).post(ApiRoutes.login()).send({
         email: '',
@@ -79,9 +39,7 @@ describe(`POST ${ApiRoutes.login()}`, () => {
     })
 
     it('returns 422 if the email is blank', async () => {
-      const createUserReq = await request(server)
-        .post(ApiRoutes.users())
-        .send(validUserAttributes)
+      await request(server).post(ApiRoutes.users()).send(validUserAttributes)
 
       const response = await request(server).post(ApiRoutes.login()).send({
         email: '     ',
@@ -94,9 +52,7 @@ describe(`POST ${ApiRoutes.login()}`, () => {
     })
 
     it('returns 422 if the email is not set', async () => {
-      const createUserReq = await request(server)
-        .post(ApiRoutes.users())
-        .send(validUserAttributes)
+      await request(server).post(ApiRoutes.users()).send(validUserAttributes)
 
       const response = await request(server).post(ApiRoutes.login()).send({
         password: 's3cret!',
@@ -108,9 +64,7 @@ describe(`POST ${ApiRoutes.login()}`, () => {
     })
 
     it('returns 422 if the email is not in user table', async () => {
-      const createUserReq = await request(server)
-        .post(ApiRoutes.users())
-        .send(validUserAttributes)
+      await request(server).post(ApiRoutes.users()).send(validUserAttributes)
 
       const response = await request(server).post(ApiRoutes.login()).send({
         email: 'test@mail.fr',
@@ -186,12 +140,9 @@ describe(`POST ${ApiRoutes.login()}`, () => {
 
       const { error, user } = response.body
       assert.deepStrictEqual(error, null)
-      assert.equal(user.firstname, 'Bob')
-      assert.equal(user.lastname, 'Dupont')
       assert.equal(user.email, 'bob.dupont@mail.fr')
       assert.notEqual(user.password, 's3cret!')
       assert(await bcrypt.compare('s3cret!', user.password))
-      assert.equal(user.isAdmin, false)
     })
   })
 })

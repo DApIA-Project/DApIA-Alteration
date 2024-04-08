@@ -1,12 +1,6 @@
 import { DapiaAlterationResponse } from './dapiaAlterationResponse'
 import { User } from '../models/User'
-import {
-  BadType,
-  Conflict,
-  NotFound,
-  Unauthorized,
-  UnprocessableContent,
-} from './responseError'
+import { BadType, Conflict, NotFound } from './responseError'
 
 export type DeleteUserResponse = DapiaAlterationResponse<{}, DeleteUserError>
 

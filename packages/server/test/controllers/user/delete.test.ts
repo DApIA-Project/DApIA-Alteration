@@ -21,11 +21,8 @@ describe(`DELETE ${ApiRoutes.users()}`, () => {
   })
 
   const validUserAttributes = {
-    firstname: 'Bob',
-    lastname: 'Dupont',
     email: 'bob.dupont@mail.fr',
     password: 's3cret',
-    isAdmin: false,
   }
 
   context('when user exists and is removed', () => {

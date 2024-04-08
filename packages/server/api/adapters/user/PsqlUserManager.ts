@@ -133,25 +133,12 @@ export default class PsqlUserManager implements IUserManager {
 }
 
 function userModelToUser(userModel: UserModel): User {
-  const {
-    id,
-    firstname,
-    lastname,
-    email,
-    password,
-    isAdmin,
-    token,
-    createdAt,
-    updatedAt,
-  } = userModel
+  const { id, email, password, token, createdAt, updatedAt } = userModel
 
   return {
     id: Number(id),
-    firstname,
-    lastname,
     email,
     password,
-    isAdmin,
     token,
     createdAt,
     updatedAt,
@@ -162,11 +149,7 @@ function userAttributesToUserModelAttributes(
   updatedData: Partial<UserAttributes>
 ): Partial<InferCreationAttributes<UserModel>> {
   const userModelAttributes: Partial<InferCreationAttributes<UserModel>> = {}
-  if (updatedData.firstname)
-    userModelAttributes.firstname = updatedData.firstname
-  if (updatedData.lastname) userModelAttributes.lastname = updatedData.lastname
   if (updatedData.email) userModelAttributes.email = updatedData.email
   if (updatedData.password) userModelAttributes.password = updatedData.password
-  userModelAttributes.isAdmin = updatedData.isAdmin
   return userModelAttributes
 }

@@ -1,11 +1,5 @@
 import { DapiaAlterationResponse } from './dapiaAlterationResponse'
-import { Scenario } from '../models/Scenario'
-import {
-  BadType,
-  NotFound,
-  Unauthorized,
-  UnprocessableContent,
-} from './responseError'
+import { BadType, NotFound } from './responseError'
 
 export type DeleteScenarioResponse = DapiaAlterationResponse<
   {},

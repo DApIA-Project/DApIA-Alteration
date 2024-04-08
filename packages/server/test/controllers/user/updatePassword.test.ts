@@ -21,18 +21,12 @@ describe(`PUT ${ApiRoutes.updatePassword()}`, () => {
   })
 
   const validUserAttributesMissingPassword = {
-    firstname: 'Bob',
-    lastname: 'Dupont',
     email: 'bob.dupont@mail.fr',
-    isAdmin: false,
   }
 
   const validUserAttributes = {
-    firstname: 'Bob',
-    lastname: 'Dupont',
     email: 'bob.dupont@mail.fr',
     password: 's3cret!',
-    isAdmin: false,
   }
 
   context('when user password is invalid', () => {

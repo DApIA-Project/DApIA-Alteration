@@ -18,14 +18,7 @@ export default makeRequestHandler<UpdateUserResponse>(
       userManager
     )
     if (error || !user) return { error, user: null }
-    return await update(
-      user.id,
-      user.firstname,
-      user.lastname,
-      user.email,
-      user.isAdmin,
-      userManager
-    )
+    return await update(user.id, user.email, userManager)
   }
 )
 
@@ -37,16 +30,6 @@ async function validateUser(
   error: UpdateUserError | null
   user: User | null
 }> {
-  if (!body.firstname || typeof body.firstname !== 'string')
-    return {
-      error: UpdateUserError.emptyFirstname,
-      user: null,
-    }
-  if (!body.lastname || typeof body.lastname !== 'string')
-    return {
-      error: UpdateUserError.emptyLastname,
-      user: null,
-    }
   if (!body.email || typeof body.email !== 'string')
     return {
       error: UpdateUserError.emptyEmail,
@@ -64,11 +47,8 @@ async function validateUser(
   return {
     user: {
       id: user_id,
-      firstname: body.firstname,
-      lastname: body.lastname,
       email: body.email,
       password: body.password,
-      isAdmin: body.isAdmin,
       token: body.token,
       createdAt: userBefore.createdAt,
       updatedAt: userBefore.updatedAt,

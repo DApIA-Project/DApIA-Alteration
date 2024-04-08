@@ -22,19 +22,13 @@ const IUserContractTest: IContractTest = (
     let userManager: IUserManager
 
     const validUserAttributes: UserAttributes = {
-      firstname: 'Bob',
-      lastname: 'Dupont',
       email: 'bob.dupont2@mail.fr',
       password: 's3cret!',
-      isAdmin: false,
     }
 
     const secondUserAttributes: UserAttributes = {
-      firstname: 'Charlie',
-      lastname: 'Stone',
       email: 'charlie2.stone@mail.fr',
       password: 's3cret!',
-      isAdmin: true,
     }
 
     beforeEach(async () => {
@@ -50,8 +44,6 @@ const IUserContractTest: IContractTest = (
       it('returns the created user', async () => {
         const created = await userManager.createUser(validUserAttributes)
 
-        assert.deepStrictEqual(created.firstname, validUserAttributes.firstname)
-        assert.deepStrictEqual(created.lastname, validUserAttributes.lastname)
         assert.deepStrictEqual(created.email, validUserAttributes.email)
         assert.notEqual(created.password, validUserAttributes.password)
         assert(
@@ -65,13 +57,11 @@ const IUserContractTest: IContractTest = (
         const created = await userManager.createUser(validUserAttributes)
 
         const updated = await userManager.updateUser(created.id, {
-          firstname: 'Joe',
+          email: 'joe@example.fr',
         })
 
         assert(updated)
-        assert.deepStrictEqual(updated.firstname, 'Joe')
-        assert.deepStrictEqual(updated.lastname, validUserAttributes.lastname)
-        assert.deepStrictEqual(updated.email, validUserAttributes.email)
+        assert.deepStrictEqual(updated.email, 'joe@example.fr')
         assert.notEqual(updated.password, validUserAttributes.password)
         assert(
           await bcrypt.compare(validUserAttributes.password, updated.password)

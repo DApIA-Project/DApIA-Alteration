@@ -10,12 +10,6 @@ export default async function create(
   userAttributes: UserAttributes,
   userManager: IUserManager
 ): Promise<CreateUserResponse> {
-  const firstname = userAttributes.firstname.trim()
-  if (firstname === '')
-    return { user: null, error: CreateUserError.emptyFirstname }
-  const lastname = userAttributes.lastname.trim()
-  if (lastname === '')
-    return { user: null, error: CreateUserError.emptyLastname }
   const email = userAttributes.email.trim()
   if (email === '') return { user: null, error: CreateUserError.emptyEmail }
   const findUser = await userManager.findUserByEmail(email)
@@ -29,8 +23,6 @@ export default async function create(
   return {
     user: await userManager.createUser({
       ...userAttributes,
-      firstname,
-      lastname,
       email,
       password,
     }),

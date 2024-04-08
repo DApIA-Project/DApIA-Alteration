@@ -21,18 +21,6 @@ function validateUser(body: Body): {
   error: CreateUserError | null
   userAttributes: UserAttributes | null
 } {
-  if (!body.firstname || typeof body.firstname !== 'string')
-    return {
-      error: CreateUserError.emptyFirstname,
-      userAttributes: null,
-    }
-
-  if (!body.lastname || typeof body.lastname !== 'string')
-    return {
-      error: CreateUserError.emptyLastname,
-      userAttributes: null,
-    }
-
   if (!body.email || typeof body.email !== 'string')
     return {
       error: CreateUserError.emptyEmail,
@@ -45,20 +33,10 @@ function validateUser(body: Body): {
       userAttributes: null,
     }
 
-  if (typeof body.isAdmin !== 'boolean') {
-    return {
-      error: CreateUserError.optionsBadType,
-      userAttributes: null,
-    }
-  }
-
   return {
     userAttributes: {
-      firstname: body.firstname,
-      lastname: body.lastname,
       email: body.email,
       password: body.password,
-      isAdmin: body.isAdmin,
     },
     error: null,
   }

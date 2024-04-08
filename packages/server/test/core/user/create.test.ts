@@ -9,11 +9,8 @@ import bcrypt from 'bcryptjs'
 describe('core/user/create', () => {
   let userManager: IUserManager
   const validUserAttributes: UserAttributes = {
-    firstname: 'Bob',
-    lastname: 'Dupont',
     email: 'bob.dupont@mail.fr',
     password: 's3cret!',
-    isAdmin: false,
   }
 
   beforeEach(async () => {
@@ -22,32 +19,6 @@ describe('core/user/create', () => {
   })
   afterEach(async () => {
     await clearDb()
-  })
-
-  it('requires a non-blank firstname for the user', async () => {
-    const { user: createdUser, error } = await create(
-      {
-        ...validUserAttributes,
-        firstname: '   ',
-      },
-      userManager
-    )
-
-    assert.strictEqual(createdUser, null)
-    assert.strictEqual(error, CreateUserError.emptyFirstname)
-  })
-
-  it('cant have a blank lastname for the user', async () => {
-    const { user: createdUser, error } = await create(
-      {
-        ...validUserAttributes,
-        lastname: '   ',
-      },
-      userManager
-    )
-
-    assert.strictEqual(createdUser, null)
-    assert.strictEqual(error, CreateUserError.emptyLastname)
   })
 
   it('cant create user if already exists', async () => {
@@ -108,34 +79,6 @@ describe('core/user/create', () => {
 
     const existing = await userManager.findUserByToken(createdUser.token)
     assert.deepStrictEqual(createdUser, existing)
-  })
-
-  it('trims the firstname before saving', async () => {
-    const { user: createdUser } = await create(
-      {
-        ...validUserAttributes,
-        firstname: '  Boby  ',
-      },
-      userManager
-    )
-
-    assert(createdUser)
-    const existing = await userManager.findUserByToken(createdUser.token)
-    assert.strictEqual(existing?.firstname, 'Boby')
-  })
-
-  it('trims the lastname before saving', async () => {
-    const { user: createdUser } = await create(
-      {
-        ...validUserAttributes,
-        lastname: '  Stone  ',
-      },
-      userManager
-    )
-
-    assert(createdUser)
-    const existing = await userManager.findUserByToken(createdUser.token)
-    assert.strictEqual(existing?.lastname, 'Stone')
   })
 
   it('trims the email before saving', async () => {

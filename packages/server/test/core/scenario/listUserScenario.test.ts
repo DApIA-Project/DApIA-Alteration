@@ -17,11 +17,8 @@ describe('core/scenario/listUserScenario', () => {
   let userManager: IUserManager
 
   const validUserAttributes: UserAttributes = {
-    firstname: 'Bob',
-    lastname: 'Dupont',
     email: 'bob.dupont@mail.fr',
     password: 's3cret',
-    isAdmin: false,
   }
   const validScenarioAttributes: ScenarioAttributes = {
     name: 'Scenario A',

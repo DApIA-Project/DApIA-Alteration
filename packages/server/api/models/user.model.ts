@@ -16,11 +16,8 @@ export default class User extends Model<
   InferCreationAttributes<User>
 > {
   declare id: CreationOptional<Identifier>
-  declare firstname: string
-  declare lastname: string
   declare email: string
   declare password: string
-  declare isAdmin: boolean
   declare token: string
   declare createdAt: Date
   declare updatedAt: Date
@@ -33,14 +30,6 @@ User.init(
       primaryKey: true,
       autoIncrement: true,
     },
-    firstname: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    lastname: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
     email: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -48,10 +37,6 @@ User.init(
     },
     password: {
       type: DataTypes.STRING,
-      allowNull: false,
-    },
-    isAdmin: {
-      type: DataTypes.BOOLEAN,
       allowNull: false,
     },
     token: {
