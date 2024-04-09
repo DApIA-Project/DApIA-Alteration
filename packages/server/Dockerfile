@@ -1,4 +1,4 @@
-FROM node:20-alpine
+FROM node:20.12.1-alpine
 WORKDIR /usr/src/app
 COPY ./server ./server/
 COPY ./alteration-scenario ./alteration-scenario/
