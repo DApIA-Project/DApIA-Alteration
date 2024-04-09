@@ -5,7 +5,6 @@ import MemoryScenarioManager from '../api/adapters/scenario/MemoryScenarioManage
 import PsqlScenarioManager from '../api/adapters/scenario/PsqlScenarioManager'
 import MemoryUserManager from '../api/adapters/user/MemoryUserManager'
 import PsqlUserManager from '../api/adapters/user/PsqlUserManager'
->>>>>>> main
 
 export default function makeTestAdapters(): AlterationAdapters {
   if (process.env.MEMORY_ADAPTERS) {

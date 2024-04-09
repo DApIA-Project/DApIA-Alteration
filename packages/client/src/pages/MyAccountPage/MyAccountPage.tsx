@@ -13,14 +13,13 @@ import {
   NotFound,
   UnprocessableContent,
 } from '@smartesting/shared/dist/responses/responseError'
+import { unstable_batchedUpdates } from 'react-dom'
 
 type MyAccountPagePageProps = {
   onLogout: () => void
 }
 
 export enum MyAccountPageTestIds {
-  INPUT_FIRSTNAME = 'MyAccountPage.action.isInputFirstname',
-  INPUT_LASTNAME = 'MyAccountPage.action.isInputLastname',
   INPUT_EMAIL = 'MyAccountPage.action.isInputEmail',
   INPUT_CURRENT_PASSWORD = 'MyAccountPage.action.isInputCurrentPassword',
   INPUT_NEW_PASSWORD = 'MyAccountPage.action.isInputNewPassword',
@@ -35,8 +34,6 @@ const MyAccountPage: React.FunctionComponent<MyAccountPagePageProps> = ({
   const client = useClient()
 
   const [userConnected, setUserConnected] = useState<User>()
-  const [firstname, setFirstname] = useState('')
-  const [lastname, setLastname] = useState('')
   const [email, setEmail] = useState('')
   const [currentPassword, setCurrentPassword] = useState('')
   const [newPassword, setNewPassword] = useState('')
@@ -51,43 +48,43 @@ const MyAccountPage: React.FunctionComponent<MyAccountPagePageProps> = ({
     useState(false)
   const [errorRemoveAccount, setErrorRemoveAccount] = useState('')
 
-  function handleFirstname(newFirstname: string) {
-    setFirstname(newFirstname)
-  }
-  function handleLastname(newLastname: string) {
-    setLastname(newLastname)
-  }
   function handleEmail(newEmail: string) {
+    setHaventErrorInformation(false)
+    setErrorInformation('')
     setEmail(newEmail)
   }
 
   function handleCurrentPassword(password: string) {
+    setHaventErrorPassword(false)
+    setErrorPassword('')
     setCurrentPassword(password)
   }
 
   function handleNewPassword(password: string) {
+    setHaventErrorPassword(false)
+    setErrorPassword('')
     setNewPassword(password)
   }
 
   function handleConfirmNewPassword(password: string) {
+    setHaventErrorPassword(false)
+    setErrorPassword('')
     setConfirmNewPassword(password)
   }
 
   function handleDeletePassword(password: string) {
+    setHaventErrorRemoveAccount(false)
+    setErrorRemoveAccount('')
     setDeletePassword(password)
   }
   function handleRemoveAccount(confirmation: string) {
+    setHaventErrorRemoveAccount(false)
+    setErrorRemoveAccount('')
     setRemoveAccount(confirmation)
   }
 
   function showErrorInformation(error: UpdateUserError) {
     switch (error) {
-      case UnprocessableContent.emptyFirstname:
-        setErrorInformation('Firstname is empty')
-        break
-      case UnprocessableContent.emptyLastname:
-        setErrorInformation('Lastname is empty')
-        break
       case UnprocessableContent.emptyEmail:
         setErrorInformation('Email is empty')
         break
@@ -122,16 +119,14 @@ const MyAccountPage: React.FunctionComponent<MyAccountPagePageProps> = ({
   useEffect(() => {
     async function fetchData() {
       if (!client) return
-      const id_user: number = Number(localStorage.getItem('user_id'))
-      const { user, error } = await client?.findUser(id_user)
-      if (error) console.log(error)
+      const { user, error } = await client?.findUserByToken()
+      if (error) return
       if (user !== null) {
-        setUserConnected(user)
-        setFirstname(user.firstname)
-        setLastname(user.lastname)
-        setEmail(user.email)
+        unstable_batchedUpdates(() => {
+          setUserConnected(user)
+          setEmail(user.email)
+        })
       }
-      console.log(userConnected)
     }
     fetchData()
   }, [client])
@@ -141,12 +136,8 @@ const MyAccountPage: React.FunctionComponent<MyAccountPagePageProps> = ({
     if (userConnected == null) return
     try {
       const { user, error } = await client.updateUser(
-        userConnected.id,
-        firstname,
-        lastname,
         email,
-        userConnected.password,
-        userConnected.isAdmin
+        userConnected.password
       )
       if (error !== null) {
         setHaventErrorInformation(false)
@@ -164,13 +155,15 @@ const MyAccountPage: React.FunctionComponent<MyAccountPagePageProps> = ({
     if (!client) return
     if (userConnected == null) return
     if (newPassword !== confirmNewPassword) {
-      setHaventErrorPassword(false)
-      setErrorPassword('Confirmation is different with New password')
+      unstable_batchedUpdates(() => {
+        setHaventErrorPassword(false)
+        setErrorPassword('Confirmation is different with New password')
+      })
+
       return
     }
     try {
       const { user, error } = await client.updatePasswordUser(
-        userConnected.id,
         currentPassword,
         newPassword
       )
@@ -179,10 +172,13 @@ const MyAccountPage: React.FunctionComponent<MyAccountPagePageProps> = ({
         showErrorPassword(error)
         return
       }
-      setHaventErrorPassword(true)
-      setCurrentPassword('')
-      setNewPassword('')
-      setConfirmNewPassword('')
+      unstable_batchedUpdates(() => {
+        setHaventErrorPassword(true)
+        setCurrentPassword('')
+        setNewPassword('')
+        setConfirmNewPassword('')
+      })
+
       return user
     } catch (err) {
       throw err
@@ -197,7 +193,7 @@ const MyAccountPage: React.FunctionComponent<MyAccountPagePageProps> = ({
       return
     }
     try {
-      const error = await client.deleteUser(userConnected.id, deletePassword)
+      const error = await client.deleteUser(deletePassword)
       if (error.error === null) {
         localStorage.clear()
         onLogout()
@@ -215,20 +211,6 @@ const MyAccountPage: React.FunctionComponent<MyAccountPagePageProps> = ({
       <div className={'myAccountPage'}>
         <div className={'modifyInfos'}>
           <label>Edit my information</label>
-          <InputText
-            libelle={'Firstname'}
-            value={firstname}
-            onChange={handleFirstname}
-            id={'firstname-input'}
-            data-testid={MyAccountPageTestIds.INPUT_FIRSTNAME}
-          />
-          <InputText
-            libelle={'Lastname'}
-            value={lastname}
-            onChange={handleLastname}
-            id={'lastname-input'}
-            data-testid={MyAccountPageTestIds.INPUT_LASTNAME}
-          />
           <InputText
             libelle={'Email'}
             value={email}

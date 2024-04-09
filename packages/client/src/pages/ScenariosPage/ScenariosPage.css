@@ -1,0 +1,8 @@
+.myScenariosPage {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  margin: 1%;
+  margin-left: 5%;
+  margin-right: 5%;
+}

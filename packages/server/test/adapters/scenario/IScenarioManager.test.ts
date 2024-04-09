@@ -13,6 +13,7 @@ import {
 } from '../../makeTestAdapters'
 import { clearMemoryDb, clearProductionDb } from '../../clearDb'
 import IUserManager from '../../../api/adapters/user/IUserManager'
+import { Sort } from '@smartesting/shared/src'
 
 const IScenarioContractTest: IContractTest = (
   implementationName,
@@ -126,24 +127,6 @@ const IScenarioContractTest: IContractTest = (
       })
     })
 
-    describe('listScenarios', () => {
-      it('returns all scenarios', async () => {
-        const scenario1 = await scenarioManager.createScenario(
-          validScenarioAttributes,
-          user.id
-        )
-        const scenario2 = await scenarioManager.createScenario(
-          secondScenarioAttributes,
-          user2.id
-        )
-
-        assert.deepEqual(await scenarioManager.listScenarios(), [
-          scenario1,
-          scenario2,
-        ])
-      })
-    })
-
     describe('deleteScenario', () => {
       it('remove a specific scenario', async () => {
         const scenario1 = await scenarioManager.createScenario(
@@ -152,17 +135,19 @@ const IScenarioContractTest: IContractTest = (
         )
         const scenario2 = await scenarioManager.createScenario(
           secondScenarioAttributes,
-          user2.id
+          user.id
         )
 
-        assert.deepEqual(await scenarioManager.listScenarios(), [
+        assert.deepEqual(await scenarioManager.listUserScenario(user.id), [
           scenario1,
           scenario2,
         ])
 
         await scenarioManager.deleteScenario(scenario1.id)
 
-        assert.deepEqual(await scenarioManager.listScenarios(), [scenario2])
+        assert.deepEqual(await scenarioManager.listUserScenario(user.id), [
+          scenario2,
+        ])
       })
     })
 
@@ -181,6 +166,88 @@ const IScenarioContractTest: IContractTest = (
           scenario1,
           scenario2,
         ])
+      })
+
+      it('returns all scenarios of user with filter searchbar', async () => {
+        const scenario1 = await scenarioManager.createScenario(
+          validScenarioAttributes,
+          user.id
+        )
+        const scenario2 = await scenarioManager.createScenario(
+          secondScenarioAttributes,
+          user.id
+        )
+
+        assert.deepEqual(
+          await scenarioManager.listUserScenario(user.id, 'cut'),
+          [scenario2]
+        )
+      })
+
+      it('returns all scenarios of user with filter dates', async () => {
+        const scenario1 = await scenarioManager.createScenario(
+          validScenarioAttributes,
+          user.id
+        )
+        const scenario2 = await scenarioManager.createScenario(
+          secondScenarioAttributes,
+          user.id
+        )
+
+        assert.deepEqual(
+          await scenarioManager.listUserScenario(
+            user.id,
+            undefined,
+            scenario1.updatedAt.toISOString(),
+            scenario2.updatedAt.toISOString()
+          ),
+          [scenario1, scenario2]
+        )
+      })
+
+      it('returns all scenarios of user with filter options alteration', async () => {
+        const scenario1 = await scenarioManager.createScenario(
+          validScenarioAttributes,
+          user.id
+        )
+        const scenario2 = await scenarioManager.createScenario(
+          secondScenarioAttributes,
+          user.id
+        )
+
+        assert.deepEqual(
+          await scenarioManager.listUserScenario(
+            user.id,
+            undefined,
+            undefined,
+            undefined,
+            secondScenarioAttributes.options
+          ),
+          [scenario2]
+        )
+      })
+
+      it('returns all scenarios of user with sort', async () => {
+        const scenario1 = await scenarioManager.createScenario(
+          validScenarioAttributes,
+          user.id
+        )
+        const scenario2 = await scenarioManager.createScenario(
+          secondScenarioAttributes,
+          user.id
+        )
+
+        assert.deepEqual(
+          await scenarioManager.listUserScenario(
+            user.id,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            Sort.antialphabeticalOrder
+          ),
+          [scenario2, scenario1]
+        )
       })
     })
   })

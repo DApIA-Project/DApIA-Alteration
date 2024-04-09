@@ -1,16 +1,21 @@
 {
   "name": "client",
-  "version": "0.29",
+  "engines": {
+    "node": "16.15.0",
+    "npm": "8.5.5"
+  },
+  "version": "0.31",
   "private": true,
   "type": "commonjs",
   "scripts": {
     "start": "react-scripts start",
+    "serve": "serve -s build",
     "build": "react-scripts build",
     "tsc": "tsc",
     "watch": "tsc --watch",
     "test": "react-scripts test --watchAll=false",
     "eject": "react-scripts eject",
-    "preinstall": "cd ../alteration-scenario && npm i && npm run build"
+    "preinstall": "cd ../alteration-scenario && npm i && npm run build-production"
   },
   "dependencies": {
     "@emotion/react": "^11.11.1",
@@ -21,12 +26,14 @@
     "@mui/icons-material": "^5.13.7",
     "@mui/joy": "^5.0.0-alpha.86",
     "@mui/material": "^5.11.15",
+    "@mui/x-date-pickers": "^6.19.7",
     "@smartesting/alteration-scenario": "file:../alteration-scenario",
     "@smartesting/shared": "file:../shared",
     "@testing-library/jest-dom": "^5.16.5",
     "@types/node": "^16.18.12",
     "@types/react": "^18.0.27",
     "@types/react-dom": "^18.0.10",
+    "dayjs": "^1.11.10",
     "eslint-config-react-app": "^7.0.1",
     "monaco-editor": "^0.39.0",
     "react": "^18.2.0",
@@ -37,7 +44,8 @@
     "vscode-languageserver": "^8.1.0",
     "vscode-languageserver-types": "^3.17.5",
     "vscode-uri": "^3.0.2",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "serve": "^14.2.1 "
   },
   "devDependencies": {
     "@testing-library/react": "^14.0.0",

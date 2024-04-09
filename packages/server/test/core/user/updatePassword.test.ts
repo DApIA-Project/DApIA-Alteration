@@ -10,11 +10,8 @@ import bcrypt from 'bcryptjs'
 describe('core/user/update', () => {
   let userManager: IUserManager
   const validUserAttributes: UserAttributes = {
-    firstname: 'Bob',
-    lastname: 'Dupont',
     email: 'bob.dupont@mail.fr',
     password: 's3cret!',
-    isAdmin: false,
   }
 
   beforeEach(async () => {
@@ -67,7 +64,7 @@ describe('core/user/update', () => {
     assert.strictEqual(updatedError, null)
     assert(updatedUser)
 
-    const existing = await userManager.findUser(updatedUser.id)
+    const existing = await userManager.findUserByToken(createdUser.token)
     assert(await bcrypt.compare('newPassword', <string>existing?.password))
   })
 
@@ -91,7 +88,7 @@ describe('core/user/update', () => {
     assert.strictEqual(updatedError, null)
     assert(updatedUser)
 
-    const existing = await userManager.findUser(updatedUser.id)
+    const existing = await userManager.findUserByToken(createdUser.token)
     assert(
       await bcrypt.compare('   newPassword   ', <string>existing?.password)
     )

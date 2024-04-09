@@ -10,11 +10,8 @@ import { OptionsAlteration } from '@smartesting/shared/dist/models'
 describe('core/user/update', () => {
   let userManager: IUserManager
   const validUserAttributes: UserAttributes = {
-    firstname: 'Bob',
-    lastname: 'Dupont',
     email: 'bob.dupont@mail.fr',
     password: 's3cret!',
-    isAdmin: false,
   }
 
   beforeEach(async () => {
@@ -24,52 +21,6 @@ describe('core/user/update', () => {
 
   afterEach(async () => {
     await clearDb()
-  })
-
-  it('requires a non-blank firstname for the user', async () => {
-    const { user: createdUser } = await create(
-      {
-        ...validUserAttributes,
-      },
-      userManager
-    )
-
-    assert(createdUser)
-
-    const { user: updatedUser, error: updatedError } = await updateUser(
-      createdUser.id,
-      '  ',
-      createdUser.lastname,
-      createdUser.email,
-      createdUser.isAdmin,
-      userManager
-    )
-
-    assert.strictEqual(updatedUser, null)
-    assert.strictEqual(updatedError, UpdateUserError.emptyFirstname)
-  })
-
-  it('requires a non-blank lastname for the user', async () => {
-    const { user: createdUser } = await create(
-      {
-        ...validUserAttributes,
-      },
-      userManager
-    )
-
-    assert(createdUser)
-
-    const { user: updatedUser, error: updatedError } = await updateUser(
-      createdUser.id,
-      createdUser.firstname,
-      '     ',
-      createdUser.email,
-      createdUser.isAdmin,
-      userManager
-    )
-
-    assert.strictEqual(updatedUser, null)
-    assert.strictEqual(updatedError, UpdateUserError.emptyLastname)
   })
 
   it('requires a non-blank email for the user', async () => {
@@ -84,10 +35,7 @@ describe('core/user/update', () => {
 
     const { user: updatedUser, error: updatedError } = await updateUser(
       createdUser.id,
-      createdUser.firstname,
-      createdUser.lastname,
       '     ',
-      createdUser.isAdmin,
       userManager
     )
 
@@ -107,19 +55,14 @@ describe('core/user/update', () => {
 
     const { user: updatedUser, error: updatedError } = await updateUser(
       createdUser.id,
-      'Charlie',
-      'Stone',
       'charlie.stone@mail.fr',
-      true,
       userManager
     )
 
     assert.strictEqual(updatedError, null)
     assert(updatedUser)
 
-    const existing = await userManager.findUser(updatedUser.id)
-    assert.deepStrictEqual(updatedUser.firstname, existing?.firstname)
-    assert.deepStrictEqual(updatedUser.lastname, existing?.lastname)
+    const existing = await userManager.findUserByToken(createdUser.token)
     assert.deepStrictEqual(updatedUser.email, existing?.email)
   })
 
@@ -135,19 +78,14 @@ describe('core/user/update', () => {
 
     const { user: updatedUser, error: updatedError } = await updateUser(
       createdUser.id,
-      '  Charlie  ',
-      '  Stone  ',
       '   charlie.stone@mail.fr   ',
-      createdUser.isAdmin,
       userManager
     )
 
     assert.strictEqual(updatedError, null)
     assert(updatedUser)
 
-    const existing = await userManager.findUser(updatedUser.id)
-    assert.strictEqual(existing?.firstname, 'Charlie')
-    assert.strictEqual(existing?.lastname, 'Stone')
+    const existing = await userManager.findUserByToken(createdUser.token)
     assert.strictEqual(existing?.email, 'charlie.stone@mail.fr')
   })
 })

@@ -18,11 +18,8 @@ describe('core/scenario/create', () => {
     scenarioManager = adapters.scenarioManager
     userManager = adapters.userManager
     user = await userManager.createUser({
-      firstname: 'Bob',
-      lastname: 'Dupont',
       email: 'bob.dupont@mail.fr',
       password: 's3cret!',
-      isAdmin: false,
     })
 
     if (user) {

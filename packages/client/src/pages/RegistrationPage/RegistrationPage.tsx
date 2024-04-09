@@ -10,8 +10,14 @@ import {
   UnprocessableContent,
 } from '@smartesting/shared/dist/responses/responseError'
 
+export enum RegistrationPageTestIds {
+  INPUT_EMAIL = 'InputEmail',
+  INPUT_PASSWORD = 'InputPassword',
+  INPUT_CONFIRM_PASSWORD = 'InputConfirmPassword',
+}
+
 type RegistrationPageProps = {
-  onLogin: (user_id: number) => void
+  onLogin: (user_token: string) => void
 }
 
 const RegistrationPage: React.FunctionComponent<RegistrationPageProps> = ({
@@ -19,8 +25,6 @@ const RegistrationPage: React.FunctionComponent<RegistrationPageProps> = ({
 }) => {
   const client = useClient()
 
-  const [firstname, setFirstname] = useState('')
-  const [lastname, setLastname] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
@@ -28,12 +32,6 @@ const RegistrationPage: React.FunctionComponent<RegistrationPageProps> = ({
 
   function showErrorRegister(error: CreateUserError) {
     switch (error) {
-      case UnprocessableContent.emptyFirstname:
-        setErrorRegister('Firstname is empty')
-        break
-      case UnprocessableContent.emptyLastname:
-        setErrorRegister('Lastname is empty')
-        break
       case UnprocessableContent.emptyEmail:
         setErrorRegister('Email is empty')
         break
@@ -53,30 +51,18 @@ const RegistrationPage: React.FunctionComponent<RegistrationPageProps> = ({
     }
 
     try {
-      const { user, error } = await client.createUser(
-        firstname,
-        lastname,
-        email,
-        password
-      )
+      const { user, error } = await client.createUser(email, password)
       if (error) {
         showErrorRegister(error)
         return
       }
 
-      if (user) onLogin(user?.id)
+      if (user) onLogin(user?.token)
 
       return user
     } catch (err) {
       throw err
     }
-  }
-
-  function handleFirstname(newFirstname: string) {
-    setFirstname(newFirstname)
-  }
-  function handleLastname(newLastname: string) {
-    setLastname(newLastname)
   }
 
   function handleEmail(newEmail: string) {
@@ -100,25 +86,12 @@ const RegistrationPage: React.FunctionComponent<RegistrationPageProps> = ({
         </div>
         <div className={'allInputText'}>
           <InputText
-            libelle={'Firstname'}
-            value={firstname}
-            id={'firstname-input'}
-            onChange={handleFirstname}
-            onSubmit={handleSubmit}
-          />
-          <InputText
-            libelle={'Lastname'}
-            value={lastname}
-            onChange={handleLastname}
-            id={'lastname-input'}
-            onSubmit={handleSubmit}
-          />
-          <InputText
             libelle={'Email'}
             value={email}
             onChange={handleEmail}
             id={'email-input'}
             onSubmit={handleSubmit}
+            data-testid={RegistrationPageTestIds.INPUT_EMAIL}
           />
           <InputText
             libelle={'Password'}
@@ -127,6 +100,7 @@ const RegistrationPage: React.FunctionComponent<RegistrationPageProps> = ({
             isPassword={true}
             id={'password-input'}
             onSubmit={handleSubmit}
+            data-testid={RegistrationPageTestIds.INPUT_PASSWORD}
           />
           <InputText
             libelle={'Confirm Password'}
@@ -135,10 +109,11 @@ const RegistrationPage: React.FunctionComponent<RegistrationPageProps> = ({
             isPassword={true}
             id={'confirmPassword-input'}
             onSubmit={handleSubmit}
+            data-testid={RegistrationPageTestIds.INPUT_CONFIRM_PASSWORD}
           />
         </div>
         <div className={'submitZone'}>
-          <a href={'http://localhost:3000/connection'}>Sign in ?</a>
+          <a href={'/connection'}>Sign in ?</a>
           <Button
             text={'Sign up'}
             onClick={handleSubmit}

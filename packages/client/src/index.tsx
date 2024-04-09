@@ -11,6 +11,7 @@ import RegistrationPage from './pages/RegistrationPage/RegistrationPage'
 import { unstable_batchedUpdates } from 'react-dom'
 import ConnectionPage from './pages/ConnectionPage/ConnectionPage'
 import MyAccountPage from './pages/MyAccountPage/MyAccountPage'
+import ScenariosPage from './pages/ScenariosPage/ScenariosPage'
 
 const AuthContext = React.createContext<boolean>(false)
 
@@ -21,9 +22,9 @@ const App: React.FC = () => {
     setIsAuthenticated(value)
   }
 
-  const handleLogin = (user_id: number) => {
+  const handleLogin = (user_token: string) => {
     unstable_batchedUpdates(() => {
-      localStorage.setItem('user_id', user_id.toString())
+      localStorage.setItem('userToken', user_token)
       setAuth(true)
     })
   }
@@ -34,7 +35,7 @@ const App: React.FC = () => {
   }
 
   useEffect(() => {
-    if (localStorage.getItem('user_id') !== null) {
+    if (localStorage.getItem('userToken') !== null) {
       setAuth(true)
     }
   }, [isAuthenticated])
@@ -84,7 +85,7 @@ const App: React.FC = () => {
                 />
               )}
               {isAuthenticated && (
-                <Route path='/' element={<ScenarioEditorPage />} />
+                <Route path='/' element={<ScenariosPage />} />
               )}
               {isAuthenticated && (
                 <Route path='/documentation' element={<DocumentationPage />} />
@@ -93,6 +94,13 @@ const App: React.FC = () => {
                 <Route
                   path='/my-account'
                   element={<MyAccountPage onLogout={handleLogout} />}
+                />
+              )}
+
+              {isAuthenticated && (
+                <Route
+                  path='/edit-scenario/:id?'
+                  element={<ScenarioEditorPage />}
                 />
               )}
             </Routes>

@@ -4,7 +4,7 @@ import {
   Scenario,
   ScenarioAttributes,
 } from '@smartesting/shared/dist/models/Scenario'
-import { ArrayMultimap } from '@teppeis/multimaps'
+import { OptionsAlteration, Sort } from '@smartesting/shared/dist/index'
 
 export default class MemoryScenarioManager implements IScenarioManager {
   constructor(
@@ -54,12 +54,16 @@ export default class MemoryScenarioManager implements IScenarioManager {
     return scenario || null
   }
 
-  async listScenarios(): Promise<ReadonlyArray<Scenario>> {
-    return Array.from(this.scenariosById.values())
-  }
-
-  async listUserScenario(userId: number): Promise<ReadonlyArray<Scenario>> {
+  async listUserScenario(
+    userId: number,
+    searchBar?: string,
+    startDate?: string,
+    endDate?: string,
+    optionsAlteration?: OptionsAlteration,
+    sort?: string
+  ): Promise<ReadonlyArray<Scenario>> {
     const scenarios: Scenario[] = []
+    const filteredScenarios: Scenario[] = []
     for (const [
       scenarioId,
       storedUserId,
@@ -67,10 +71,74 @@ export default class MemoryScenarioManager implements IScenarioManager {
       if (storedUserId === userId) {
         let scenario = this.scenariosById.get(scenarioId)
         if (scenario !== undefined) {
-          scenarios.push(scenario)
+          let isMatched = true
+
+          if (
+            searchBar &&
+            !scenario.name.toLowerCase().includes(searchBar.toLowerCase()) &&
+            !scenario.text.toLowerCase().includes(searchBar.toLowerCase())
+          ) {
+            isMatched = false
+          }
+
+          if (startDate && endDate) {
+            const scenarioDate = new Date(scenario.updatedAt)
+            const start = new Date(startDate)
+            const end = new Date(endDate)
+            if (!(scenarioDate >= start && scenarioDate <= end)) {
+              isMatched = false
+            }
+          }
+
+          if (optionsAlteration) {
+            if (
+              optionsAlteration.haveLabel !== scenario.options.haveLabel ||
+              optionsAlteration.haveRealism !== scenario.options.haveRealism ||
+              optionsAlteration.haveNoise !== scenario.options.haveNoise ||
+              optionsAlteration.haveDisableLatitude !==
+                scenario.options.haveDisableLatitude ||
+              optionsAlteration.haveDisableLongitude !==
+                scenario.options.haveDisableLongitude ||
+              optionsAlteration.haveDisableAltitude !==
+                scenario.options.haveDisableAltitude
+            ) {
+              isMatched = false
+            }
+          }
+
+          if (isMatched) {
+            scenarios.push(scenario)
+          }
         }
       }
     }
-    return scenarios
+
+    if (sort === Sort.dateDescending) {
+      filteredScenarios.push(
+        ...scenarios.sort(
+          (a, b) =>
+            new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+        )
+      )
+    } else if (sort === Sort.dateAscending) {
+      filteredScenarios.push(
+        ...scenarios.sort(
+          (a, b) =>
+            new Date(a.updatedAt).getTime() - new Date(b.updatedAt).getTime()
+        )
+      )
+    } else if (sort === Sort.alphabeticalOrder) {
+      filteredScenarios.push(
+        ...scenarios.sort((a, b) => a.name.localeCompare(b.name))
+      )
+    } else if (sort === Sort.antialphabeticalOrder) {
+      filteredScenarios.push(
+        ...scenarios.sort((a, b) => b.name.localeCompare(a.name))
+      )
+    } else {
+      filteredScenarios.push(...scenarios)
+    }
+
+    return filteredScenarios
   }
 }

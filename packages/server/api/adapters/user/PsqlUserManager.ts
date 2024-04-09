@@ -4,11 +4,13 @@ import { User, UserAttributes } from '@smartesting/shared/dist/models/User'
 import { InferCreationAttributes } from 'sequelize'
 import hashPassword from './hashPassword'
 import { comparePassword } from '../../utils/user'
+import { uuid } from '@smartesting/shared/dist/uuid/uuid'
 
 export default class PsqlUserManager implements IUserManager {
   async createUser(user: UserAttributes): Promise<User> {
     const userModel = await UserModel.create({
       ...user,
+      token: uuid(),
       password: await hashPassword(user.password),
       createdAt: new Date(),
       updatedAt: new Date(),
@@ -64,6 +66,16 @@ export default class PsqlUserManager implements IUserManager {
     return userModelToUser(userModel)
   }
 
+  async findUserByToken(token: string): Promise<User | null> {
+    const userModel = await UserModel.findOne({
+      where: {
+        token: token,
+      },
+    })
+    if (!userModel) return null
+    return userModelToUser(userModel)
+  }
+
   async updatePassword(
     userId: number,
     password: string,
@@ -99,7 +111,18 @@ export default class PsqlUserManager implements IUserManager {
     if (user !== null) {
       const [pass, error] = await comparePassword(user, password)
       if (pass) {
-        return user
+        const userModel = await UserModel.findOne({
+          where: {
+            token: user.token,
+          },
+        })
+        if (!userModel) {
+          return null
+        }
+        await userModel.update({
+          token: uuid(),
+        })
+        return userModelToUser(userModel)
       } else {
         return null
       }
@@ -110,24 +133,13 @@ export default class PsqlUserManager implements IUserManager {
 }
 
 function userModelToUser(userModel: UserModel): User {
-  const {
-    id,
-    firstname,
-    lastname,
-    email,
-    password,
-    isAdmin,
-    createdAt,
-    updatedAt,
-  } = userModel
+  const { id, email, password, token, createdAt, updatedAt } = userModel
 
   return {
     id: Number(id),
-    firstname,
-    lastname,
     email,
     password,
-    isAdmin,
+    token,
     createdAt,
     updatedAt,
   }
@@ -137,11 +149,7 @@ function userAttributesToUserModelAttributes(
   updatedData: Partial<UserAttributes>
 ): Partial<InferCreationAttributes<UserModel>> {
   const userModelAttributes: Partial<InferCreationAttributes<UserModel>> = {}
-  if (updatedData.firstname)
-    userModelAttributes.firstname = updatedData.firstname
-  if (updatedData.lastname) userModelAttributes.lastname = updatedData.lastname
   if (updatedData.email) userModelAttributes.email = updatedData.email
   if (updatedData.password) userModelAttributes.password = updatedData.password
-  userModelAttributes.isAdmin = updatedData.isAdmin
   return userModelAttributes
 }

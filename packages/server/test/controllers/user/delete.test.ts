@@ -7,8 +7,9 @@ import { DeleteUserError } from '@smartesting/shared/dist/responses/deleteUser'
 import makeTestAdapters from '../../makeTestAdapters'
 import { OptionsAlteration } from '@smartesting/shared/dist/index'
 import { clearDb } from '../../clearDb'
+import { uuid } from '@smartesting/shared/dist/uuid/uuid'
 
-describe(`POST ${ApiRoutes.deleteUser()}`, () => {
+describe(`DELETE ${ApiRoutes.users()}`, () => {
   let server: express.Express
 
   beforeEach(() => {
@@ -20,24 +21,22 @@ describe(`POST ${ApiRoutes.deleteUser()}`, () => {
   })
 
   const validUserAttributes = {
-    firstname: 'Bob',
-    lastname: 'Dupont',
     email: 'bob.dupont@mail.fr',
     password: 's3cret',
-    isAdmin: false,
   }
 
   context('when user exists and is removed', () => {
     it('returns 201 when user is removed', async () => {
       const responseCreate = await request(server)
-        .post(ApiRoutes.createUser())
+        .post(ApiRoutes.users())
         .send(validUserAttributes)
 
       const user = responseCreate.body.user
 
       const response = await request(server)
-        .post(ApiRoutes.deleteUser())
-        .send({ id: user.id, password: validUserAttributes.password })
+        .delete(ApiRoutes.users())
+        .set('userToken', user.token)
+        .send({ password: validUserAttributes.password })
 
       const error = response.body.error
       assert.deepStrictEqual(error, null)
@@ -45,31 +44,17 @@ describe(`POST ${ApiRoutes.deleteUser()}`, () => {
   })
 
   context('when user not exists and can not be removed', () => {
-    it('returns 422 when user not exists', async () => {
+    it('returns 422 when user not exists, id is undefined', async () => {
       const responseCreate = await request(server)
-        .post(ApiRoutes.createUser())
+        .post(ApiRoutes.users())
         .send(validUserAttributes)
 
       const user = responseCreate.body.user
 
       const response = await request(server)
-        .post(ApiRoutes.deleteUser())
-        .send({ id: 31, password: validUserAttributes.password })
-
-      const error = response.body.error
-      assert.deepStrictEqual(error, DeleteUserError.userNotFound)
-    })
-
-    it('returns 422 when user id is bad type', async () => {
-      const responseCreate = await request(server)
-        .post(ApiRoutes.createUser())
-        .send(validUserAttributes)
-
-      const user = responseCreate.body.user
-
-      const response = await request(server)
-        .post(ApiRoutes.deleteUser())
-        .send({ id: String(user.id), password: validUserAttributes.password })
+        .delete(ApiRoutes.users())
+        .set('userToken', uuid())
+        .send({ password: validUserAttributes.password })
 
       const error = response.body.error
       assert.deepStrictEqual(error, DeleteUserError.idBadType)

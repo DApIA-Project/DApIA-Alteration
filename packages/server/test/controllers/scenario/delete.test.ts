@@ -8,10 +8,10 @@ import makeTestAdapters from '../../makeTestAdapters'
 import { OptionsAlteration } from '@smartesting/shared/dist/index'
 import { clearDb } from '../../clearDb'
 
-describe(`POST ${ApiRoutes.deleteScenario()}`, () => {
+describe(`DELETE ${ApiRoutes.scenarios()}`, () => {
   let server: express.Express
 
-  beforeEach(() => {
+  beforeEach(async () => {
     server = setupExpress(makeTestAdapters())
   })
 
@@ -37,49 +37,49 @@ describe(`POST ${ApiRoutes.deleteScenario()}`, () => {
   context('when scenario exists and is removed', () => {
     it('returns 201 when scenario is removed', async () => {
       const responseCreate = await request(server)
-        .post(ApiRoutes.createScenario())
+        .post(ApiRoutes.scenarios())
         .send(validScenarioAttributes)
 
       const scenario = responseCreate.body.scenario
 
       const response = await request(server)
-        .post(ApiRoutes.deleteScenario())
+        .delete(ApiRoutes.scenarios())
         .send({ id: scenario.id })
 
-      const error = response.body.error
-      assert.deepStrictEqual(error, null)
+      const errorDelete = response.body.error
+      assert.deepStrictEqual(errorDelete, null)
     })
   })
 
   context('when scenario not exists and can not be removed', () => {
     it('returns 422 when scenario not exists', async () => {
       const responseCreate = await request(server)
-        .post(ApiRoutes.createScenario())
+        .post(ApiRoutes.scenarios())
         .send(validScenarioAttributes)
 
       const scenario = responseCreate.body.scenario
 
       const response = await request(server)
-        .post(ApiRoutes.deleteScenario())
+        .delete(ApiRoutes.scenarios())
         .send({ id: 31 })
 
-      const error = response.body.error
-      assert.deepStrictEqual(error, DeleteScenarioError.scenarioNotFound)
+      const errorDelete = response.body.error
+      assert.deepStrictEqual(errorDelete, DeleteScenarioError.scenarioNotFound)
     })
 
     it('returns 422 when scenario id is bad type', async () => {
       const responseCreate = await request(server)
-        .post(ApiRoutes.createScenario())
+        .post(ApiRoutes.scenarios())
         .send(validScenarioAttributes)
 
       const scenario = responseCreate.body.scenario
 
       const response = await request(server)
-        .post(ApiRoutes.deleteScenario())
+        .delete(ApiRoutes.scenarios())
         .send({ id: String(scenario.id) })
 
-      const error = response.body.error
-      assert.deepStrictEqual(error, DeleteScenarioError.idBadType)
+      const errorDelete = response.body.error
+      assert.deepStrictEqual(errorDelete, DeleteScenarioError.idBadType)
     })
   })
 })

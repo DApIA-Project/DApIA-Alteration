@@ -38,3 +38,11 @@ export enum FileFormat {
   ndjson = 'ndjson',
   auto = 'auto',
 }
+
+export enum Sort {
+  noSort = 'noSort',
+  dateDescending = 'dateDescending',
+  dateAscending = 'dateAscending',
+  alphabeticalOrder = 'alphabeticalOrder',
+  antialphabeticalOrder = 'antialphabeticalOrder',
+}

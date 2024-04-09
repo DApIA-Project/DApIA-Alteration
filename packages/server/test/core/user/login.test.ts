@@ -11,11 +11,8 @@ import login from '../../../api/core/user/login'
 describe('core/user/login', () => {
   let userManager: IUserManager
   const validUserAttributes: UserAttributes = {
-    firstname: 'Bob',
-    lastname: 'Dupont',
     email: 'bob.dupont@mail.fr',
     password: 's3cret!',
-    isAdmin: false,
   }
 
   beforeEach(async () => {
@@ -86,9 +83,7 @@ describe('core/user/login', () => {
     assert.strictEqual(logError, null)
     assert(logUser)
 
-    const existing = await userManager.findUser(logUser.id)
-    assert.deepStrictEqual(logUser.firstname, existing?.firstname)
-    assert.deepStrictEqual(logUser.lastname, existing?.lastname)
+    const existing = await userManager.findUserByToken(logUser.token)
     assert.deepStrictEqual(logUser.email, existing?.email)
   })
 })

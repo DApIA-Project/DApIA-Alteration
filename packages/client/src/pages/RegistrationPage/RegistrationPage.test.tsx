@@ -1,20 +1,19 @@
 import React from 'react'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import RegistrationPage from './RegistrationPage'
+import RegistrationPage, { RegistrationPageTestIds } from './RegistrationPage'
 import Client from '../../Client'
 import { mockUseClient } from '../../mocks/mockUseClient'
 import { User } from '@smartesting/shared/dist/models/User'
 import { CreateUserError } from '@smartesting/shared/dist/responses/createUser'
+import { uuid } from '@smartesting/shared/dist/uuid/uuid'
 
 describe('RegistrationPage', () => {
   let user: User = {
     id: 0,
-    firstname: 'bob',
-    lastname: 'dupont',
     email: 'bob.dupont@mail.fr',
     password: 'password',
-    isAdmin: false,
+    token: uuid(),
     createdAt: new Date(),
     updatedAt: new Date(),
   }
@@ -34,12 +33,43 @@ describe('RegistrationPage', () => {
   it('renders registration form', async () => {
     render(<RegistrationPage onLogin={() => {}} />)
 
-    expect(screen.getByLabelText('Firstname')).toBeInTheDocument()
-    expect(screen.getByLabelText('Lastname')).toBeInTheDocument()
     expect(screen.getByLabelText('Email')).toBeInTheDocument()
     expect(screen.getByLabelText('Password')).toBeInTheDocument()
     expect(screen.getByLabelText('Confirm Password')).toBeInTheDocument()
     expect(screen.getByText('Sign up')).toBeInTheDocument()
+  })
+
+  it('type in all fields and sign up', async () => {
+    jest.spyOn(client, 'createUser').mockReturnValue(
+      Promise.resolve({
+        error: null,
+        user: user,
+      })
+    )
+    render(<RegistrationPage onLogin={() => {}} />)
+
+    fireEvent.change(screen.getByTestId(RegistrationPageTestIds.INPUT_EMAIL), {
+      target: { value: 'bob.dupont@mail.fr' },
+    })
+
+    fireEvent.change(
+      screen.getByTestId(RegistrationPageTestIds.INPUT_PASSWORD),
+      { target: { value: 's3cret!' } }
+    )
+
+    fireEvent.change(
+      screen.getByTestId(RegistrationPageTestIds.INPUT_CONFIRM_PASSWORD),
+      { target: { value: 's3cret!' } }
+    )
+
+    await userEvent.click(screen.getByText('Sign up'))
+
+    await waitFor(() => {
+      expect(client.createUser).toHaveBeenCalledWith(
+        'bob.dupont@mail.fr',
+        's3cret!'
+      )
+    })
   })
 
   it('submits form with valid data', async () => {
@@ -57,14 +87,14 @@ describe('RegistrationPage', () => {
       expect(onLogin).toBeCalledTimes(1)
     })
     await waitFor(() => {
-      expect(onLogin).toBeCalledWith(0)
+      expect(onLogin).toBeCalledWith(user.token)
     })
   })
 
   it('submits form with invalid data', async () => {
     jest.spyOn(client, 'createUser').mockReturnValue(
       Promise.resolve({
-        error: CreateUserError.emptyFirstname,
+        error: CreateUserError.emptyEmail,
         user: null,
       })
     )

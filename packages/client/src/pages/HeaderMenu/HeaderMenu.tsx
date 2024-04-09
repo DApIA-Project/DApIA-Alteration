@@ -9,8 +9,9 @@ type HeaderMenuProps = {
 }
 
 export enum HeaderMenuTestIds {
-  NAVIGATION_ACCUEIL = 'HeaderMenu.action.isNavigationAccueil',
+  NAVIGATION_HOMEPAGE = 'HeaderMenu.action.isNavigationHomepage',
   NAVIGATION_DOCUMENTATION = 'HeaderMenu.action.isNavigationDocumentation',
+  NAVIGATION_EDITOR = 'HeaderMenu.action.isNavigationEditor',
   NAVIGATION_ACCOUNT = 'HeaderMenu.action.isNavigationAccount',
 }
 
@@ -27,9 +28,18 @@ const HeaderMenu: React.FunctionComponent<HeaderMenuProps> = ({ onLogout }) => {
             <NavLink
               className='navbar-item'
               to='/'
-              data-testid={HeaderMenuTestIds.NAVIGATION_ACCUEIL}
+              data-testid={HeaderMenuTestIds.NAVIGATION_HOMEPAGE}
             >
-              Accueil
+              Homepage
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              className='navbar-item'
+              to='/edit-scenario'
+              data-testid={HeaderMenuTestIds.NAVIGATION_EDITOR}
+            >
+              Editor
             </NavLink>
           </li>
           <li>

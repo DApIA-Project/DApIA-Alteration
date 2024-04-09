@@ -1,11 +1,6 @@
 import { DapiaAlterationResponse } from './dapiaAlterationResponse'
 import { User } from '../models/User'
-import {
-  Conflict,
-  NotFound,
-  Unauthorized,
-  UnprocessableContent,
-} from './responseError'
+import { Conflict, NotFound, UnprocessableContent } from './responseError'
 
 export type LoginUserResponse = DapiaAlterationResponse<
   { user: User | null },

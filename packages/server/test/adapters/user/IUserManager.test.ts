@@ -10,6 +10,7 @@ import {
 import { clearMemoryDb, clearProductionDb } from '../../clearDb'
 import hashPassword from '../../../api/adapters/user/hashPassword'
 import bcrypt from 'bcryptjs'
+import { uuid } from '@smartesting/shared/dist/uuid/uuid'
 
 const IUserContractTest: IContractTest = (
   implementationName,
@@ -21,19 +22,13 @@ const IUserContractTest: IContractTest = (
     let userManager: IUserManager
 
     const validUserAttributes: UserAttributes = {
-      firstname: 'Bob',
-      lastname: 'Dupont',
       email: 'bob.dupont2@mail.fr',
       password: 's3cret!',
-      isAdmin: false,
     }
 
     const secondUserAttributes: UserAttributes = {
-      firstname: 'Charlie',
-      lastname: 'Stone',
       email: 'charlie2.stone@mail.fr',
       password: 's3cret!',
-      isAdmin: true,
     }
 
     beforeEach(async () => {
@@ -49,8 +44,6 @@ const IUserContractTest: IContractTest = (
       it('returns the created user', async () => {
         const created = await userManager.createUser(validUserAttributes)
 
-        assert.deepStrictEqual(created.firstname, validUserAttributes.firstname)
-        assert.deepStrictEqual(created.lastname, validUserAttributes.lastname)
         assert.deepStrictEqual(created.email, validUserAttributes.email)
         assert.notEqual(created.password, validUserAttributes.password)
         assert(
@@ -64,13 +57,11 @@ const IUserContractTest: IContractTest = (
         const created = await userManager.createUser(validUserAttributes)
 
         const updated = await userManager.updateUser(created.id, {
-          firstname: 'Joe',
+          email: 'joe@example.fr',
         })
 
         assert(updated)
-        assert.deepStrictEqual(updated.firstname, 'Joe')
-        assert.deepStrictEqual(updated.lastname, validUserAttributes.lastname)
-        assert.deepStrictEqual(updated.email, validUserAttributes.email)
+        assert.deepStrictEqual(updated.email, 'joe@example.fr')
         assert.notEqual(updated.password, validUserAttributes.password)
         assert(
           await bcrypt.compare(validUserAttributes.password, updated.password)
@@ -149,17 +140,17 @@ const IUserContractTest: IContractTest = (
       })
     })
 
-    describe('findUser', () => {
-      it('find a specific user with id', async () => {
+    describe('findUserByToken', () => {
+      it('find a specific user with token', async () => {
         const user1 = await userManager.createUser(validUserAttributes)
         const user2 = await userManager.createUser(secondUserAttributes)
-        assert.deepEqual(await userManager.findUser(user1.id), user1)
+        assert.deepEqual(await userManager.findUserByToken(user1.token), user1)
       })
 
-      it('not find a specific user with no existing id', async () => {
+      it('not find a specific user with no existing email', async () => {
         await userManager.createUser(validUserAttributes)
         await userManager.createUser(secondUserAttributes)
-        assert.deepEqual(await userManager.findUser(88), null)
+        assert.deepEqual(await userManager.findUserByToken(uuid()), null)
       })
     })
 
@@ -167,12 +158,18 @@ const IUserContractTest: IContractTest = (
       it('user login with good email and good password', async () => {
         const user1 = await userManager.createUser(validUserAttributes)
         await userManager.createUser(secondUserAttributes)
+
+        const user1Logged = await userManager.login(
+          validUserAttributes.email,
+          validUserAttributes.password
+        )
         assert.deepEqual(
-          await userManager.login(
-            validUserAttributes.email,
-            validUserAttributes.password
-          ),
-          user1
+          {
+            ...user1,
+            token: user1Logged?.token,
+            updatedAt: user1Logged?.updatedAt,
+          },
+          user1Logged
         )
       })
 

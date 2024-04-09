@@ -10,6 +10,12 @@ import CodeIcon from '@mui/icons-material/Code'
 import { useNavigate } from 'react-router-dom'
 import { HeaderMenuTestIds } from '../HeaderMenu'
 
+export enum AccountMenuTestIds {
+  BUTTON_MY_ACCOUNT = 'ButtonMyAccount',
+  BUTTON_MY_SCENARIOS = 'ButtonMyScenarios',
+  BUTTON_LOG_OUT = 'ButtonLogout',
+}
+
 type AccountMenuProps = {
   onLogout: () => void
 }
@@ -18,7 +24,7 @@ const AccountMenu: React.FunctionComponent<AccountMenuProps> = ({
 }) => {
   const client = useClient()
   const navigate = useNavigate()
-  const [firstname, setFirstname] = useState<string>('')
+  const [email, setEmail] = useState<string>('')
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -32,13 +38,16 @@ const AccountMenu: React.FunctionComponent<AccountMenuProps> = ({
     navigate('/my-account')
   }
 
+  const handleGoToMyScenarios = () => {
+    navigate('/')
+  }
+
   useEffect(() => {
     async function fetchData() {
       if (!client) return
-      const id: number = Number(localStorage.getItem('user_id'))
-      const { user, error } = await client?.findUser(id)
+      const { user, error } = await client?.findUserByToken()
       if (error) console.log(error)
-      if (user !== null) setFirstname(user.firstname)
+      if (user !== null) setEmail(user.email)
     }
     fetchData()
   }, [client])
@@ -58,7 +67,7 @@ const AccountMenu: React.FunctionComponent<AccountMenuProps> = ({
           aria-expanded={open ? 'true' : undefined}
         >
           <Avatar sx={{ width: 32, height: 32 }}>
-            {firstname.charAt(0).toUpperCase()}
+            {email.charAt(0).toUpperCase()}
           </Avatar>
         </IconButton>
       </Tooltip>
@@ -97,17 +106,26 @@ const AccountMenu: React.FunctionComponent<AccountMenuProps> = ({
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
-        <MenuItem onClick={handleGoToMyAccount}>
+        <MenuItem
+          onClick={handleGoToMyAccount}
+          data-testid={AccountMenuTestIds.BUTTON_MY_ACCOUNT}
+        >
           <Avatar /> My account
         </MenuItem>
-        <MenuItem onClick={handleClose}>
+        <MenuItem
+          onClick={handleGoToMyScenarios}
+          data-testid={AccountMenuTestIds.BUTTON_MY_SCENARIOS}
+        >
           <ListItemIcon>
             <CodeIcon fontSize={'small'} />
           </ListItemIcon>
           My scenarios
         </MenuItem>
         <Divider />
-        <MenuItem onClick={onLogout}>
+        <MenuItem
+          onClick={onLogout}
+          data-testid={AccountMenuTestIds.BUTTON_LOG_OUT}
+        >
           <ListItemIcon>
             <Logout fontSize='small' />
           </ListItemIcon>

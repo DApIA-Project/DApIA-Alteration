@@ -4,7 +4,8 @@ import {
   Scenario,
   ScenarioAttributes,
 } from '@smartesting/shared/dist/models/Scenario'
-import { InferCreationAttributes } from 'sequelize'
+import { InferCreationAttributes, Op } from 'sequelize'
+import { OptionsAlteration, Sort } from '@smartesting/shared/dist/index'
 
 export default class PsqlScenarioManager implements IScenarioManager {
   async createScenario(
@@ -26,16 +27,69 @@ export default class PsqlScenarioManager implements IScenarioManager {
     await scenarioModel.destroy()
   }
 
-  async listScenarios(): Promise<ReadonlyArray<Scenario>> {
-    const scenarioModels = await ScenarioModel.findAll()
-    return scenarioModels.map(scenarioModelToScenario)
-  }
+  async listUserScenario(
+    user_id: number,
+    searchBar?: string,
+    startDate?: string,
+    endDate?: string,
+    optionsAlteration?: OptionsAlteration,
+    sort?: string
+  ): Promise<ReadonlyArray<Scenario>> {
+    let whereClause: any = { user_id }
+    let order: any = []
 
-  async listUserScenario(user_id: number): Promise<ReadonlyArray<Scenario>> {
+    if (searchBar) {
+      whereClause = {
+        ...whereClause,
+        [Op.or]: [
+          { name: { [Op.like]: `%${searchBar}%` } },
+          { text: { [Op.like]: `%${searchBar}%` } },
+        ],
+      }
+    }
+
+    if (startDate && endDate) {
+      whereClause = {
+        ...whereClause,
+        [Op.and]: [{ updated_at: { [Op.between]: [startDate, endDate] } }],
+      }
+    }
+
+    if (optionsAlteration) {
+      whereClause = {
+        ...whereClause,
+        [Op.and]: [
+          {
+            options: {
+              [Op.and]: [
+                { haveLabel: optionsAlteration.haveLabel },
+                { haveRealism: optionsAlteration.haveRealism },
+                { haveNoise: optionsAlteration.haveNoise },
+                { haveDisableLatitude: optionsAlteration.haveDisableLatitude },
+                {
+                  haveDisableLongitude: optionsAlteration.haveDisableLongitude,
+                },
+                { haveDisableAltitude: optionsAlteration.haveDisableAltitude },
+              ],
+            },
+          },
+        ],
+      }
+    }
+
+    if (sort === Sort.dateDescending) {
+      order.push(['updated_at', 'DESC'])
+    } else if (sort === Sort.dateAscending) {
+      order.push(['updated_at', 'ASC'])
+    } else if (sort === Sort.alphabeticalOrder) {
+      order.push(['name', 'ASC'])
+    } else if (sort === Sort.antialphabeticalOrder) {
+      order.push(['name', 'DESC'])
+    }
+
     const scenarioModels = await ScenarioModel.findAll({
-      where: {
-        user_id: user_id,
-      },
+      where: whereClause,
+      order: order,
     })
     return scenarioModels.map(scenarioModelToScenario)
   }
