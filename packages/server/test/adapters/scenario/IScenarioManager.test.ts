@@ -13,7 +13,7 @@ import {
 } from '../../makeTestAdapters'
 import { clearMemoryDb, clearProductionDb } from '../../clearDb'
 import IUserManager from '../../../api/adapters/user/IUserManager'
-import { Sort } from '@smartesting/shared/src'
+import { Sort } from '@smartesting/shared/dist'
 
 const IScenarioContractTest: IContractTest = (
   implementationName,
@@ -60,18 +60,12 @@ const IScenarioContractTest: IContractTest = (
       scenarioManager = adapters.scenarioManager
       userManager = adapters.userManager
       user = await userManager.createUser({
-        firstname: 'Bob',
-        lastname: 'Dupont',
         email: 'bob.dupont@mail.fr',
         password: 's3cret!',
-        isAdmin: false,
       })
       user2 = await userManager.createUser({
-        firstname: 'Charlie',
-        lastname: 'Stone',
         email: 'charlie.stone@mail.fr',
         password: 's3cret!',
-        isAdmin: false,
       })
     })
 

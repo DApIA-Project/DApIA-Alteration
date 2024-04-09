@@ -1,7 +1,7 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
 import AlterationOutput, { ScenarioOutputTestIds } from './AlterationOutput'
-import { AlterRecordingError } from '@smartesting/shared/src'
+import { AlterRecordingError } from '@smartesting/shared/dist'
 describe('AlterationOutput', () => {
   it('displays an error if error is set', async () => {
     const error = AlterRecordingError.invalidSyntax

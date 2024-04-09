@@ -4,7 +4,7 @@ import { AlterRecordingResponse } from '@smartesting/shared/dist/responses'
 import '../../../styles.css'
 import DownloadAlteredRecording from './DownloadAlteredRecording/DownloadAlteredRecording'
 import './AlterationOutput.css'
-import { Recording } from '@smartesting/shared/src'
+import { Recording } from '@smartesting/shared/dist'
 
 export enum ScenarioOutputTestIds {
   DISPLAY_ERROR = 'ScenarioOutput.action.displayError',

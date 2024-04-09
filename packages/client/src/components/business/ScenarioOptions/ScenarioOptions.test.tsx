@@ -27,7 +27,7 @@ async function testOption(optionName: string, options: OptionsAlteration) {
     render(<ScenarioOptions optionsAlteration={options} onChange={onChange} />)
     // @ts-ignore
     const parent = screen.getByTestId(OptionsAlterationName[optionName])
-    await userEvent.click(within(parent).getByRole('checkbox'))
+    await userEvent.click(within(parent).getByRole('switch'))
     await waitFor(() => {
       expect(onChange).toBeCalledTimes(1)
     })

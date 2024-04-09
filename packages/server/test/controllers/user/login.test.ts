@@ -1,7 +1,7 @@
 import express from 'express'
 import { setupExpress } from '../../helpers/setupExpress'
 import request from 'supertest'
-import { ApiRoutes } from '@smartesting/shared/src/routes'
+import { ApiRoutes } from '@smartesting/shared/dist/routes'
 import assert from 'assert'
 import { LoginUserError } from '@smartesting/shared/dist/responses/loginUser'
 import makeTestAdapters from '../../makeTestAdapters'

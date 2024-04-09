@@ -6,7 +6,7 @@ import {
   FileFormat,
   OptionsAlteration,
   Recording,
-} from '@smartesting/shared/src'
+} from '@smartesting/shared/dist'
 import { uuid } from '@smartesting/shared/dist/uuid/uuid'
 import { RecordInputFilesTestIds } from './RecordInputFiles/RecordInputFiles'
 import { GenerateAlterationButtonTestIds } from './GenerateAlterationButton/GenerateAlterationButton'
@@ -364,7 +364,7 @@ describe('ScenarioEditor', () => {
     await userEvent.click(addButton)
 
     await screen.findByTestId(RecordInputFilesTestIds.RECORDING_IS_PRESENT)
-    const checkboxs = screen.getAllByRole('checkbox')
+    const checkboxs = screen.getAllByRole('switch')
     checkboxs.forEach((checkbox) => {
       userEvent.click(checkbox)
     })

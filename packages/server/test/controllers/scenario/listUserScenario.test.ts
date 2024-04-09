@@ -1,11 +1,11 @@
 import express from 'express'
 import { setupExpress } from '../../helpers/setupExpress'
 import request from 'supertest'
-import { ApiRoutes } from '@smartesting/shared/src/routes'
+import { ApiRoutes } from '@smartesting/shared/dist/routes'
 import assert from 'assert'
 import { ListUserScenarioError } from '@smartesting/shared/dist/responses/listUserScenario'
 import makeTestAdapters from '../../makeTestAdapters'
-import { OptionsAlteration, Sort } from '@smartesting/shared/src'
+import { OptionsAlteration, Sort } from '@smartesting/shared/dist'
 import { clearDb } from '../../clearDb'
 
 describe(`POST ${ApiRoutes.listUserScenario()}`, () => {
