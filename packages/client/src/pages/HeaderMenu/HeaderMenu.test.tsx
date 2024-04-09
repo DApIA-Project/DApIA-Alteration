@@ -6,12 +6,13 @@ describe('HeaderMenu', () => {
   it('displays header menu', async () => {
     render(
       <BrowserRouter>
-        <HeaderMenu />
+        <HeaderMenu onLogout={() => {}} />
       </BrowserRouter>
     )
 
     screen.getByTestId(HeaderMenuTestIds.NAVIGATION_ACCUEIL)
 
     screen.getByTestId(HeaderMenuTestIds.NAVIGATION_DOCUMENTATION)
+    screen.getByTestId(HeaderMenuTestIds.NAVIGATION_ACCOUNT)
   })
 })

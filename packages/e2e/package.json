@@ -1,0 +1,13 @@
+{
+  "name": "e2e",
+  "version": "0.1",
+  "private": true,
+  "scripts": {
+    "test-cypress": "npx cypress run"
+  },
+  "devDependencies": {
+    "@smartesting/dapia-server": "file:../server",
+    "cypress": "^13.6.1",
+    "typescript": "^4.9.5"
+  }
+}

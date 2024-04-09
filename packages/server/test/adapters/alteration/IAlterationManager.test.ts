@@ -4,6 +4,7 @@ import IAlterationManager from '../../../api/adapters/IAlterationManager'
 import { Recording } from '@smartesting/shared/dist/models/index'
 import { parse, Message } from "../../../../alteration-ts/src"
 import assert from 'assert'
+import { clearMemoryDb } from '../../clearDb'
 
 
 /**
@@ -888,4 +889,8 @@ const IAlterationContractTest: IContractTest = (
   })
 }
 
-IAlterationContractTest('JavaAlterationManager', makeProductionAdapters)
+IAlterationContractTest(
+  'JavaAlterationManager',
+  makeProductionAdapters,
+  clearMemoryDb
+)

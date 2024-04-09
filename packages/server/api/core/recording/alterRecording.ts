@@ -1,6 +1,7 @@
 import {
   AlterRecordingError,
   AlterRecordingResponse,
+  FileFormat,
   OptionsAlteration,
   Recording,
 } from '@smartesting/shared/dist'
@@ -14,27 +15,45 @@ import {
 import { Parameters } from '@smartesting/alteration-scenario/dist/types'
 import assert from 'assert'
 import IAlterationManager from '../../adapters/IAlterationManager'
-import { csvToSbs, sbsToCsv } from '@dapia-project/data-converter/dist/src'
+import {
+  openskyCsvToSbs,
+  sbsToJson,
+  sbsToNdjson,
+  sbsToOpenskyCsv,
+} from '@dapia-project/data-converter/dist/src'
 import { AlterationScenarioSemanticVisitor } from '@smartesting/alteration-scenario/dist/generators/AlterationScenarioSemanticVisitor'
 import { SemanticError } from '@smartesting/alteration-scenario/dist/generators/index'
+import { getDataType } from '@dapia-project/data-converter/dist/src/utils/utils'
+import { droneCsvToSbs } from '@dapia-project/data-converter/dist/src/droneCsvToSbs'
+import { sbsToDroneCsv } from '@dapia-project/data-converter/dist/src/sbsToDroneCsv'
+import { JsonMessage } from '@dapia-project/data-converter'
 
 export default async function alterRecording(
   scenario: string,
   recording: Recording,
   recordingToReplay: Recording | undefined,
   optionsAlteration: OptionsAlteration,
+  outputFormat: FileFormat,
   alterationManager: IAlterationManager
 ): Promise<AlterRecordingResponse> {
+  let contentOrigin: string = recording.content
+  let nameOrigin: string = recording.name
   let fileIsCsv: boolean = false
-
+  let dataType: string = ''
+  let dataTypeReplay: string
   const regex = /.csv$/i
   if (regex.test(recording.name)) {
     fileIsCsv = true
-    recording.content = csvToSbs(recording.content)
+    dataType = getDataType(recording.content)
+    if (dataType === 'drone') {
+      recording.content = droneCsvToSbs(recording.content)
+    } else {
+      recording.content = openskyCsvToSbs(recording.content)
+    }
 
     if (recording.content === 'Error content file') {
       return {
-        error: recording.content,
+        error: AlterRecordingError.invalidContentFile,
         alteredRecordings: [],
       }
     }
@@ -42,10 +61,15 @@ export default async function alterRecording(
   }
   if (recordingToReplay !== undefined) {
     if (regex.test(recordingToReplay.name)) {
-      recordingToReplay.content = csvToSbs(recordingToReplay.content)
+      dataTypeReplay = getDataType(recordingToReplay.content)
+      if (dataTypeReplay === 'drone') {
+        recordingToReplay.content = droneCsvToSbs(recordingToReplay.content)
+      } else {
+        recordingToReplay.content = openskyCsvToSbs(recordingToReplay.content)
+      }
       if (recordingToReplay.content === 'Error content file') {
         return {
-          error: recordingToReplay.content,
+          error: AlterRecordingError.invalidContentFile,
           alteredRecordings: [],
         }
       }
@@ -61,7 +85,7 @@ export default async function alterRecording(
 
   if (errors.length > 0)
     return {
-      error: errors.join('\n'),
+      error: AlterRecordingError.invalidSyntax,
       alteredRecordings: [],
     }
 
@@ -72,25 +96,105 @@ export default async function alterRecording(
     optionsAlteration,
     recordingToReplay
   )
-  console.log(parameters)
-  if (fileIsCsv) {
-    let alteredRecordingsCsv: Recording[] = []
-    for (const recordingSbs of alteredRecordings) {
-      let contentCsv: string = sbsToCsv(recordingSbs.content, false)
-      let contentName: string = recordingSbs.name.replace('.sbs', '.csv')
-      let recordingCsv: Recording = { content: contentCsv, name: contentName }
-      alteredRecordingsCsv.push(recordingCsv)
-    }
 
-    return {
-      alteredRecordings: alteredRecordingsCsv,
-      error: null,
+  if (outputFormat === FileFormat.auto) {
+    let extension: string = nameOrigin.split('.').pop()!
+    switch (extension) {
+      case 'csv':
+        if (getDataType(contentOrigin) === 'drone') {
+          outputFormat = FileFormat.droneCsv
+        } else {
+          outputFormat = FileFormat.openskyCsv
+        }
+        break
+      case 'json':
+        outputFormat = FileFormat.json
+        break
+      case 'ndjson':
+        outputFormat = FileFormat.ndjson
+        break
+      default:
+        outputFormat = FileFormat.sbs
+        break
     }
-  } else {
-    return {
-      alteredRecordings,
-      error: null,
-    }
+  }
+  switch (outputFormat) {
+    case FileFormat.sbs:
+      return {
+        alteredRecordings,
+        error: null,
+      }
+    case FileFormat.openskyCsv:
+      let alteredRecordingsOpenskyCsv: Recording[] = []
+      for (const recordingSbs of alteredRecordings) {
+        let contentOpenskyCsv: string = sbsToOpenskyCsv(
+          recordingSbs.content,
+          false
+        )
+        let contentName: string = recordingSbs.name.replace('.sbs', '.csv')
+        let recordingOpenskyCsv: Recording = {
+          content: contentOpenskyCsv,
+          name: contentName,
+        }
+        alteredRecordingsOpenskyCsv.push(recordingOpenskyCsv)
+      }
+      return {
+        alteredRecordings: alteredRecordingsOpenskyCsv,
+        error: null,
+      }
+    case FileFormat.droneCsv:
+      let alteredRecordingsDroneCsv: Recording[] = []
+      for (const recordingSbs of alteredRecordings) {
+        let contentDroneCsv: string = sbsToDroneCsv(recordingSbs.content, false)
+        let contentName: string = recordingSbs.name.replace(
+          '.sbs',
+          '.drone.csv'
+        )
+        let recordingDroneCsv: Recording = {
+          content: contentDroneCsv,
+          name: contentName,
+        }
+        alteredRecordingsDroneCsv.push(recordingDroneCsv)
+      }
+      return {
+        alteredRecordings: alteredRecordingsDroneCsv,
+        error: null,
+      }
+    case FileFormat.json:
+      let alteredRecordingsJson: Recording[] = []
+      for (const recordingSbs of alteredRecordings) {
+        let contentJson: JsonMessage[] = sbsToJson(recordingSbs.content, false)
+        let contentName: string = recordingSbs.name.replace('.sbs', '.json')
+        let recordingJson: Recording = {
+          content: contentJson.toString(),
+          name: contentName,
+        }
+        alteredRecordingsJson.push(recordingJson)
+      }
+      return {
+        alteredRecordings: alteredRecordingsJson,
+        error: null,
+      }
+    case FileFormat.ndjson:
+      let alteredRecordingsNdjson: Recording[] = []
+      for (const recordingSbs of alteredRecordings) {
+        let contentNdjson: string = sbsToNdjson(recordingSbs.content, false)
+        let contentName: string = recordingSbs.name.replace('.sbs', '.ndjson')
+        let recordingNdjson: Recording = {
+          content: contentNdjson,
+          name: contentName,
+        }
+        alteredRecordingsNdjson.push(recordingNdjson)
+      }
+      return {
+        alteredRecordings: alteredRecordingsNdjson,
+        error: null,
+      }
+    default:
+      return {
+        alteredRecordings,
+        error: null,
+      }
   }
 }
 

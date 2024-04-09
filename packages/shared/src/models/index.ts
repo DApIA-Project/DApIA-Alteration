@@ -29,3 +29,12 @@ export enum OptionsAlterationDescription {
   haveDisableLongitude = 'Disable longitude interpolation',
   haveDisableAltitude = 'Disable altitude interpolation',
 }
+
+export enum FileFormat {
+  openskyCsv = 'openskyCsv',
+  droneCsv = 'droneCsv',
+  sbs = 'sbs',
+  json = 'json',
+  ndjson = 'ndjson',
+  auto = 'auto',
+}

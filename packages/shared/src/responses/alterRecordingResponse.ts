@@ -1,11 +1,19 @@
 import { Recording } from '../models'
+import { DapiaAlterationResponse } from './dapiaAlterationResponse'
+import { Invalid } from './responseError'
 
-export type AlterRecordingResponse = {
-  alteredRecordings: Recording[]
-  error: AlterRecordingError | string | null
-}
+export type AlterRecordingResponse = DapiaAlterationResponse<
+  { alteredRecordings: Recording[] },
+  AlterRecordingError
+>
 
-export enum AlterRecordingError {
-  invalidFormat = 'invalid_format',
-  invalidSyntax = 'invalid_syntax',
-}
+export type AlterRecordingError =
+  | Invalid.invalidFormat
+  | Invalid.invalidSyntax
+  | Invalid.invalidContentFile
+
+export const AlterRecordingError = {
+  invalidFormat: Invalid.invalidFormat,
+  invalidSyntax: Invalid.invalidSyntax,
+  invalidContentFile: Invalid.invalidContentFile,
+} as const

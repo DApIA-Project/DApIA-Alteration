@@ -1,14 +1,15 @@
 import * as core from 'express-serve-static-core'
 import { AlterationAdapters } from '../AlterationAdapters'
-import express from 'express'
+import * as express from 'express'
 
-interface AlterationRequest<
+export interface AlterationRequest<
   P = core.ParamsDictionary,
   ResBody = any,
   ReqBody = any,
   ReqQuery = core.Query,
   Locals extends Record<string, any> = Record<string, any>
 > extends express.Request<P, ResBody, ReqBody, ReqQuery, Locals> {
+  user_id: number
   adapters: AlterationAdapters
 }
 

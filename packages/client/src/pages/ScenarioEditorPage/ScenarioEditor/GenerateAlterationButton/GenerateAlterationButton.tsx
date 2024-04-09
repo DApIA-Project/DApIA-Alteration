@@ -8,6 +8,7 @@ export type OnGenerateOptions = {
   scenario: string
   recording: Recording
   optionsAlteration: OptionsAlteration
+  outputFormat: string
   recordingToReplay?: Recording
 }
 
@@ -15,6 +16,7 @@ export type GenerateAlterationButtonProps = {
   recording: Recording
   recordingToReplay?: Recording
   optionsAlteration: OptionsAlteration
+  outputFormat: string
   onClicked: (options: OnGenerateOptions) => void
 }
 
@@ -24,13 +26,20 @@ export enum GenerateAlterationButtonTestIds {
 
 export const GenerateAlterationButton: React.FunctionComponent<
   GenerateAlterationButtonProps
-> = ({ recording, optionsAlteration, recordingToReplay, onClicked }) => {
+> = ({
+  recording,
+  optionsAlteration,
+  recordingToReplay,
+  outputFormat,
+  onClicked,
+}) => {
   function onGenerateClicked() {
     const scenario = getMonacoEditorContent()
     const options: OnGenerateOptions = {
       scenario,
       recording,
       optionsAlteration,
+      outputFormat,
       recordingToReplay,
     }
     onClicked(options)

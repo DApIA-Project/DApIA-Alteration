@@ -1,14 +1,15 @@
 import React, { useState } from 'react'
 import ScenarioEditor from './ScenarioEditor/ScenarioEditor'
 import AlterationOutput from './AlterationOutput/AlterationOutput'
-import Client from '../../Client'
 import { AlterRecordingResponse } from '@smartesting/shared/dist'
 import '../../styles.css'
 import './ScenarioEditorPage.css'
 import { CircularProgress } from '@mui/material'
 import { unstable_batchedUpdates } from 'react-dom'
+import { useClient } from '../../providers/ClientProvider/ClientProvider'
 
 const ScenarioEditorPage: React.FunctionComponent = () => {
+  const client = useClient()
   const [alteredRecordings, setAlteredRecordings] =
     useState<AlterRecordingResponse | null>(null)
   const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -22,20 +23,25 @@ const ScenarioEditorPage: React.FunctionComponent = () => {
             recording,
             optionsAlteration,
             recordingToReplay,
+            outputFormat,
           }) => {
             setAlteredRecordings(null)
             setIsLoading(true)
-            Client.alteration(
-              scenario,
-              recording,
-              optionsAlteration,
-              recordingToReplay
-            ).then((response) => {
-              unstable_batchedUpdates(() => {
-                setAlteredRecordings(response)
-                setIsLoading(false)
+            if (!client) return
+            client
+              .alteration(
+                scenario,
+                recording,
+                optionsAlteration,
+                outputFormat,
+                recordingToReplay
+              )
+              .then((response) => {
+                unstable_batchedUpdates(() => {
+                  setAlteredRecordings(response)
+                  setIsLoading(false)
+                })
               })
-            })
           }}
         />
         {alteredRecordings ? (

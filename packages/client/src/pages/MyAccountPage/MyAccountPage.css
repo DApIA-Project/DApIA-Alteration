@@ -1,0 +1,95 @@
+.myAccountPage {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  margin: 1%;
+}
+
+.modifyInfos {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 0;
+  flex-shrink: 1;
+  flex-basis: auto;
+  align-self: auto;
+  order: 0;
+  font-size: 15px;
+}
+
+.modifyInfos > label {
+  font-size: 20px;
+  padding-bottom: 5%;
+}
+
+.modifyPassword {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 0;
+  flex-shrink: 1;
+  flex-basis: auto;
+  align-self: auto;
+  order: 0;
+  font-size: 15px;
+}
+
+.modifyPassword > label {
+  font-size: 20px;
+  padding-bottom: 5%;
+}
+
+.removeAccount {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 0;
+  flex-shrink: 1;
+  flex-basis: auto;
+  align-self: auto;
+  order: 0;
+  font-size: 15px;
+}
+
+.removeAccount > label {
+  font-size: 20px;
+  padding-bottom: 5%;
+}
+
+.buttonEdit {
+  background: #6e9a3f;
+  border-radius: 3px;
+  border: none;
+  color: white;
+  width: 30%;
+  opacity: 1;
+  padding: 2%;
+  margin-left: auto;
+  cursor: pointer;
+}
+
+.buttonEdit:hover {
+  opacity: 0.8;
+}
+
+.buttonRemove {
+  background: #992a2a;
+  border-radius: 3px;
+  border: none;
+  color: white;
+  width: 30%;
+  padding: 2%;
+  opacity: 1;
+  margin-left: auto;
+  cursor: pointer;
+}
+
+.buttonRemove:hover {
+  opacity: 0.8;
+}
+
+.stateEdit {
+  margin-top: 8%;
+}
+
+.emptyAlert {
+  margin-top: 8%;
+  flex: 0;
+}

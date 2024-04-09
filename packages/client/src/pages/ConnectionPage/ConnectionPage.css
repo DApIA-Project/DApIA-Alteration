@@ -1,0 +1,57 @@
+.connectionPage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+.allInputText {
+  width: 20%;
+  display: flex;
+  flex-direction: column;
+  flex: 0 5 auto;
+}
+
+.submitZone {
+  display: flex;
+  flex-direction: row;
+  width: 20%;
+  flex: 0 1 auto;
+  align-items: center;
+  justify-content: space-between;
+  height: 5%;
+}
+
+.submitZone > .buttonConnectAccount {
+  background: #6e9a3f;
+  border-radius: 3px;
+  border: none;
+  color: white;
+  height: 100%;
+  cursor: pointer;
+  opacity: 1;
+}
+
+.submitZone > .buttonConnectAccount:hover {
+  opacity: 0.8;
+}
+
+.submitZone > a {
+  font-size: 11px;
+}
+
+.imageFlight {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.imageFlight > img {
+  width: 80%;
+}
+
+.imageFlight > label {
+  font-size: 20px;
+}

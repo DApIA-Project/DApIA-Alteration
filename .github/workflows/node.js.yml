@@ -15,6 +15,17 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    services:
+      postgres:
+        image: postgres:latest
+        env:
+          POSTGRES_DB: alterationdb
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - '5432:5432'
+        options: --health-cmd "pg_isready -U postgres" --health-interval 5s --health-timeout 5s --health-retries 5
+
     strategy:
       matrix:
         node-version: [16.15.0]
@@ -31,6 +42,9 @@ jobs:
       - name: Build
         working-directory: packages/server
         run: npm i
+      - name: Run migrations
+        working-directory: packages/server
+        run: npm run migrate up
       - name: Run test Server
         working-directory: packages/server
         run: npm run test
