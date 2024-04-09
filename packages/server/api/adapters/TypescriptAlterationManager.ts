@@ -2,17 +2,21 @@ import { Parameters, Action } from '@smartesting/alteration-scenario/dist/types'
 import { OptionsAlteration, Recording } from '@smartesting/shared/dist'
 import IAlterationManager from './IAlterationManager'
 import { 
-	parse, Engine,
+	parse, Engine, Message,
 	Action as EngineAction,
-	alteration, AlterationMode,
+	alteration, AlterationMode, 
+	delay,
 	deletion,
 	replay,
 	rotation,
 	saturation,
-	Scope, and, target, timeWindow,
+	cut,
+	trajectoryModification,
+	Scope, and, target, timeWindow, always
 } from "../../../alteration-ts/src"
 
 export class TypescriptAlterationManager implements IAlterationManager {
+	replayRecording?: Message[]
 
 	runAlterations(
 		parameters: Parameters[],
@@ -24,13 +28,14 @@ export class TypescriptAlterationManager implements IAlterationManager {
 
 		// Parse Recording 
 		const source_recording = parse(recording.content);
+		if(recordingToReplay) this.replayRecording = parse(recordingToReplay!.content)
 
 		// Create Engines (only for the first sensor of the first param)
 		let sensor = parameters[0].sensors.sensor?.at(0) 
 		let start_date = sensor?.firstDate ?? 0;
 
 		let engine = new Engine({
-			actions: sensor?.action?.map((a) => this.create_action(a, start_date)) ?? []
+			actions: sensor?.action?.map((a) => this.create_action(a, start_date, source_recording)) ?? []
 		});
 	
 		let name = "modified__" + recording.name.split(".")[0] + "_0.sbs"
@@ -46,9 +51,10 @@ export class TypescriptAlterationManager implements IAlterationManager {
 	/**
 	 * @param action: Action the information of action
 	 * @param start_date: timestamp of the first message
+	 * @param source : recording, when it's needed in preprocessing (like saturation engine)
 	 * @return an Action for Engine, i.e a function with processing()
 	 */ 
-	create_action(action: Action, start_date: number) : EngineAction {
+	create_action(action: Action, start_date: number, source_recording: Message[]) : EngineAction {
 		// Create Scope 
 		let scopes : Scope[] = [];
 
@@ -57,11 +63,13 @@ export class TypescriptAlterationManager implements IAlterationManager {
 			scopes.push(target(action.parameters.target.value))
 		}
 
+		let start = start_date + parseInt(action.scope.lowerBound ?? "0");
+		let end = start_date + parseInt(action.scope.upperBound ?? "0");
+
 		// Add other scopes
 		switch(action.scope.type) {
 			case 'timeWindow' : 
-				scopes.push(timeWindow(start_date + parseInt(action.scope.lowerBound ?? "0"),
-													     start_date + parseInt(action.scope.upperBound ?? "0")));
+				scopes.push(timeWindow(start,end));
 				break;
 			case 'trigger' : 
 				throw new Error("Trigger Scope was not implemented yet");
@@ -71,7 +79,7 @@ export class TypescriptAlterationManager implements IAlterationManager {
 
 		// Create action processor
 		switch(action.alterationType) {
-			case 'ALTERATION' : 
+			case 'ALTERATION' :  {
 				let modifications = action.parameters.parameter?.map((arg) => {
 					if(!arg.key || !arg.value || !arg.mode) throw new Error("Invalid parameters");
 					let value = (arg.mode != "simple" ? parseInt(arg.value) : arg.value);
@@ -86,8 +94,9 @@ export class TypescriptAlterationManager implements IAlterationManager {
 					scope: scope, 
 					modifications: modifications ?? [], // Could be undefined
 				});
+			}
 
-			case 'DELETION' : 
+			case 'DELETION' :  {
 				let frequency_parameter = action.parameters.parameter?.find((arg) => arg.frequency != undefined);
 				let frequency = 0;
 				if(frequency_parameter) {
@@ -98,8 +107,9 @@ export class TypescriptAlterationManager implements IAlterationManager {
 					scope: scope,
 					frequency: frequency,
 				});
+			}
 
-			case 'ROTATION' : 
+			case 'ROTATION' : {
 				let angle_parameter = action.parameters.parameter?.find((arg) => arg.angle != undefined);
 
 				let angle = 0;
@@ -111,13 +121,19 @@ export class TypescriptAlterationManager implements IAlterationManager {
 					scope: scope,
 					angle: angle,
 				});
+			}
 
-			case 'REPLAY' : 
+			case 'REPLAY' : {
 				if(!action.parameters.recordPath) throw new Error("Invalid parameters for DELETION engine");
-				let source = parse(action.parameters.recordPath!) // Couldn't be undefined
-				
+				let source = this.replayRecording!;
+				let first_ts = source[0].timestampGenerated;
+				let time_scope = timeWindow(first_ts + start - start_date, first_ts + end - start_date);
+
 				// In old java code, lowerbound of the time windows is used as offset
 				let offset  = parseInt(action.scope.lowerBound ?? "0");
+
+				console.log([start,end]);
+				console.log(source);
 
 				// Add Alterations 
 				let alterations = action.parameters.parameter?.map((arg) => {
@@ -132,17 +148,15 @@ export class TypescriptAlterationManager implements IAlterationManager {
 						 .map((alt) => alt!); // Remove null from type
 
 				return replay({
-					scope: scope,
+					scope: and(time_scope, ...scopes.slice(1)),
 					source: source,
 					offset: offset,
 					alterations: alterations
 				});
+			}
 
-
-			case 'SATURATION' : 
-				let start = start_date + (action.scope.lowerBound ?? "0");
-				let end = start_date + (action.scope.upperBound ?? "0");
-				let aircraft_number = action.parameters.parameter?.find((p) => p.key == "AIRCRAFT_NUMBER")?.value;
+			case 'SATURATION' :  {
+				let aircraft_number = action.parameters.parameter?.find((p) => p.key == "AIRCRAFT_NUMBER")?.number;
 
 			 	if(!aircraft_number) {
 					throw new Error("Saturation Engine Error : \"AIRCRAFT_NUMBER\" parameter is not defined"); 
@@ -150,15 +164,58 @@ export class TypescriptAlterationManager implements IAlterationManager {
 
 
 				return saturation({
-					source: [],
+					source: source_recording,
 					aircrafts: parseInt(aircraft_number!),
-					start: parseInt(start),
-					end: parseInt(end),
+					start: start,
+					end: end,
+				});
+			}
+
+			case 'TRAJECTORY' : {
+				let target = action.parameters.target.value;
+
+				if(!action.parameters.trajectory) throw new Error("Trajectory modification requires waypoints parameters");
+
+				let waypoints = action.parameters.trajectory!.waypoint.map((p) => {
+					return {
+						latitude: parseFloat(p.vertex.lat.value), 
+						longitude: parseFloat(p.vertex.lon.value),
+						altitude: p.altitude.value, 
+						timestampGenerated: p.time + start_date,
+					};
 				});
 
-			case 'TRAJECTORY' :
-			case 'CREATION' : 
-			case 'CUT' :
+				return trajectoryModification({
+					targets: [target], 
+					scope: scope, 
+					waypoints: waypoints,
+					allPlanes: target == "ALL",
+				});
+			}
+
+			case 'CUT' : {
+				let icao = action.parameters.target.value;
+
+				// Cut use timeWindow to know the time to remove,
+				// Not to target planes
+				return cut({
+					start: start,
+					end: end, 
+					scope: (icao == "ALL" ? always : target(icao))
+				});
+			}
+
+			case 'ALTERATIONTIMESTAMP' :  {
+				let time = action.parameters.parameter?.find((p) => p.key == "timestamp")?.value!;
+				return delay({
+					scope: scope,
+					time: parseInt(time),
+				});
+			}
+				
+			case 'CREATION' :  {
+
+			}
 
 			default: 
 				throw new Error("This alteration mode isn't supported yet");
