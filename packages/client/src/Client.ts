@@ -125,18 +125,13 @@ export default class Client {
   }
 
   async createUser(
-    firstname: string,
-    lastname: string,
     email: string,
     password: string
   ): Promise<CreateUserResponse> {
     const url: string = `${apiUrl}/users`
     const data = {
-      firstname,
-      lastname,
       email,
       password,
-      isAdmin: false,
     }
     return this.apiCall<CreateUserResponse>(url, 'POST', data)
   }
@@ -160,19 +155,13 @@ export default class Client {
   }
 
   async updateUser(
-    newFirstName: string,
-    newLastname: string,
     newEmail: string,
-    password: string,
-    isAdmin: boolean
+    password: string
   ): Promise<UpdateUserResponse> {
     const url: string = `${apiUrl}/users`
     const data = {
-      firstname: newFirstName,
-      lastname: newLastname,
       email: newEmail,
       password: password,
-      isAdmin: isAdmin,
     }
     return this.apiCall<UpdateUserResponse>(url, 'PUT', data)
   }

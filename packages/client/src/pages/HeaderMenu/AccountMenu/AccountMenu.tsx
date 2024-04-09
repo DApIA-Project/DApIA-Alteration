@@ -24,7 +24,7 @@ const AccountMenu: React.FunctionComponent<AccountMenuProps> = ({
 }) => {
   const client = useClient()
   const navigate = useNavigate()
-  const [firstname, setFirstname] = useState<string>('')
+  const [email, setEmail] = useState<string>('')
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -47,7 +47,7 @@ const AccountMenu: React.FunctionComponent<AccountMenuProps> = ({
       if (!client) return
       const { user, error } = await client?.findUserByToken()
       if (error) console.log(error)
-      if (user !== null) setFirstname(user.firstname)
+      if (user !== null) setEmail(user.email)
     }
     fetchData()
   }, [client])
@@ -67,7 +67,7 @@ const AccountMenu: React.FunctionComponent<AccountMenuProps> = ({
           aria-expanded={open ? 'true' : undefined}
         >
           <Avatar sx={{ width: 32, height: 32 }}>
-            {firstname.charAt(0).toUpperCase()}
+            {email.charAt(0).toUpperCase()}
           </Avatar>
         </IconButton>
       </Tooltip>

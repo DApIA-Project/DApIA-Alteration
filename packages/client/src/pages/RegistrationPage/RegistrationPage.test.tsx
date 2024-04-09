@@ -11,11 +11,8 @@ import { uuid } from '@smartesting/shared/dist/uuid/uuid'
 describe('RegistrationPage', () => {
   let user: User = {
     id: 0,
-    firstname: 'bob',
-    lastname: 'dupont',
     email: 'bob.dupont@mail.fr',
     password: 'password',
-    isAdmin: false,
     token: uuid(),
     createdAt: new Date(),
     updatedAt: new Date(),
@@ -36,8 +33,6 @@ describe('RegistrationPage', () => {
   it('renders registration form', async () => {
     render(<RegistrationPage onLogin={() => {}} />)
 
-    expect(screen.getByLabelText('Firstname')).toBeInTheDocument()
-    expect(screen.getByLabelText('Lastname')).toBeInTheDocument()
     expect(screen.getByLabelText('Email')).toBeInTheDocument()
     expect(screen.getByLabelText('Password')).toBeInTheDocument()
     expect(screen.getByLabelText('Confirm Password')).toBeInTheDocument()
@@ -52,16 +47,6 @@ describe('RegistrationPage', () => {
       })
     )
     render(<RegistrationPage onLogin={() => {}} />)
-
-    fireEvent.change(
-      screen.getByTestId(RegistrationPageTestIds.INPUT_FIRSTNAME),
-      { target: { value: 'Bob' } }
-    )
-
-    fireEvent.change(
-      screen.getByTestId(RegistrationPageTestIds.INPUT_LASTNAME),
-      { target: { value: 'Dupont' } }
-    )
 
     fireEvent.change(screen.getByTestId(RegistrationPageTestIds.INPUT_EMAIL), {
       target: { value: 'bob.dupont@mail.fr' },
@@ -81,8 +66,6 @@ describe('RegistrationPage', () => {
 
     await waitFor(() => {
       expect(client.createUser).toHaveBeenCalledWith(
-        'Bob',
-        'Dupont',
         'bob.dupont@mail.fr',
         's3cret!'
       )
@@ -111,7 +94,7 @@ describe('RegistrationPage', () => {
   it('submits form with invalid data', async () => {
     jest.spyOn(client, 'createUser').mockReturnValue(
       Promise.resolve({
-        error: CreateUserError.emptyFirstname,
+        error: CreateUserError.emptyEmail,
         user: null,
       })
     )

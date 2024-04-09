@@ -20,8 +20,6 @@ type MyAccountPagePageProps = {
 }
 
 export enum MyAccountPageTestIds {
-  INPUT_FIRSTNAME = 'MyAccountPage.action.isInputFirstname',
-  INPUT_LASTNAME = 'MyAccountPage.action.isInputLastname',
   INPUT_EMAIL = 'MyAccountPage.action.isInputEmail',
   INPUT_CURRENT_PASSWORD = 'MyAccountPage.action.isInputCurrentPassword',
   INPUT_NEW_PASSWORD = 'MyAccountPage.action.isInputNewPassword',
@@ -36,8 +34,6 @@ const MyAccountPage: React.FunctionComponent<MyAccountPagePageProps> = ({
   const client = useClient()
 
   const [userConnected, setUserConnected] = useState<User>()
-  const [firstname, setFirstname] = useState('')
-  const [lastname, setLastname] = useState('')
   const [email, setEmail] = useState('')
   const [currentPassword, setCurrentPassword] = useState('')
   const [newPassword, setNewPassword] = useState('')
@@ -52,16 +48,6 @@ const MyAccountPage: React.FunctionComponent<MyAccountPagePageProps> = ({
     useState(false)
   const [errorRemoveAccount, setErrorRemoveAccount] = useState('')
 
-  function handleFirstname(newFirstname: string) {
-    setHaventErrorInformation(false)
-    setErrorInformation('')
-    setFirstname(newFirstname)
-  }
-  function handleLastname(newLastname: string) {
-    setHaventErrorInformation(false)
-    setErrorInformation('')
-    setLastname(newLastname)
-  }
   function handleEmail(newEmail: string) {
     setHaventErrorInformation(false)
     setErrorInformation('')
@@ -99,12 +85,6 @@ const MyAccountPage: React.FunctionComponent<MyAccountPagePageProps> = ({
 
   function showErrorInformation(error: UpdateUserError) {
     switch (error) {
-      case UnprocessableContent.emptyFirstname:
-        setErrorInformation('Firstname is empty')
-        break
-      case UnprocessableContent.emptyLastname:
-        setErrorInformation('Lastname is empty')
-        break
       case UnprocessableContent.emptyEmail:
         setErrorInformation('Email is empty')
         break
@@ -144,8 +124,6 @@ const MyAccountPage: React.FunctionComponent<MyAccountPagePageProps> = ({
       if (user !== null) {
         unstable_batchedUpdates(() => {
           setUserConnected(user)
-          setFirstname(user.firstname)
-          setLastname(user.lastname)
           setEmail(user.email)
         })
       }
@@ -158,11 +136,8 @@ const MyAccountPage: React.FunctionComponent<MyAccountPagePageProps> = ({
     if (userConnected == null) return
     try {
       const { user, error } = await client.updateUser(
-        firstname,
-        lastname,
         email,
-        userConnected.password,
-        userConnected.isAdmin
+        userConnected.password
       )
       if (error !== null) {
         setHaventErrorInformation(false)
@@ -236,20 +211,6 @@ const MyAccountPage: React.FunctionComponent<MyAccountPagePageProps> = ({
       <div className={'myAccountPage'}>
         <div className={'modifyInfos'}>
           <label>Edit my information</label>
-          <InputText
-            libelle={'Firstname'}
-            value={firstname}
-            onChange={handleFirstname}
-            id={'firstname-input'}
-            data-testid={MyAccountPageTestIds.INPUT_FIRSTNAME}
-          />
-          <InputText
-            libelle={'Lastname'}
-            value={lastname}
-            onChange={handleLastname}
-            id={'lastname-input'}
-            data-testid={MyAccountPageTestIds.INPUT_LASTNAME}
-          />
           <InputText
             libelle={'Email'}
             value={email}

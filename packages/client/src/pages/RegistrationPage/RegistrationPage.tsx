@@ -11,8 +11,6 @@ import {
 } from '@smartesting/shared/dist/responses/responseError'
 
 export enum RegistrationPageTestIds {
-  INPUT_FIRSTNAME = 'InputFirstname',
-  INPUT_LASTNAME = 'InputLastname',
   INPUT_EMAIL = 'InputEmail',
   INPUT_PASSWORD = 'InputPassword',
   INPUT_CONFIRM_PASSWORD = 'InputConfirmPassword',
@@ -27,8 +25,6 @@ const RegistrationPage: React.FunctionComponent<RegistrationPageProps> = ({
 }) => {
   const client = useClient()
 
-  const [firstname, setFirstname] = useState('')
-  const [lastname, setLastname] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
@@ -36,12 +32,6 @@ const RegistrationPage: React.FunctionComponent<RegistrationPageProps> = ({
 
   function showErrorRegister(error: CreateUserError) {
     switch (error) {
-      case UnprocessableContent.emptyFirstname:
-        setErrorRegister('Firstname is empty')
-        break
-      case UnprocessableContent.emptyLastname:
-        setErrorRegister('Lastname is empty')
-        break
       case UnprocessableContent.emptyEmail:
         setErrorRegister('Email is empty')
         break
@@ -61,12 +51,7 @@ const RegistrationPage: React.FunctionComponent<RegistrationPageProps> = ({
     }
 
     try {
-      const { user, error } = await client.createUser(
-        firstname,
-        lastname,
-        email,
-        password
-      )
+      const { user, error } = await client.createUser(email, password)
       if (error) {
         showErrorRegister(error)
         return
@@ -78,13 +63,6 @@ const RegistrationPage: React.FunctionComponent<RegistrationPageProps> = ({
     } catch (err) {
       throw err
     }
-  }
-
-  function handleFirstname(newFirstname: string) {
-    setFirstname(newFirstname)
-  }
-  function handleLastname(newLastname: string) {
-    setLastname(newLastname)
   }
 
   function handleEmail(newEmail: string) {
@@ -107,22 +85,6 @@ const RegistrationPage: React.FunctionComponent<RegistrationPageProps> = ({
           <label>DApIA Alteration</label>
         </div>
         <div className={'allInputText'}>
-          <InputText
-            libelle={'Firstname'}
-            value={firstname}
-            id={'firstname-input'}
-            onChange={handleFirstname}
-            onSubmit={handleSubmit}
-            data-testid={RegistrationPageTestIds.INPUT_FIRSTNAME}
-          />
-          <InputText
-            libelle={'Lastname'}
-            value={lastname}
-            onChange={handleLastname}
-            id={'lastname-input'}
-            onSubmit={handleSubmit}
-            data-testid={RegistrationPageTestIds.INPUT_LASTNAME}
-          />
           <InputText
             libelle={'Email'}
             value={email}

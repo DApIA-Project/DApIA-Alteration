@@ -11,11 +11,8 @@ import { uuid } from '@smartesting/shared/dist/uuid/uuid'
 describe('ConnectionPage', () => {
   let user: User = {
     id: 0,
-    firstname: 'bob',
-    lastname: 'dupont',
     email: 'bob.dupont@mail.fr',
     password: 'password',
-    isAdmin: false,
     token: uuid(),
     createdAt: new Date(),
     updatedAt: new Date(),

@@ -17,22 +17,16 @@ describe('MyAccountPage', () => {
   beforeEach(() => {
     user = {
       id: 0,
-      firstname: 'bob',
-      lastname: 'dupont',
       email: 'bob.dupont@mail.fr',
       password: 'password',
-      isAdmin: false,
       token: uuid(),
       createdAt: new Date(),
       updatedAt: new Date(),
     }
     userModifiedInfos = {
       id: 0,
-      firstname: 'boby',
-      lastname: 'dupond',
       email: 'boby.dupond@mail.fr',
       password: 'password',
-      isAdmin: false,
       token: uuid(),
       createdAt: new Date(),
       updatedAt: new Date(),
@@ -80,12 +74,6 @@ describe('MyAccountPage', () => {
       </BrowserRouter>
     )
     expect(
-      screen.getByTestId(MyAccountPageTestIds.INPUT_FIRSTNAME)
-    ).toBeInTheDocument()
-    expect(
-      screen.getByTestId(MyAccountPageTestIds.INPUT_LASTNAME)
-    ).toBeInTheDocument()
-    expect(
       screen.getByTestId(MyAccountPageTestIds.INPUT_EMAIL)
     ).toBeInTheDocument()
     expect(
@@ -111,16 +99,6 @@ describe('MyAccountPage', () => {
   it('type in all fields for modify informations and edit', async () => {
     render(<MyAccountPage onLogout={() => {}} />)
 
-    user.firstname = 'Boby'
-    fireEvent.change(screen.getByTestId(MyAccountPageTestIds.INPUT_FIRSTNAME), {
-      target: { value: 'Boby' },
-    })
-
-    user.lastname = 'Dupond'
-    fireEvent.change(screen.getByTestId(MyAccountPageTestIds.INPUT_LASTNAME), {
-      target: { value: 'Dupond' },
-    })
-
     user.email = 'boby.dupond@mail.fr'
     fireEvent.change(screen.getByTestId(MyAccountPageTestIds.INPUT_EMAIL), {
       target: { value: 'boby.dupond@mail.fr' },
@@ -130,11 +108,8 @@ describe('MyAccountPage', () => {
 
     await waitFor(() => {
       expect(client.updateUser).toHaveBeenCalledWith(
-        'Boby',
-        'Dupond',
         'boby.dupond@mail.fr',
-        'password',
-        false
+        'password'
       )
     })
   })
