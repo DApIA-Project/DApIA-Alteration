@@ -28,6 +28,7 @@ export function cut(config: Config) {
 					new_recording.push({...m}); //Clone msg
 					continue;
 				}
+
 				if(m.timestampGenerated < config.start) {
 					new_recording.push({...m}); // Clone msg
 					continue;
@@ -46,8 +47,6 @@ export function cut(config: Config) {
 								lon: m.longitude! - last.longitude!,
 								alti : m.altitude! - last.altitude!,
 							}
-
-							console.log(deltas);
 						}	
 					}
 
@@ -63,6 +62,7 @@ export function cut(config: Config) {
 			let new_msg = {...m} // Clone msg
 			
 			new_msg.timestampGenerated -= d.ts;
+
 			if(m.latitude && d.lat && !isNaN(d.lat)) {
 				new_msg.latitude = op("-", m.latitude!, d.lat!);
 			}
