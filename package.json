@@ -1,7 +1,7 @@
 {
   "scripts": {
     "prepare": "husky install",
-    "client": "cd packages/client ; npm run start",
+    "client": "cd packages/client ; npm run serve",
     "serve": "cd packages/server ; npm run start",
     "test": "cd packages/alteration-scenario && npm run test && cd ../client && npm run test && cd ../server && npm run test",
     "docker:build:client": "echo 'Not yet implemented'",

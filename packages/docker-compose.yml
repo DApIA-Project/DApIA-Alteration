@@ -137,7 +137,7 @@ services:
     volumes:
       - .:/app/packages
     working_dir: /app/packages/client
-    entrypoint: npm run start
+    entrypoint: npm run serve
     depends_on:
       alteration-build-client:
         condition: service_completed_successfully

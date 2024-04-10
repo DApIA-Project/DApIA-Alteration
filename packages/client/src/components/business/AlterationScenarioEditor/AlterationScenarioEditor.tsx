@@ -35,16 +35,6 @@ const AlterationScenarioEditor: React.FunctionComponent<
 }) => {
   const monaco = useMonaco()
 
-  useEffect(
-    () => {
-      if (!monaco) return
-      initLanguage()
-      initCompletionProvider()
-    },
-    // eslint-disable-next-line
-    [monaco]
-  )
-
   function initLanguage() {
     monaco!.languages.typescript.javascriptDefaults.setEagerModelSync(true)
     const languages: ILanguageExtensionPoint[] =
@@ -71,6 +61,16 @@ const AlterationScenarioEditor: React.FunctionComponent<
       completionProvider
     )
   }
+
+  useEffect(
+    () => {
+      if (!monaco) return
+      initLanguage()
+      initCompletionProvider()
+    },
+    // eslint-disable-next-line
+    [monaco]
+  )
 
   function createCompletionProvider(): CompletionItemProvider | undefined {
     if (!monaco) return

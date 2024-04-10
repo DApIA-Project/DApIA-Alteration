@@ -58,7 +58,7 @@ npm i
 ## Run client in FDI-T-Web/packages/client
 
 ```shell
-npm run start
+npm run serve
 ```
 
 ## Run server in FDI-T-Web/packages/server

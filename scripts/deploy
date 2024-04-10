@@ -49,7 +49,7 @@ check_and_set_env_var "$TMP_DIR" $SERVER_APP_NAME "BUILDPACK_URL" "https://bitbu
 #output_title "Checking ENV variables for client"
 
 check_and_set_env_var "$TMP_DIR" $CLIENT_APP_NAME "APP_BASE" "packages/client"
-check_and_set_env_var "$TMP_DIR" $CLIENT_APP_NAME "APP_START_COMMAND" "npm run start"
+check_and_set_env_var "$TMP_DIR" $CLIENT_APP_NAME "APP_START_COMMAND" "npm run serve"
 check_and_set_env_var "$TMP_DIR" $CLIENT_APP_NAME "NODE_MODULES_CACHE" "false"
 check_and_set_env_var "$TMP_DIR" $CLIENT_APP_NAME "REACT_APP_SERVER_URL"
 check_and_set_env_var "$TMP_DIR" $CLIENT_APP_NAME "REACT_APP_ALTERATION_PRODUCTION_COLLECTION_KEY" $ALTERATION_PRODUCTION_COLLECTION_KEY
