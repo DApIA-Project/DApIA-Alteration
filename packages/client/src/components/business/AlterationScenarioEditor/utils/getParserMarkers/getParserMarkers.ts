@@ -12,7 +12,7 @@ export function getParserMarkers(parserErrors: ParserErrors): IMarkerData[] {
         endLineNumber: lexerError.line || 0,
         endColumn: (lexerError.column || 0) + lexerError.length,
       }
-      console.log(range)
+
       markers.push({
         message: lexerError.message,
         severity: MarkerSeverity.Error,
@@ -23,7 +23,6 @@ export function getParserMarkers(parserErrors: ParserErrors): IMarkerData[] {
       })
     }
   }
-  console.log(parserErrors)
 
   if (parserErrors.parser.length !== 0) {
     for (const parserError of parserErrors.parser) {

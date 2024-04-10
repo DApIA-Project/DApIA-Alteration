@@ -8,7 +8,6 @@ type Body = Record<string, any>
 export default makeRequestHandler<ListUserScenarioResponse>(
   async (req): Promise<ListUserScenarioResponse> => {
     const { scenarioManager } = req.adapters
-    console.log(req.body)
     const user_id: number = req.userId
     const searchBar: string = req.body.searchBar
     const startDate: string = req.body.startDate

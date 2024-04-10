@@ -819,8 +819,6 @@ export class AlterationScenarioSemanticVisitor extends AlterationScenarioVisitor
     }
 
     if (isASTConstantValue(value)) {
-      console.log(this.memory)
-      console.log(value.content)
       let constant: Constant<ConstantTypes> | undefined =
         this.memory.getConstant(value.content)
       if (constant === undefined) {
@@ -829,7 +827,6 @@ export class AlterationScenarioSemanticVisitor extends AlterationScenarioVisitor
           'Variable ' + value.content + ' not found'
         )
       } else {
-        console.log(constant)
         if (isRangeConstant(constant)) {
           const valuesRange: number[] = []
           valuesRange.push(constant.getStart() - 1)
