@@ -14,10 +14,13 @@
   width: 100%;
 }
 
-.menu li {
+.menu li,
+.menu .menuItem {
   margin-right: 20px;
   display: flex;
   align-items: center;
+  padding-left: 1%;
+  padding-right: 1%;
 }
 
 .menu li:last-child {
@@ -34,6 +37,15 @@
   background-color: #333;
 }
 
+.menu .menuItem:hover {
+  background-color: rgba(223, 230, 233, 0.15);
+  border: #2d3436;
+  border-radius: 10px;
+}
+
+.menu .menuItem:hover a {
+  color: white;
+}
 .navbar-item {
   padding-right: 5%;
 }

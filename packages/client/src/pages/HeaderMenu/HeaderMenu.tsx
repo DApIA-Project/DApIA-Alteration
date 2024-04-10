@@ -24,7 +24,7 @@ const HeaderMenu: React.FunctionComponent<HeaderMenuProps> = ({ onLogout }) => {
       </header>
       <nav className='menu'>
         <ul>
-          <li>
+          <li className={'menuItem'}>
             <NavLink
               className='navbar-item'
               to='/'
@@ -33,7 +33,7 @@ const HeaderMenu: React.FunctionComponent<HeaderMenuProps> = ({ onLogout }) => {
               Homepage
             </NavLink>
           </li>
-          <li>
+          <li className={'menuItem'}>
             <NavLink
               className='navbar-item'
               to='/edit-scenario'
@@ -42,7 +42,7 @@ const HeaderMenu: React.FunctionComponent<HeaderMenuProps> = ({ onLogout }) => {
               Editor
             </NavLink>
           </li>
-          <li>
+          <li className={'menuItem'}>
             <NavLink
               className='navbar-item'
               to='/documentation'

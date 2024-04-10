@@ -1,6 +1,6 @@
 {
   "name": "client",
-  "version": "0.33",
+  "version": "0.34",
   "private": true,
   "type": "commonjs",
   "scripts": {
@@ -47,7 +47,8 @@
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@testing-library/react": "^14.0.0",
     "@testing-library/user-event": "^14.4.3",
-    "webpack": "^5.91.0"
+    "webpack": "^5.91.0",
+    "webpack-dev-server": "4.14.0"
   },
   "eslintConfig": {
     "extends": [
