@@ -32,11 +32,6 @@
   color: #dfe6e9;
 }
 
-.menu li:hover {
-  color: #fff;
-  background-color: #333;
-}
-
 .menu .menuItem:hover {
   background-color: rgba(223, 230, 233, 0.15);
   border: #2d3436;
