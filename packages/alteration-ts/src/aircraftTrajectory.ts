@@ -42,12 +42,20 @@ export class AircraftBuilder {
 
 	interpolate(): AircraftInterpolation {
 		this.waypoint.sort((a, b) => a.timestampGenerated - b.timestampGenerated);
-		let times = this.waypoint.map((point) => point.timestampGenerated);
+		let waypoints = [this.waypoint[0]]
+		for(let i=1; i < this.waypoint.length; i++){
+			if(this.waypoint[i].timestampGenerated != this.waypoint[i-1].timestampGenerated){
+				waypoints.push(this.waypoint[i]);
+			}
+
+		}
+
+		let times = waypoints.map((point) => point.timestampGenerated);
 
 		return new AircraftInterpolation(
-			createInterpolatorWithFallback("akima", times, this.waypoint.map((p) => p.latitude)),
-			createInterpolatorWithFallback("akima", times, this.waypoint.map((p) => p.longitude)),
-			createInterpolatorWithFallback("akima", times, this.waypoint.map((p) => p.altitude))
+			createInterpolatorWithFallback("akima", times, waypoints.map((p) => p.latitude)),
+			createInterpolatorWithFallback("akima", times, waypoints.map((p) => p.longitude)),
+			createInterpolatorWithFallback("akima", times, waypoints.map((p) => p.altitude))
 		)
 	}
 

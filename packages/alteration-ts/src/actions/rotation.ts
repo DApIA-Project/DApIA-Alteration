@@ -15,13 +15,16 @@ export function rotation(config: Config) {
 			// Pre-processing
 			let trajs: Record<string, AircraftBuilder> = {};
 			let starts: Record<string, Message> = {};
-			for(let m of recording) {
+
+			let positions = recording.filter((msg) => msg.latitude != undefined && msg.longitude != undefined);
+			for(let m of positions) {
 				if(trajs[m.hexIdent] == undefined)  trajs[m.hexIdent] = new AircraftBuilder();
 				if(config.scope(m)) {
 					if(starts[m.hexIdent] == undefined) starts[m.hexIdent] = m;
 
 					let start = starts[m.hexIdent];
 					let new_pos = this.compute_rotation(start, m, angle);
+					//console.error(new_pos);
 					let new_msg = { ...m, latitude: lat(new_pos).deg, longitude: lon(new_pos).deg };
 					trajs[m.hexIdent].add_point(AircraftBuilder.to_waypoint(new_msg));
 
@@ -40,8 +43,12 @@ export function rotation(config: Config) {
 			let new_recording: Message[] = [];
 			for(let m of recording) {
 				let p = func[m.hexIdent].get_point(m.timestampGenerated);
-				if(m.latitude && m.longitude) {
+				//console.log("(" + m.latitude + "," +  m.longitude + ") : " +( m.latitude != undefined && m.longitude != undefined ? "true" : "false"));
+				if(m.latitude != undefined && m.longitude != undefined) {
+					//console.error("Message rotaté ("+m.latitude+","+m.longitude+")");
 					let new_msg = Template.replace(m,p);
+					//console.error(new_msg);
+					//console.error(p);
 					new_recording.push(new_msg);
 				} else { 
 					new_recording.push(m);

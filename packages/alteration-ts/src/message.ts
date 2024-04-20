@@ -29,6 +29,11 @@ export function stringify(msg: Message): string {
 			continue;
 		}
 
+		if(field == "latitude" || field == "longitude"){
+			result += msg[field]!.toFixed(5) + ","	;
+			continue;
+		}
+
 		result += msg[field] + ",";
 	}
 

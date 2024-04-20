@@ -30,4 +30,12 @@ describe("Template Messages", () => {
 		expect(actual.latitude).to.be.equals(1.1111);
 		expect(actual.longitude).to.be.equals(6.6667);
 	});
+
+	it("should replace zero", () => {
+		let msg = parse('MSG,3,3,5022202,4CA1FA,5022202,2018/11/25,12:22:19.221,2018/11/25,12:22:19.221,,29975.0,,,48.2271,0,,,0,0,0,0\n')[0];
+		let values = { latitude: 1, longitude: 6};
+
+		let actual = Template.replace(msg, values);
+		expect(actual.longitude).to.be.equals(6);
+	});
 });

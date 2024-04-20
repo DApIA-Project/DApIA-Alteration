@@ -110,4 +110,33 @@ describe("Aircraft Trajectory Builder", () => {
 	});
 
  */
+
+	it("not strictly increasing values", () => {
+		let trajectory = new AircraftBuilder()
+			.add_point({timestampGenerated: 0, latitude: 0, longitude: 0, altitude: 0})
+			.add_point({timestampGenerated: 1, latitude: 0, longitude: 0, altitude: 0})
+			.add_point({timestampGenerated: 2, latitude: 0, longitude: 0, altitude: 0})
+			.add_point({timestampGenerated: 3, latitude: 0, longitude: 0, altitude: 0})
+			.add_point({timestampGenerated: 4, latitude: 0, longitude: 0, altitude: 0})
+			;
+
+			trajectory.interpolate();
+
+	});
+
+	it("should sort waypoint with time", () => {
+
+		let trajectory = new AircraftBuilder()
+		.add_point({timestampGenerated: 3, latitude: 0, longitude: 0, altitude: 0})
+		.add_point({timestampGenerated: 1, latitude: 0, longitude: 0, altitude: 0})
+		.add_point({timestampGenerated: 0, latitude: 0, longitude: 0, altitude: 0})
+		.add_point({timestampGenerated: 2, latitude: 0, longitude: 0, altitude: 0})
+		.add_point({timestampGenerated: 4, latitude: 0, longitude: 0, altitude: 0})
+		;
+
+
+
+		trajectory.interpolate();
+
+	});
 });

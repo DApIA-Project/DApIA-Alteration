@@ -1,4 +1,4 @@
-import { rotation, timeWindow, parse, earth_azimuth } from "../../../src"
+import { creation, Template, rotation, timeWindow, parse, earth_azimuth } from "../../../src"
 import { expect } from "chai"
 
 
@@ -35,6 +35,35 @@ describe("Rotation engine", () => {
 		}).processing(src);
 
 		expect(actual).to.be.deep.equals(expected)
+	});
+
+	it("should rotate ", () => {
+		let start_date = 0;
+		let line = creation({
+			start: start_date,
+			end: start_date + 500000,
+			timeOffset: () => 1000,
+			tempalte: {
+				...Template.random(),
+				hexIdent: "ACAB25",
+				callsign: "SAMU25",
+			},
+			waypoints: [
+				{timestampGenerated: start_date, latitude: 0.00001, longitude: 0.00001, altitude: 1000},
+				{timestampGenerated: start_date + 100000,latitude: 1.00001, longitude: 0.00001, altitude: 1000},
+				{timestampGenerated: start_date + 200000, latitude: 2.00001, longitude: 0.00001, altitude: 1000},
+				{timestampGenerated: start_date + 300000, latitude: 3.00001, longitude: 0.00001, altitude: 1000},
+				{timestampGenerated: start_date + 400000, latitude: 4.00001, longitude: 0.00001, altitude: 1000},
+				{timestampGenerated: start_date + 500000, latitude: 5.00001, longitude: 0.00001, altitude: 1000},
+			],
+		}).processing([]);
+
+		
+		let actual = rotation({
+			scope: timeWindow(start_date, start_date + 500000),
+			angle: 90,
+		}).processing(line);
+
 
 	});
 });

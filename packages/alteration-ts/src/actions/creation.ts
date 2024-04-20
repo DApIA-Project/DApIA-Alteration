@@ -51,7 +51,8 @@ export function creation(config: Config): Action {
 				time += config.timeOffset!();
 			}
 
-			return new_recording.sort((a,b) => a.timestampGenerated - b.timestampGenerated);
+			return new_recording.sort((a,b) => a.timestampGenerated - b.timestampGenerated)
+													.slice(0,-1);
 		}
 	}
 }
