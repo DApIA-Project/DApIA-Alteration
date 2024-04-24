@@ -1,4 +1,4 @@
-import { Scope, Message, op } from "../index"
+import { Scope, Message} from "../index"
 
 type Config = {
 	start: number, 
@@ -35,10 +35,24 @@ export function cut(config: Config) {
 				}
 
 				if(m.timestampGenerated >= config.end) {
+
+					if(m.transmissionType != 3){ // Not a position Message
+						let new_msg = {...m};
+						new_msg.timestampGenerated -= config.end - config.start;
+						//new_msg.timestampLogged -= config.end - config.start;
+						new_recording.push(new_msg);
+						continue;
+					}
+
 					if(deltas[m.hexIdent] == undefined) {
 						// Get the last added element with the same ICAO
-						let last = recording.find((m) => m.timestampGenerated > config.start);
+						let last = recording.find((msg) => msg.timestampGenerated > config.start
+																						&& msg.hexIdent == m.hexIdent
+																					  && msg.transmissionType == 3);
+	
 
+						console.error(last);
+						console.error(m);
 						if(last == undefined) { deltas[m.hexIdent] = no_shift }
 						else { 
 							deltas[m.hexIdent] = {
@@ -48,6 +62,8 @@ export function cut(config: Config) {
 								alti : m.altitude! - last.altitude!,
 							}
 						}	
+						console.error(config.end - config.start);
+						console.error(deltas[m.hexIdent]);
 					}
 
 					let new_msg = this.compute_delta(m, deltas[m.hexIdent]);
@@ -63,14 +79,14 @@ export function cut(config: Config) {
 			
 			new_msg.timestampGenerated -= d.ts;
 
-			if(m.latitude && d.lat && !isNaN(d.lat)) {
-				new_msg.latitude = op("-", m.latitude!, d.lat!);
+			if(m.latitude != undefined && d.lat && !isNaN(d.lat)) {
+				new_msg.latitude! -= d.lat
 			}
-			if(m.longitude && d.lon && !isNaN(d.lon)){
-				new_msg.longitude = op("-", new_msg.longitude!, d.lon!);
+			if(m.longitude != undefined && d.lon && !isNaN(d.lon)){
+				new_msg.longitude! -= d.lon
 			}
-			if(m.altitude && d.alti && !isNaN(d.alti)){
-				new_msg.altitude = 	op("-", new_msg.altitude!, d.alti!);
+			if(m.altitude != undefined && d.alti && !isNaN(d.alti)){
+				new_msg.altitude! -= d.alti
 			}
 
 			return new_msg;

@@ -6,6 +6,7 @@ type Config = {
 	aircrafts : number, // number of ghost aircrafts
 	start : number,
 	end: number,
+	icao?: string | "random",  // ICAO of ghost aircrafts
 	distanceMax?: [number, number] // max divergence distance
 	angleMax?: [number, number], // max divergence angle
 }
@@ -53,11 +54,31 @@ export function saturation(dir: Config) {
 	return {
 		processing(recording: Message[]): Message[] {
 			let new_recording = [];
-			
+		
+			let icao = [];
+			for(let i=0; i < trajs.length; i++){
+				if(dir.icao === "random") {
+					icao[i] = Math.round(Math.random() * 0xFFFFFF).toString(16);
+					continue;
+				}
+				if(dir.icao != undefined) icao[i] = dir.icao;
+			}
+
 			for(let m of recording){
 				new_recording.push(m);
-				trajs.map((ghost) => ghost.get_point(m.timestampGenerated))
-						 .map((point) => new_recording.push(Template.replace(m, point)));
+
+				if(m.timestampGenrated < dir.start || m.timestampGenerated > dir.end) {
+					continue;
+				}
+//				trajs.map((ghost) => ghost.get_point(m.timestampGenerated))
+//						 .map((point) => new_recording.push(Template.replace(m, point)));
+				for(let i = 0; i < trajs.length; i++){
+					let point = trajs[i].get_point(m.timestampGenerated);
+					let new_msg = Template.replace(m,point);
+
+					if(dir.icao != undefined) new_msg.hexIdent = icao[i];
+					new_recording.push(new_msg);
+				}
 			}
 			
 			return new_recording;
