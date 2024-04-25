@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react'
 import Editor, { useMonaco } from '@monaco-editor/react'
-
 import * as monaco from 'monaco-editor'
 import { editor } from 'monaco-editor'
 import * as parser from '@smartesting/alteration-scenario/dist/parser/parser'
@@ -34,43 +33,6 @@ const AlterationScenarioEditor: React.FunctionComponent<
   ...props
 }) => {
   const monaco = useMonaco()
-
-  useEffect(
-    () => {
-      if (!monaco) return
-      initLanguage()
-      initCompletionProvider()
-    },
-    // eslint-disable-next-line
-    [monaco]
-  )
-
-  function initLanguage() {
-    monaco!.languages.typescript.javascriptDefaults.setEagerModelSync(true)
-    const languages: ILanguageExtensionPoint[] =
-      monaco!.languages.getLanguages()
-    let haveLanguage = false
-    for (const language of languages) {
-      if (language.id === 'alterationscenario') {
-        haveLanguage = true
-      }
-    }
-    if (haveLanguage) return
-    monaco!.languages.register({ id: 'alterationscenario' })
-    monaco!.languages.setMonarchTokensProvider(
-      'alterationscenario',
-      ALTERATION_SCENARIO_FORMAT
-    )
-  }
-
-  function initCompletionProvider() {
-    const completionProvider = createCompletionProvider()
-    if (!completionProvider) return
-    monaco!.languages.registerCompletionItemProvider(
-      'alterationscenario',
-      completionProvider
-    )
-  }
 
   function createCompletionProvider(): CompletionItemProvider | undefined {
     if (!monaco) return
@@ -109,6 +71,44 @@ const AlterationScenarioEditor: React.FunctionComponent<
       },
     }
   }
+
+  function initLanguage() {
+    monaco!.languages.typescript.javascriptDefaults.setEagerModelSync(true)
+    const languages: ILanguageExtensionPoint[] =
+      monaco!.languages.getLanguages()
+    let haveLanguage = false
+    for (const language of languages) {
+      if (language.id === 'alterationscenario') {
+        haveLanguage = true
+      }
+    }
+    if (haveLanguage) return
+    monaco!.languages.register({ id: 'alterationscenario' })
+    monaco!.languages.setMonarchTokensProvider(
+      'alterationscenario',
+      ALTERATION_SCENARIO_FORMAT
+    )
+  }
+
+  function initCompletionProvider() {
+    const completionProvider = createCompletionProvider()
+    if (!completionProvider) return
+    monaco!.languages.registerCompletionItemProvider(
+      'alterationscenario',
+      completionProvider
+    )
+  }
+
+  useEffect(
+    () => {
+      if (!monaco) return
+      window.onerror = (err) => console.error(err)
+      initLanguage()
+      initCompletionProvider()
+    },
+    // eslint-disable-next-line
+    [monaco]
+  )
 
   return (
     <Editor

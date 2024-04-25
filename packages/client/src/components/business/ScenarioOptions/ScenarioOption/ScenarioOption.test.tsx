@@ -35,7 +35,7 @@ describe('ScenarioOption', () => {
       <ScenarioOption value={false} onChange={callback} name={'Labeling'} />
     )
 
-    await userEvent.click(screen.getByRole('checkbox'))
+    await userEvent.click(screen.getByRole('switch'))
 
     expect(callback).toBeCalledTimes(1)
     expect(callback).toBeCalledWith(true)

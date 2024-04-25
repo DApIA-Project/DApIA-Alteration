@@ -12,7 +12,7 @@ export function getParserMarkers(parserErrors: ParserErrors): IMarkerData[] {
         endLineNumber: lexerError.line || 0,
         endColumn: (lexerError.column || 0) + lexerError.length,
       }
-      console.log(range)
+
       markers.push({
         message: lexerError.message,
         severity: MarkerSeverity.Error,
@@ -23,19 +23,33 @@ export function getParserMarkers(parserErrors: ParserErrors): IMarkerData[] {
       })
     }
   }
-  console.log(parserErrors)
 
   if (parserErrors.parser.length !== 0) {
     for (const parserError of parserErrors.parser) {
       let range = {
         startLineNumber:
-          parserError.token.startLine || parserErrors.lexer[0].line || 0,
+          parserError.token.startLine ||
+          (parserErrors.lexer.length !== 0
+            ? parserErrors.lexer[0].line
+            : parserErrors.parser.length !== 0
+            ? parserErrors.parser[0].token.startLine
+            : 0),
         startColumn: parserError.token.startColumn || 0,
         endLineNumber:
-          parserError.token.endLine || parserErrors.lexer[0].line || 0,
+          parserError.token.endLine ||
+          (parserErrors.lexer.length !== 0
+            ? parserErrors.lexer[0].line
+            : parserErrors.parser.length !== 0
+            ? parserErrors.parser[0].token.endLine
+            : 0),
         endColumn: parserError.token.endColumn || 0,
       }
-      console.log(range)
+      if (range.startLineNumber === undefined) {
+        range.startLineNumber = 0
+      }
+      if (range.endLineNumber === undefined) {
+        range.endLineNumber = 0
+      }
       markers.push({
         message: parserError.message,
         severity: MarkerSeverity.Error,

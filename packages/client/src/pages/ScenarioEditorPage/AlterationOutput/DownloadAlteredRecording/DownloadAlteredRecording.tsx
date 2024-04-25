@@ -1,6 +1,6 @@
 import React from 'react'
 import './DownloadAlteredRecording.css'
-import { Recording } from '@smartesting/shared/src'
+import { Recording } from '@smartesting/shared/dist'
 
 interface DownloadAlteredRecordingProps {
   recording: Recording

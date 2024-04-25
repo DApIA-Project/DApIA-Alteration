@@ -14,7 +14,7 @@ services:
   #                           \__|
 
   alteration-install-server-dependencies:
-    image: node:16-alpine
+    image: node:20-alpine
     container_name: alteration-install-server-dependencies
     volumes:
       - .:/app/packages
@@ -22,7 +22,7 @@ services:
     entrypoint: npm install
 
   alteration-install-client-dependencies:
-    image: node:16-alpine
+    image: node:20-alpine
     container_name: alteration-install-client-dependencies
     volumes:
       - .:/app/packages
@@ -30,7 +30,7 @@ services:
     entrypoint: npm install
 
   alteration-build-server:
-    image: node:16-alpine
+    image: node:20-alpine
     container_name: alteration-build-server
     volumes:
       - .:/app/packages
@@ -41,7 +41,7 @@ services:
         condition: service_completed_successfully
 
   alteration-build-client:
-    image: node:16-alpine
+    image: node:20-alpine
     container_name: alteration-build-client
     profiles:
       - production
@@ -54,7 +54,7 @@ services:
         condition: service_completed_successfully
 
   alteration-migrate-db:
-    image: node:16-alpine
+    image: node:20-alpine
     container_name: alteration-migrate-db
     profiles:
       - dev
@@ -77,7 +77,7 @@ services:
   #          $$ |\$$$$$$$\ $$$$$$$  |  \$$$$  |      $$$$$$$  |\$$$$$$$\ $$ |        \$  /   $$ |\$$$$$$$\ \$$$$$$$\ $$$$$$$  |
   #          \__| \_______|\_______/    \____/       \_______/  \_______|\__|         \_/    \__| \_______| \_______|\_______/
   alteration-migrate-test-db:
-    image: node:16-alpine
+    image: node:20-alpine
     container_name: alteration-migrate-test-db
     profiles:
       - test
@@ -132,12 +132,12 @@ services:
       - '3001:3001'
 
   alteration-prod-client:
-    image: node:16-alpine
+    image: node:20-alpine
     container_name: alteration-client-prod
     volumes:
       - .:/app/packages
     working_dir: /app/packages/client
-    entrypoint: npm run start
+    entrypoint: npm run serve
     depends_on:
       alteration-build-client:
         condition: service_completed_successfully

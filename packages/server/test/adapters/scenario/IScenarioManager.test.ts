@@ -60,18 +60,12 @@ const IScenarioContractTest: IContractTest = (
       scenarioManager = adapters.scenarioManager
       userManager = adapters.userManager
       user = await userManager.createUser({
-        //firstname: 'Bob',
-        //lastname: 'Dupont',
         email: 'bob.dupont@mail.fr',
         password: 's3cret!',
-        //isAdmin: false,
       })
       user2 = await userManager.createUser({
-        //firstname: 'Charlie',
-        //lastname: 'Stone',
         email: 'charlie.stone@mail.fr',
         password: 's3cret!',
-        //isAdmin: false,
       })
     })
 

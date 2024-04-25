@@ -25,3 +25,7 @@ header > span {
   font-family: main-font, sans-serif;
   color: #dfe6e9;
 }
+
+iframe#webpack-dev-server-client-overlay {
+  display: none !important;
+}

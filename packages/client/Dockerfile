@@ -1,4 +1,4 @@
-FROM node:16-alpine
+FROM node:20.12.1-alpine
 WORKDIR /usr/src/app
 COPY ./client ./client/
 COPY ./alteration-scenario ./alteration-scenario/
@@ -8,4 +8,4 @@ RUN npm install -g typescript
 RUN npm install
 RUN npm run build
 EXPOSE 3000
-CMD ["npm", "run", "start"]
+CMD ["npm", "run", "serve"]
