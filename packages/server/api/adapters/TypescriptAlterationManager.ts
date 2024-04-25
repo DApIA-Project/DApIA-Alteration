@@ -31,19 +31,18 @@ export class TypescriptAlterationManager implements IAlterationManager {
 		if(recordingToReplay) this.replayRecording = parse(recordingToReplay!.content)
 
 		// Create Engines (only for the first sensor of the first param)
-		let sensor = parameters[0].sensors.sensor?.at(0) 
-		let start_date = sensor?.firstDate ?? 0;
+		return new Promise((resolve) => resolve(parameters.map((param) => {
+			let sensor = param.sensors.sensor?.at(0) 
+			let start_date = sensor?.firstDate ?? 0;
 
-		let engine = new Engine({
-			actions: sensor?.action?.map((a) => this.create_action(a, start_date, source_recording)) ?? []
-		});
-	
-		let name = "modified__" + recording.name.split(".")[0] + "_0.sbs"
+			let engine = new Engine({
+				actions: sensor?.action?.map((a) => this.create_action(a, start_date, source_recording)) ?? []
+			});
 
-		return new Promise((resolve) => resolve([{ 
-			name: name,
-			content: engine.run(source_recording).to_string() 
-		}]));
+			let name = "modified__" + recording.name.split(".")[0] + "_0.sbs"
+
+			return {name: name, content: engine.run(source_recording).to_string()};
+		})));
 	}
 
 
@@ -162,10 +161,14 @@ export class TypescriptAlterationManager implements IAlterationManager {
 					throw new Error("Saturation Engine Error : \"AIRCRAFT_NUMBER\" parameter is not defined"); 
 				}
 
+				let icao = action.parameters.parameter?.find((p) => p.key == "ICAO")?.value;
+
+
 
 				return saturation({
 					source: source_recording,
 					aircrafts: parseInt(aircraft_number!),
+					icao: icao,
 					start: start,
 					end: end,
 				});
@@ -213,10 +216,10 @@ export class TypescriptAlterationManager implements IAlterationManager {
 				});
 			}
 				
-			case 'CREATION' :  {
-
-			}
-
+//			case 'CREATION' :  {
+//
+//			}
+//
 			default: 
 				throw new Error("This alteration mode isn't supported yet");
 		}

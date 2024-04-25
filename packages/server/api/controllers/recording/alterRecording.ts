@@ -70,7 +70,7 @@ export default makeRequestHandler<AlterRecordingResponse>(
       recordingToReplay,
       optionsAlteration,
       outputFormat,
-      new JavaAlterationManager()
+      new TypescriptAlterationManager()
     )
   }
 )

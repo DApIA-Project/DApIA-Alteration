@@ -7,9 +7,13 @@ import PsqlScenarioManager from './api/adapters/scenario/PsqlScenarioManager'
 import MemoryUserManager from './api/adapters/user/MemoryUserManager'
 import PsqlUserManager from './api/adapters/user/PsqlUserManager'
 
-const express = require('express')
-const cors = require('cors')
-const dotenv = require('dotenv')
+import express from 'express';
+import cors from 'cors';
+import dotenv from 'dotenv';
+
+//const express = require('express')
+//const cors = require('cors')
+//const dotenv = require('dotenv')
 
 dotenv.config({ path: '.env' })
 

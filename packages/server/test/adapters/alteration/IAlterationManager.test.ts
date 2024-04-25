@@ -490,7 +490,7 @@ const IAlterationContractTest: IContractTest = (
       )
       assert.deepStrictEqual(
         recordingsAltered[0].content.split('\n').length,
-        23
+        21
       )
     })
 

@@ -53,11 +53,11 @@ describe('ScenariosPage', () => {
   }
   let userAttributes: User = {
     id: 1,
-    firstname: 'Bob',
-    lastname: 'Dupont',
-    email: 'bob.dupont@mail.fr',
+    //firstname: 'Bob',
+    //lastname: 'Dupont',
+    //email: 'bob.dupont@mail.fr',
     password: 'password',
-    isAdmin: false,
+    //isAdmin: false,
     token: uuid(),
     createdAt: new Date(),
     updatedAt: new Date(),

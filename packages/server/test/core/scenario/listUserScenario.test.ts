@@ -2,11 +2,11 @@ import IScenarioManager from '../../../api/adapters/scenario/IScenarioManager'
 import {
   Scenario,
   ScenarioAttributes,
-} from '@smartesting/shared/src/models/Scenario'
-import { User, UserAttributes } from '@smartesting/shared/src/models/User'
+} from '@smartesting/shared/dist/models/Scenario'
+import { User, UserAttributes } from '@smartesting/shared/dist/models/User'
 import makeTestAdapters from '../../makeTestAdapters'
 import assert from 'assert'
-import { ListUserScenarioError } from '@smartesting/shared/src/responses/listUserScenario'
+import { ListUserScenarioError } from '@smartesting/shared/dist/responses/listUserScenario'
 import { clearDb } from '../../clearDb'
 import IUserManager from '../../../api/adapters/user/IUserManager'
 import listUserScenario from '../../../api/core/scenario/listUserScenario'
