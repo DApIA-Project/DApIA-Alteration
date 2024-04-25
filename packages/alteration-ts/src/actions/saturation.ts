@@ -67,7 +67,7 @@ export function saturation(dir: Config) {
 			for(let m of recording){
 				new_recording.push(m);
 
-				if(m.timestampGenrated < dir.start || m.timestampGenerated > dir.end) {
+				if(m.timestampGenerated < dir.start || m.timestampGenerated > dir.end) {
 					continue;
 				}
 //				trajs.map((ghost) => ghost.get_point(m.timestampGenerated))

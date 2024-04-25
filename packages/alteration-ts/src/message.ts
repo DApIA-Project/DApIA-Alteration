@@ -8,10 +8,38 @@ export function parse(recording: string): Message[] {
 									.filter(notEmpty);
 }
 
+function timestamp_to_string(ts: number) {
+	let date = new Date(ts);
+	return date.toISOString().split("T")[0].replaceAll("-", "/") + ","
+		   + date.toISOString().split("T")[1].slice(0, -1) + ",";
+}
+
 export function stringify(msg: Message): string {
 	let result: string = "";
+	let ordered = {
+		messageType: msg.messageType, 
+		transmissionType: msg.transmissionType,
+		sessionID: msg.sessionID,
+		aircraftID: msg.aircraftID, 
+		hexIdent: msg.hexIdent, 
+		flightID: msg.flightID,
+		timestampGenerated: msg.timestampGenerated,
+		timestampLogged: msg.timestampLogged,
+		callsign: msg.callsign,
+		altitude: msg.altitude,
+		groundSpeed: msg.groundSpeed,
+		track: msg.track,
+		latitude: msg.latitude,
+		longitude: msg.longitude, 
+		verticalRate: msg.verticalRate,
+		squawk: msg.squawk,
+		alert: msg.alert,
+		emergency: msg.emergency, 
+		spi: msg.spi, 
+		onGround: msg.onGround,
+	}
 
-	for(let field in msg) {
+	for(let field in ordered) {
 		if(field == "timestampLogged" || field == "timestampGenerated") {
 			let date = new Date(msg[field]);
 			result += date.toISOString().split("T")[0].replaceAll("-", "/") + ",";
