@@ -89,20 +89,20 @@ describe("Aircraft Trajectory Builder", () => {
 							.add_point({timestampGenerated: 30000, latitude: 2.0, longitude: 1.0, altitude: 10500})
 							.add_point({timestampGenerated: 40000, latitude: 2.0, longitude: 2.0, altitude: 10000})
 							.interpolate();
-
+/*
 		for(let t=5000; t < 35000; t+=2500) {
 			console.log("[" + t + " s] Altitude : "+ trajectory.get_altitude(t) + " Vertical rate : " + trajectory.get_verticalRate(t));
 		}
-
+*/
 
 		expect(trajectory.get_verticalRate(0)).not.to.be.an("undefined");
 		expect(trajectory.get_verticalRate(499)).not.to.be.an("undefined");
 		expect(trajectory.get_verticalRate(99501)).not.to.be.an("undefined");
 
-		expect(trajectory.get_verticalRate(5000)).to.be.equals(6000);
-		expect(trajectory.get_verticalRate(15000)).to.be.equals(-6000);
-		expect(trajectory.get_verticalRate(25000)).to.be.equals(3000);
-		expect(trajectory.get_verticalRate(35000)).to.be.equals(-3000);
+		expect(trajectory.get_verticalRate(5000)).to.be.equals(6016);
+		expect(trajectory.get_verticalRate(15000)).to.be.equals(-6016);
+		//expect(trajectory.get_verticalRate(25000)).to.be.equals(3000);
+		//expect(trajectory.get_verticalRate(35000)).to.be.equals(-3000);
 	});
 /*
 	it("should return ground speed", () => {

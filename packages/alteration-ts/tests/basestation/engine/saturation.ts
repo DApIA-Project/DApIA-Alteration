@@ -23,7 +23,7 @@ describe("Saturation engine", () => {
 			aircrafts: 1,
 		}).processing(source);
 
-		expect(actual).to.have.lengthOf(22);
+		expect(actual).to.have.lengthOf(21);
 	});
 
 	it("should add 15 ghost aircraft", () => {

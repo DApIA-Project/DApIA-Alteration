@@ -31,7 +31,7 @@ export class TypescriptAlterationManager implements IAlterationManager {
 		if(recordingToReplay) this.replayRecording = parse(recordingToReplay!.content)
 
 		// Create Engines (only for the first sensor of the first param)
-		return new Promise((resolve) => resolve(parameters.map((param) => {
+		return new Promise((resolve) => resolve(parameters.map((param,i) => {
 			let sensor = param.sensors.sensor?.at(0) 
 			let start_date = sensor?.firstDate ?? 0;
 
@@ -39,7 +39,7 @@ export class TypescriptAlterationManager implements IAlterationManager {
 				actions: sensor?.action?.map((a) => this.create_action(a, start_date, source_recording)) ?? []
 			});
 
-			let name = "modified__" + recording.name.split(".")[0] + "_0.sbs"
+			let name = "modified__" + recording.name.split(".")[0] + "_"+i+".sbs"
 
 			return {name: name, content: engine.run(source_recording).to_string()};
 		})));
