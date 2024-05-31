@@ -247,7 +247,7 @@ const IScenarioContractTest: IContractTest = (
   })
 }
 
-describe('IProjectManager', () => {
+describe('IScenarioManager', () => {
   IScenarioContractTest(
     'MemoryScenarioManager',
     makeMemoryAdapters,

@@ -197,7 +197,7 @@ const IUserContractTest: IContractTest = (
   })
 }
 
-describe('IProjectManager', () => {
+describe('IUserManager', () => {
   IUserContractTest('MemoryUserManager', makeMemoryAdapters, clearMemoryDb)
 
   IUserContractTest(
