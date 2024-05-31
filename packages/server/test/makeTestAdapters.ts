@@ -15,7 +15,7 @@ export default function makeTestAdapters(): AlterationAdapters {
 
 export function makeMemoryAdapters(): AlterationAdapters {
   return {
-    alterationManager: new JavaAlterationManager(),
+    alterationManager: new TypescriptAlterationManager(),
     scenarioManager: new MemoryScenarioManager(),
     userManager: new MemoryUserManager(),
   }
