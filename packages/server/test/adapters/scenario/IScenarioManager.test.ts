@@ -1,11 +1,8 @@
 import IContractTest from '../../IContractTest'
 import { AlterationAdapters } from '../../../api/AlterationAdapters'
 import IScenarioManager from '../../../api/adapters/scenario/IScenarioManager'
-import {
-  ScenarioAttributes,
-  Scenario,
-} from '@smartesting/shared/dist/models/Scenario'
-import { UserAttributes, User } from '@smartesting/shared/dist/models/User'
+import { ScenarioAttributes } from '@smartesting/shared/dist/models/Scenario'
+import { User } from '@smartesting/shared/dist/models/User'
 import assert from 'assert'
 import {
   makeMemoryAdapters,
@@ -163,10 +160,7 @@ const IScenarioContractTest: IContractTest = (
       })
 
       it('returns all scenarios of user with filter searchbar', async () => {
-        const scenario1 = await scenarioManager.createScenario(
-          validScenarioAttributes,
-          user.id
-        )
+        await scenarioManager.createScenario(validScenarioAttributes, user.id)
         const scenario2 = await scenarioManager.createScenario(
           secondScenarioAttributes,
           user.id
@@ -200,10 +194,7 @@ const IScenarioContractTest: IContractTest = (
       })
 
       it('returns all scenarios of user with filter options alteration', async () => {
-        const scenario1 = await scenarioManager.createScenario(
-          validScenarioAttributes,
-          user.id
-        )
+        await scenarioManager.createScenario(validScenarioAttributes, user.id)
         const scenario2 = await scenarioManager.createScenario(
           secondScenarioAttributes,
           user.id

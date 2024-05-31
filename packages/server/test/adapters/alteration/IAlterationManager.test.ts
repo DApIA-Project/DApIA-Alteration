@@ -13,7 +13,7 @@ import { clearMemoryDb, clearProductionDb } from '../../clearDb'
  * Format a ADS-B message to prepare it for comparaison
  * The function remove whitespace, empty line, non significant number (.0)
  * The function truncate float with only n significant digit
- * @param str: the recording
+ * @param str
  * @param n : the number of significant digit in float
  */
 function prepare_string(str: string, n?: number | string): string {

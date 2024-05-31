@@ -1,6 +1,4 @@
 import alterRecordingCore from '../../core/recording/alterRecording'
-import { JavaAlterationManager } from '../../adapters/JavaAlterationManager'
-import { TypescriptAlterationManager } from '../../adapters/TypescriptAlterationManager'
 import { makeRequestHandler } from '../utils/makeRequestHandler'
 import {
   AlterRecordingError,

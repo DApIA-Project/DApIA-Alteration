@@ -8,7 +8,6 @@ import {
   makeProductionAdapters,
 } from '../../makeTestAdapters'
 import { clearMemoryDb, clearProductionDb } from '../../clearDb'
-import hashPassword from '../../../api/adapters/user/hashPassword'
 import bcrypt from 'bcryptjs'
 import { uuid } from '@smartesting/shared/dist/uuid/uuid'
 
@@ -123,7 +122,6 @@ const IUserContractTest: IContractTest = (
     describe('findUserByEmail', () => {
       it('find a specific user with email', async () => {
         const user1 = await userManager.createUser(validUserAttributes)
-        const user2 = await userManager.createUser(secondUserAttributes)
         assert.deepEqual(
           await userManager.findUserByEmail(validUserAttributes.email),
           user1
@@ -143,7 +141,6 @@ const IUserContractTest: IContractTest = (
     describe('findUserByToken', () => {
       it('find a specific user with token', async () => {
         const user1 = await userManager.createUser(validUserAttributes)
-        const user2 = await userManager.createUser(secondUserAttributes)
         assert.deepEqual(await userManager.findUserByToken(user1.token), user1)
       })
 

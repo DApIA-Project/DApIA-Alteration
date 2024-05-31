@@ -19,8 +19,7 @@ const IAlterationContractTest: IContractTest = (
       console.error('Erreur lors de la lecture du fichier:', err)
       return
     }
-    const fileName = basename(filePath)
-    namefile = fileName
+    namefile = basename(filePath)
     content = data
   })
 
