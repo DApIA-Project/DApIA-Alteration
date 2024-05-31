@@ -10,12 +10,12 @@ export default function makeTestAdapters(): AlterationAdapters {
   if (process.env.MEMORY_ADAPTERS) {
     return makeMemoryAdapters()
   }
-  return makeMemoryAdapters()
+  return makeProductionAdapters()
 }
 
 export function makeMemoryAdapters(): AlterationAdapters {
   return {
-    alterationManager: new TypescriptAlterationManager(),
+    alterationManager: new JavaAlterationManager(),
     scenarioManager: new MemoryScenarioManager(),
     userManager: new MemoryUserManager(),
   }

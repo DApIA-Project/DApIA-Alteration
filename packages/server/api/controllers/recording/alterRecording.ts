@@ -1,6 +1,6 @@
 import alterRecordingCore from '../../core/recording/alterRecording'
 import { JavaAlterationManager } from '../../adapters/JavaAlterationManager'
-import { TypescriptAlterationManager } from "../../adapters/TypescriptAlterationManager"
+import { TypescriptAlterationManager } from '../../adapters/TypescriptAlterationManager'
 import { makeRequestHandler } from '../utils/makeRequestHandler'
 import {
   AlterRecordingError,
@@ -9,7 +9,7 @@ import {
 
 export default makeRequestHandler<AlterRecordingResponse>(
   async (req): Promise<AlterRecordingResponse> => {
-    const { scenarioManager } = req.adapters
+    const { alterationManager } = req.adapters
     const {
       scenario,
       recording,
@@ -70,7 +70,7 @@ export default makeRequestHandler<AlterRecordingResponse>(
       recordingToReplay,
       optionsAlteration,
       outputFormat,
-      new TypescriptAlterationManager()
+      alterationManager
     )
   }
 )
