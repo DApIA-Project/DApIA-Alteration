@@ -10,7 +10,7 @@ export default function makeTestAdapters(): AlterationAdapters {
   if (process.env.MEMORY_ADAPTERS) {
     return makeMemoryAdapters()
   }
-  return makeProductionAdapters()
+  return makeMemoryAdapters()
 }
 
 export function makeMemoryAdapters(): AlterationAdapters {
