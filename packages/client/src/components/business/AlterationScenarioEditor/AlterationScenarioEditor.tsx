@@ -33,6 +33,7 @@ const AlterationScenarioEditor: React.FunctionComponent<
   ...props
 }) => {
   const monaco = useMonaco()
+  let registerCompletionProvider: monaco.IDisposable
 
   function createCompletionProvider(): CompletionItemProvider | undefined {
     if (!monaco) return
@@ -42,7 +43,7 @@ const AlterationScenarioEditor: React.FunctionComponent<
         model: editor.ITextModel,
         position: monaco.IPosition
       ): Promise<monaco.languages.CompletionList | null | undefined> {
-        // await initSemantic(model, position)
+        registerCompletionProvider.dispose()
         const suggestion: Suggestion = await parser.getSuggestions(
           model.getValueInRange({
             startLineNumber: 1,
@@ -93,10 +94,11 @@ const AlterationScenarioEditor: React.FunctionComponent<
   function initCompletionProvider() {
     const completionProvider = createCompletionProvider()
     if (!completionProvider) return
-    monaco!.languages.registerCompletionItemProvider(
-      'alterationscenario',
-      completionProvider
-    )
+    registerCompletionProvider =
+      monaco!.languages.registerCompletionItemProvider(
+        'alterationscenario',
+        completionProvider
+      )
   }
 
   useEffect(

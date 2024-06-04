@@ -13,9 +13,9 @@
   "scripts": {
     "test": "ts-mocha -p tsconfig.json test/**/*.test.ts --timeout 10000",
     "test:coverage": "nyc --reporter=html ts-mocha -p tsconfig.json 'test/**/*.test.ts'",
-    "serve": "node build/server.js",
+    "serve": "node build/server.cjs",
     "start": "tsx index.ts",
-    "bundle-server": "esbuild index.ts --bundle --platform=node --outfile=build/server.js",
+    "bundle-server": "esbuild index.ts --bundle --platform=node --outfile=build/server.cjs",
     "bundle": "npm run bundle-server",
     "build": "tsc && npm run bundle",
     "tsc": "tsc",
@@ -34,12 +34,12 @@
     "@teppeis/multimaps": "^3.0.0",
     "@types/cors": "^2.8.13",
     "cors": "^2.8.5",
-    "esbuild": "^0.15.13",
-    "express": "^4.18.2",
+    "esbuild": "^0.21.4",
+    "express": "^4.19.2",
+    "node-pg-migrate": "^6.2.2",
     "pg-hstore": "^2.3.4",
     "react": "^18.2.0",
-    "sequelize": "^6.29.3",
-    "node-pg-migrate": "^6.2.2"
+    "sequelize": "^6.29.3"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",
