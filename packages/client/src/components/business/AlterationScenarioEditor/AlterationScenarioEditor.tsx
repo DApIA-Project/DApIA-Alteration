@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import Editor, { useMonaco } from '@monaco-editor/react'
 import * as monaco from 'monaco-editor'
 import { editor } from 'monaco-editor'
@@ -33,7 +33,9 @@ const AlterationScenarioEditor: React.FunctionComponent<
   ...props
 }) => {
   const monaco = useMonaco()
-  let registerCompletionProvider: monaco.IDisposable
+  const [completionProvider, setCompletionProvider] = useState<
+    CompletionItemProvider | undefined
+  >(undefined)
 
   function createCompletionProvider(): CompletionItemProvider | undefined {
     if (!monaco) return
@@ -43,7 +45,6 @@ const AlterationScenarioEditor: React.FunctionComponent<
         model: editor.ITextModel,
         position: monaco.IPosition
       ): Promise<monaco.languages.CompletionList | null | undefined> {
-        registerCompletionProvider.dispose()
         const suggestion: Suggestion = await parser.getSuggestions(
           model.getValueInRange({
             startLineNumber: 1,
@@ -92,15 +93,16 @@ const AlterationScenarioEditor: React.FunctionComponent<
   }
 
   function initCompletionProvider() {
-    const completionProvider = createCompletionProvider()
-    if (!completionProvider) return
-    registerCompletionProvider =
-      monaco!.languages.registerCompletionItemProvider(
-        'alterationscenario',
-        completionProvider
-      )
+    setCompletionProvider(createCompletionProvider())
   }
 
+  function callProvider() {
+    if (!completionProvider) return
+    monaco!.languages.registerCompletionItemProvider(
+      'alterationscenario',
+      completionProvider
+    )
+  }
   useEffect(
     () => {
       if (!monaco) return
@@ -120,7 +122,9 @@ const AlterationScenarioEditor: React.FunctionComponent<
       options={options}
       onChange={async (text) => {
         if (onChange) {
+          setCompletionProvider(undefined)
           onChange(text || '')
+          callProvider()
           if (monaco !== null) {
             if (window.timer) {
               clearTimeout(window.timer)
