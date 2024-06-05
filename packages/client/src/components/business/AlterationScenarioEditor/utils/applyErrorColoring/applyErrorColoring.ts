@@ -6,7 +6,6 @@ import {
 import { getSemanticMarkers } from '../getSemanticMarkers/getSemanticMarkers'
 import { SemanticError } from '@smartesting/alteration-scenario/dist/generators'
 import { AlterationScenarioSemanticVisitor } from '@smartesting/alteration-scenario/dist/generators/AlterationScenarioSemanticVisitor'
-import { URI } from 'vscode-uri'
 import { getParserMarkers } from '../getParserMarkers/getParserMarkers'
 
 type Monaco =
