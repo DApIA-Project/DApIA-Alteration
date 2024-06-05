@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import Editor, { useMonaco } from '@monaco-editor/react'
 import * as monaco from 'monaco-editor'
 import { editor } from 'monaco-editor'
@@ -33,9 +33,6 @@ const AlterationScenarioEditor: React.FunctionComponent<
   ...props
 }) => {
   const monaco = useMonaco()
-  const [completionProvider, setCompletionProvider] = useState<
-    CompletionItemProvider | undefined
-  >(undefined)
 
   function createCompletionProvider(): CompletionItemProvider | undefined {
     if (!monaco) return
@@ -93,16 +90,14 @@ const AlterationScenarioEditor: React.FunctionComponent<
   }
 
   function initCompletionProvider() {
-    setCompletionProvider(createCompletionProvider())
-  }
-
-  function callProvider() {
+    const completionProvider = createCompletionProvider()
     if (!completionProvider) return
     monaco!.languages.registerCompletionItemProvider(
       'alterationscenario',
       completionProvider
     )
   }
+
   useEffect(
     () => {
       if (!monaco) return
@@ -111,7 +106,7 @@ const AlterationScenarioEditor: React.FunctionComponent<
       initCompletionProvider()
     },
     // eslint-disable-next-line
-    [monaco]
+    []
   )
 
   return (
@@ -122,9 +117,7 @@ const AlterationScenarioEditor: React.FunctionComponent<
       options={options}
       onChange={async (text) => {
         if (onChange) {
-          setCompletionProvider(undefined)
           onChange(text || '')
-          callProvider()
           if (monaco !== null) {
             if (window.timer) {
               clearTimeout(window.timer)
