@@ -93,15 +93,30 @@ const AlterationScenarioEditor: React.FunctionComponent<
     window.completionProviderRegistered = true
   }
 
+  async function handleChange(text: string | undefined) {
+    if (onChange) {
+      if (monaco) {
+        onChange(text || '')
+        if (window.timer) {
+          clearTimeout(window.timer)
+        }
+        window.timer = setTimeout(async () => {
+          await applyErrorColoring(monaco, text || '')
+        }, 0)
+      }
+    }
+  }
+
   useEffect(
     () => {
       if (!monaco) return
       window.onerror = (err) => console.error(err)
       initLanguage()
       initCompletionProvider()
+      if (value) applyErrorColoring(monaco, value).then((r) => console.error(r))
     },
     // eslint-disable-next-line
-    [monaco]
+    [monaco, value]
   )
 
   return (
@@ -110,19 +125,7 @@ const AlterationScenarioEditor: React.FunctionComponent<
       theme={'vs-dark'}
       value={value}
       options={options}
-      onChange={async (text) => {
-        if (onChange) {
-          onChange(text || '')
-          if (monaco !== null) {
-            if (window.timer) {
-              clearTimeout(window.timer)
-            }
-            window.timer = setTimeout(async () => {
-              await applyErrorColoring(monaco, text || '')
-            }, 1000)
-          }
-        }
-      }}
+      onChange={handleChange}
       {...props}
     />
   )
