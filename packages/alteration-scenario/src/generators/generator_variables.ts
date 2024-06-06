@@ -179,7 +179,7 @@ export function createAllScenario(
   }
 
   /** Recuperation des utilisations des variables dans le scenario avec ordre exact des utilisations **/
-  let scenario_without_decls = scenario.replace(/^(let\s.*,\s*)*/, '')
+  let scenario_without_decls = scenario.replace(/^(let\s.*}\s*,\s*)*/, '')
   let regex_var_str = ''
   let index = 0
   for (let one_var of variables.keys()) {
