@@ -126,13 +126,13 @@ export class TypescriptAlterationManager implements IAlterationManager {
 				if(!action.parameters.recordPath) throw new Error("Invalid parameters for DELETION engine");
 				let source = this.replayRecording!;
 				let first_ts = source[0].timestampGenerated;
-				let time_scope = timeWindow(first_ts + start - start_date, first_ts + end - start_date);
+				//let time_scope = timeWindow(first_ts + start - start_date, first_ts + end - start_date);
+				let time_scope = timeWindow(start_date + start, start_date + end);
 
 				// In old java code, lowerbound of the time windows is used as offset
-				let offset  = parseInt(action.scope.lowerBound ?? "0");
+				//let offset  = parseInt(action.scope.lowerBound ?? "0") ;
+				let offset = (start_date + start) - frist_ts;
 
-				console.log([start,end]);
-				console.log(source);
 
 				// Add Alterations 
 				let alterations = action.parameters.parameter?.map((arg) => {
@@ -161,7 +161,7 @@ export class TypescriptAlterationManager implements IAlterationManager {
 					throw new Error("Saturation Engine Error : \"AIRCRAFT_NUMBER\" parameter is not defined"); 
 				}
 
-				let icao = action.parameters.parameter?.find((p) => p.key == "ICAO")?.value;
+				let icao = action.parameters.parameter?.find((p) => p.key == "ICAO")?.value?.toLowerCase();
 
 
 

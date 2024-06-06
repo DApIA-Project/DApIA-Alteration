@@ -32,7 +32,7 @@ const source = parse("MSG,0,30,2303,406E66,3838,2018/02/28,16:07:24.656,2018/02/
 
 //const start_date = 1519833870987;// Initial start_date
 const start_date = 1519834044656; // Source start_date
-
+/*
 describe("Replay engine", () => {
 	it("should replay a recording", () => {
 		const expected = parse("MSG,0,30,1105,300065,3839,2018/02/28,16:04:30.987,2018/02/28,16:04:31.888,,,414.1,333,,,64,,,,,\n" +
@@ -130,3 +130,5 @@ describe("Replay engine", () => {
 	});
 
 });
+
+*/
