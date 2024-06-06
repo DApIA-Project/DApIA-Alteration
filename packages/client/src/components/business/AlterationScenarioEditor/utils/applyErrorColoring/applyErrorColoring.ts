@@ -6,7 +6,6 @@ import {
 import { getSemanticMarkers } from '../getSemanticMarkers/getSemanticMarkers'
 import { SemanticError } from '@smartesting/alteration-scenario/dist/generators'
 import { AlterationScenarioSemanticVisitor } from '@smartesting/alteration-scenario/dist/generators/AlterationScenarioSemanticVisitor'
-import { URI } from 'vscode-uri'
 import { getParserMarkers } from '../getParserMarkers/getParserMarkers'
 
 type Monaco =
@@ -21,10 +20,10 @@ export async function applyErrorColoring(monaco: Monaco, scenario: string) {
     scenarioAst.value
   )
   const semanticMarkers = getSemanticMarkers(semanticErrors)
-  const model = monaco.editor.getModel(URI.parse('inmemory://model/1'))
+  const model = monaco.editor.getModels()
   const allErrors = parserMarkers.concat(semanticMarkers)
 
   if (model !== null) {
-    monaco!.editor.setModelMarkers(model, 'owner', allErrors)
+    monaco!.editor.setModelMarkers(model[0], 'owner', allErrors)
   }
 }

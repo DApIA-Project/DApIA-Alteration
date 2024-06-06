@@ -1,15 +1,12 @@
 import {
   CreationOptional,
   DataTypes,
-  HasMany,
   InferAttributes,
   InferCreationAttributes,
   Model,
-  NonAttribute,
 } from 'sequelize'
 import { sequelize } from '../database/connection'
 import { Identifier } from 'sequelize/types/model'
-import Scenario from './scenario.model'
 
 export default class User extends Model<
   InferAttributes<User>,

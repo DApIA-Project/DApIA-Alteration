@@ -320,7 +320,7 @@ const ScenarioEditor: React.FunctionComponent<ScenarioEditorProps> = ({
       <div id={'monaco-editor-root'} className={'alterationeditor'}>
         <AlterationScenarioEditor
           language={'alterationscenario'}
-          value={scenario ? scenario.text : ''}
+          value={!!scenario && scenario.text}
           onChange={handleOnChange}
           options={{
             readOnly: openedScenarios.length <= 0,

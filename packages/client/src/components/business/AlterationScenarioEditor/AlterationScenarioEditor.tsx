@@ -8,7 +8,6 @@ import ALTERATION_SCENARIO_FORMAT from '../../../alterationscenario'
 import './AlterationScenarioEditor.css'
 import { showSuggestions } from './utils/showSuggestions/showSuggestions'
 import { applyErrorColoring } from './utils/applyErrorColoring/applyErrorColoring'
-import CompletionItemProvider = monaco.languages.CompletionItemProvider
 import ILanguageExtensionPoint = monaco.languages.ILanguageExtensionPoint
 
 type AlterationScenarioEditorProps = {
@@ -21,6 +20,8 @@ type AlterationScenarioEditorProps = {
 declare global {
   interface Window {
     timer: NodeJS.Timeout | undefined
+    completionProviderRegistered: boolean
+    languageInitialized: boolean
   }
 }
 const AlterationScenarioEditor: React.FunctionComponent<
@@ -34,15 +35,34 @@ const AlterationScenarioEditor: React.FunctionComponent<
 }) => {
   const monaco = useMonaco()
 
-  function createCompletionProvider(): CompletionItemProvider | undefined {
-    if (!monaco) return
-    return {
+  function initLanguage() {
+    if (!monaco || window.languageInitialized) return
+    monaco!.languages.typescript.javascriptDefaults.setEagerModelSync(true)
+    const languages: ILanguageExtensionPoint[] =
+      monaco!.languages.getLanguages()
+    let haveLanguage = false
+    for (const language of languages) {
+      if (language.id === 'alterationscenario') {
+        haveLanguage = true
+      }
+    }
+    if (haveLanguage) return
+    monaco!.languages.register({ id: 'alterationscenario' })
+    monaco!.languages.setMonarchTokensProvider(
+      'alterationscenario',
+      ALTERATION_SCENARIO_FORMAT
+    )
+    window.languageInitialized = true
+  }
+
+  function initCompletionProvider() {
+    if (!monaco || window.completionProviderRegistered) return
+    monaco.languages.registerCompletionItemProvider('alterationscenario', {
       triggerCharacters: [' ', '\b'],
       provideCompletionItems: async function (
         model: editor.ITextModel,
         position: monaco.IPosition
       ): Promise<monaco.languages.CompletionList | null | undefined> {
-        // await initSemantic(model, position)
         const suggestion: Suggestion = await parser.getSuggestions(
           model.getValueInRange({
             startLineNumber: 1,
@@ -69,34 +89,12 @@ const AlterationScenarioEditor: React.FunctionComponent<
           incomplete: true,
         }
       },
-    }
+    })
+    window.completionProviderRegistered = true
   }
 
-  function initLanguage() {
-    monaco!.languages.typescript.javascriptDefaults.setEagerModelSync(true)
-    const languages: ILanguageExtensionPoint[] =
-      monaco!.languages.getLanguages()
-    let haveLanguage = false
-    for (const language of languages) {
-      if (language.id === 'alterationscenario') {
-        haveLanguage = true
-      }
-    }
-    if (haveLanguage) return
-    monaco!.languages.register({ id: 'alterationscenario' })
-    monaco!.languages.setMonarchTokensProvider(
-      'alterationscenario',
-      ALTERATION_SCENARIO_FORMAT
-    )
-  }
-
-  function initCompletionProvider() {
-    const completionProvider = createCompletionProvider()
-    if (!completionProvider) return
-    monaco!.languages.registerCompletionItemProvider(
-      'alterationscenario',
-      completionProvider
-    )
+  async function handleChange(text: string | undefined) {
+    if (onChange && monaco) onChange(text || '')
   }
 
   useEffect(
@@ -105,9 +103,17 @@ const AlterationScenarioEditor: React.FunctionComponent<
       window.onerror = (err) => console.error(err)
       initLanguage()
       initCompletionProvider()
+      if (value) {
+        if (window.timer) {
+          clearTimeout(window.timer)
+        }
+        window.timer = setTimeout(async () => {
+          await applyErrorColoring(monaco, value)
+        }, 500)
+      }
     },
     // eslint-disable-next-line
-    [monaco]
+    [monaco, value]
   )
 
   return (
@@ -116,19 +122,7 @@ const AlterationScenarioEditor: React.FunctionComponent<
       theme={'vs-dark'}
       value={value}
       options={options}
-      onChange={async (text) => {
-        if (onChange) {
-          onChange(text || '')
-          if (monaco !== null) {
-            if (window.timer) {
-              clearTimeout(window.timer)
-            }
-            window.timer = setTimeout(async () => {
-              await applyErrorColoring(monaco, text || '')
-            }, 1000)
-          }
-        }
-      }}
+      onChange={handleChange}
       {...props}
     />
   )
