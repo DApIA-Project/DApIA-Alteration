@@ -153,11 +153,11 @@ export class TypescriptAlterationManager implements IAlterationManager {
         let source = this.replayRecording!
         let first_ts = source[0].timestampGenerated
         //let time_scope = timeWindow(first_ts + start - start_date, first_ts + end - start_date);
-        let time_scope = timeWindow(start_date + start, start_date + end)
+        let time_scope = timeWindow(start, end)
 
         // In old java code, lowerbound of the time windows is used as offset
         //let offset  = parseInt(action.scope.lowerBound ?? "0") ;
-        let offset = start_date + start - first_ts
+        let offset = start - first_ts
 
         // Add Alterations
         let alterations = action.parameters.parameter
