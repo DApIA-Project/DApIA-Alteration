@@ -7,9 +7,10 @@ import PsqlScenarioManager from './api/adapters/scenario/PsqlScenarioManager'
 import MemoryUserManager from './api/adapters/user/MemoryUserManager'
 import PsqlUserManager from './api/adapters/user/PsqlUserManager'
 
-import express from 'express';
-import cors from 'cors';
-import dotenv from 'dotenv';
+import express from 'express'
+import cors from 'cors'
+import dotenv from 'dotenv'
+import { TypescriptAlterationManager } from './api/adapters/TypescriptAlterationManager'
 
 //const express = require('express')
 //const cors = require('cors')
@@ -25,7 +26,7 @@ app.use(express.json({ limit: '200mb' }))
 app.use(
   setAdapters({
     scenarioManager: new PsqlScenarioManager(),
-    alterationManager: new JavaAlterationManager(),
+    alterationManager: new TypescriptAlterationManager(),
     userManager: new PsqlUserManager(),
   })
 )
