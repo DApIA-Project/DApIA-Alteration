@@ -46,6 +46,7 @@ describe('GenerateAlterationButton', () => {
       it('is enable if recording is valid', () => {
         render(
           <GenerateAlterationButton
+            scenario={'hide all_planes at 0 seconds'}
             recording={recording}
             optionsAlteration={optionsAlteration}
             outputFormat={FileFormat.sbs}
@@ -58,6 +59,7 @@ describe('GenerateAlterationButton', () => {
       it('is disable if recording content is empty', () => {
         render(
           <GenerateAlterationButton
+            scenario={'hide all_planes at 0 seconds'}
             recording={{ ...recording, content: '' }}
             optionsAlteration={optionsAlteration}
             outputFormat={FileFormat.sbs}
@@ -70,6 +72,7 @@ describe('GenerateAlterationButton', () => {
       it('is disable if recording name is empty', () => {
         render(
           <GenerateAlterationButton
+            scenario={'hide all_planes at 0 seconds'}
             recording={{ ...recording, name: '' }}
             optionsAlteration={optionsAlteration}
             outputFormat={FileFormat.sbs}
@@ -83,6 +86,7 @@ describe('GenerateAlterationButton', () => {
         const callback = jest.fn()
         render(
           <GenerateAlterationButton
+            scenario={'hide all_planes at 0 seconds'}
             recording={recording}
             optionsAlteration={optionsAlteration}
             outputFormat={FileFormat.sbs}
