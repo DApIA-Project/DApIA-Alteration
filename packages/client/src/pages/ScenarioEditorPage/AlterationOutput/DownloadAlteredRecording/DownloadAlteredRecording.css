@@ -12,3 +12,8 @@ figure {
   text-align: center;
   cursor: pointer;
 }
+
+figure > .openInNew {
+  cursor: pointer;
+  margin-top: 5%;
+}
