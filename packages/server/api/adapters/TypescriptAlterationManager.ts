@@ -163,7 +163,7 @@ export class TypescriptAlterationManager implements IAlterationManager {
         let alterations = action.parameters.parameter
           ?.map((arg) => {
             if (!arg.key || !arg.value || !arg.mode) return null
-            let value = arg.mode != 'simple' ? parseInt(arg.value) : arg.value
+            let value = arg.mode != 'simple' ? Number(arg.value) : arg.value
 
             return {
               property: arg.key,
