@@ -69,9 +69,6 @@ describe("Aircraft Trajectory Builder", () => {
 							.add_point({timestampGenerated : 9000, latitude: 0.0, longitude: 0.0, altitude: 10000})
 							.interpolate();
 	
-		console.log(trajectory.get_point(2000));	
-		console.log(trajectory.get_point(2500));	
-		console.log(trajectory.get_point(3000));	
 		expect(trajectory.get_point(3000)).to.include({latitude: 2.0, longitude: 0.0});
 		expect(trajectory.get_track(2500)).to.be.closeTo(0.0, 0.1);
 		expect(trajectory.get_track(4500)).to.be.closeTo(90.0, 0.1);

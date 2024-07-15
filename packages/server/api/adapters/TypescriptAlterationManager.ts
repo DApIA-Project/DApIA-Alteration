@@ -127,17 +127,16 @@ export class TypescriptAlterationManager implements IAlterationManager {
 				let source = this.replayRecording!;
 				let first_ts = source[0].timestampGenerated;
 				//let time_scope = timeWindow(first_ts + start - start_date, first_ts + end - start_date);
-				let time_scope = timeWindow(start_date + start, start_date + end);
+				let time_scope = timeWindow(start, end);
 
 				// In old java code, lowerbound of the time windows is used as offset
 				//let offset  = parseInt(action.scope.lowerBound ?? "0") ;
-				let offset = (start_date + start) - frist_ts;
-
+				let offset = start - first_ts;
 
 				// Add Alterations 
 				let alterations = action.parameters.parameter?.map((arg) => {
 					if(!arg.key || !arg.value || !arg.mode) return null;
-					let value = (arg.mode != "simple" ? parseInt(arg.value) : arg.value);
+					let value = (arg.mode != "simple" ? parseFloat(arg.value) : arg.value);
 
 					return {
 						property: arg.key,
@@ -166,11 +165,9 @@ export class TypescriptAlterationManager implements IAlterationManager {
 
 
 				return saturation({
-					source: source_recording,
+					scope: scope,
 					aircrafts: parseInt(aircraft_number!),
-					icao: icao,
-					start: start,
-					end: end,
+					angleMax: 30,
 				});
 			}
 

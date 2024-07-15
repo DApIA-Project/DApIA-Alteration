@@ -18,7 +18,7 @@ type AlterationConfig = {
  */ 
 type Config = {
 	scope: Scope,
-	source: readonly Message[],
+	source?: readonly Message[],
 	alterations? : readonly AlterationConfig[],
 	offset?: number,
 }
@@ -30,12 +30,14 @@ export function replay(config: Config) {
 
 	return {
 		processing: function(recording: readonly Message[]): Message[] {
+			let source = config.source ? config.source : recording; // If source is not instancied, then the given recording is used
+
 			let new_recording = clone(recording);
-			let replay = clone(config.source);
+			let replay = clone(source);
 
 			replay.forEach((msg: Message) => {
 				msg.timestampGenerated += offset;
-				msg.tiemstampLogged += offset;
+				msg.timestampLogged += offset;
 			});
 
 			let extracted = replay.filter(config.scope);

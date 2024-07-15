@@ -1,8 +1,72 @@
-import { creation, Template } from "../../../src"
+import { creation, Template, 
+	Point, Message,
+	Earth, Angle,
+} from "../../../src"
+
 import { assert, expect } from "chai"
+
+import fc from "fast-check"
+import { gen } from "../../helpers/arbitraries"
 
 
 describe("Aircraft Creation engine", () => {
+	let dist = (m: Point, w: Point) => Earth.distance_meters(
+		[Angle.degree(m.latitude), Angle.degree(m.longitude)],
+		[Angle.degree(w.latitude), Angle.degree(m.longitude)]
+	);
+
+	Object.defineProperty(Array.prototype, "derivate", {
+		value: function() {
+			let result = [];
+			for(let i=0; i < this.length - 1; i++){
+				result[i] = this[i+1] - this[i];
+			}
+			return result;
+		}
+	});
+
+	/** Properties **/
+	/*
+	describe("Properties", () => {
+		it("should create the right number of message", () => {
+			fc.assert(fc.property(gen.waypoints(5), (waypoints) => {
+				let actual = creation({
+					start: 0, 
+					end: 6000,
+					waypoints: waypoints,
+					template: { ...Template.random() },
+				}).processing([]);
+				return 10 <= actual.length || actual.length <= 15;
+			}));
+		});
+
+		it("should pass throught waypoints", () => {
+			fc.assert(fc.property(
+				gen.waypoints(10).chain((w) => fc.constant([
+					creation({
+						start: w[0].timestampGenerated,
+						end: w[w.length - 1].timestampGenerated,
+						template: Template.random(),
+						waypoints: w,
+					}).processing([]),
+					w
+				]))
+				.filter(([path, w]) => path.length != 0),
+				
+				([path, w]) => {
+					let Ds = w.slice(1,-1)
+					 				.map((w_i) => 
+									 path.filter((msg) => msg.transmissionType == 3)
+								  .map((msg) => dist(msg, w_i))
+									.derivate());
+				
+					return Ds.every((d) => d.some((_, i, t) => t[i] <= 0 && t[i+1] >= 0))
+				}),
+			);
+		});
+	});
+*/
+	/** Unit Tests **/
 	it("should create new messages", () => {
 		let start_date = 1519833870987;
 		let actual = creation({
@@ -65,4 +129,5 @@ describe("Aircraft Creation engine", () => {
 		//assert(increasing, "Latitude is not stricly increasing in message at timestamp : " + actual[i].timestampGenerated);
 		assert(increasing);
 	});
+
 });

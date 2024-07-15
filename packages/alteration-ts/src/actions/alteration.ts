@@ -53,7 +53,7 @@ export function alteration(config: XOR<Config_1, Config_2>) {
 						(new_msg[property] as number) += value as number;
 					break;
 					case AlterationMode.NOISE : 
-						(new_msg[property] as number) += rand(0, value as number);
+						(new_msg[property] as number) += rand(-(value as number), value as number);
 					break;
 					case AlterationMode.DRIFT : 
 						(new_msg[property] as number) += idx * (value as number);

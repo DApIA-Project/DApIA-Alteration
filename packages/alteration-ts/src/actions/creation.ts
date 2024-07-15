@@ -27,7 +27,7 @@ function rand(min: number, max: number) {
  * The template message SHOULD define mandatory field (messageType, flightID, ...)
  */
 export function creation(config: Config): Action {
-	if(!config.timeOffset) config.timeOffset = () => rand(200,400);
+	if(!config.timeOffset) config.timeOffset = () => rand(400, 600)
 
 	// Create the interpolation function
 	let trajectory = new AircraftBuilder()

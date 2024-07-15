@@ -8,6 +8,10 @@ export function and(...scopes: Scope[]): Scope {
   return (msg) => scopes.reduce((acc, scope) => acc && scope(msg), true)
 }
 
+export function not(scope: Scope): Scope {
+	return (msg) => !scope(msg);
+}
+
 export function target(hexIdent: Icao): Scope {
   return (msg) => msg.hexIdent === hexIdent
 }

@@ -122,4 +122,6 @@ export class Earth {
 
 		return [Angle.radian(phi), Angle.radian(lambda)];
 	}
+
+
 }
