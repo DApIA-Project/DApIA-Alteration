@@ -94,7 +94,13 @@ const AlterationScenarioEditor: React.FunctionComponent<
   }
 
   async function handleChange(text: string | undefined) {
-    if (onChange && monaco) onChange(text || '')
+    if (onChange && monaco) {
+      if (text !== undefined) {
+        onChange(text)
+      } else {
+        onChange(' ')
+      }
+    }
   }
 
   useEffect(

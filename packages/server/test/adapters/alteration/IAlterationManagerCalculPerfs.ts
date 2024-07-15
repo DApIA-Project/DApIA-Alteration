@@ -1462,6 +1462,4591 @@ const IAlterationContractTest: IContractTest = (
       console.log("Moyenne de temps d'alteration: " + moyenne + 'ms')
     })
 
+    it('hide saturate rotate alter calcul perf', async () => {
+      const adapters = makeAdapters()
+      let alterationManager = adapters.alterationManager
+      let total: number = 0
+      for (let i: number = 0; i < 1; i++) {
+        const startTime = new Date().getTime()
+        await alterationManager.runAlterations(
+          [
+            {
+              sensors: {
+                sensor: [
+                  {
+                    sensorType: 'SBS',
+                    sID: '',
+                    record: 'zigzag.sbs',
+                    firstDate: 1543148536239,
+                    filter: '',
+                    action: [
+                      {
+                        alterationType: 'DELETION',
+                        scope: {
+                          type: 'timeWindow',
+                          lowerBound: '120000',
+                          upperBound: '463484',
+                        },
+                        parameters: {
+                          target: {
+                            identifier: 'hexIdent',
+                            value: 'ALL',
+                          },
+                        },
+                      },
+                      {
+                        alterationType: 'SATURATION',
+                        scope: {
+                          type: 'timeWindow',
+                          lowerBound: '5000',
+                          upperBound: '463484',
+                        },
+                        parameters: {
+                          target: {
+                            identifier: 'hexIdent',
+                            value: 'ALL',
+                          },
+                          parameter: [
+                            {
+                              mode: 'simple',
+                              key: 'ICAO',
+                              value: 'RANDOM',
+                            },
+                            {
+                              mode: 'simple',
+                              key: 'AIRCRAFT_NUMBER',
+                              number: '100',
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        alterationType: 'ROTATION',
+                        scope: {
+                          type: 'timeWindow',
+                          lowerBound: '50000',
+                          upperBound: '463484',
+                        },
+                        parameters: {
+                          target: {
+                            identifier: 'hexIdent',
+                            value: 'ALL',
+                          },
+                          parameter: [
+                            {
+                              mode: 'simple',
+                              key: 'angle',
+                              angle: '5',
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        alterationType: 'ALTERATION',
+                        scope: {
+                          type: 'timeWindow',
+                          lowerBound: '15000',
+                          upperBound: '463484',
+                        },
+                        parameters: {
+                          target: {
+                            identifier: 'hexIdent',
+                            value: 'ALL',
+                          },
+                          parameter: [
+                            {
+                              mode: 'drift',
+                              key: 'altitude',
+                              value: '+2000',
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                ],
+              },
+            },
+          ],
+          { name: namefile, content: content },
+          {
+            haveLabel: false,
+            haveRealism: false,
+            haveNoise: false,
+            haveDisableLatitude: false,
+            haveDisableLongitude: false,
+            haveDisableAltitude: false,
+          },
+          undefined
+        )
+        const endTime = new Date().getTime()
+        total = total + (endTime - startTime)
+      }
+
+      let moyenne = total / 50
+      console.log("Moyenne de temps d'alteration: " + moyenne + 'ms')
+    })
+
+    it('let x2 hide alter values and alter waypoints calcul perf', async () => {
+      const adapters = makeAdapters()
+      let alterationManager = adapters.alterationManager
+      let total: number = 0
+      for (let i: number = 0; i < 5; i++) {
+        const startTime = new Date().getTime()
+        await alterationManager.runAlterations(
+          [
+            {
+              sensors: {
+                sensor: [
+                  {
+                    sensorType: 'SBS',
+                    sID: '',
+                    record: 'zigzag.sbs',
+                    firstDate: 1543148536239,
+                    filter: '',
+                    action: [
+                      {
+                        alterationType: 'DELETION',
+                        scope: {
+                          type: 'timeWindow',
+                          lowerBound: '188000',
+                          upperBound: '463484',
+                        },
+                        parameters: {
+                          target: {
+                            identifier: 'hexIdent',
+                            value: 'ALL',
+                          },
+                        },
+                      },
+                      {
+                        alterationType: 'ALTERATION',
+                        scope: {
+                          type: 'timeWindow',
+                          lowerBound: '3000',
+                          upperBound: '463484',
+                        },
+                        parameters: {
+                          target: {
+                            identifier: 'hexIdent',
+                            value: 'ALL',
+                          },
+                          parameter: [
+                            {
+                              mode: 'offset',
+                              key: 'latitude',
+                              value: '+0.02449',
+                            },
+                            {
+                              mode: 'offset',
+                              key: 'longitude',
+                              value: '-0.09772',
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        alterationType: 'TRAJECTORY',
+                        scope: {
+                          type: 'timeWindow',
+                          lowerBound: '3000',
+                          upperBound: '463484',
+                        },
+                        parameters: {
+                          target: {
+                            identifier: 'hexIdent',
+                            value: 'ALL',
+                          },
+                          trajectory: {
+                            waypoint: [
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.613366',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.404111',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 750,
+                                  offset: false,
+                                },
+                                time: 10000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.611997',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.408006',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 875,
+                                  offset: false,
+                                },
+                                time: 20000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.609231',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.411383',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 1000,
+                                  offset: false,
+                                },
+                                time: 30000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.607503',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.414276',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 1150,
+                                  offset: false,
+                                },
+                                time: 40000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.604151',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.423374',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 1325,
+                                  offset: false,
+                                },
+                                time: 60000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.602608',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.431892',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 1550,
+                                  offset: false,
+                                },
+                                time: 80000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.600291',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.438329',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 1725,
+                                  offset: false,
+                                },
+                                time: 100000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.595901',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.438782',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 1950,
+                                  offset: false,
+                                },
+                                time: 120000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.589918',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.438749',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 2175,
+                                  offset: false,
+                                },
+                                time: 140000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.583188',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.438295',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 2325,
+                                  offset: false,
+                                },
+                                time: 160000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.577723',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.434903',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 2525,
+                                  offset: false,
+                                },
+                                time: 180000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.576212',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.434953',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 2425,
+                                  offset: false,
+                                },
+                                time: 187000,
+                              },
+                            ],
+                          },
+                        },
+                      },
+                    ],
+                  },
+                ],
+              },
+            },
+            {
+              sensors: {
+                sensor: [
+                  {
+                    sensorType: 'SBS',
+                    sID: '',
+                    record: 'zigzag.sbs',
+                    firstDate: 1543148536239,
+                    filter: '',
+                    action: [
+                      {
+                        alterationType: 'DELETION',
+                        scope: {
+                          type: 'timeWindow',
+                          lowerBound: '188000',
+                          upperBound: '463484',
+                        },
+                        parameters: {
+                          target: {
+                            identifier: 'hexIdent',
+                            value: 'ALL',
+                          },
+                        },
+                      },
+                      {
+                        alterationType: 'ALTERATION',
+                        scope: {
+                          type: 'timeWindow',
+                          lowerBound: '3000',
+                          upperBound: '463484',
+                        },
+                        parameters: {
+                          target: {
+                            identifier: 'hexIdent',
+                            value: 'ALL',
+                          },
+                          parameter: [
+                            {
+                              mode: 'offset',
+                              key: 'latitude',
+                              value: '+0.02449',
+                            },
+                            {
+                              mode: 'offset',
+                              key: 'longitude',
+                              value: '-0.09772',
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        alterationType: 'TRAJECTORY',
+                        scope: {
+                          type: 'timeWindow',
+                          lowerBound: '3000',
+                          upperBound: '463484',
+                        },
+                        parameters: {
+                          target: {
+                            identifier: 'hexIdent',
+                            value: 'ALL',
+                          },
+                          trajectory: {
+                            waypoint: [
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.613366',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.404111',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 750,
+                                  offset: false,
+                                },
+                                time: 10000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.612997',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.408006',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 875,
+                                  offset: false,
+                                },
+                                time: 20000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.609231',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.411383',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 1000,
+                                  offset: false,
+                                },
+                                time: 30000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.607503',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.414276',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 1150,
+                                  offset: false,
+                                },
+                                time: 40000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.604151',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.423374',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 1325,
+                                  offset: false,
+                                },
+                                time: 60000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.602608',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.431892',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 1550,
+                                  offset: false,
+                                },
+                                time: 80000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.600291',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.438329',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 1725,
+                                  offset: false,
+                                },
+                                time: 100000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.595901',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.438782',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 1950,
+                                  offset: false,
+                                },
+                                time: 120000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.589918',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.438749',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 2175,
+                                  offset: false,
+                                },
+                                time: 140000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.583188',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.438295',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 2325,
+                                  offset: false,
+                                },
+                                time: 160000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.577723',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.434903',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 2525,
+                                  offset: false,
+                                },
+                                time: 180000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.576212',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.434953',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 2425,
+                                  offset: false,
+                                },
+                                time: 187000,
+                              },
+                            ],
+                          },
+                        },
+                      },
+                    ],
+                  },
+                ],
+              },
+            },
+            {
+              sensors: {
+                sensor: [
+                  {
+                    sensorType: 'SBS',
+                    sID: '',
+                    record: 'zigzag.sbs',
+                    firstDate: 1543148536239,
+                    filter: '',
+                    action: [
+                      {
+                        alterationType: 'DELETION',
+                        scope: {
+                          type: 'timeWindow',
+                          lowerBound: '188000',
+                          upperBound: '463484',
+                        },
+                        parameters: {
+                          target: {
+                            identifier: 'hexIdent',
+                            value: 'ALL',
+                          },
+                        },
+                      },
+                      {
+                        alterationType: 'ALTERATION',
+                        scope: {
+                          type: 'timeWindow',
+                          lowerBound: '3000',
+                          upperBound: '463484',
+                        },
+                        parameters: {
+                          target: {
+                            identifier: 'hexIdent',
+                            value: 'ALL',
+                          },
+                          parameter: [
+                            {
+                              mode: 'offset',
+                              key: 'latitude',
+                              value: '+0.02449',
+                            },
+                            {
+                              mode: 'offset',
+                              key: 'longitude',
+                              value: '-0.09772',
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        alterationType: 'TRAJECTORY',
+                        scope: {
+                          type: 'timeWindow',
+                          lowerBound: '3000',
+                          upperBound: '463484',
+                        },
+                        parameters: {
+                          target: {
+                            identifier: 'hexIdent',
+                            value: 'ALL',
+                          },
+                          trajectory: {
+                            waypoint: [
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.613366',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.404111',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 750,
+                                  offset: false,
+                                },
+                                time: 10000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.611111',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.408006',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 875,
+                                  offset: false,
+                                },
+                                time: 20000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.609231',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.411383',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 1000,
+                                  offset: false,
+                                },
+                                time: 30000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.607503',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.414276',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 1150,
+                                  offset: false,
+                                },
+                                time: 40000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.604151',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.423374',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 1325,
+                                  offset: false,
+                                },
+                                time: 60000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.602608',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.431892',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 1550,
+                                  offset: false,
+                                },
+                                time: 80000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.600291',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.438329',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 1725,
+                                  offset: false,
+                                },
+                                time: 100000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.595901',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.438782',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 1950,
+                                  offset: false,
+                                },
+                                time: 120000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.589918',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.438749',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 2175,
+                                  offset: false,
+                                },
+                                time: 140000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.583188',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.438295',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 2325,
+                                  offset: false,
+                                },
+                                time: 160000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.577723',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.434903',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 2525,
+                                  offset: false,
+                                },
+                                time: 180000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.576212',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.434953',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 2425,
+                                  offset: false,
+                                },
+                                time: 187000,
+                              },
+                            ],
+                          },
+                        },
+                      },
+                    ],
+                  },
+                ],
+              },
+            },
+            {
+              sensors: {
+                sensor: [
+                  {
+                    sensorType: 'SBS',
+                    sID: '',
+                    record: 'zigzag.sbs',
+                    firstDate: 1543148536239,
+                    filter: '',
+                    action: [
+                      {
+                        alterationType: 'DELETION',
+                        scope: {
+                          type: 'timeWindow',
+                          lowerBound: '188000',
+                          upperBound: '463484',
+                        },
+                        parameters: {
+                          target: {
+                            identifier: 'hexIdent',
+                            value: 'ALL',
+                          },
+                        },
+                      },
+                      {
+                        alterationType: 'ALTERATION',
+                        scope: {
+                          type: 'timeWindow',
+                          lowerBound: '3000',
+                          upperBound: '463484',
+                        },
+                        parameters: {
+                          target: {
+                            identifier: 'hexIdent',
+                            value: 'ALL',
+                          },
+                          parameter: [
+                            {
+                              mode: 'offset',
+                              key: 'latitude',
+                              value: '+0.02449',
+                            },
+                            {
+                              mode: 'offset',
+                              key: 'longitude',
+                              value: '-0.09772',
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        alterationType: 'TRAJECTORY',
+                        scope: {
+                          type: 'timeWindow',
+                          lowerBound: '3000',
+                          upperBound: '463484',
+                        },
+                        parameters: {
+                          target: {
+                            identifier: 'hexIdent',
+                            value: 'ALL',
+                          },
+                          trajectory: {
+                            waypoint: [
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.613366',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.404111',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 750,
+                                  offset: false,
+                                },
+                                time: 10000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.611578',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.408006',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 875,
+                                  offset: false,
+                                },
+                                time: 20000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.609231',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.411383',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 1000,
+                                  offset: false,
+                                },
+                                time: 30000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.607503',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.414276',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 1150,
+                                  offset: false,
+                                },
+                                time: 40000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.604151',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.423374',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 1325,
+                                  offset: false,
+                                },
+                                time: 60000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.602608',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.431892',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 1550,
+                                  offset: false,
+                                },
+                                time: 80000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.600291',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.438329',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 1725,
+                                  offset: false,
+                                },
+                                time: 100000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.595901',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.438782',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 1950,
+                                  offset: false,
+                                },
+                                time: 120000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.589918',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.438749',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 2175,
+                                  offset: false,
+                                },
+                                time: 140000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.583188',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.438295',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 2325,
+                                  offset: false,
+                                },
+                                time: 160000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.577723',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.434903',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 2525,
+                                  offset: false,
+                                },
+                                time: 180000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.576212',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.434953',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 2425,
+                                  offset: false,
+                                },
+                                time: 187000,
+                              },
+                            ],
+                          },
+                        },
+                      },
+                    ],
+                  },
+                ],
+              },
+            },
+            {
+              sensors: {
+                sensor: [
+                  {
+                    sensorType: 'SBS',
+                    sID: '',
+                    record: 'zigzag.sbs',
+                    firstDate: 1543148536239,
+                    filter: '',
+                    action: [
+                      {
+                        alterationType: 'DELETION',
+                        scope: {
+                          type: 'timeWindow',
+                          lowerBound: '188000',
+                          upperBound: '463484',
+                        },
+                        parameters: {
+                          target: {
+                            identifier: 'hexIdent',
+                            value: 'ALL',
+                          },
+                        },
+                      },
+                      {
+                        alterationType: 'ALTERATION',
+                        scope: {
+                          type: 'timeWindow',
+                          lowerBound: '3000',
+                          upperBound: '463484',
+                        },
+                        parameters: {
+                          target: {
+                            identifier: 'hexIdent',
+                            value: 'ALL',
+                          },
+                          parameter: [
+                            {
+                              mode: 'offset',
+                              key: 'latitude',
+                              value: '+0.02449',
+                            },
+                            {
+                              mode: 'offset',
+                              key: 'longitude',
+                              value: '-0.09772',
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        alterationType: 'TRAJECTORY',
+                        scope: {
+                          type: 'timeWindow',
+                          lowerBound: '17000',
+                          upperBound: '463484',
+                        },
+                        parameters: {
+                          target: {
+                            identifier: 'hexIdent',
+                            value: 'ALL',
+                          },
+                          trajectory: {
+                            waypoint: [
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.613366',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.404111',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 750,
+                                  offset: false,
+                                },
+                                time: 10000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.611997',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.408006',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 875,
+                                  offset: false,
+                                },
+                                time: 20000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.609231',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.411383',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 1000,
+                                  offset: false,
+                                },
+                                time: 30000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.607503',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.414276',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 1150,
+                                  offset: false,
+                                },
+                                time: 40000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.604151',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.423374',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 1325,
+                                  offset: false,
+                                },
+                                time: 60000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.602608',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.431892',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 1550,
+                                  offset: false,
+                                },
+                                time: 80000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.600291',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.438329',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 1725,
+                                  offset: false,
+                                },
+                                time: 100000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.595901',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.438782',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 1950,
+                                  offset: false,
+                                },
+                                time: 120000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.589918',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.438749',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 2175,
+                                  offset: false,
+                                },
+                                time: 140000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.583188',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.438295',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 2325,
+                                  offset: false,
+                                },
+                                time: 160000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.577723',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.434903',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 2525,
+                                  offset: false,
+                                },
+                                time: 180000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.576212',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.434953',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 2425,
+                                  offset: false,
+                                },
+                                time: 187000,
+                              },
+                            ],
+                          },
+                        },
+                      },
+                    ],
+                  },
+                ],
+              },
+            },
+            {
+              sensors: {
+                sensor: [
+                  {
+                    sensorType: 'SBS',
+                    sID: '',
+                    record: 'zigzag.sbs',
+                    firstDate: 1543148536239,
+                    filter: '',
+                    action: [
+                      {
+                        alterationType: 'DELETION',
+                        scope: {
+                          type: 'timeWindow',
+                          lowerBound: '188000',
+                          upperBound: '463484',
+                        },
+                        parameters: {
+                          target: {
+                            identifier: 'hexIdent',
+                            value: 'ALL',
+                          },
+                        },
+                      },
+                      {
+                        alterationType: 'ALTERATION',
+                        scope: {
+                          type: 'timeWindow',
+                          lowerBound: '3000',
+                          upperBound: '463484',
+                        },
+                        parameters: {
+                          target: {
+                            identifier: 'hexIdent',
+                            value: 'ALL',
+                          },
+                          parameter: [
+                            {
+                              mode: 'offset',
+                              key: 'latitude',
+                              value: '+0.02449',
+                            },
+                            {
+                              mode: 'offset',
+                              key: 'longitude',
+                              value: '-0.09772',
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        alterationType: 'TRAJECTORY',
+                        scope: {
+                          type: 'timeWindow',
+                          lowerBound: '17000',
+                          upperBound: '463484',
+                        },
+                        parameters: {
+                          target: {
+                            identifier: 'hexIdent',
+                            value: 'ALL',
+                          },
+                          trajectory: {
+                            waypoint: [
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.613366',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.404111',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 750,
+                                  offset: false,
+                                },
+                                time: 10000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.612997',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.408006',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 875,
+                                  offset: false,
+                                },
+                                time: 20000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.609231',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.411383',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 1000,
+                                  offset: false,
+                                },
+                                time: 30000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.607503',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.414276',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 1150,
+                                  offset: false,
+                                },
+                                time: 40000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.604151',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.423374',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 1325,
+                                  offset: false,
+                                },
+                                time: 60000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.602608',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.431892',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 1550,
+                                  offset: false,
+                                },
+                                time: 80000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.600291',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.438329',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 1725,
+                                  offset: false,
+                                },
+                                time: 100000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.595901',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.438782',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 1950,
+                                  offset: false,
+                                },
+                                time: 120000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.589918',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.438749',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 2175,
+                                  offset: false,
+                                },
+                                time: 140000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.583188',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.438295',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 2325,
+                                  offset: false,
+                                },
+                                time: 160000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.577723',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.434903',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 2525,
+                                  offset: false,
+                                },
+                                time: 180000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.576212',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.434953',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 2425,
+                                  offset: false,
+                                },
+                                time: 187000,
+                              },
+                            ],
+                          },
+                        },
+                      },
+                    ],
+                  },
+                ],
+              },
+            },
+            {
+              sensors: {
+                sensor: [
+                  {
+                    sensorType: 'SBS',
+                    sID: '',
+                    record: 'zigzag.sbs',
+                    firstDate: 1543148536239,
+                    filter: '',
+                    action: [
+                      {
+                        alterationType: 'DELETION',
+                        scope: {
+                          type: 'timeWindow',
+                          lowerBound: '188000',
+                          upperBound: '463484',
+                        },
+                        parameters: {
+                          target: {
+                            identifier: 'hexIdent',
+                            value: 'ALL',
+                          },
+                        },
+                      },
+                      {
+                        alterationType: 'ALTERATION',
+                        scope: {
+                          type: 'timeWindow',
+                          lowerBound: '3000',
+                          upperBound: '463484',
+                        },
+                        parameters: {
+                          target: {
+                            identifier: 'hexIdent',
+                            value: 'ALL',
+                          },
+                          parameter: [
+                            {
+                              mode: 'offset',
+                              key: 'latitude',
+                              value: '+0.02449',
+                            },
+                            {
+                              mode: 'offset',
+                              key: 'longitude',
+                              value: '-0.09772',
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        alterationType: 'TRAJECTORY',
+                        scope: {
+                          type: 'timeWindow',
+                          lowerBound: '17000',
+                          upperBound: '463484',
+                        },
+                        parameters: {
+                          target: {
+                            identifier: 'hexIdent',
+                            value: 'ALL',
+                          },
+                          trajectory: {
+                            waypoint: [
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.613366',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.404111',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 750,
+                                  offset: false,
+                                },
+                                time: 10000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.611111',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.408006',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 875,
+                                  offset: false,
+                                },
+                                time: 20000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.609231',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.411383',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 1000,
+                                  offset: false,
+                                },
+                                time: 30000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.607503',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.414276',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 1150,
+                                  offset: false,
+                                },
+                                time: 40000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.604151',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.423374',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 1325,
+                                  offset: false,
+                                },
+                                time: 60000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.602608',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.431892',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 1550,
+                                  offset: false,
+                                },
+                                time: 80000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.600291',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.438329',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 1725,
+                                  offset: false,
+                                },
+                                time: 100000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.595901',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.438782',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 1950,
+                                  offset: false,
+                                },
+                                time: 120000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.589918',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.438749',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 2175,
+                                  offset: false,
+                                },
+                                time: 140000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.583188',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.438295',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 2325,
+                                  offset: false,
+                                },
+                                time: 160000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.577723',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.434903',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 2525,
+                                  offset: false,
+                                },
+                                time: 180000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.576212',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.434953',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 2425,
+                                  offset: false,
+                                },
+                                time: 187000,
+                              },
+                            ],
+                          },
+                        },
+                      },
+                    ],
+                  },
+                ],
+              },
+            },
+            {
+              sensors: {
+                sensor: [
+                  {
+                    sensorType: 'SBS',
+                    sID: '',
+                    record: 'zigzag.sbs',
+                    firstDate: 1543148536239,
+                    filter: '',
+                    action: [
+                      {
+                        alterationType: 'DELETION',
+                        scope: {
+                          type: 'timeWindow',
+                          lowerBound: '188000',
+                          upperBound: '463484',
+                        },
+                        parameters: {
+                          target: {
+                            identifier: 'hexIdent',
+                            value: 'ALL',
+                          },
+                        },
+                      },
+                      {
+                        alterationType: 'ALTERATION',
+                        scope: {
+                          type: 'timeWindow',
+                          lowerBound: '3000',
+                          upperBound: '463484',
+                        },
+                        parameters: {
+                          target: {
+                            identifier: 'hexIdent',
+                            value: 'ALL',
+                          },
+                          parameter: [
+                            {
+                              mode: 'offset',
+                              key: 'latitude',
+                              value: '+0.02449',
+                            },
+                            {
+                              mode: 'offset',
+                              key: 'longitude',
+                              value: '-0.09772',
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        alterationType: 'TRAJECTORY',
+                        scope: {
+                          type: 'timeWindow',
+                          lowerBound: '17000',
+                          upperBound: '463484',
+                        },
+                        parameters: {
+                          target: {
+                            identifier: 'hexIdent',
+                            value: 'ALL',
+                          },
+                          trajectory: {
+                            waypoint: [
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.613366',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.404111',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 750,
+                                  offset: false,
+                                },
+                                time: 10000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.611578',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.408006',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 875,
+                                  offset: false,
+                                },
+                                time: 20000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.609231',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.411383',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 1000,
+                                  offset: false,
+                                },
+                                time: 30000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.607503',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.414276',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 1150,
+                                  offset: false,
+                                },
+                                time: 40000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.604151',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.423374',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 1325,
+                                  offset: false,
+                                },
+                                time: 60000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.602608',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.431892',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 1550,
+                                  offset: false,
+                                },
+                                time: 80000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.600291',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.438329',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 1725,
+                                  offset: false,
+                                },
+                                time: 100000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.595901',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.438782',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 1950,
+                                  offset: false,
+                                },
+                                time: 120000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.589918',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.438749',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 2175,
+                                  offset: false,
+                                },
+                                time: 140000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.583188',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.438295',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 2325,
+                                  offset: false,
+                                },
+                                time: 160000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.577723',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.434903',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 2525,
+                                  offset: false,
+                                },
+                                time: 180000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.576212',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.434953',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 2425,
+                                  offset: false,
+                                },
+                                time: 187000,
+                              },
+                            ],
+                          },
+                        },
+                      },
+                    ],
+                  },
+                ],
+              },
+            },
+            {
+              sensors: {
+                sensor: [
+                  {
+                    sensorType: 'SBS',
+                    sID: '',
+                    record: 'zigzag.sbs',
+                    firstDate: 1543148536239,
+                    filter: '',
+                    action: [
+                      {
+                        alterationType: 'DELETION',
+                        scope: {
+                          type: 'timeWindow',
+                          lowerBound: '188000',
+                          upperBound: '463484',
+                        },
+                        parameters: {
+                          target: {
+                            identifier: 'hexIdent',
+                            value: 'ALL',
+                          },
+                        },
+                      },
+                      {
+                        alterationType: 'ALTERATION',
+                        scope: {
+                          type: 'timeWindow',
+                          lowerBound: '17000',
+                          upperBound: '463484',
+                        },
+                        parameters: {
+                          target: {
+                            identifier: 'hexIdent',
+                            value: 'ALL',
+                          },
+                          parameter: [
+                            {
+                              mode: 'offset',
+                              key: 'latitude',
+                              value: '+0.02449',
+                            },
+                            {
+                              mode: 'offset',
+                              key: 'longitude',
+                              value: '-0.09772',
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        alterationType: 'TRAJECTORY',
+                        scope: {
+                          type: 'timeWindow',
+                          lowerBound: '3000',
+                          upperBound: '463484',
+                        },
+                        parameters: {
+                          target: {
+                            identifier: 'hexIdent',
+                            value: 'ALL',
+                          },
+                          trajectory: {
+                            waypoint: [
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.613366',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.404111',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 750,
+                                  offset: false,
+                                },
+                                time: 10000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.611997',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.408006',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 875,
+                                  offset: false,
+                                },
+                                time: 20000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.609231',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.411383',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 1000,
+                                  offset: false,
+                                },
+                                time: 30000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.607503',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.414276',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 1150,
+                                  offset: false,
+                                },
+                                time: 40000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.604151',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.423374',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 1325,
+                                  offset: false,
+                                },
+                                time: 60000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.602608',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.431892',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 1550,
+                                  offset: false,
+                                },
+                                time: 80000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.600291',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.438329',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 1725,
+                                  offset: false,
+                                },
+                                time: 100000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.595901',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.438782',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 1950,
+                                  offset: false,
+                                },
+                                time: 120000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.589918',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.438749',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 2175,
+                                  offset: false,
+                                },
+                                time: 140000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.583188',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.438295',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 2325,
+                                  offset: false,
+                                },
+                                time: 160000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.577723',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.434903',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 2525,
+                                  offset: false,
+                                },
+                                time: 180000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.576212',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.434953',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 2425,
+                                  offset: false,
+                                },
+                                time: 187000,
+                              },
+                            ],
+                          },
+                        },
+                      },
+                    ],
+                  },
+                ],
+              },
+            },
+            {
+              sensors: {
+                sensor: [
+                  {
+                    sensorType: 'SBS',
+                    sID: '',
+                    record: 'zigzag.sbs',
+                    firstDate: 1543148536239,
+                    filter: '',
+                    action: [
+                      {
+                        alterationType: 'DELETION',
+                        scope: {
+                          type: 'timeWindow',
+                          lowerBound: '188000',
+                          upperBound: '463484',
+                        },
+                        parameters: {
+                          target: {
+                            identifier: 'hexIdent',
+                            value: 'ALL',
+                          },
+                        },
+                      },
+                      {
+                        alterationType: 'ALTERATION',
+                        scope: {
+                          type: 'timeWindow',
+                          lowerBound: '17000',
+                          upperBound: '463484',
+                        },
+                        parameters: {
+                          target: {
+                            identifier: 'hexIdent',
+                            value: 'ALL',
+                          },
+                          parameter: [
+                            {
+                              mode: 'offset',
+                              key: 'latitude',
+                              value: '+0.02449',
+                            },
+                            {
+                              mode: 'offset',
+                              key: 'longitude',
+                              value: '-0.09772',
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        alterationType: 'TRAJECTORY',
+                        scope: {
+                          type: 'timeWindow',
+                          lowerBound: '3000',
+                          upperBound: '463484',
+                        },
+                        parameters: {
+                          target: {
+                            identifier: 'hexIdent',
+                            value: 'ALL',
+                          },
+                          trajectory: {
+                            waypoint: [
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.613366',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.404111',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 750,
+                                  offset: false,
+                                },
+                                time: 10000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.612997',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.408006',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 875,
+                                  offset: false,
+                                },
+                                time: 20000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.609231',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.411383',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 1000,
+                                  offset: false,
+                                },
+                                time: 30000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.607503',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.414276',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 1150,
+                                  offset: false,
+                                },
+                                time: 40000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.604151',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.423374',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 1325,
+                                  offset: false,
+                                },
+                                time: 60000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.602608',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.431892',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 1550,
+                                  offset: false,
+                                },
+                                time: 80000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.600291',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.438329',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 1725,
+                                  offset: false,
+                                },
+                                time: 100000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.595901',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.438782',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 1950,
+                                  offset: false,
+                                },
+                                time: 120000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.589918',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.438749',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 2175,
+                                  offset: false,
+                                },
+                                time: 140000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.583188',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.438295',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 2325,
+                                  offset: false,
+                                },
+                                time: 160000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.577723',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.434903',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 2525,
+                                  offset: false,
+                                },
+                                time: 180000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.576212',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.434953',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 2425,
+                                  offset: false,
+                                },
+                                time: 187000,
+                              },
+                            ],
+                          },
+                        },
+                      },
+                    ],
+                  },
+                ],
+              },
+            },
+            {
+              sensors: {
+                sensor: [
+                  {
+                    sensorType: 'SBS',
+                    sID: '',
+                    record: 'zigzag.sbs',
+                    firstDate: 1543148536239,
+                    filter: '',
+                    action: [
+                      {
+                        alterationType: 'DELETION',
+                        scope: {
+                          type: 'timeWindow',
+                          lowerBound: '188000',
+                          upperBound: '463484',
+                        },
+                        parameters: {
+                          target: {
+                            identifier: 'hexIdent',
+                            value: 'ALL',
+                          },
+                        },
+                      },
+                      {
+                        alterationType: 'ALTERATION',
+                        scope: {
+                          type: 'timeWindow',
+                          lowerBound: '17000',
+                          upperBound: '463484',
+                        },
+                        parameters: {
+                          target: {
+                            identifier: 'hexIdent',
+                            value: 'ALL',
+                          },
+                          parameter: [
+                            {
+                              mode: 'offset',
+                              key: 'latitude',
+                              value: '+0.02449',
+                            },
+                            {
+                              mode: 'offset',
+                              key: 'longitude',
+                              value: '-0.09772',
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        alterationType: 'TRAJECTORY',
+                        scope: {
+                          type: 'timeWindow',
+                          lowerBound: '3000',
+                          upperBound: '463484',
+                        },
+                        parameters: {
+                          target: {
+                            identifier: 'hexIdent',
+                            value: 'ALL',
+                          },
+                          trajectory: {
+                            waypoint: [
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.613366',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.404111',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 750,
+                                  offset: false,
+                                },
+                                time: 10000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.611111',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.408006',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 875,
+                                  offset: false,
+                                },
+                                time: 20000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.609231',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.411383',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 1000,
+                                  offset: false,
+                                },
+                                time: 30000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.607503',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.414276',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 1150,
+                                  offset: false,
+                                },
+                                time: 40000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.604151',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.423374',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 1325,
+                                  offset: false,
+                                },
+                                time: 60000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.602608',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.431892',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 1550,
+                                  offset: false,
+                                },
+                                time: 80000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.600291',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.438329',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 1725,
+                                  offset: false,
+                                },
+                                time: 100000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.595901',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.438782',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 1950,
+                                  offset: false,
+                                },
+                                time: 120000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.589918',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.438749',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 2175,
+                                  offset: false,
+                                },
+                                time: 140000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.583188',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.438295',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 2325,
+                                  offset: false,
+                                },
+                                time: 160000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.577723',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.434903',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 2525,
+                                  offset: false,
+                                },
+                                time: 180000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.576212',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.434953',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 2425,
+                                  offset: false,
+                                },
+                                time: 187000,
+                              },
+                            ],
+                          },
+                        },
+                      },
+                    ],
+                  },
+                ],
+              },
+            },
+            {
+              sensors: {
+                sensor: [
+                  {
+                    sensorType: 'SBS',
+                    sID: '',
+                    record: 'zigzag.sbs',
+                    firstDate: 1543148536239,
+                    filter: '',
+                    action: [
+                      {
+                        alterationType: 'DELETION',
+                        scope: {
+                          type: 'timeWindow',
+                          lowerBound: '188000',
+                          upperBound: '463484',
+                        },
+                        parameters: {
+                          target: {
+                            identifier: 'hexIdent',
+                            value: 'ALL',
+                          },
+                        },
+                      },
+                      {
+                        alterationType: 'ALTERATION',
+                        scope: {
+                          type: 'timeWindow',
+                          lowerBound: '17000',
+                          upperBound: '463484',
+                        },
+                        parameters: {
+                          target: {
+                            identifier: 'hexIdent',
+                            value: 'ALL',
+                          },
+                          parameter: [
+                            {
+                              mode: 'offset',
+                              key: 'latitude',
+                              value: '+0.02449',
+                            },
+                            {
+                              mode: 'offset',
+                              key: 'longitude',
+                              value: '-0.09772',
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        alterationType: 'TRAJECTORY',
+                        scope: {
+                          type: 'timeWindow',
+                          lowerBound: '3000',
+                          upperBound: '463484',
+                        },
+                        parameters: {
+                          target: {
+                            identifier: 'hexIdent',
+                            value: 'ALL',
+                          },
+                          trajectory: {
+                            waypoint: [
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.613366',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.404111',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 750,
+                                  offset: false,
+                                },
+                                time: 10000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.611578',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.408006',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 875,
+                                  offset: false,
+                                },
+                                time: 20000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.609231',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.411383',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 1000,
+                                  offset: false,
+                                },
+                                time: 30000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.607503',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.414276',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 1150,
+                                  offset: false,
+                                },
+                                time: 40000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.604151',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.423374',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 1325,
+                                  offset: false,
+                                },
+                                time: 60000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.602608',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.431892',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 1550,
+                                  offset: false,
+                                },
+                                time: 80000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.600291',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.438329',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 1725,
+                                  offset: false,
+                                },
+                                time: 100000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.595901',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.438782',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 1950,
+                                  offset: false,
+                                },
+                                time: 120000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.589918',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.438749',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 2175,
+                                  offset: false,
+                                },
+                                time: 140000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.583188',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.438295',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 2325,
+                                  offset: false,
+                                },
+                                time: 160000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.577723',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.434903',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 2525,
+                                  offset: false,
+                                },
+                                time: 180000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.576212',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.434953',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 2425,
+                                  offset: false,
+                                },
+                                time: 187000,
+                              },
+                            ],
+                          },
+                        },
+                      },
+                    ],
+                  },
+                ],
+              },
+            },
+            {
+              sensors: {
+                sensor: [
+                  {
+                    sensorType: 'SBS',
+                    sID: '',
+                    record: 'zigzag.sbs',
+                    firstDate: 1543148536239,
+                    filter: '',
+                    action: [
+                      {
+                        alterationType: 'DELETION',
+                        scope: {
+                          type: 'timeWindow',
+                          lowerBound: '188000',
+                          upperBound: '463484',
+                        },
+                        parameters: {
+                          target: {
+                            identifier: 'hexIdent',
+                            value: 'ALL',
+                          },
+                        },
+                      },
+                      {
+                        alterationType: 'ALTERATION',
+                        scope: {
+                          type: 'timeWindow',
+                          lowerBound: '17000',
+                          upperBound: '463484',
+                        },
+                        parameters: {
+                          target: {
+                            identifier: 'hexIdent',
+                            value: 'ALL',
+                          },
+                          parameter: [
+                            {
+                              mode: 'offset',
+                              key: 'latitude',
+                              value: '+0.02449',
+                            },
+                            {
+                              mode: 'offset',
+                              key: 'longitude',
+                              value: '-0.09772',
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        alterationType: 'TRAJECTORY',
+                        scope: {
+                          type: 'timeWindow',
+                          lowerBound: '17000',
+                          upperBound: '463484',
+                        },
+                        parameters: {
+                          target: {
+                            identifier: 'hexIdent',
+                            value: 'ALL',
+                          },
+                          trajectory: {
+                            waypoint: [
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.613366',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.404111',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 750,
+                                  offset: false,
+                                },
+                                time: 10000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.611997',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.408006',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 875,
+                                  offset: false,
+                                },
+                                time: 20000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.609231',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.411383',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 1000,
+                                  offset: false,
+                                },
+                                time: 30000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.607503',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.414276',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 1150,
+                                  offset: false,
+                                },
+                                time: 40000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.604151',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.423374',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 1325,
+                                  offset: false,
+                                },
+                                time: 60000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.602608',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.431892',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 1550,
+                                  offset: false,
+                                },
+                                time: 80000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.600291',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.438329',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 1725,
+                                  offset: false,
+                                },
+                                time: 100000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.595901',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.438782',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 1950,
+                                  offset: false,
+                                },
+                                time: 120000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.589918',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.438749',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 2175,
+                                  offset: false,
+                                },
+                                time: 140000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.583188',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.438295',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 2325,
+                                  offset: false,
+                                },
+                                time: 160000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.577723',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.434903',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 2525,
+                                  offset: false,
+                                },
+                                time: 180000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.576212',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.434953',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 2425,
+                                  offset: false,
+                                },
+                                time: 187000,
+                              },
+                            ],
+                          },
+                        },
+                      },
+                    ],
+                  },
+                ],
+              },
+            },
+            {
+              sensors: {
+                sensor: [
+                  {
+                    sensorType: 'SBS',
+                    sID: '',
+                    record: 'zigzag.sbs',
+                    firstDate: 1543148536239,
+                    filter: '',
+                    action: [
+                      {
+                        alterationType: 'DELETION',
+                        scope: {
+                          type: 'timeWindow',
+                          lowerBound: '188000',
+                          upperBound: '463484',
+                        },
+                        parameters: {
+                          target: {
+                            identifier: 'hexIdent',
+                            value: 'ALL',
+                          },
+                        },
+                      },
+                      {
+                        alterationType: 'ALTERATION',
+                        scope: {
+                          type: 'timeWindow',
+                          lowerBound: '17000',
+                          upperBound: '463484',
+                        },
+                        parameters: {
+                          target: {
+                            identifier: 'hexIdent',
+                            value: 'ALL',
+                          },
+                          parameter: [
+                            {
+                              mode: 'offset',
+                              key: 'latitude',
+                              value: '+0.02449',
+                            },
+                            {
+                              mode: 'offset',
+                              key: 'longitude',
+                              value: '-0.09772',
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        alterationType: 'TRAJECTORY',
+                        scope: {
+                          type: 'timeWindow',
+                          lowerBound: '17000',
+                          upperBound: '463484',
+                        },
+                        parameters: {
+                          target: {
+                            identifier: 'hexIdent',
+                            value: 'ALL',
+                          },
+                          trajectory: {
+                            waypoint: [
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.613366',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.404111',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 750,
+                                  offset: false,
+                                },
+                                time: 10000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.612997',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.408006',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 875,
+                                  offset: false,
+                                },
+                                time: 20000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.609231',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.411383',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 1000,
+                                  offset: false,
+                                },
+                                time: 30000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.607503',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.414276',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 1150,
+                                  offset: false,
+                                },
+                                time: 40000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.604151',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.423374',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 1325,
+                                  offset: false,
+                                },
+                                time: 60000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.602608',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.431892',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 1550,
+                                  offset: false,
+                                },
+                                time: 80000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.600291',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.438329',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 1725,
+                                  offset: false,
+                                },
+                                time: 100000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.595901',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.438782',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 1950,
+                                  offset: false,
+                                },
+                                time: 120000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.589918',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.438749',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 2175,
+                                  offset: false,
+                                },
+                                time: 140000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.583188',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.438295',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 2325,
+                                  offset: false,
+                                },
+                                time: 160000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.577723',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.434903',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 2525,
+                                  offset: false,
+                                },
+                                time: 180000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.576212',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.434953',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 2425,
+                                  offset: false,
+                                },
+                                time: 187000,
+                              },
+                            ],
+                          },
+                        },
+                      },
+                    ],
+                  },
+                ],
+              },
+            },
+            {
+              sensors: {
+                sensor: [
+                  {
+                    sensorType: 'SBS',
+                    sID: '',
+                    record: 'zigzag.sbs',
+                    firstDate: 1543148536239,
+                    filter: '',
+                    action: [
+                      {
+                        alterationType: 'DELETION',
+                        scope: {
+                          type: 'timeWindow',
+                          lowerBound: '188000',
+                          upperBound: '463484',
+                        },
+                        parameters: {
+                          target: {
+                            identifier: 'hexIdent',
+                            value: 'ALL',
+                          },
+                        },
+                      },
+                      {
+                        alterationType: 'ALTERATION',
+                        scope: {
+                          type: 'timeWindow',
+                          lowerBound: '17000',
+                          upperBound: '463484',
+                        },
+                        parameters: {
+                          target: {
+                            identifier: 'hexIdent',
+                            value: 'ALL',
+                          },
+                          parameter: [
+                            {
+                              mode: 'offset',
+                              key: 'latitude',
+                              value: '+0.02449',
+                            },
+                            {
+                              mode: 'offset',
+                              key: 'longitude',
+                              value: '-0.09772',
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        alterationType: 'TRAJECTORY',
+                        scope: {
+                          type: 'timeWindow',
+                          lowerBound: '17000',
+                          upperBound: '463484',
+                        },
+                        parameters: {
+                          target: {
+                            identifier: 'hexIdent',
+                            value: 'ALL',
+                          },
+                          trajectory: {
+                            waypoint: [
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.613366',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.404111',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 750,
+                                  offset: false,
+                                },
+                                time: 10000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.611111',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.408006',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 875,
+                                  offset: false,
+                                },
+                                time: 20000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.609231',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.411383',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 1000,
+                                  offset: false,
+                                },
+                                time: 30000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.607503',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.414276',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 1150,
+                                  offset: false,
+                                },
+                                time: 40000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.604151',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.423374',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 1325,
+                                  offset: false,
+                                },
+                                time: 60000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.602608',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.431892',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 1550,
+                                  offset: false,
+                                },
+                                time: 80000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.600291',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.438329',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 1725,
+                                  offset: false,
+                                },
+                                time: 100000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.595901',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.438782',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 1950,
+                                  offset: false,
+                                },
+                                time: 120000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.589918',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.438749',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 2175,
+                                  offset: false,
+                                },
+                                time: 140000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.583188',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.438295',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 2325,
+                                  offset: false,
+                                },
+                                time: 160000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.577723',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.434903',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 2525,
+                                  offset: false,
+                                },
+                                time: 180000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.576212',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.434953',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 2425,
+                                  offset: false,
+                                },
+                                time: 187000,
+                              },
+                            ],
+                          },
+                        },
+                      },
+                    ],
+                  },
+                ],
+              },
+            },
+            {
+              sensors: {
+                sensor: [
+                  {
+                    sensorType: 'SBS',
+                    sID: '',
+                    record: 'zigzag.sbs',
+                    firstDate: 1543148536239,
+                    filter: '',
+                    action: [
+                      {
+                        alterationType: 'DELETION',
+                        scope: {
+                          type: 'timeWindow',
+                          lowerBound: '188000',
+                          upperBound: '463484',
+                        },
+                        parameters: {
+                          target: {
+                            identifier: 'hexIdent',
+                            value: 'ALL',
+                          },
+                        },
+                      },
+                      {
+                        alterationType: 'ALTERATION',
+                        scope: {
+                          type: 'timeWindow',
+                          lowerBound: '17000',
+                          upperBound: '463484',
+                        },
+                        parameters: {
+                          target: {
+                            identifier: 'hexIdent',
+                            value: 'ALL',
+                          },
+                          parameter: [
+                            {
+                              mode: 'offset',
+                              key: 'latitude',
+                              value: '+0.02449',
+                            },
+                            {
+                              mode: 'offset',
+                              key: 'longitude',
+                              value: '-0.09772',
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        alterationType: 'TRAJECTORY',
+                        scope: {
+                          type: 'timeWindow',
+                          lowerBound: '17000',
+                          upperBound: '463484',
+                        },
+                        parameters: {
+                          target: {
+                            identifier: 'hexIdent',
+                            value: 'ALL',
+                          },
+                          trajectory: {
+                            waypoint: [
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.613366',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.404111',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 750,
+                                  offset: false,
+                                },
+                                time: 10000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.611578',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.408006',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 875,
+                                  offset: false,
+                                },
+                                time: 20000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.609231',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.411383',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 1000,
+                                  offset: false,
+                                },
+                                time: 30000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.607503',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.414276',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 1150,
+                                  offset: false,
+                                },
+                                time: 40000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.604151',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.423374',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 1325,
+                                  offset: false,
+                                },
+                                time: 60000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.602608',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.431892',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 1550,
+                                  offset: false,
+                                },
+                                time: 80000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.600291',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.438329',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 1725,
+                                  offset: false,
+                                },
+                                time: 100000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.595901',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.438782',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 1950,
+                                  offset: false,
+                                },
+                                time: 120000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.589918',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.438749',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 2175,
+                                  offset: false,
+                                },
+                                time: 140000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.583188',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.438295',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 2325,
+                                  offset: false,
+                                },
+                                time: 160000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.577723',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.434903',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 2525,
+                                  offset: false,
+                                },
+                                time: 180000,
+                              },
+                              {
+                                vertex: {
+                                  lat: {
+                                    value: '43.576212',
+                                    offset: false,
+                                  },
+                                  lon: {
+                                    value: '1.434953',
+                                    offset: false,
+                                  },
+                                },
+                                altitude: {
+                                  value: 2425,
+                                  offset: false,
+                                },
+                                time: 187000,
+                              },
+                            ],
+                          },
+                        },
+                      },
+                    ],
+                  },
+                ],
+              },
+            },
+          ],
+          { name: namefile, content: content },
+          {
+            haveLabel: false,
+            haveRealism: false,
+            haveNoise: false,
+            haveDisableLatitude: false,
+            haveDisableLongitude: false,
+            haveDisableAltitude: false,
+          },
+          undefined
+        )
+        const endTime = new Date().getTime()
+        total = total + (endTime - startTime)
+      }
+
+      let moyenne = total / 50
+      console.log("Moyenne de temps d'alteration: " + moyenne + 'ms')
+    })
+
     /*it('alter waypoints calcul perf', async () => {
 
             const adapters = makeAdapters()

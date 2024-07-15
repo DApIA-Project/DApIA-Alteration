@@ -217,8 +217,8 @@ const ScenarioEditor: React.FunctionComponent<ScenarioEditorProps> = ({
     })
   }
 
-  function handleOnChange(newText: string) {
-    updateScenario(
+  async function handleOnChange(newText: string) {
+    await updateScenario(
       openedScenarios[selectedScenario].id,
       openedScenarios[selectedScenario].name,
       newText,
@@ -320,7 +320,7 @@ const ScenarioEditor: React.FunctionComponent<ScenarioEditorProps> = ({
       <div id={'monaco-editor-root'} className={'alterationeditor'}>
         <AlterationScenarioEditor
           language={'alterationscenario'}
-          value={!!scenario && scenario.text}
+          value={scenario ? scenario.text : ''}
           onChange={handleOnChange}
           options={{
             readOnly: openedScenarios.length <= 0,
@@ -336,6 +336,11 @@ const ScenarioEditor: React.FunctionComponent<ScenarioEditorProps> = ({
 
       <div className={'composantOption'}>
         <GenerateAlterationButton
+          scenario={
+            openedScenarios[selectedScenario]?.text
+              ? openedScenarios[selectedScenario].text
+              : undefined
+          }
           optionsAlteration={optionsAlteration}
           recording={recording}
           recordingToReplay={
@@ -344,7 +349,10 @@ const ScenarioEditor: React.FunctionComponent<ScenarioEditorProps> = ({
               : undefined
           }
           outputFormat={outputFormat}
-          onClicked={(options) => onGenerate(options)}
+          onClicked={(options) => {
+            console.log(openedScenarios[selectedScenario].text)
+            onGenerate(options)
+          }}
         />
         <div className={'scenario-options'}>
           <ScenarioOptions
