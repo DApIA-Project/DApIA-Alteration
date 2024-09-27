@@ -38,12 +38,10 @@ export default async function alterRecording(
 ): Promise<AlterRecordingResponse> {
   let contentOrigin: string = recording.content
   let nameOrigin: string = recording.name
-  let fileIsCsv: boolean = false
   let dataType: string = ''
   let dataTypeReplay: string
   const regex = /.csv$/i
   if (regex.test(recording.name)) {
-    fileIsCsv = true
     dataType = getDataType(recording.content)
     if (dataType === 'drone') {
       recording.content = droneCsvToSbs(recording.content)
@@ -128,8 +126,7 @@ export default async function alterRecording(
       let alteredRecordingsOpenskyCsv: Recording[] = []
       for (const recordingSbs of alteredRecordings) {
         let contentOpenskyCsv: string = sbsToOpenskyCsv(
-          recordingSbs.content,
-          false
+          recordingSbs.content
         )
         let contentName: string = recordingSbs.name.replace('.sbs', '.csv')
         let recordingOpenskyCsv: Recording = {
@@ -145,7 +142,7 @@ export default async function alterRecording(
     case FileFormat.droneCsv:
       let alteredRecordingsDroneCsv: Recording[] = []
       for (const recordingSbs of alteredRecordings) {
-        let contentDroneCsv: string = sbsToDroneCsv(recordingSbs.content, false)
+        let contentDroneCsv: string = sbsToDroneCsv(recordingSbs.content)
         let contentName: string = recordingSbs.name.replace(
           '.sbs',
           '.drone.csv'
@@ -163,7 +160,7 @@ export default async function alterRecording(
     case FileFormat.json:
       let alteredRecordingsJson: Recording[] = []
       for (const recordingSbs of alteredRecordings) {
-        let contentJson: JsonMessage[] = sbsToJson(recordingSbs.content, false)
+        let contentJson: JsonMessage[] = sbsToJson(recordingSbs.content)
         let contentName: string = recordingSbs.name.replace('.sbs', '.json')
         let recordingJson: Recording = {
           content: contentJson.toString(),
@@ -178,7 +175,7 @@ export default async function alterRecording(
     case FileFormat.ndjson:
       let alteredRecordingsNdjson: Recording[] = []
       for (const recordingSbs of alteredRecordings) {
-        let contentNdjson: string = sbsToNdjson(recordingSbs.content, false)
+        let contentNdjson: string = sbsToNdjson(recordingSbs.content)
         let contentName: string = recordingSbs.name.replace('.sbs', '.ndjson')
         let recordingNdjson: Recording = {
           content: contentNdjson,
