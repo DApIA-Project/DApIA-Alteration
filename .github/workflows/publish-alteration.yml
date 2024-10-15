@@ -1,0 +1,31 @@
+name: Publish client on npm
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version'
+        required: true
+        default: '0.0.0'
+
+jobs:
+  generate-typescript-client:
+    runs-on: ubuntu-latest
+    steps:
+      # Checkout your cod
+      - name: Checkout
+        uses: actions/checkout@v2
+      # Publish client
+      - name: Build, prepare and publish client
+        run: |
+          cd packages/alteration-ts
+          npm version ${{ github.event.inputs.version }}
+          npm i
+          npm run build
+          rm -rf docs src tests .gitignore .mocharc.json
+          mv DApIA-Alteration-docs.md README.md
+          mv buid/* .
+          rm -rf build
+          npm publish --access public
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
