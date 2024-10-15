@@ -9,14 +9,14 @@ on:
         default: '0.0.0'
 
 jobs:
-  generate-typescript-client:
+  publish:
     runs-on: ubuntu-latest
     steps:
       # Checkout your cod
       - name: Checkout
         uses: actions/checkout@v2
       # Publish client
-      - name: Build, prepare and publish client
+      - name: Build and publish
         run: |
           cd packages/alteration-ts
           npm version ${{ github.event.inputs.version }}
