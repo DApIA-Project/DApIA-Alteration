@@ -24,7 +24,7 @@ jobs:
           npm run build
           rm -rf docs src tests .gitignore .mocharc.json
           mv DApIA-Alteration-docs.md README.md
-          mv buid/* .
+          mv build/* .
           rm -rf build
           npm publish --access public
         env:
