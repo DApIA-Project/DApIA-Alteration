@@ -1,4 +1,4 @@
-name: Publish client on npm
+name: Publish alteration on npm
 
 on:
   workflow_dispatch:
@@ -19,6 +19,7 @@ jobs:
       - name: Build and publish
         run: |
           cd packages/alteration-ts
+          cp ../../.npmrc .npmrc
           npm version ${{ github.event.inputs.version }}
           npm i
           npm run build
