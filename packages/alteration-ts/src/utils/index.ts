@@ -1,1 +1,1 @@
-export * from "./earth"
+export * from './earth'

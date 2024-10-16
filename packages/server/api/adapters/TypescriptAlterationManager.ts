@@ -198,11 +198,11 @@ export class TypescriptAlterationManager implements IAlterationManager {
           ?.find((p) => p.key == 'ICAO')
           ?.value?.toLowerCase()
 
-				return saturation({
-					scope: scope,
-					aircrafts: parseInt(aircraft_number!),
-					angleMax: 30,
-				});
+        return saturation({
+          scope: scope,
+          aircrafts: parseInt(aircraft_number!),
+          angleMax: 30,
+        })
       }
 
       case 'TRAJECTORY': {

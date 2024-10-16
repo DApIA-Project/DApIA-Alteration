@@ -2,7 +2,7 @@
   "include": ["src"],
   "exclude": ["node_modules", "tests"],
   "compilerOptions": {
-		"allowJs": true,
+    "allowJs": true,
     "incremental": true,
     "target": "esnext",
     "outDir": "build",

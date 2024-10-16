@@ -125,9 +125,7 @@ export default async function alterRecording(
     case FileFormat.openskyCsv:
       let alteredRecordingsOpenskyCsv: Recording[] = []
       for (const recordingSbs of alteredRecordings) {
-        let contentOpenskyCsv: string = sbsToOpenskyCsv(
-          recordingSbs.content
-        )
+        let contentOpenskyCsv: string = sbsToOpenskyCsv(recordingSbs.content)
         let contentName: string = recordingSbs.name.replace('.sbs', '.csv')
         let recordingOpenskyCsv: Recording = {
           content: contentOpenskyCsv,

@@ -1,23 +1,20 @@
-import { Scope, Message, Action, clone, Template} from "../index"
-import { Point, AircraftBuilder } from "../aircraftTrajectory"
+import { Action, clone, Message, Template } from '../index'
+import { AircraftBuilder, Point } from '../aircraftTrajectory'
 
 type Config = {
-	start: number, 
-	end: number,
-	template: Template,
-	waypoints : Point[],
+  start: number
+  end: number
+  template: Template
+  waypoints: Point[]
 
-	timeOffset?: () => number,
+  timeOffset?: () => number
 }
-
-
 
 function rand(min: number, max: number) {
-	const minCeiled = Math.ceil(min);
-	const maxFloored = Math.floor(max);
-	return Math.floor(Math.random() * (maxFloored - minCeiled) + minCeiled); // The maximum is exclusive and the minimum is inclusive
+  const minCeiled = Math.ceil(min)
+  const maxFloored = Math.floor(max)
+  return Math.floor(Math.random() * (maxFloored - minCeiled) + minCeiled) // The maximum is exclusive and the minimum is inclusive
 }
-
 
 /**
  * Create a new aircraft and insert it in the given recording
@@ -27,32 +24,31 @@ function rand(min: number, max: number) {
  * The template message SHOULD define mandatory field (messageType, flightID, ...)
  */
 export function creation(config: Config): Action {
-	if(!config.timeOffset) config.timeOffset = () => rand(400, 600)
+  if (!config.timeOffset) config.timeOffset = () => rand(400, 600)
 
-	// Create the interpolation function
-	let trajectory = new AircraftBuilder()
-											.add_all(config.waypoints)
-											.interpolate();
+  // Create the interpolation function
+  let trajectory = new AircraftBuilder().add_all(config.waypoints).interpolate()
 
-	return {
-		processing(recording: Message[]): Message[] {
-			let new_recording = clone(recording);
+  return {
+    processing(recording: Message[]): Message[] {
+      let new_recording = clone(recording)
 
-			let time = config.start;
-			while(time <= config.end) {
-				let point = trajectory.get_point(time);
-				let msg = {
-					...config.template as Message,
-					...point,
-					messageType : "MSG"
-				};
-				new_recording.push(msg);
+      let time = config.start
+      while (time <= config.end) {
+        let point = trajectory.get_point(time)
+        let msg = {
+          ...(config.template as Message),
+          ...point,
+          messageType: 'MSG',
+        }
+        new_recording.push(msg)
 
-				time += config.timeOffset!();
-			}
+        time += config.timeOffset!()
+      }
 
-			return new_recording.sort((a,b) => a.timestampGenerated - b.timestampGenerated)
-													.slice(0,-1);
-		}
-	}
+      return new_recording
+        .sort((a, b) => a.timestampGenerated - b.timestampGenerated)
+        .slice(0, -1)
+    },
+  }
 }

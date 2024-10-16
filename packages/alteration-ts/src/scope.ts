@@ -9,7 +9,7 @@ export function and(...scopes: Scope[]): Scope {
 }
 
 export function not(scope: Scope): Scope {
-	return (msg) => !scope(msg);
+  return (msg) => !scope(msg)
 }
 
 export function target(hexIdent: Icao): Scope {
