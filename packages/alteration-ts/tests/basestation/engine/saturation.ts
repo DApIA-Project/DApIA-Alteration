@@ -1,5 +1,13 @@
-import { parse, saturation, timeWindow } from '../../../src'
+import {
+  always,
+  and,
+  parse,
+  saturation,
+  target,
+  timeWindow,
+} from '../../../src'
 import { expect } from 'chai'
+import messages from '../../recordings/messages.json'
 
 describe('Saturation engine', () => {
   it('should add 1 ghost aircraft per message', () => {
@@ -44,5 +52,15 @@ describe('Saturation engine', () => {
     }).processing(source)
 
     expect(actual).to.have.lengthOf(5 * 15 + 5)
+  })
+
+  it.skip('[utils] should generate aircraft with realist tracks', () => {
+    // time = 1481271510
+    const altered = saturation({
+      scope: and(always, target('392AF4')),
+      aircrafts: 1,
+      angleMax: 45,
+    }).processing(messages)
+    console.log(altered.map((message) => message.track))
   })
 })

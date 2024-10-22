@@ -25,6 +25,8 @@ export type AircraftTrajectory = AircraftBuilder | AircraftInterpolation
 export class AircraftBuilder {
   waypoint: Point[]
   sorted: boolean
+  start: number = Number.MAX_SAFE_INTEGER
+  end: number = Number.MIN_SAFE_INTEGER
 
   constructor() {
     this.waypoint = []
@@ -32,7 +34,15 @@ export class AircraftBuilder {
   }
 
   add_point(point?: Point): AircraftBuilder {
-    if (point) this.waypoint.push(point)
+    if (point) {
+      if (point.timestampGenerated < this.start) {
+        this.start = point.timestampGenerated
+      }
+      if (point.timestampGenerated > this.end) {
+        this.end = point.timestampGenerated
+      }
+      this.waypoint.push(point)
+    }
     return this
   }
 
@@ -58,6 +68,8 @@ export class AircraftBuilder {
     let times = waypoints.map((point) => point.timestampGenerated)
 
     return new AircraftInterpolation(
+      this.start,
+      this.end,
       createInterpolatorWithFallback(
         'akima',
         times,
@@ -90,6 +102,8 @@ export class AircraftInterpolation {
   altitude: UniFunction
 
   constructor(
+    readonly start: number,
+    readonly end: number,
     latitude: UniFunction,
     longitude: UniFunction,
     altitude: UniFunction
@@ -118,19 +132,22 @@ export class AircraftInterpolation {
 
   get_track(time: number): number {
     let delta = 500 // ms
-    let [lat1, lon1] = [
-      this.latitude(time - delta),
-      this.longitude(time - delta),
-    ]
-    let [lat2, lon2] = [
-      this.latitude(time + delta),
-      this.longitude(time + delta),
-    ]
-
-    let p: Position = [Angle.degree(lat1), Angle.degree(lon1)]
-    let q: Position = [Angle.degree(lat2), Angle.degree(lon2)]
-
-    return (Earth.azimuth(p, q).deg + 360) % 360
+    const previous_time = Math.max(time - delta, this.start)
+    const next_time = Math.min(time + delta, this.end)
+    return (
+      (Earth.azimuth(
+        [
+          Angle.degree(this.latitude(previous_time)),
+          Angle.degree(this.longitude(previous_time)),
+        ],
+        [
+          Angle.degree(this.latitude(next_time)),
+          Angle.degree(this.longitude(next_time)),
+        ]
+      ).deg +
+        360) %
+      360
+    )
   }
 
   get_verticalRate(time: number): number {
