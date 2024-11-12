@@ -8,6 +8,7 @@ import {
 } from '../../../src'
 import { expect } from 'chai'
 import messages from '../../recordings/messages.json'
+import messages2 from '../../recordings/messages2.json'
 
 describe('Saturation engine', () => {
   it('should add 1 ghost aircraft per message', () => {
@@ -62,5 +63,21 @@ describe('Saturation engine', () => {
       angleMax: 45,
     }).processing(messages)
     console.log(altered.map((message) => message.track))
+  })
+
+  it.skip('[utils] should generate tracks on helicopter flight', () => {
+    // time = 1481271510
+    const altered = saturation({
+      scope: and(always, target('39ac45')),
+      aircrafts: 1,
+      angleMax: 45,
+    }).processing(messages2)
+    const tracks = altered.map((message) => message.track)
+    const deltas = []
+    for (let i = 1; i < tracks.length; i = i + 2) {
+      deltas.push(tracks[i - 1] - tracks[i])
+    }
+    console.log(deltas)
+    // console.log(tracks)
   })
 })
