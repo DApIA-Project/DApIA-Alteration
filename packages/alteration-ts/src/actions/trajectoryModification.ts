@@ -1,9 +1,8 @@
-import { Scope, Message } from '../index'
-import { createInterpolatorWithFallback } from 'commons-math-interpolation'
+import { Message, Scope } from '../index'
 import {
-  Point,
   AircraftBuilder,
   AircraftInterpolation,
+  Point,
 } from '../aircraftTrajectory'
 
 type Config = {
@@ -11,6 +10,7 @@ type Config = {
   scope: Scope
   waypoints: Point[]
   allPlanes?: boolean
+  noise?: boolean
 }
 
 export function trajectoryModification(config: Config) {
@@ -22,7 +22,7 @@ export function trajectoryModification(config: Config) {
       for (let m of recording) {
         if (config.scope(m)) {
           let t = m.timestampGenerated
-          let p = interpolators[m.hexIdent].get_point(t)
+          let p = interpolators[m.hexIdent].get_point(t, config.noise)
           new_msg.push({
             ...m,
             ...p,

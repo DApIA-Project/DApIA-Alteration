@@ -6,7 +6,7 @@ type Config = {
   end: number
   template: Template
   waypoints: Point[]
-
+  noise?: boolean
   timeOffset?: () => number
 }
 
@@ -23,27 +23,34 @@ function rand(min: number, max: number) {
  *
  * The template message SHOULD define mandatory field (messageType, flightID, ...)
  */
-export function creation(config: Config): Action {
-  if (!config.timeOffset) config.timeOffset = () => rand(400, 600)
+export function creation({
+  noise,
+  end,
+  waypoints,
+  timeOffset,
+  template,
+  start,
+}: Config): Action {
+  if (!timeOffset) timeOffset = () => rand(400, 600)
 
   // Create the interpolation function
-  let trajectory = new AircraftBuilder().add_all(config.waypoints).interpolate()
+  let trajectory = new AircraftBuilder().add_all(waypoints).interpolate()
 
   return {
     processing(recording: Message[]): Message[] {
       let new_recording = clone(recording)
 
-      let time = config.start
-      while (time <= config.end) {
-        let point = trajectory.get_point(time)
+      let time = start
+      while (time <= end) {
+        let point = trajectory.get_point(time, noise)
         let msg = {
-          ...(config.template as Message),
+          ...(template as Message),
           ...point,
           messageType: 'MSG',
         }
         new_recording.push(msg)
 
-        time += config.timeOffset!()
+        time += timeOffset!()
       }
 
       return new_recording

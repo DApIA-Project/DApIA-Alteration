@@ -113,10 +113,14 @@ export class AircraftInterpolation {
     this.altitude = altitude
   }
 
-  get_point(time: number) {
+  get_point(time: number, noise = false) {
     return {
-      latitude: this.latitude(time),
-      longitude: this.longitude(time),
+      latitude: noise
+        ? this.apply_noise(this.latitude(time))
+        : this.latitude(time),
+      longitude: noise
+        ? this.apply_noise(this.longitude(time))
+        : this.longitude(time),
       altitude: this.get_altitude(time),
       track: this.get_track(time),
       groundSpeed: this.get_groundSpeed(time),
@@ -124,6 +128,11 @@ export class AircraftInterpolation {
       timestampGenerated: time,
       timestampLogged: time,
     }
+  }
+
+  private apply_noise(value: number): number {
+    const ratio = (Math.random() - 0.5) / 50000
+    return value + value * ratio
   }
 
   get_altitude(time: number): number {

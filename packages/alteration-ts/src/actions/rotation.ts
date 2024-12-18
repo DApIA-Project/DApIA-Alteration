@@ -1,14 +1,15 @@
-import { Scope, Message, Template } from '../index'
+import { Message, Scope, Template } from '../index'
 import {
   AircraftBuilder,
-  Point,
   AircraftInterpolation,
+  Point,
 } from '../aircraftTrajectory'
-import { lat, lon, Angle, Earth, Position } from '../utils'
+import { Angle, Earth, lat, lon, Position } from '../utils'
 
 type Config = {
   scope: Scope
   angle: number
+  noise?: boolean
 }
 
 export function rotation(config: Config) {
@@ -51,7 +52,7 @@ export function rotation(config: Config) {
       // Processing : compute trajectory
       let new_recording: Message[] = []
       for (let m of recording) {
-        let p = func[m.hexIdent].get_point(m.timestampGenerated)
+        let p = func[m.hexIdent].get_point(m.timestampGenerated, config.noise)
         //console.log("(" + m.latitude + "," +  m.longitude + ") : " +( m.latitude != undefined && m.longitude != undefined ? "true" : "false"));
         if (m.latitude != undefined && m.longitude != undefined) {
           //console.error("Message rotaté ("+m.latitude+","+m.longitude+")");
